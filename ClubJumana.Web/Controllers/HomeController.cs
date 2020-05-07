@@ -8,9 +8,10 @@ namespace ClubJumana.Web.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
-            return Content("salam mansour");
+            return View();
         }
     }
 }

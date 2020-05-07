@@ -20,10 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Home\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\plugins\jqvmap\js\maps\" />
+    <Folder Include="wwwroot\plugins\summernote\css\" />
   </ItemGroup>
 
   <ItemGroup>

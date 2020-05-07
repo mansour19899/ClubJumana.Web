@@ -1,13 +1,51 @@
 ﻿<!DOCTYPE html>
+<html lang="en">
 
-<html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <partial name="_MetaTags"/>
+    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+<partial name="_Css"/>
+
 </head>
+
 <body>
-    <div>
-        @RenderBody()
+
+<div id="preloader">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+        </svg>
     </div>
+</div>
+
+
+<div id="main-wrapper">
+
+
+<partial name="_Header" />
+
+<partial name="_Sidebar" />
+
+<!--**********************************
+Content body start
+***********************************-->
+<div class="content-body">
+
+<div class="container-fluid mt-3">
+@RenderBody()
+</div>
+<!-- #/ container -->
+</div>
+<!--**********************************
+Content body end
+***********************************-->
+<partial name="_Footer" />
+
+</div>
+
+<partial name="_Scripts" />
 </body>
+
 </html>
