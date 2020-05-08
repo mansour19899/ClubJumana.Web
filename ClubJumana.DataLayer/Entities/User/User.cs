@@ -13,7 +13,7 @@ namespace ClubJumana.DataLayer.Entities.Users
         }
 
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "User Name")]
         [Required(ErrorMessage = "Please Enter {0}")]
@@ -49,6 +49,13 @@ namespace ClubJumana.DataLayer.Entities.Users
         #region Relations
 
         public virtual List<UserRole> UserRoles { get; set; }
+
+
+        public ICollection<PurchaseOrder> CreatePo { get; set; }
+        public ICollection<PurchaseOrder> CreateAsn { get; set; }
+        public ICollection<PurchaseOrder> CreateGrn { get; set; }
+        public ICollection<SaleOrder> SaleOrders { get; set; }
+        public ICollection<Customer> Customers { get; set; }
 
         #endregion
 

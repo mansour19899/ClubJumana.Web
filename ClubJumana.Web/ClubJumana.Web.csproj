@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClubJumana.Core\ClubJumana.Core.csproj" />
     <ProjectReference Include="..\ClubJumana.DataLayer\ClubJumana.DataLayer.csproj" />
   </ItemGroup>
 
