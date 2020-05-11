@@ -3,78 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class test : Migration
+    public partial class smm20 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserRoles_Users_UserId",
-                table: "UserRoles");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserName",
-                table: "Users",
-                maxLength: 200,
-                nullable: false,
-                defaultValue: "0",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(200)",
-                oldMaxLength: 200);
-
-            migrationBuilder.AddColumn<int>(
-                name: "Id",
-                table: "Users",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "Id");
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Company = table.Column<string>(nullable: true),
-                    Gender = table.Column<bool>(nullable: true),
-                    BirthDate = table.Column<DateTime>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Address1 = table.Column<string>(nullable: true),
-                    Address2 = table.Column<string>(nullable: true),
-                    Address3 = table.Column<string>(nullable: true),
-                    PostalCode = table.Column<string>(nullable: true),
-                    Phone1 = table.Column<string>(nullable: true),
-                    Phone2 = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    ImageName = table.Column<string>(nullable: true),
-                    Note = table.Column<string>(nullable: true),
-                    CreatedBy_fk = table.Column<int>(nullable: false),
-                    EditedDate = table.Column<DateTime>(nullable: true),
-                    LastSaleDate = table.Column<DateTime>(nullable: true),
-                    Active = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Customers_Users_CreatedBy_fk",
-                        column: x => x.CreatedBy_fk,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
@@ -127,6 +59,38 @@ namespace ClubJumana.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleTitle = table.Column<string>(maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(maxLength: 200, nullable: false),
+                    Email = table.Column<string>(maxLength: 200, nullable: false),
+                    Password = table.Column<string>(maxLength: 200, nullable: false),
+                    ActiveCode = table.Column<string>(maxLength: 50, nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    UserAvatar = table.Column<string>(maxLength: 200, nullable: true),
+                    RegisterDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vendors",
                 columns: table => new
                 {
@@ -170,6 +134,67 @@ namespace ClubJumana.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Warehouses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Company = table.Column<string>(nullable: true),
+                    Gender = table.Column<bool>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address1 = table.Column<string>(nullable: true),
+                    Address2 = table.Column<string>(nullable: true),
+                    Address3 = table.Column<string>(nullable: true),
+                    PostalCode = table.Column<string>(nullable: true),
+                    Phone1 = table.Column<string>(nullable: true),
+                    Phone2 = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    CreatedBy_fk = table.Column<int>(nullable: false),
+                    EditedDate = table.Column<DateTime>(nullable: true),
+                    LastSaleDate = table.Column<DateTime>(nullable: true),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Users_CreatedBy_fk",
+                        column: x => x.CreatedBy_fk,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UR_Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => x.UR_Id);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -519,21 +544,19 @@ namespace ClubJumana.DataLayer.Migrations
                 table: "SoItem",
                 column: "So_fk");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserRoles_Users_UserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UserId",
+                table: "UserRoles",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserRoles_Users_UserId",
-                table: "UserRoles");
-
             migrationBuilder.DropTable(
                 name: "Items");
 
@@ -544,6 +567,9 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "SoItem");
 
             migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
                 name: "PurchaseOrders");
 
             migrationBuilder.DropTable(
@@ -551,6 +577,9 @@ namespace ClubJumana.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "SaleOrders");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Vendors");
@@ -564,44 +593,8 @@ namespace ClubJumana.DataLayer.Migrations
             migrationBuilder.DropTable(
                 name: "Warehouses");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserName",
-                table: "Users",
-                type: "nvarchar(200)",
-                maxLength: 200,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldMaxLength: 200,
-                oldDefaultValue: "0");
-
-            migrationBuilder.AddColumn<int>(
-                name: "UserId",
-                table: "Users",
-                type: "int",
-                nullable: false,
-                defaultValue: 0)
-                .Annotation("SqlServer:Identity", "1, 1");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserRoles_Users_UserId",
-                table: "UserRoles",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

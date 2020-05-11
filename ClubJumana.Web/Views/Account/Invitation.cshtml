@@ -1,0 +1,33 @@
+﻿@model ClubJumana.Core.DTOs.InvitationViewModel
+<div class="login-form-bg h-100">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-xl-6">
+                <div class="form-input-content">
+                    <div class="card login-form mb-0">
+                        <div class="card-body pt-5">
+                            @if(ViewBag.SuccessSendEmail != null)
+                            {
+                                <h4 class="text-center text-success">Email sended successfully</h4>
+                            }
+                            else
+                            {
+                                <h4 class="text-center">Invitation</h4>
+                            }
+                            <form asp-action="Invitation" class="mt-5 mb-5 login-input">
+                                <div class="form-group">
+                                    <input type="text" asp-for="Name"  class="form-control" placeholder="Name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" asp-for="Email"  class="form-control" placeholder="Email">
+                                </div>
+                                <button class="btn login-form__btn submit w-100">Send Email</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -7,10 +7,10 @@ using ClubJumana.DataLayer.Entities.Users;
 
 namespace ClubJumana.DataLayer.Context
 {
-   public class JumanaContext:DbContext
+   public class JummanaContext:DbContext
     {
 
-        public JumanaContext(DbContextOptions<JumanaContext> options):base(options)
+        public JummanaContext(DbContextOptions<JummanaContext> options):base(options)
         {
             
         }
@@ -163,9 +163,6 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(b => b.UserName).HasDefaultValue(123456);
-                entity.Property(b => b.UserName).HasDefaultValue(0);
             });
 
 

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    [DbContext(typeof(JumanaContext))]
-    partial class JumanaContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(JummanaContext))]
+    partial class JummanaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -602,7 +602,9 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.User", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ActiveCode")
                         .HasColumnType("nvarchar(50)")
@@ -630,10 +632,8 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200)
-                        .HasDefaultValue("0");
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 

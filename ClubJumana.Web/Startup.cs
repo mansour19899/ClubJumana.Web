@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClubJumana.Core.Convertors;
+using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,13 +31,38 @@ namespace ClubJumana.Web
         {
             services.AddMvc();
 
+            #region Authentication
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(43200);
+
+            });
+
+            #endregion
             #region DataBase Context
 
-            services.AddDbContext<JumanaContext>(options =>
+            services.AddDbContext<JummanaContext>(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("JumanaConnection"));
                 }
             );
+
+            #endregion
+
+            #region IoC
+
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IViewRenderService, RenderViewToString>();
+
 
             #endregion
         }
@@ -47,11 +75,11 @@ namespace ClubJumana.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-            app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseDefaultFiles();
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

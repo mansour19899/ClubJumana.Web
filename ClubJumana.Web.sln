@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClubJumana.DataLayer", "Clu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClubJumana.Core", "ClubJumana.Core\ClubJumana.Core.csproj", "{07D43166-892A-4EEB-B1BF-91C7CBB732E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubJummana.Wpf", "ClubJummana.Wpf\ClubJummana.Wpf.csproj", "{097D78A1-9705-4D06-AB71-0F25D838C622}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{07D43166-892A-4EEB-B1BF-91C7CBB732E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07D43166-892A-4EEB-B1BF-91C7CBB732E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07D43166-892A-4EEB-B1BF-91C7CBB732E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{097D78A1-9705-4D06-AB71-0F25D838C622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{097D78A1-9705-4D06-AB71-0F25D838C622}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{097D78A1-9705-4D06-AB71-0F25D838C622}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{097D78A1-9705-4D06-AB71-0F25D838C622}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
