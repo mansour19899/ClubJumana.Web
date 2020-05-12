@@ -8,6 +8,7 @@ using ClubJumana.Core.Convertors;
 using Microsoft.EntityFrameworkCore.Internal;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Security;
+using ClubJumana.DataLayer.Entities.User;
 
 namespace ClubJumana.Core.Services.Interfaces
 {
@@ -19,26 +20,41 @@ namespace ClubJumana.Core.Services.Interfaces
         {
             _context = context;
         }
-        public bool ActiveAccount(string activeCode)
+        public Invitation AllowRegister(string activeCode)
         {
-            throw new NotImplementedException();
+            var invitation = _context.Invitations.SingleOrDefault(u => u.ActiveCode == activeCode);
+            return invitation ?? new Invitation(){Id = 0};
+        }
+
+        public int AddInvitation(Invitation invitation)
+        {
+            _context.Invitations.Add(invitation);
+            _context.SaveChanges();
+            return invitation.Id;
         }
 
         public int AddUser(User user)
         {
             _context.Users.Add(user);
+            var invitation = _context.Invitations.SingleOrDefault(p => p.ActiveCode == user.ActiveCode);
+            if (invitation == null)
+                return -2;
+
+            _context.SaveChanges();
+            invitation.ActiveCode = $"The user Registered88";
+            invitation.UserRegisterWithInvitation_fk = user.Id;
             _context.SaveChanges();
             return user.Id;
         }
 
         public User GetUserByActiveCode(string activeCode)
         {
-            throw new NotImplementedException();
+            return _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
         }
 
         public User GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            return _context.Users.SingleOrDefault(u => u.Email == email);
         }
 
         public bool IsExistEmail(string email)
@@ -69,7 +85,8 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public void UpdateUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
     }
 }

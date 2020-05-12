@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ClubJumana.DataLayer.Entities;
+using ClubJumana.DataLayer.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using ClubJumana.DataLayer.Entities.Users;
 
@@ -20,6 +21,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         public DbSet<ProductMaster> Products { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -227,6 +229,20 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SoItems)
                     .HasForeignKey(s => s.ProductMaster_fk);
             });
+            //----------------------------------- Invitation ---------------------------------------
+            modelBuilder.Entity<Invitation>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasOne<User>(s => s.UserSendInvitation)
+                    .WithMany(g => g.SendInvitations)
+                    .HasForeignKey(s => s.UserSendInvitation_fk);
+
+                entity.HasOne<User>(s=>s.UserRegisterWithInvitation)
+                    .WithOne(g=>g.RegisterWithInvitation)
+                    .HasForeignKey<Invitation>(s => s.UserRegisterWithInvitation_fk);
+            });
+
             //----------------------------------- new ---------------------------------------
         }
 

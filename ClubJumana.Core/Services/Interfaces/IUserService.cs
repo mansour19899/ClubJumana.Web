@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ClubJumana.Core.DTOs;
+using ClubJumana.DataLayer.Entities.User;
 using ClubJumana.DataLayer.Entities.Users;
 
 namespace ClubJumana.Core.Services.Interfaces
@@ -15,6 +16,8 @@ namespace ClubJumana.Core.Services.Interfaces
         User GetUserByEmail(string email);
         User GetUserByActiveCode(string activeCode);
         void UpdateUser(User user);
-        bool ActiveAccount(string activeCode);
+        Invitation AllowRegister(string activeCode);
+
+        int AddInvitation(Invitation invitation);
     }
 }

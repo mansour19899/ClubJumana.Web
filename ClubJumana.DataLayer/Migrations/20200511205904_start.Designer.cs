@@ -4,14 +4,16 @@ using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200511205904_start")]
+    partial class start
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -598,9 +600,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<DateTime>("ExpireInvitationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
@@ -612,16 +611,18 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int?>("UserRegisterWithInvitation_fk")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserSendInvitationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserSendInvitation_fk")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserRegisterWithInvitation_fk")
-                        .IsUnique()
-                        .HasFilter("[UserRegisterWithInvitation_fk] IS NOT NULL");
+                    b.HasIndex("UserSendInvitationId");
 
-                    b.HasIndex("UserSendInvitation_fk");
+                    b.HasIndex("UserSendInvitation_fk")
+                        .IsUnique();
 
                     b.ToTable("Invitations");
                 });
@@ -915,13 +916,13 @@ namespace ClubJumana.DataLayer.Migrations
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
                 {
-                    b.HasOne("ClubJumana.DataLayer.Entities.Users.User", "UserRegisterWithInvitation")
-                        .WithOne("RegisterWithInvitation")
-                        .HasForeignKey("ClubJumana.DataLayer.Entities.User.Invitation", "UserRegisterWithInvitation_fk");
-
                     b.HasOne("ClubJumana.DataLayer.Entities.Users.User", "UserSendInvitation")
                         .WithMany("SendInvitations")
-                        .HasForeignKey("UserSendInvitation_fk")
+                        .HasForeignKey("UserSendInvitationId");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Users.User", "UserRegisterWithInvitation")
+                        .WithOne("RegisterWithInvitation")
+                        .HasForeignKey("ClubJumana.DataLayer.Entities.User.Invitation", "UserSendInvitation_fk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

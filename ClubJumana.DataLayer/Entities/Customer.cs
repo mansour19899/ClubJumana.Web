@@ -36,7 +36,7 @@ namespace ClubJumana.DataLayer.Entities
         public bool Active { get; set; }
 
         public ICollection<SaleOrder> SaleOrders { get; set; }
-        public  User User { get; set; }
+        public  Users.User User { get; set; }
 
         //--------------------------- Noy map --------------------------
 

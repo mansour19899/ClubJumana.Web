@@ -159,7 +159,7 @@ namespace ClubJumana.DataLayer.Entities
 
 
         public ICollection<SoItem> SoItems { get; set; }
-        public User User { get; set; }
+        public Users.User User { get; set; }
 
         private Customer _customer;
         public Customer Customer

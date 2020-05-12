@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class smm20 : Migration
+    public partial class start : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -166,6 +166,37 @@ namespace ClubJumana.DataLayer.Migrations
                     table.ForeignKey(
                         name: "FK_Customers_Users_CreatedBy_fk",
                         column: x => x.CreatedBy_fk,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invitations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
+                    Email = table.Column<string>(maxLength: 200, nullable: false),
+                    ActiveCode = table.Column<string>(maxLength: 50, nullable: true),
+                    UserSendInvitation_fk = table.Column<int>(nullable: false),
+                    UserRegisterWithInvitation_fk = table.Column<int>(nullable: true),
+                    UserSendInvitationId = table.Column<int>(nullable: true),
+                    SendInvitationDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitations_Users_UserSendInvitationId",
+                        column: x => x.UserSendInvitationId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Invitations_Users_UserSendInvitation_fk",
+                        column: x => x.UserSendInvitation_fk,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -465,6 +496,17 @@ namespace ClubJumana.DataLayer.Migrations
                 column: "CreatedBy_fk");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Invitations_UserSendInvitationId",
+                table: "Invitations",
+                column: "UserSendInvitationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invitations_UserSendInvitation_fk",
+                table: "Invitations",
+                column: "UserSendInvitation_fk",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Items_Po_fk",
                 table: "Items",
                 column: "Po_fk");
@@ -557,6 +599,9 @@ namespace ClubJumana.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Invitations");
+
             migrationBuilder.DropTable(
                 name: "Items");
 

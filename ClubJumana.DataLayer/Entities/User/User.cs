@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using ClubJumana.DataLayer.Entities.User;
 
 namespace ClubJumana.DataLayer.Entities.Users
 {
@@ -57,6 +58,8 @@ namespace ClubJumana.DataLayer.Entities.Users
         public ICollection<SaleOrder> SaleOrders { get; set; }
         public ICollection<Customer> Customers { get; set; }
 
+        public ICollection<Invitation> SendInvitations { get; set; }
+        public Invitation RegisterWithInvitation { get; set; }
         #endregion
 
     }

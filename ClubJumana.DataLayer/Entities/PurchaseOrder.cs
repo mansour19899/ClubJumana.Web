@@ -57,9 +57,9 @@ namespace ClubJumana.DataLayer.Entities
 
         public ICollection<Item> Items { get; set; }
         public Vendor Vendor { get; set; }
-        public User UserCreatePo { get; set; }
-        public User UserCreateAsn { get; set; }
-        public User UserCreateGrn { get; set; }
+        public Users.User UserCreatePo { get; set; }
+        public Users.User UserCreateAsn { get; set; }
+        public Users.User UserCreateGrn { get; set; }
         public Warehouse ToWarehouse { get; set; }
         public Warehouse FromWarehouse { get; set; }
     }

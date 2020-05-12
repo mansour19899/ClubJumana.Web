@@ -11,6 +11,7 @@ using ClubJumana.DataLayer.Entities.Users;
 using Microsoft.AspNetCore.Mvc;
 using ClubJumana.Core.Security;
 using ClubJumana.Core.Senders;
+using ClubJumana.DataLayer.Entities.User;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,18 +31,28 @@ namespace ClubJumana.Web.Controllers
 
 
         #region Register
-
-        [Route("Register")]
+        [Route("Register/{id?}")]
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string id)
         {
-            return View();
+            var Invitation = _userService.AllowRegister(id);
+            if (Invitation.Id != 0)
+            {
+                return View(new RegisterViewModel(){ActiveCode = id});
+            }
+            else
+            {
+                return Redirect("/Login");
+            }
+
         }
 
-        [Route("Register")]
+        [Route("Register/{id?}")]
         [HttpPost]
         public IActionResult Register(RegisterViewModel register)
         {
+            
+
             if (!ModelState.IsValid)
             {
                 return View("Register");
@@ -61,7 +72,7 @@ namespace ClubJumana.Web.Controllers
 
             User user = new User()
             {
-                ActiveCode = CodeGenerator.GenerateUniqCode(),
+                ActiveCode = register.ActiveCode,
                 Email = FixedText.FixEmail(register.Email),
                 IsActive = true,
                 Password = PasswordHelper.EncodePasswordMd5(register.Password),
@@ -159,15 +170,104 @@ namespace ClubJumana.Web.Controllers
         [Route("Invitation")]
         public IActionResult Invitation(InvitationViewModel invitation)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Invitation Newinvitation = new Invitation()
+            {
+                ActiveCode = CodeGenerator.GenerateUniqCode(),
+                Email = FixedText.FixEmail(invitation.Email),
+                Name = invitation.Name,
+                SendInvitationDate = DateTime.Now,
+                ExpireInvitationDate = DateTime.Today.AddDays(15),
+                UserSendInvitation_fk =Convert.ToInt16(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value)
+            };
+
             #region Send Success Regestration
 
+            invitation.ActiveCode = Newinvitation.ActiveCode;
             string body = _viewRender.RenderToStringAsync("_InvitationEmail", invitation);
             SendEmail.Send(invitation.Email, "TestFirstSendInvitation", body);
 
             #endregion
 
+            _userService.AddInvitation(Newinvitation);
+
             ViewBag.SuccessSendEmail = true;
             return View();
+        }
+
+        #endregion
+
+        #region ForgotPassword
+
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordViewMode forgotPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            string fixedEmail = FixedText.FixEmail(forgotPassword.Email);
+
+            var user = _userService.GetUserByEmail(fixedEmail);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(fixedEmail,"Email not find");
+                return View(forgotPassword);
+            }
+
+            string bodyEmail = _viewRender.RenderToStringAsync("_ForgotPassword", user);
+            SendEmail.Send(user.Email,"Recovery Password",bodyEmail);
+
+            ViewBag.IsSuccess = true;
+            return View(forgotPassword);
+        }
+
+        #endregion
+
+        #region RestPassword
+
+        [Route("RestPassword/{id?}")]
+        public IActionResult RestPassword(string id)
+        {
+            return View(new RestPasswordViewMode()
+            {
+                ActiveCode = id
+            });
+        }
+
+        [HttpPost]
+        [Route("RestPassword/{id?}")]
+        public IActionResult RestPassword(RestPasswordViewMode restPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var user = _userService.GetUserByActiveCode(restPassword.ActiveCode);
+
+            if (user == null)
+                return NotFound();
+
+            string hashNewPassword = PasswordHelper.EncodePasswordMd5(restPassword.Password);
+            user.Password = hashNewPassword;
+            _userService.UpdateUser(user);
+
+
+            return Redirect("/Login");
         }
 
         #endregion
