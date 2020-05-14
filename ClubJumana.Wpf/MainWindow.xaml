@@ -1,0 +1,162 @@
+﻿<Window x:Class="ClubJumana.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClubJumana.Wpf" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="1600">
+    <Window.Resources>
+        <system:String x:Key="salam">0 0 0 40</system:String>
+        <Thickness x:Key="LabelMargin" Top="0" Left="0" Right="250" Bottom ="0" />
+        <Thickness x:Key="GrMargin" Top="20" Left="60" Right="0" Bottom ="0" />
+        <system:Double x:Key="myFont">20</system:Double>
+        <Style x:Key="lbl0" TargetType="Label" >
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="Blue"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Margin" Value="20 0 0 0" />
+            <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+        </Style>
+        <Style x:Key="lbl1" TargetType="Label" >
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="Margin" Value="0 0 5 0" />
+        </Style>
+        <Style x:Key="txt1" TargetType="TextBox" >
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="Margin" Value="0 0 0 0" />
+        </Style>
+        <Style x:Key="lbl2" TargetType="Label" >
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="10 0 0 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="datapiker1" TargetType="DatePicker">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="txtMain" TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <!--<Setter Property="MinHeight" Value="20"/>
+            <Setter Property="MinWidth" Value="150"/>-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                                CornerRadius="2"
+                                BorderBrush="#000"
+                                BorderThickness="1"
+                                Background="#fff"
+                        >
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="false"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#909090"/>
+                                <!--<Setter Property="Foreground" Value="Red" />
+                                <Setter Property="FontWeight" Value="Bold" />-->
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <!--<Setter Property="Foreground" Value="Blue" />-->
+                                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.15*" />
+            </Grid.ColumnDefinitions>
+            <materialDesign:Snackbar Grid.Row="1" x:Name="SnackbarResult" Panel.ZIndex="99999"  />
+            <Border Grid.Column="1" Grid.Row="0" BorderBrush="LightSlateGray" BorderThickness="2 0 0 2">
+                <Image Name="btnLogo" Grid.Column="1" Grid.Row="0" Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"  />
+            </Border>
+
+            <Border Grid.Column="0" Grid.Row="0" BorderBrush="LightSlateGray" BorderThickness="0 0 0 2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.7*" />
+                        <RowDefinition Height="0.3*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Name="btnPurchaseOrder" Grid.Row="0" Grid.Column="0"   Source="Content/Images/icons8_purchase_order_96px.png" Stretch="Uniform" Margin="10 5 10 0" />
+                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Perchers Order"></Label>
+
+                    <Image Name="btnAsnVorchers" Grid.Row="0" Grid.Column="1"   Source="Content/Images/icons8_cargo_ship_64px.png" Stretch="Uniform" Margin="10 5 10 0" />
+                    <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Goods In Transit"/>
+                    <!--<Rectangle Margin="20 5 20 5" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Fill="#FF2CB026"/>-->
+                    <Image Name="btnGrn" Grid.Row="0" Grid.Column="2"   Source="Content/Images/icons8_borrow_book_64px.png" Stretch="Uniform" Margin="10 5 10 0" />
+                    <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Goods Recive Note"></Label>
+                    <Image Name="btnSaleOrder" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"   Source="Content/Images/icons8_ticket_purchase_52px_1.png" Stretch="Uniform" Margin="10 20 10 20"  />
+                    <Label Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Sale"/>
+                    <Image Name="btnProduct" Grid.Row="0" Grid.Column="4"   Source="Content/Images/icons8_product_100px.png" Stretch="Uniform" Margin="10 5 10 0" />
+                    <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Products"></Label>
+                    <Image Name="btnOrders" Grid.Row="0" Grid.Column="5"   Source="Content/Images/icons8_downloads_100px.png" Stretch="Uniform" Margin="10 5 10 0"/>
+                    <Label Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Orders"></Label>
+
+
+                </Grid>
+
+            </Border>
+
+            <Border Grid.Column="1" Grid.Row="1" BorderBrush="LightSlateGray" BorderThickness="2 0 0 0"/>
+
+            <UniformGrid Grid.Row="1" Grid.Column="1" Columns="1" Rows="10">
+                <StackPanel Name="btnNewPurchaseOrder" Orientation="Horizontal" Margin="10 10 10 10"   >
+                    <Image Source="Content/Images/icons8_create_document_60px_1.png"/>
+                    <Label Name="lblNewPo" Content="New PO" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+                <StackPanel Name="btnSave" Orientation="Horizontal" Margin="10 10 10 10"   >
+                    <Image Source="Content/Images/icons8_save_60px.png"/>
+                    <Label Name="lblSave" Content="Save" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+                <StackPanel Name="btnAddItem" Orientation="Horizontal" Margin="10 10 10 10"  >
+                    <Image Source="Content/Images/icons8_add_new_52px_3.png"/>
+                    <Label Content="Add Item" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+
+                <StackPanel Name="btnRemove" Orientation="Horizontal" Margin="10 10 10 10"   >
+                    <Image Source="Content/Images/icons8_remove_60px_2.png"/>
+                    <Label Name="lblRemove" Content="Remove" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+                <StackPanel Name="btnDone" Orientation="Horizontal" Margin="10 10 10 10"   >
+                    <Image Source="Content/Images/icons8_checked_checkbox_60px.png"/>
+                    <Label Name="lblDone" Content="Done" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+            </UniformGrid>
+
+
+
+
+        </Grid>
+
+
+    </Grid>
+</Window>

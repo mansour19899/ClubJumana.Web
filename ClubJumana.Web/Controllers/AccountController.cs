@@ -239,8 +239,8 @@ namespace ClubJumana.Web.Controllers
 
         #region RestPassword
 
-        [Route("RestPassword/{id?}")]
-        public IActionResult RestPassword(string id)
+        [Route("ResetPassword/{id?}")]
+        public IActionResult ResetPassword(string id)
         {
             return View(new RestPasswordViewMode()
             {
@@ -249,8 +249,8 @@ namespace ClubJumana.Web.Controllers
         }
 
         [HttpPost]
-        [Route("RestPassword/{id?}")]
-        public IActionResult RestPassword(RestPasswordViewMode restPassword)
+        [Route("ResetPassword/{id?}")]
+        public IActionResult ResetPassword(RestPasswordViewMode restPassword)
         {
             if (!ModelState.IsValid)
             {
