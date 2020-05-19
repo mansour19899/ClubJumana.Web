@@ -50,11 +50,7 @@ namespace ClubJumana.Web
             #endregion
             #region DataBase Context
 
-            services.AddDbContext<JummanaContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("JumanaConnection"));
-                }
-            );
+            services.AddDbContext<JummanaContext>();
 
             #endregion
 

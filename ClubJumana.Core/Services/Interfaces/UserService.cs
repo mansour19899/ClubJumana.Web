@@ -16,9 +16,9 @@ namespace ClubJumana.Core.Services.Interfaces
     {
         private JummanaContext _context;
 
-        public UserService(JummanaContext context)
+        public UserService()
         {
-            _context = context;
+            _context = new JummanaContext();
         }
         public Invitation AllowRegister(string activeCode)
         {
@@ -87,6 +87,11 @@ namespace ClubJumana.Core.Services.Interfaces
         {
             _context.Users.Update(user);
             _context.SaveChanges();
+        }
+
+        public User LoginUser()
+        {
+            return _context.Users.FirstOrDefault();
         }
     }
 }

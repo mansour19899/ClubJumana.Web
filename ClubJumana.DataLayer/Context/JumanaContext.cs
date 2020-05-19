@@ -11,11 +11,14 @@ namespace ClubJumana.DataLayer.Context
    public class JummanaContext:DbContext
     {
 
-        public JummanaContext(DbContextOptions<JummanaContext> options):base(options)
-        {
+        //public JummanaContext(DbContextOptions<JummanaContext> options):base(options)
+        //{
             
+        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm28;Trusted_Connection=True");
         }
-
         #region User
 
         public DbSet<Role> Roles { get; set; }
@@ -50,8 +53,6 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<Item>().Property(b => b.Checked).HasDefaultValue(false);
             modelBuilder.Entity<Item>().Property(b => b.Alert).HasDefaultValue(false);
             modelBuilder.Entity<Item>().Ignore(p => p.Price);
-            modelBuilder.Entity<Item>().Ignore(p => p.PreviousQuantity);
-            modelBuilder.Entity<Item>().Ignore(p => p.CurrentQuantity);
             modelBuilder.Entity<Item>().Ignore(p => p.TotalItemPrice);
             modelBuilder.Entity<Item>().Property(a => a.RowVersion).IsRowVersion();
             //modelBuilder.Entity<Item>().HasData(new Item

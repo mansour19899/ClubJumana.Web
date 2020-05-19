@@ -27,23 +27,26 @@ namespace ClubJumana.DataLayer.Entities
         public DateTime? CancelDate { get; set; }
         public DateTime? CreateOrder { get; set; }
         public DateTime? LastEditDate { get; set; }
-        public decimal? Freight { get; set; }
-        public decimal? DiscountPercent { get; set; }
+        public decimal Freight { get; set; }
+        public decimal DiscountPercent { get; set; }
         public string Percent { get; set; }
-        public decimal? DiscountDollers { get; set; }
-        public decimal? Insurance { get; set; }
-        public decimal? CustomsDuty { get; set; }
-        public decimal? Handling { get; set; }
-        public decimal? Forwarding { get; set; }
-        public decimal? LandTransport { get; set; }
-        public decimal? Others { get; set; }
-        public decimal? TotalCharges { get; set; }
+        public decimal DiscountDollers { get; set; }
+        public decimal Insurance { get; set; }
+        public decimal CustomsDuty { get; set; }
+        public decimal Handling { get; set; }
+        public decimal Forwarding { get; set; }
+        public decimal LandTransport { get; set; }
+        public decimal Others { get; set; }
+        public decimal TotalCharges { get; set; }
+        public decimal? PoSubtotal { get; set; }
+        public decimal? AsnSubtotal { get; set; }
+        public decimal? GrnSubtotal { get; set; }
         public decimal? PoTotal { get; set; }
         public decimal? AsnTotal { get; set; }
         public decimal? GrnTotal { get; set; }
-        public  bool? CreatedPO { get; set; }
-        public  bool? CreatedAsn { get; set; }
-        public  bool? CreatedGrn { get; set; }
+        public  bool CreatedPO { get; set; }
+        public  bool CreatedAsn { get; set; }
+        public  bool CreatedGrn { get; set; }
         public int? ItemsPoCount { get; set; }
         public int? ItemsAsnCount { get; set; }
         public int? ItemsGrnCount { get; set; }

@@ -19,5 +19,7 @@ namespace ClubJumana.Core.Services.Interfaces
         Invitation AllowRegister(string activeCode);
 
         int AddInvitation(Invitation invitation);
+
+        User LoginUser();
     }
 }

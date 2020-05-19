@@ -28,11 +28,13 @@ namespace ClubJumana.DataLayer.Entities
         public DateTime? SaleStartDate{ get; set; }
         public DateTime? SaleEndDate { get; set; }
         public string Margin { get; set; }
-        public int Inventory { get; set; }
+        public int StockOnHand { get; set; }
+        public int GoodsReserved { get; set; }
+
+        public int TempBalance => StockOnHand - GoodsReserved;
         public DateTime LastUpdateInventory { get; set; }
         public int Income { get; set; }
         public int Outcome { get; set; }
-        public int OnTheWayInventory { get; set; }
 
         private string _imageName;
         public string Image
