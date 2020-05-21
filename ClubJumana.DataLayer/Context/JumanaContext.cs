@@ -34,6 +34,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
         public DbSet<SaleOrder> SaleOrders { get; set; }
+        public DbSet<SoItem> SoItems { get; set; }
         public DbSet<Province> Provinces { get; set; }
 
 
@@ -82,6 +83,7 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.RowVersion).IsRowVersion();
 
             });
 
@@ -93,6 +95,7 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Note).HasColumnName("Note");
                 entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.RowVersion).IsRowVersion();
                 entity.HasData(new Vendor { Id = 1, Name = "ClubJummana" });
                 entity.HasData(new Vendor { Id = 2, Name = "Anzir" });
                 entity.HasData(new Vendor { Id = 3, Name = "Noman" });
@@ -137,6 +140,7 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.RowVersion).IsRowVersion();
 
             });
 
@@ -148,6 +152,7 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(b => b.Inventory).HasDefaultValue(0);
                 entity.Property(b => b.OnTheWayInventory).HasDefaultValue(0);
+                entity.Property(b => b.RowVersion).IsRowVersion();
 
                 entity.HasOne<ProductMaster>(s => s.ProductMaster)
                     .WithMany(g => g.ProductInventoryWarehouses)
@@ -175,10 +180,7 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.OrderedDate).HasColumnType("smalldatetime");
                 entity.Property(e => e.CancelDate).HasColumnType("smalldatetime");
-                entity.Ignore(e => e.TaxName);
-                entity.Ignore(e => e.TaxRate);
-                entity.Ignore(e => e.SubtotalwithServices);
-                entity.Ignore(e => e.IsSaveDatabase);
+                entity.Property(e => e.RowVersion).IsRowVersion();
 
                 entity.HasOne<User>(s => s.User)
                     .WithMany(g => g.SaleOrders)
@@ -202,6 +204,7 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.RowVersion).IsRowVersion();
                 //entity.Property(e => e.HST).HasColumnType("real");
                 //entity.Property(e => e.GST).HasColumnType("real");
                 //entity.Property(e => e.QST).HasColumnType("real");
@@ -212,6 +215,7 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Ignore(p => p.FullName);
+                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<User>(s => s.User)
                     .WithMany(g => g.Customers)
@@ -221,6 +225,7 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<SoItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.RowVersion).IsRowVersion();
 
                 entity.HasOne<SaleOrder>(s => s.SaleOrder)
                     .WithMany(g => g.SoItems)

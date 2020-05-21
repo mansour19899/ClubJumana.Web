@@ -17,7 +17,7 @@ namespace ClubJumana.DataLayer.Entities
         public int? OnTheWayInventory { get; set; }
         public string Aile { get; set; }
         public string Bin { get; set; }
-
+        public byte[] RowVersion { get; set; }
         public ProductMaster ProductMaster { get; set; }
         public Warehouse Warehouse { get; set; }
     }

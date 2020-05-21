@@ -25,7 +25,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal TotalItemPrice { get; set; }
         public decimal PoItemsPrice { get; set; }
         public decimal AsnItemsPrice { get; set; }
-        public int? Diffrent { get; set; }
+        public int Diffrent { get; set; }
         public bool? Alert { get; set; }
         public string Note { get; set; }
         public bool? Checked { get; set; }

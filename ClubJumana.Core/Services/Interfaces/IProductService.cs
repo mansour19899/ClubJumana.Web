@@ -9,6 +9,6 @@ namespace ClubJumana.Core.Services.Interfaces
     {
         public int AddOrUpdateProduct(ProductMaster product);
 
-        public List<string> GetAllInformationInventoryProduct(int Id);
+        public IDictionary<string, string> GetAllInformationInventoryProduct(int Id);
     }
 }

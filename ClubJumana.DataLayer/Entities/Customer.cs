@@ -37,6 +37,7 @@ namespace ClubJumana.DataLayer.Entities
 
         public ICollection<SaleOrder> SaleOrders { get; set; }
         public  Users.User User { get; set; }
+        public byte[] RowVersion { get; set; }
 
         //--------------------------- Noy map --------------------------
 

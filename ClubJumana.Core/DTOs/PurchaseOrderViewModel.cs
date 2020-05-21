@@ -303,7 +303,7 @@ namespace ClubJumana.Core.DTOs
             get { return _TotalItemPrice; }
             set { _TotalItemPrice = value; }
         }
-        public int? Diffrent { get; set; }
+        public int Diffrent { get; set; }
         public bool? Alert { get; set; }
         public string Note { get; set; }
         public bool? Checked { get; set; }

@@ -21,5 +21,17 @@ namespace ClubJumana.Core.Generator
 
             return "97- " + Id.ToString();
         }
+
+        public static string ShowSaleOrderNumber(this int Id)
+        {
+
+            return "SO - " + Id.ToString();
+        }
+
+        public static string ShowInvoceNumber(this int Id)
+        {
+
+            return "Inv - " + Id.ToString();
+        }
     }
 }

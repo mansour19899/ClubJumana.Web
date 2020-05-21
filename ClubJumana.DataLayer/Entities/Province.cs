@@ -14,7 +14,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal? GST { get; set; }
         public decimal? QST { get; set; }
         public bool Active { get; set; }
-
+        public byte[] RowVersion { get; set; }
         public ICollection<SaleOrder> SaleOrders { get; set; }
     }
 }

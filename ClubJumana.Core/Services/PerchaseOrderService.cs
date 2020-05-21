@@ -79,7 +79,6 @@ namespace ClubJumana.Core.Services
                 {
                     PO = _context.PurchaseOrders.SingleOrDefault(p => p.Id == poViewModel.Id);
                     PO.Vendor_fk = poViewModel.Vendor_fk;
-                    PO.Vendor_fk = poViewModel.Vendor_fk;
                     PO.OrderDate = poViewModel.DateCompleted;
                     PO.ShipDate = poViewModel.ShipDate;
                     PO.CancelDate = poViewModel.CancelDate;
@@ -207,7 +206,6 @@ namespace ClubJumana.Core.Services
                 {
                     PO = _context.PurchaseOrders.SingleOrDefault(p => p.Id == asnViewModel.Id);
                     PO.Vendor_fk = asnViewModel.Vendor_fk;
-                    PO.Vendor_fk = asnViewModel.Vendor_fk;
                     PO.AsnDate = asnViewModel.DateCompleted;
                     PO.ShipDate = asnViewModel.ShipDate;
                     PO.CancelDate = asnViewModel.CancelDate;
@@ -304,14 +302,14 @@ namespace ClubJumana.Core.Services
                             productInventoryWarehouse.OutCome = 0;
                             _context.Add(productInventoryWarehouse);
                         }
-                        if (asnViewModel.FromWarehouse_fk != 2)
+                        if (asnViewModel.FromWarehouse_fk != 1)
                         {
                             ProductInventoryWarehouse productInventoryWarehouseFrom =
                                 _context.ProductInventoryWarehouses.SingleOrDefault(p =>
                                     p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                     p.Warehouse_fk == asnViewModel.FromWarehouse_fk);
                             if (productInventoryWarehouseFrom != null)
-                                productInventoryWarehouseFrom.Inventory = VARIABLE.Quantity;
+                                productInventoryWarehouseFrom.Inventory -= VARIABLE.Quantity;
                         }
                     }
                 }

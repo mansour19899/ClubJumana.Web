@@ -45,7 +45,7 @@ namespace ClubJumana.DataLayer.Entities
         public Nullable<bool> Active { get; set; }
 
         public string Note { get; set; }
-
+        public byte[] RowVersion { get; set; }
         public ICollection<Item> Items { get; set; }
         public ICollection<SoItem> SoItems { get; set; }
         public ICollection<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }

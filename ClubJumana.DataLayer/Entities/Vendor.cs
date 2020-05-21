@@ -30,7 +30,7 @@ namespace ClubJumana.DataLayer.Entities
         public  string Info1 { get; set; }
         public  string Info2 { get; set; }
         public  string Note { get; set; }
-
+        public byte[] RowVersion { get; set; }
         public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
 
     }

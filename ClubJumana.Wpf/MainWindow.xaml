@@ -150,6 +150,14 @@
                     <Image Source="Content/Images/icons8_checked_checkbox_60px.png"/>
                     <Label Name="lblDone" Content="Done" Style="{StaticResource lbl2}"/>
                 </StackPanel>
+                <StackPanel Name="btnPrint" Orientation="Horizontal" Margin="10 10 10 10"  MouseDown="BtnPrint_OnMouseDown" >
+                    <Image Source="Content/Images/icons8_print_100px.png"/>
+                    <Label Name="lblPrint" Content="Print" Style="{StaticResource lbl2}"/>
+                </StackPanel>
+                <StackPanel Name="btnSendEmail" Orientation="Horizontal" Margin="10 10 10 10"  MouseDown="BtnSendEmail_OnMouseDown" >
+                    <Image Source="Content/Images/icons8_email_send_60px.png"/>
+                    <Label Name="lblSendEmail" Content="Send Email" Style="{StaticResource lbl2}"/>
+                </StackPanel>
             </UniformGrid>
 
             <Grid Name="GrdNewPurchersOrder" Grid.Row="1" Grid.Column="0" Visibility="Hidden">
@@ -333,6 +341,7 @@
                     </StackPanel>
                 </UniformGrid>
             </Grid>
+
             <Grid Name="GrdProductList" Grid.Row="1" Grid.Column="0" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.2*"/>
@@ -367,7 +376,8 @@
                 </ListView>
 
             </Grid>
-            <Grid Name="GrdPurchesOrderList" Grid.Row="1" Grid.Column="0" Visibility="Visible">
+
+            <Grid Name="GrdPurchesOrderList" Grid.Row="1" Grid.Column="0" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.2*"/>
                     <RowDefinition Height="0.8*"/>
@@ -403,6 +413,7 @@
                 </ListView>
 
             </Grid>
+
             <Grid Name="GrdTotalCharges" Background="#80B9ADAD" RowSpan="2" ColumnSpan="2" Visibility="Hidden" >
                 <Border  MinWidth="400" MinHeight="600" MaxWidth="800"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
                     <Grid>
@@ -536,7 +547,7 @@
                             <Label  Content="ALU : " />
                             <TextBox Text="{Binding Id,UpdateSourceTrigger=Explicit}" Name="txtAluProduct" IsReadOnly="True" Style="{StaticResource txtMain}" MinWidth="{StaticResource txtminwidth}"  />
                         </StackPanel>
-                        <Image Margin="0 20 0 0" Name="imgProductMaster" Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg" MinHeight="100" MaxHeight="200"/>
+                        <Image Margin="0 20 0 0" Name="imgProductMaster" Source="{Binding Image}" Stretch="Uniform" MinHeight="100" MaxHeight="200"/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox
@@ -606,33 +617,293 @@
                     </GroupBox.HeaderTemplate>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label  Content="Inventory : " />
-                            <Label Name="lblInventoryProduct" Content="----------" HorizontalContentAlignment="Left" />
+                            <Label  Content="Stock On Hand : " MinWidth="200" />
+                            <Label Name="lblStockOnHand" Content="----------" HorizontalContentAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label  Content="Sale : " />
+                            <Label  Content="Goods Reserved : " MinWidth="200" />
+                            <Label Name="lblReserved" Content="----------" HorizontalContentAlignment="Left" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label  Content="Temp Balance : " MinWidth="200" />
+                            <Label Name="lblTempBalance" Content="----------" HorizontalContentAlignment="Left" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label  Content="Sale : "  MinWidth="200"/>
                             <Label Name="lblSaleProduct" Content="---------- " HorizontalContentAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label  Content="Income : " />
-                            <Label Name="lblIncomeProduct" Content="---------- " HorizontalContentAlignment="Left" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label  Content="Main  : " />
+                            <Label  Content="Main  : "  MinWidth="200"/>
                             <Label Name="lblMainWarehouseProduct" Content="---------- " HorizontalContentAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label  Content="Store 1 : " />
+                            <Label  Content="Store 1 : " MinWidth="200" />
                             <Label Name="lblStore1Product" Content="---------- " HorizontalContentAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label  Content="Store 2 : " />
+                            <Label  Content="Store 2 : "  MinWidth="200"/>
                             <Label Name="lblStore2Product" Content="---------- " HorizontalContentAlignment="Left" />
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </Grid>
 
+            <Grid Name="GrdSaleOrder" Grid.Row="1" Grid.Column="0" Visibility="Visible" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="0.3*" />
+                </Grid.RowDefinitions>
+                <UniformGrid Columns="4" Rows="1" Margin="0 5 0 0" ZIndex="300">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="llblSubHeader1" Style="{StaticResource lbl0 }" Grid.Row="0" Grid.Column="0" Content="Required Info" />
+                        <Label  Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="Customer Lookup " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <StackPanel  Grid.Row="1" Grid.Column="1"  Grid.RowSpan="6" ZIndex="2214200"  >
+                            <TextBox Name="txtCustomerLookup" Style="{StaticResource txt1}" VerticalAlignment="Center" IsReadOnly="False" TextChanged="TxtCustomerLookup_OnTextChanged" KeyDown="TxtCustomerLookup_OnKeyDown" />
+                            <Border Name="lvCustomerLookupBorder" Panel.ZIndex="300" Background="White" BorderBrush="Blue" BorderThickness="1" Margin="0 3 0 0"  KeyDown="LvCustomerLookupBorder_OnKeyDown">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        <Setter Property="Height" Value="0"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=IsVisible}" Value="True">
+
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                         From="0.0" To="150.0"
+                                                                         Duration="0:0:0.3"
+                                                                          />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <ScrollViewer Height="190">
+                                    <ListView Name="lvCustomerLookup" BorderBrush="Blue" BorderThickness="3" MouseDoubleClick="LvCustomerLookup_OnMouseDoubleClick" >
+                                        <ListView.ItemTemplate >
+                                            <DataTemplate >
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock>
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0}  {1}">
+                                                                <Binding Path="FirstName" />
+                                                                <Binding Path="LastName" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Phone1}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                    </ListView>
+                                </ScrollViewer>
+
+                            </Border>
+
+                        </StackPanel>
+
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="ShipDate" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <DatePicker Name="dpiShipDateSo" SelectedDate="{Binding ShipDate}" Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center"/>
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="3" Grid.Column="0" Content="CancelDate" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <DatePicker Name="dpiCancelDateSo" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center"/>
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="4" Grid.Column="0" Content="Ship Method" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtShipMethod" Style="{StaticResource txt1}" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" />
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="5" Grid.Column="0" Content="SO#" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtSoNumber" Style="{StaticResource txt1}" Grid.Row="5" Grid.Column="1"  VerticalAlignment="Center" />
+
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="llblSubHeader2" Style="{StaticResource lbl0 }" Grid.Row="0" Grid.Column="0" Content="SO Information" />
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+                            <RadioButton Name="rdoWholesale" FontSize="18" VerticalContentAlignment="Center"
+                            Style="{StaticResource MaterialDesignRadioButton}" Margin="0 0 30 0" IsChecked="True" Checked="RdoWholesale_OnChecked">
+                                WholeSale
+                            </RadioButton>
+                            <RadioButton Name="rdoRetail" FontSize="18" VerticalContentAlignment="Center"
+                                     Style="{StaticResource MaterialDesignRadioButton}" Checked="RdoRetail_OnChecked">
+                                Retail
+                            </RadioButton>
+                        </StackPanel>
+
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="Order Date" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <DatePicker Name="dpiOrderDateSo" SelectedDate="{Binding OrderedDate}" Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center"/>
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="3" Grid.Column="0" Content="Associate" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtAssociate" Text="{Binding User.NickName}" Style="{StaticResource txt1}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="4" Grid.Column="0" Content="Account #" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Style="{StaticResource txt1}" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" />
+
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Style="{StaticResource lbl0 }" Grid.Row="0" Grid.Column="0" Content="Customer Info" />
+                        <Label  Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="Bill To Full Name" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtFullNameSo" Text="{Binding Customer.FirstName}"   Style="{StaticResource txt1}" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True"/>
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="Bill To Address1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtAddress1So" Text="{Binding Customer.Address1}" Style="{StaticResource txt1}" Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="3" Grid.Column="0" Content="Bill To Address2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtAddress2So" Text="{Binding Customer.Address2}" Style="{StaticResource txt1}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+                        <Label Style="{StaticResource lbl1 }"  Grid.Row="4" Grid.Column="0" Content="Bill To Phone1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtPhone1So" Text="{Binding Customer.Phone1}"  Style="{StaticResource txt1}" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+                        <Label Style="{StaticResource lbl1 }" Grid.Row="5" Grid.Column="0" Content="Bill To E-mail" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Name="txtEmailSo" Text="{Binding Customer.Email}"  Style="{StaticResource txt1}" Grid.Row="5" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+
+                    </Grid>
+                </UniformGrid>
+                <DataGrid  Name="dgSoItems" Margin="50 20 50 0" Grid.Row="1"  AutoGenerateColumns="False" CanUserAddRows="True" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue"  CellEditEnding="DgSoItems_OnCellEditEnding" KeyDown="DgSoItems_OnKeyDown" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="False"/>
+                        <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                        <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" />
+                        <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                <UniformGrid Columns="4" Rows="1" Grid.Row="2" Margin="0 5 0 0">
+                    <Button
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Height="75"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    ToolTip="Complate Ship"
+                    MaxWidth="250">
+                        <TextBlock FontSize="22"
+                        Text="Ship to" />
+                    </Button>
+                    <StackPanel></StackPanel>
+                    <GroupBox
+                    Header="Default Look"
+                    Margin="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="0.3*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Style="{StaticResource lbl1 }" Grid.Row="0" Grid.Column="0" Content="Freight" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <TextBox  Name="txtFreightSo" Text="{Binding Freight,UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" Style="{StaticResource txt1}" Grid.Row="0" Grid.Column="1" Margin="0,6,0,7"  PreviewTextInput="TxtFreightSo_OnPreviewTextInput" GotKeyboardFocus="TxtFreightSo_OnGotKeyboardFocus" GotMouseCapture="TxtFreightSo_OnGotMouseCapture" />
+                            <Label Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="Handling" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <TextBox Name="txtHandlingSo" Text="{Binding Handling, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" Style="{StaticResource txt1}" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" PreviewTextInput="TxtHandlingSo_OnPreviewTextInput"  GotMouseCapture="TxtHandlingSo_OnGotMouseCapture" GotKeyboardFocus="TxtHandlingSo_OnGotKeyboardFocus" />
+                            <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="Tax Area" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <ComboBox Name="cmbTaxAreaSo" Grid.Row="2" Grid.Column="1"
+                              materialDesign:TextFieldAssist.HasClearButton="True"
+                              IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:TextFieldAssist.SuffixText="sw"
+                              DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
+                            <Label Style="{StaticResource lbl1 }" Grid.Row="3" Grid.Column="0" Content="Total Discount" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <TextBox Name="txtTotalDiscountSo" Text="{Binding TotalDiscount,StringFormat=N2}" Style="{StaticResource txt1}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+
+                        </Grid>
+                    </GroupBox>
+                    <StackPanel>
+                        <GroupBox
+                        Header=""
+                        Margin="15" >
+                            <StackPanel>
+                                <StackPanel.Resources>
+                                    <Thickness x:Key="Marginso" Top="0" Left="0" Right="0" Bottom ="20" />
+                                </StackPanel.Resources>
+                                <UniformGrid Rows="1" Columns="2"  Margin="{StaticResource Marginso}">
+                                    <TextBlock Text="Subtotal:" TextAlignment="Center"  HorizontalAlignment="Left" FontSize="20"/>
+                                    <TextBlock Text="{Binding SubtotalwithServices,StringFormat=N2}" Name="txtSubtotalSo"  HorizontalAlignment="Left" FontSize="20"/>
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="2"  Margin="{StaticResource Marginso}">
+                                    <TextBlock Text="Tax:" TextAlignment="Left"  HorizontalAlignment="Left" FontSize="20"/>
+                                    <TextBlock Text="{Binding Tax,StringFormat=N2}" Name="txtSoTax" HorizontalAlignment="Left" FontSize="20"/>
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="2"  Margin="{StaticResource Marginso}">
+                                    <TextBlock Text="Total:" TextAlignment="Left"  HorizontalAlignment="Left" FontSize="35"/>
+                                    <TextBlock Text="{Binding SoTotalPrice,StringFormat=N2}" Name="txtSoTotal" TextAlignment="Left" HorizontalAlignment="Left" FontSize="35"/>
+                                </UniformGrid>
+
+
+
+
+                            </StackPanel>
+
+
+                        </GroupBox>
+                    </StackPanel>
+                </UniformGrid>
+            </Grid>
+
+            <Grid  Name="GrdOrder" Grid.Row="1" Grid.Column="0" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <materialDesign:Card
+                    materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                    materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="35" FontWeight="Bold" Foreground="Navy"
+                    Padding="32">
+                    Orders
+                </materialDesign:Card>
+
+                <ListView SelectionMode="Single" Name="lvOrders" Grid.Row="1" Margin="40 0 40 40" FontSize="20" MouseDoubleClick="LvOrders_OnMouseDoubleClick">
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Order" Width="200" DisplayMemberBinding="{Binding Path=SalesOrderNumber}" />
+                            <GridViewColumn Header="Date" Width="300" DisplayMemberBinding="{Binding Path=OrderedDate}" />
+                            <GridViewColumn Header="Customer" Width="350" DisplayMemberBinding="{Binding Path=Customer.FullName}" />
+                            <GridViewColumn Header="Associate" Width="150" DisplayMemberBinding="{Binding Path=User.NickName}" />
+                            <GridViewColumn Header="Status" Width="200" DisplayMemberBinding="{Binding Path=Color}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+            </Grid>
         </Grid>
 
 

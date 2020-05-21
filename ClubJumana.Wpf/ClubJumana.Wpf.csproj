@@ -13,6 +13,8 @@
     <None Remove="Content\Images\icons8_checked_checkbox_60px.png" />
     <None Remove="Content\Images\icons8_create_document_60px_1.png" />
     <None Remove="Content\Images\icons8_downloads_100px.png" />
+    <None Remove="Content\Images\icons8_email_send_60px.png" />
+    <None Remove="Content\Images\icons8_print_100px.png" />
     <None Remove="Content\Images\icons8_product_100px.png" />
     <None Remove="Content\Images\icons8_purchase_order_96px.png" />
     <None Remove="Content\Images\icons8_remove_60px_2.png" />
@@ -59,6 +61,10 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Content\Images\icons8_downloads_100px.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Content\Images\icons8_email_send_60px.png" />
+    <Resource Include="Content\Images\icons8_print_100px.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Content\Images\icons8_product_100px.png">

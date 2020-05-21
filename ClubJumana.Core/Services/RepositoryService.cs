@@ -26,9 +26,25 @@ namespace ClubJumana.Core.Services
             return _context.PurchaseOrders.AsNoTracking();
         }
 
+        public IQueryable<SaleOrder> AllOrders()
+        {
+            return _context.SaleOrders.Include(p => p.SoItems).ThenInclude(p=>p.ProductMaster).Include(p => p.TaxArea)
+                .Include(p=>p.Customer).AsNoTracking();
+        }
+
         public IQueryable<Vendor> AllVendor()
         {
             return _context.Vendors;
+        }
+
+        public IQueryable<Province> AllProvinces()
+        {
+            return _context.Provinces;
+        }
+
+        public IQueryable<Customer> AllCustomers()
+        {
+            return _context.Customers;
         }
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
