@@ -296,7 +296,7 @@ namespace ClubJumana.Core.Services
                             productInventoryWarehouse = new ProductInventoryWarehouse();
                             productInventoryWarehouse.Id = ID;
                             productInventoryWarehouse.ProductMaster_fk = VARIABLE.ProductMaster_fk;
-                            productInventoryWarehouse.Warehouse_fk = asnViewModel.ToWarehouse_fk;
+                            productInventoryWarehouse.Warehouse_fk = asnViewModel.ToWarehouse_fk.Value;
                             productInventoryWarehouse.OnTheWayInventory = VARIABLE.Quantity;
                             productInventoryWarehouse.Income = 0;
                             productInventoryWarehouse.OutCome = 0;
@@ -309,7 +309,11 @@ namespace ClubJumana.Core.Services
                                     p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                     p.Warehouse_fk == asnViewModel.FromWarehouse_fk);
                             if (productInventoryWarehouseFrom != null)
+                            {
                                 productInventoryWarehouseFrom.Inventory -= VARIABLE.Quantity;
+                                productInventoryWarehouseFrom.OutCome += VARIABLE.Quantity;
+                            }
+                                
                         }
                     }
                 }
@@ -445,8 +449,12 @@ namespace ClubJumana.Core.Services
                             productInventory.Income += VARIABLE.Quantity;
                             productInventory.Inventory += VARIABLE.Quantity;
                             productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
-                            VARIABLE.ProductMaster.Income += VARIABLE.Quantity;
-                            VARIABLE.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                            if (PO.FromWarehouse_fk == 1)
+                            {
+                                VARIABLE.ProductMaster.Income += VARIABLE.Quantity;
+                                VARIABLE.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                            }
+
                         }
                     }
                 }

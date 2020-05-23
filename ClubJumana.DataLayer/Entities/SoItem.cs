@@ -17,6 +17,8 @@ namespace ClubJumana.DataLayer.Entities
         public decimal Cost { get; set; }
         public decimal Discount { get; set; }
         public int Quantity { get; set; }
+        public int? QuantityRefunded { get; set; } = 0;
+        public bool? IsAbaleToRefund { get; set; } = true;
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
 

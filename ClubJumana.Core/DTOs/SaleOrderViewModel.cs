@@ -309,6 +309,8 @@ namespace ClubJumana.Core.DTOs
                 OnPropertyChanged();
             }
         }
+        public int? QuantityRefunded { get; set; }
+        public bool? IsAbaleToRefund { get; set; }
 
         public bool IsDeleted { get; set; }
 
@@ -324,5 +326,37 @@ namespace ClubJumana.Core.DTOs
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public class RefundItemsViewModel
+    {
+        public int Id { get; set; }
+        public int Refund_fk { get; set; }
+        public string StyleNumber { get; set; }
+        public string UPC { get; set; }
+        public int ProductMaster_fk { get; set; }
+        public int? AbleReturn { get; set; }
+        private int _quantity;
+
+        public int Quantity
+        {
+            get { return _quantity; }
+            set
+            {
+                _quantity = value;
+                _totalPrice = Math.Round(value * Price, 2, MidpointRounding.ToEven) ;
+            }
+        }
+
+        public decimal Cost { get; set; }
+        public decimal Price { get; set; }
+
+        private decimal _totalPrice=0;
+
+        public decimal TotalPrice
+        {
+            get { return _totalPrice; }
+        }
+
     }
 }

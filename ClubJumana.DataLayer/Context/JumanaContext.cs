@@ -35,6 +35,8 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
         public DbSet<SaleOrder> SaleOrders { get; set; }
         public DbSet<SoItem> SoItems { get; set; }
+        public DbSet<Refund> Refunds { get; set; }
+        public DbSet<RefundItem> RefundItems { get; set; }
         public DbSet<Province> Provinces { get; set; }
 
 
@@ -226,6 +228,8 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.RowVersion).IsRowVersion();
+                entity.Property(e => e.QuantityRefunded).HasDefaultValue(0);
+                entity.Property(e => e.IsAbaleToRefund).HasDefaultValue(true);
 
                 entity.HasOne<SaleOrder>(s => s.SaleOrder)
                     .WithMany(g => g.SoItems)
@@ -247,6 +251,38 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<User>(s=>s.UserRegisterWithInvitation)
                     .WithOne(g=>g.RegisterWithInvitation)
                     .HasForeignKey<Invitation>(s => s.UserRegisterWithInvitation_fk);
+            });
+
+            //----------------------------------- Refund ---------------------------------------
+
+            modelBuilder.Entity<Refund>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(p => p.RowVersion).IsRowVersion();
+
+                entity.HasOne<SaleOrder>(s => s.SaleOrder)
+                    .WithMany(g => g.Refunds)
+                    .HasForeignKey(s => s.SaleOrder_fk);
+
+                
+            });
+
+            //----------------------------------- RefundItem ---------------------------------------
+            modelBuilder.Entity<RefundItem>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(p => p.RowVersion).IsRowVersion();
+
+                entity.HasOne<Refund>(s => s.Refund)
+                    .WithMany(g => g.RefundItems)
+                    .HasForeignKey(s => s.Refund_fk);
+
+                entity.HasOne<ProductMaster>(s => s.ProductMaster)
+                    .WithMany(g => g.RefundItems)
+                    .HasForeignKey(s => s.ProductMaster_fk);
+
             });
 
             //----------------------------------- new ---------------------------------------

@@ -49,6 +49,8 @@ namespace ClubJumana.Wpf
         private ObservableCollection<SoItemVeiwModel> listSoItems;
         private SaleOrderViewModel saleOrder;
         private List<Customer> CustomersList;
+        private ObservableCollection<RefundItemsViewModel> refundItemsList;
+        private Refund newRefund;
 
         private PerchaseOrderService _purchaseOrderService;
         private RepositoryService _repositoryService;
@@ -552,6 +554,29 @@ namespace ClubJumana.Wpf
                 _saleOrderService.SendEmailOrPrint(saleOrder, true);
             MessageBox.Show("Printing");
 
+        }
+        private void BtnRefund_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var SelectedForRefund = dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList();
+            newRefund=new Refund();
+            refundItemsList=new ObservableCollection<RefundItemsViewModel>();
+
+            foreach (var model in SelectedForRefund)
+            {
+                refundItemsList.Add(new RefundItemsViewModel()
+                {
+                    StyleNumber = model.ProductMaster.StyleNumber,
+                    UPC = model.ProductMaster.UPC,
+                    ProductMaster_fk = model.ProductMaster_fk,
+                    AbleReturn = model.Quantity- model.QuantityRefunded,
+                    Cost = model.Cost,
+                    Price = model.Price
+                } );
+            }
+
+            dgRefundItem.ItemsSource = refundItemsList;
+            
+            GrdTotalCharges.Visibility = Visibility.Visible;
         }
 
         void SaveAndUpdate(bool done = false)
@@ -1313,5 +1338,40 @@ namespace ClubJumana.Wpf
         }
 
 
+        private void BtnCancelRefund_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdTotalCharges.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnSubmitRefund_OnClick(object sender, RoutedEventArgs e)
+        {
+
+          
+            newRefund.SaleOrder_fk = saleOrder.Id;
+            newRefund.RefundTotalPrice = 0;
+            newRefund.Tax = 0;
+            newRefund.SubtotalPrice = 0;
+            //Edit Code Later
+            newRefund.WarehouseId = 2;
+            newRefund.RefundItems = _saleOrderService.CovertToRefundItem(refundItemsList);
+            _saleOrderService.AddRefund(newRefund);
+            MessageBox.Show("salam");
+        }
+
+        private void DgRefundItem_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
+        {
+            decimal sum = 0;
+            foreach (var model in refundItemsList)
+            {
+                sum += model.TotalPrice;
+            }
+
+            newRefund.SubtotalPrice = sum;
+            lblSubtotalRefund.Text ="Subtotal : " +sum.ToString();
+            lblTaxRefund.Text = "Tax : " + newRefund.Tax.ToString();
+            lblTotalPriceRefund.Text = "Total Price : " + newRefund.RefundTotalPrice.ToString();
+
+
+        }
     }
 }

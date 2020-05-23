@@ -4,14 +4,16 @@ using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200522084330_Null")]
+    partial class Null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,9 +195,6 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int>("ProductMaster_fk")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RefundQuantity")
-                        .HasColumnType("int");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -255,9 +254,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Outcome")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RefundQuantity")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("RetailPrice")

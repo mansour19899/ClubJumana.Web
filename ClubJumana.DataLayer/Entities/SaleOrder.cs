@@ -51,6 +51,7 @@ namespace ClubJumana.DataLayer.Entities
         public byte[] RowVersion { get; set; }
 
         public ICollection<SoItem> SoItems { get; set; }
+        public ICollection<Refund> Refunds { get; set; }
         public Users.User User { get; set; }
 
         private Customer _customer;

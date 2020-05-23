@@ -17,6 +17,7 @@
     <None Remove="Content\Images\icons8_print_100px.png" />
     <None Remove="Content\Images\icons8_product_100px.png" />
     <None Remove="Content\Images\icons8_purchase_order_96px.png" />
+    <None Remove="Content\Images\icons8_refund_52px.png" />
     <None Remove="Content\Images\icons8_remove_60px_2.png" />
     <None Remove="Content\Images\icons8_save_60px.png" />
     <None Remove="Content\Images\icons8_ticket_purchase_52px_1.png" />
@@ -73,6 +74,7 @@
     <Resource Include="Content\Images\icons8_purchase_order_96px.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Content\Images\icons8_refund_52px.png" />
     <Resource Include="Content\Images\icons8_remove_60px_2.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

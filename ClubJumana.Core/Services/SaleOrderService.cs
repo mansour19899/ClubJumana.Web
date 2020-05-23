@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using ClubJumana.Core.DTOs;
@@ -53,7 +54,7 @@ namespace ClubJumana.Core.Services
                 _context.SaleOrders.Add(So);
 
                 _context.SaveChanges();
-               
+
             }
             else
             {
@@ -85,11 +86,11 @@ namespace ClubJumana.Core.Services
 
             }
 
-            SoItem soItem=new SoItem();
+            SoItem soItem = new SoItem();
 
             foreach (var model in saleOrder.SoItems)
             {
-                if (model.Id == 0&&!model.IsDeleted)
+                if (model.Id == 0 && !model.IsDeleted)
                 {
                     _context.SoItems.Add(new SoItem()
                     {
@@ -102,12 +103,12 @@ namespace ClubJumana.Core.Services
                         TotalPrice = model.TotalPrice
                     });
                 }
-                else if(model.Id!=0&&model.IsDeleted)
+                else if (model.Id != 0 && model.IsDeleted)
                 {
                     soItem = _context.SoItems.SingleOrDefault(p => p.Id == model.Id);
                     _context.Remove(soItem);
                 }
-                else if(model.Id!=0)
+                else if (model.Id != 0)
                 {
                     soItem = _context.SoItems.SingleOrDefault(p => p.Id == model.Id);
                     soItem.Cost = model.Cost;
@@ -118,7 +119,7 @@ namespace ClubJumana.Core.Services
                 }
                 else
                 {
-                    
+
                 }
             }
 
@@ -147,6 +148,8 @@ namespace ClubJumana.Core.Services
                     Discount = VARIABLE.Discount,
                     Quantity = VARIABLE.Quantity,
                     Price = VARIABLE.Price,
+                    QuantityRefunded = VARIABLE.QuantityRefunded,
+                    IsAbaleToRefund = VARIABLE.IsAbaleToRefund,
                     TotalPrice = VARIABLE.TotalPrice
                 });
             }
@@ -205,9 +208,9 @@ namespace ClubJumana.Core.Services
         public bool CreateInvoice(SaleOrderViewModel saleOrder)
         {
             saleOrder.SalesOrderNumber = _context.SaleOrders.Max(p => p.InvoiceNumber) + 1;
-            
+
             //Edit Code Later
-            var soItem= _context.SoItems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e=>e.ProductInventoryWarehouses).ToList();
+            var soItem = _context.SoItems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
             ProductInventoryWarehouse inventoryWarehouse;
             foreach (SoItem item in soItem)
             {
@@ -223,6 +226,49 @@ namespace ClubJumana.Core.Services
             SaveAndUpdateSaleOrder(saleOrder);
             return true;
         }
+
+        public bool AddRefund(Refund refund)
+        {
+            refund.RefundDate = DateTime.Now;
+            refund.RefundNumber = 1368;
+            _context.Refunds.Add(refund);
+
+            var inventorys = _context.ProductInventoryWarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
+            var SoItems = _context.SoItems.Where(p => p.So_fk == refund.SaleOrder_fk);
+            ProductInventoryWarehouse x;
+            foreach (var model in refund.RefundItems)
+            {
+                model.ProductMaster.StockOnHand += model.Quantity;
+                model.ProductMaster.RefundQuantity += model.Quantity;
+                
+                x = inventorys.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk);
+                SoItems.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk).QuantityRefunded +=
+                    model.Quantity;
+                x.Inventory += model.Quantity;
+                x.RefundQuantity += model.Quantity;
+            }
+            _context.SaveChanges();
+            return true;
+        }
+
+        public List<RefundItem> CovertToRefundItem(ObservableCollection<RefundItemsViewModel> refundItemsViewModel)
+        {
+            List<RefundItem> refundItems = new List<RefundItem>();
+
+            foreach (var model in refundItemsViewModel)
+            {
+                refundItems.Add(new RefundItem()
+                {
+                    ProductMaster_fk = model.ProductMaster_fk,
+                    Quantity = model.Quantity,
+                    Price = model.Price,
+                    TotalPrice = model.TotalPrice
+                });
+            }
+
+            return refundItems;
+        }
+
 
         private void ResrevdItemsOfSaleOrder(int Id)
         {

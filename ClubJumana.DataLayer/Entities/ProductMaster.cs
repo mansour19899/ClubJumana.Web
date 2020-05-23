@@ -30,7 +30,7 @@ namespace ClubJumana.DataLayer.Entities
         public string Margin { get; set; }
         public int StockOnHand { get; set; }
         public int GoodsReserved { get; set; }
-
+        public int? RefundQuantity { get; set; } = 0;
         public int TempBalance => StockOnHand - GoodsReserved;
         public DateTime LastUpdateInventory { get; set; }
         public int Income { get; set; }
@@ -48,6 +48,7 @@ namespace ClubJumana.DataLayer.Entities
         public byte[] RowVersion { get; set; }
         public ICollection<Item> Items { get; set; }
         public ICollection<SoItem> SoItems { get; set; }
+        public ICollection<RefundItem> RefundItems { get; set; }
         public ICollection<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
 
     }
