@@ -113,6 +113,10 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Visible;
                         btnRemove.Visibility = Visibility.Visible;
                         btnDone.Visibility = Visibility.Visible;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
+                        
                     }
                     else
                     {
@@ -121,6 +125,9 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Collapsed;
                         btnRemove.Visibility = Visibility.Collapsed;
                         btnDone.Visibility = Visibility.Collapsed;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
                     }
                     break;
                 case Mode.Asn:
@@ -131,6 +138,9 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Visible;
                         btnRemove.Visibility = Visibility.Visible;
                         btnDone.Visibility = Visibility.Visible;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -139,6 +149,9 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Collapsed;
                         btnRemove.Visibility = Visibility.Collapsed;
                         btnDone.Visibility = Visibility.Collapsed;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
                     }
 
                     break;
@@ -150,6 +163,9 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Visible;
                         btnRemove.Visibility = Visibility.Collapsed;
                         btnDone.Visibility = Visibility.Visible;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -158,6 +174,9 @@ namespace ClubJumana.Wpf
                         btnSave.Visibility = Visibility.Collapsed;
                         btnRemove.Visibility = Visibility.Collapsed;
                         btnDone.Visibility = Visibility.Collapsed;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
                     }
 
                     break;
@@ -167,6 +186,9 @@ namespace ClubJumana.Wpf
                     btnSave.Visibility = Visibility.Visible;
                     btnRemove.Visibility = Visibility.Visible;
                     btnDone.Visibility = Visibility.Visible;
+                    btnPrint.Visibility = Visibility.Collapsed;
+                    btnSendEmail.Visibility = Visibility.Collapsed;
+                    btnRefund.Visibility = Visibility.Collapsed;
                     break;
                 case Mode.productInformation:
                     btnNewPurchaseOrder.Visibility = Visibility.Collapsed;
@@ -174,6 +196,9 @@ namespace ClubJumana.Wpf
                     btnSave.Visibility = Visibility.Visible;
                     btnRemove.Visibility = Visibility.Collapsed;
                     btnDone.Visibility = Visibility.Collapsed;
+                    btnPrint.Visibility = Visibility.Collapsed;
+                    btnSendEmail.Visibility = Visibility.Collapsed;
+                    btnRefund.Visibility = Visibility.Collapsed;
                     break;
                 case Mode.Order:
                     btnNewPurchaseOrder.Visibility = Visibility.Collapsed;
@@ -181,6 +206,9 @@ namespace ClubJumana.Wpf
                     btnSave.Visibility = Visibility.Visible;
                     btnRemove.Visibility = Visibility.Collapsed;
                     btnDone.Visibility = Visibility.Visible;
+                    btnPrint.Visibility = Visibility.Visible;
+                    btnSendEmail.Visibility = Visibility.Visible;
+                    btnRefund.Visibility = Visibility.Visible;
                     break;
                 case Mode.Nothong:
 
@@ -188,6 +216,32 @@ namespace ClubJumana.Wpf
             }
         }
 
+       private void ChangeLabelNameOfPurchaseOrder()
+        {
+            switch (Mode)
+            {
+                case Mode.PO:
+                    lblPurchaseNumber.Content = "PO # ";
+                    lblOrderDate.Content = "Order Date";
+                    dgItems.Columns[6].Header = "Quantity (PO)";
+                    dgItems.Columns[5].Header = "Previous Quantity";
+                    break;
+                case Mode.Asn:
+                    lblPurchaseNumber.Content = "GIT # ";
+                    lblOrderDate.Content = "GIT Date";
+                    dgItems.Columns[6].Header = "Quantity (GIT)";
+                    dgItems.Columns[5].Header = "Quantity (PO)";
+                    break;
+                case Mode.Grn:
+                    lblPurchaseNumber.Content = "GRN # ";
+                    lblOrderDate.Content = "GRN Date";
+                    dgItems.Columns[6].Header = "Quantity (GRN)";
+                    dgItems.Columns[5].Header = "Quantity (GIT)";
+                    break;
+            }
+
+
+        }
         private void LvPurchaseOrder_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DependencyObject dep = (DependencyObject)e.OriginalSource;
@@ -228,7 +282,7 @@ namespace ClubJumana.Wpf
                     break;
             }
 
-
+            ChangeLabelNameOfPurchaseOrder();
             HidePanel();
             ShowSideBar(Mode, 2);
             GrdNewPurchersOrder.Visibility = Visibility.Visible;
@@ -291,6 +345,7 @@ namespace ClubJumana.Wpf
                 {
 
                 }
+                ChangeLabelNameOfPurchaseOrder();
             }
             else
             {
@@ -339,6 +394,7 @@ namespace ClubJumana.Wpf
                             break;
                         }
                 }
+                ChangeLabelNameOfPurchaseOrder();
             }
             else
             {
@@ -380,7 +436,7 @@ namespace ClubJumana.Wpf
                 {
 
                 }
-
+                ChangeLabelNameOfPurchaseOrder();
             }
             else
             {
@@ -740,33 +796,25 @@ namespace ClubJumana.Wpf
             DataGridRow row1 = e.Row;
             ItemsOfPurchaseOrderViewModel t = e.Row.DataContext as ItemsOfPurchaseOrderViewModel;
 
-            int row_index = ((DataGrid)sender).ItemContainerGenerator.IndexFromContainer(row1);
-            int col_index = col1.DisplayIndex;
 
             var SelectItem = itemsOfPurchaseOrderViewModel.FirstOrDefault(p => p.Id == t.Id);
             string header = col1.Header as string;
 
-            if (header.CompareTo("Price") == 0)
-            {
-                var Price = Convert.ToDecimal(((TextBox)e.EditingElement).Text);
-                SelectItem.TotalItemPrice = Price * SelectItem.Quantity;
-            }
-            else
-            {
-                var QyT = Convert.ToInt32(((TextBox)e.EditingElement).Text);
-                SelectItem.TotalItemPrice = QyT * SelectItem.Price;
-            }
+            //if (header.CompareTo("Price") == 0)
+            //{
+            //    var Price = Convert.ToDecimal(((TextBox)e.EditingElement).Text);
+            //    SelectItem.TotalItemPrice = Price * SelectItem.Quantity;
+            //}
+            //else
+            //{
+            //    var QyT = Convert.ToInt32(((TextBox)e.EditingElement).Text);
+            //    SelectItem.TotalItemPrice = QyT * SelectItem.Price;
+            //}
 
-
-            SumPrice = SelectItem.TotalItemPrice;
 
             foreach (var VARIABLE in itemsOfPurchaseOrderViewModel)
             {
-                if (VARIABLE.Id != SelectItem.Id)
-                {
-                    SumPrice += VARIABLE.TotalItemPrice;
-                }
-
+                SumPrice += VARIABLE.TotalItemPrice;
             }
 
             switch (Mode)

@@ -27,6 +27,7 @@ namespace ClubJumana.Core.DTOs
         public int? ApproveUser_fk { get; set; }
         public bool CreatedInvoice { get; set; }
         public ICollection<Item> Items { get; set; }
+        public string ModeName { get; set; }
         public Vendor Vendor { get; set; }
         public User UserCreate { get; set; }
         public Warehouse ToWarehouse { get; set; }
@@ -254,7 +255,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _quantity = value;
-                _TotalItemPrice = _quantity * _price;
+                _TotalItemPrice =Math.Round(_quantity * _price,2,MidpointRounding.ToEven) ;
                 Diffrent = value - PreviousQuantity;
                 if (Diffrent != 0)
                 {

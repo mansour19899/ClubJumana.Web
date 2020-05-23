@@ -42,7 +42,9 @@ namespace ClubJumana.Core.Convertors
                 FromWarehouse = purchaseOrder.FromWarehouse,
                 CreatedInvoice = purchaseOrder.CreatedPO,
                 WarehousesList = warehouses,
-                VendorsList = vendors
+                VendorsList = vendors,
+                ModeName = "PO "
+
             };
         }
         public AsnViewModel ConvertToAsn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
@@ -69,7 +71,8 @@ namespace ClubJumana.Core.Convertors
                 FromWarehouse = purchaseOrder.FromWarehouse,
                 CreatedInvoice = purchaseOrder.CreatedAsn,
                 WarehousesList = warehouses,
-                VendorsList = vendors
+                VendorsList = vendors,
+                ModeName = "GIT "
             };
         }
         public GrnViewModel ConvertToGrn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
@@ -107,7 +110,8 @@ namespace ClubJumana.Core.Convertors
                 Forwarding = purchaseOrder.Forwarding,
                 LandTransport = purchaseOrder.LandTransport,
                 Others = purchaseOrder.Others,
-                TotalCharges = purchaseOrder.TotalCharges
+                TotalCharges = purchaseOrder.TotalCharges,
+                ModeName = "GRN "
             };
         }
 

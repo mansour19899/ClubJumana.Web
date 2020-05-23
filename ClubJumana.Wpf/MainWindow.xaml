@@ -185,7 +185,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label Name="lblSubHeader1" Style="{StaticResource lbl0 }" Grid.Row="0" Grid.Column="0" Content="Type" />
-                        <Label  Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="PO # " VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <Label Name="lblPurchaseNumber"  Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="PO # " VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <TextBox Text="{Binding Number}" Style="{StaticResource txt1}" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
                         <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="Ship From" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <ComboBox Name="cmbShipFrom" Grid.Row="2" Grid.Column="1"
@@ -248,14 +248,14 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label Style="{StaticResource lbl0 }" Grid.Row="0" Grid.Column="0" Content="Dates" />
-                        <Label Name="lblOrderDate" Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" Content="Order Date" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <Label Name="lblOrderDate" Content="Order Date" Style="{StaticResource lbl1 }" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <DatePicker Name="dpiOrderDate" SelectedDate="{Binding DateCompleted}" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center"/>
                         <Label Style="{StaticResource lbl1 }" Grid.Row="2" Grid.Column="0" Content="Ship Date" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <DatePicker Name="dpiShipDate" SelectedDate="{Binding ShipDate}" Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
                         <Label Style="{StaticResource lbl1 }" Grid.Row="3" Grid.Column="0" Content="Cancel Date" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                         <DatePicker Name="dpiCancelDate" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
                         <Label Style="{StaticResource lbl1 }" Grid.Row="4" Grid.Column="0" Content="Last Edit Date" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        <TextBox Name="txtLastEdit" Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
+                        <TextBox Name="txtLastEdit"  Grid.Row="4" Grid.Column="1"  VerticalAlignment="Center" IsReadOnly="True" />
 
                     </Grid>
                 </UniformGrid>
@@ -265,9 +265,9 @@
                         <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2}" Width="*"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                         <DataGridTextColumn Header="Previous Quantity" Binding="{Binding PreviousQuantity}" Width="*" Foreground="#FF9C8F8F" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Quantity ( PO )" Binding="{Binding Quantity}" Width="*"/>
+                        <DataGridTextColumn Header="Quantity ( PO )" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                         <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalItemPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Cost" Binding="{Binding Cost,StringFormat=N2}" Width="*" IsReadOnly="True"/>
                     </DataGrid.Columns>
