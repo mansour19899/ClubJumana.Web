@@ -123,51 +123,70 @@ namespace ClubJumana.Core.Convertors
                 case Mode.PO:
                     foreach (var item in purchaseOrder.Items)
                     {
-                        itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                        if (item.PoQuantity == 0 && purchaseOrder.CreatedPO)
                         {
-                            Id = item.Id,
-                            ProductMaster_fk = item.ProductMaster_fk,
-                            ProductMaster = item.ProductMaster,
-                            Price = item.PoPrice,
-                            Quantity = item.PoQuantity,
-                            Cost = item.Cost,
-                            TotalItemPrice = item.PoItemsPrice,
-                            IsChanged = false,
-                        });
+
+                        }
+                        else
+                        {
+                            itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                            {
+                                Id = item.Id,
+                                ProductMaster_fk = item.ProductMaster_fk,
+                                ProductMaster = item.ProductMaster,
+                                Price = item.PoPrice,
+                                Quantity = item.PoQuantity,
+                                Cost = item.Cost,
+                                TotalItemPrice = item.PoItemsPrice,
+                                IsChanged = false,
+                                IsDeleted = item.IsDeleted
+                            });
+                        }
+
                     }
                     break;
                 case Mode.Asn:
                     foreach (var item in purchaseOrder.Items)
                     {
-                        itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                        if (item.IsDeleted == false)
                         {
-                            Id = item.Id,
-                            ProductMaster_fk = item.ProductMaster_fk,
-                            ProductMaster = item.ProductMaster,
-                            PreviousQuantity = item.PoQuantity,
-                            Price = item.AsnPrice,
-                            Quantity = item.AsnQuantity,
-                            Cost = item.Cost,
-                            TotalItemPrice = item.AsnItemsPrice,
-                            IsChanged = false,
-                        });
+                            itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                            {
+                                Id = item.Id,
+                                ProductMaster_fk = item.ProductMaster_fk,
+                                ProductMaster = item.ProductMaster,
+                                PreviousQuantity = item.PoQuantity,
+                                Price = item.AsnPrice,
+                                Quantity = item.AsnQuantity,
+                                Cost = item.Cost,
+                                TotalItemPrice = item.AsnItemsPrice,
+                                IsChanged = false,
+                                IsDeleted = item.IsDeleted
+                            });
+                        }
+                       
                     }
                     break;
                 case Mode.Grn:
                     foreach (var item in purchaseOrder.Items)
                     {
-                        itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                        if (item.IsDeleted == false)
                         {
-                            Id = item.Id,
-                            ProductMaster_fk = item.ProductMaster_fk,
-                            ProductMaster = item.ProductMaster,
-                            PreviousQuantity = item.AsnQuantity,
-                            Price = item.AsnPrice,
-                            Quantity = item.GrnQuantity,
-                            Cost = item.Cost,
-                            TotalItemPrice = item.AsnItemsPrice,
-                            IsChanged = false,
-                        });
+                            itemsOfPurchaseOrderViewModel.Add(new ItemsOfPurchaseOrderViewModel()
+                            {
+                                Id = item.Id,
+                                ProductMaster_fk = item.ProductMaster_fk,
+                                ProductMaster = item.ProductMaster,
+                                PreviousQuantity = item.AsnQuantity,
+                                Price = item.AsnPrice,
+                                Quantity = item.GrnQuantity,
+                                Cost = item.Cost,
+                                TotalItemPrice = item.AsnItemsPrice,
+                                IsChanged = false,
+                                IsDeleted = item.IsDeleted
+                            });
+                        }
+                       
                     }
                     break;
             }

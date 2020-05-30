@@ -100,12 +100,20 @@ namespace ClubJumana.Core.Services
                 }
                 _context.SaveChanges();
 
-                int IdOfItems = _context.Items.Max(p => p.Id) + 1;
+                // Edit Code Later
+                int IdOfItems = 0;
+                if (_context.Items.Any())
+                    IdOfItems = _context.Items.Max(p => p.Id);
+                else
+                    IdOfItems = 1;
+
                 Item itemm = new Item();
+                Item ItemDeleted;
                 foreach (var item in items)
                 {
-                    if (item.Id == 0)
+                    if (item.Id == 0 && !item.IsDeleted)
                     {
+                        IdOfItems++;
                         _context.Items.Add(new Item()
                         {
                             Id = IdOfItems,
@@ -122,10 +130,10 @@ namespace ClubJumana.Core.Services
                             Note = item.Note,
                             Checked = item.Checked
                         });
-                        IdOfItems++;
+
                     }
 
-                    if (item.IsChanged && item.Id != 0)
+                    else if (item.IsChanged && item.Id != 0)
                     {
                         itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
@@ -140,6 +148,17 @@ namespace ClubJumana.Core.Services
                         itemm.Note = item.Note;
                         itemm.Checked = item.Checked;
 
+
+                    }
+                    else if (item.Id != 0 && item.IsDeleted)
+                    {
+                        ItemDeleted = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        if (ItemDeleted != null)
+                            _context.Items.Remove(ItemDeleted);
+                    }
+
+                    else
+                    {
 
                     }
 
@@ -187,14 +206,14 @@ namespace ClubJumana.Core.Services
                         ApproveAsnUser_fk = asnViewModel.ApproveUser_fk,
                         Freight = 0,
                         DiscountPercent = 0,
-                        Percent ="",
-                        DiscountDollers =0,
+                        Percent = "",
+                        DiscountDollers = 0,
                         Insurance = 0,
                         CustomsDuty = 0,
                         Handling = 0,
                         Forwarding = 0,
-                        LandTransport =0,
-                        Others =0,
+                        LandTransport = 0,
+                        Others = 0,
                         TotalCharges = 0
 
                     };
@@ -213,7 +232,7 @@ namespace ClubJumana.Core.Services
                     PO.AsnTotal = asnViewModel.TotalPrice;
                     PO.AsnSubtotal = asnViewModel.SubtotalPrice;
                     PO.GrnTotal = asnViewModel.TotalPrice;
-                    PO.GrnSubtotal= asnViewModel.SubtotalPrice;
+                    PO.GrnSubtotal = asnViewModel.SubtotalPrice;
                     PO.CreatedAsn = done;
                     PO.ItemsPoCount = asnViewModel.ItemsCount;
                     PO.FromWarehouse_fk = asnViewModel.FromWarehouse_fk;
@@ -226,12 +245,17 @@ namespace ClubJumana.Core.Services
                 }
                 _context.SaveChanges();
 
-                int IdOfItems = _context.Items.Max(p => p.Id) + 1;
+                int IdOfItems = 0;
+                if (_context.Items.Any())
+                    IdOfItems = _context.Items.Max(p => p.Id);
+                else
+                    IdOfItems = 1;
                 Item itemm = new Item();
 
                 foreach (var item in items)
                 {
-                    if (item.Id == 0)
+                    IdOfItems++;
+                    if (item.Id == 0 && !item.IsDeleted)
                     {
                         _context.Items.Add(new Item()
                         {
@@ -246,7 +270,7 @@ namespace ClubJumana.Core.Services
                             Note = item.Note,
                             Checked = item.Checked
                         });
-                        IdOfItems++;
+
                     }
 
                     else if (item.IsChanged && item.Id != 0)
@@ -260,8 +284,15 @@ namespace ClubJumana.Core.Services
                         itemm.Alert = item.Alert;
                         itemm.Note = item.Note;
                         itemm.Checked = item.Checked;
+                        itemm.IsDeleted = item.IsDeleted;
 
-
+                    }
+                    else if (item.Id != 0 && item.IsDeleted)
+                    {
+                        itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        itemm.AsnQuantity = 0;
+                        item.Quantity = 0;
+                        itemm.IsDeleted = true;
                     }
                     else
                     {
@@ -282,39 +313,43 @@ namespace ClubJumana.Core.Services
                     }
                     foreach (var VARIABLE in items)
                     {
-                        ID++;
-                        ProductInventoryWarehouse productInventoryWarehouse =
-                            _context.ProductInventoryWarehouses.SingleOrDefault(p =>
-                                p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                                p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
-                        if (productInventoryWarehouse != null)
+                        if (!VARIABLE.IsDeleted)
                         {
-                            productInventoryWarehouse.OnTheWayInventory += VARIABLE.Quantity;
-                        }
-                        else
-                        {
-                            productInventoryWarehouse = new ProductInventoryWarehouse();
-                            productInventoryWarehouse.Id = ID;
-                            productInventoryWarehouse.ProductMaster_fk = VARIABLE.ProductMaster_fk;
-                            productInventoryWarehouse.Warehouse_fk = asnViewModel.ToWarehouse_fk.Value;
-                            productInventoryWarehouse.OnTheWayInventory = VARIABLE.Quantity;
-                            productInventoryWarehouse.Income = 0;
-                            productInventoryWarehouse.OutCome = 0;
-                            _context.Add(productInventoryWarehouse);
-                        }
-                        if (asnViewModel.FromWarehouse_fk != 1)
-                        {
-                            ProductInventoryWarehouse productInventoryWarehouseFrom =
+                            ID++;
+                            ProductInventoryWarehouse productInventoryWarehouse =
                                 _context.ProductInventoryWarehouses.SingleOrDefault(p =>
                                     p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                                    p.Warehouse_fk == asnViewModel.FromWarehouse_fk);
-                            if (productInventoryWarehouseFrom != null)
+                                    p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
+                            if (productInventoryWarehouse != null)
                             {
-                                productInventoryWarehouseFrom.Inventory -= VARIABLE.Quantity;
-                                productInventoryWarehouseFrom.OutCome += VARIABLE.Quantity;
+                                productInventoryWarehouse.OnTheWayInventory += VARIABLE.Quantity;
                             }
-                                
+                            else
+                            {
+                                productInventoryWarehouse = new ProductInventoryWarehouse();
+                                productInventoryWarehouse.Id = ID;
+                                productInventoryWarehouse.ProductMaster_fk = VARIABLE.ProductMaster_fk;
+                                productInventoryWarehouse.Warehouse_fk = asnViewModel.ToWarehouse_fk.Value;
+                                productInventoryWarehouse.OnTheWayInventory = VARIABLE.Quantity;
+                                productInventoryWarehouse.Income = 0;
+                                productInventoryWarehouse.OutCome = 0;
+                                _context.Add(productInventoryWarehouse);
+                            }
+                            if (asnViewModel.FromWarehouse_fk != 1)
+                            {
+                                ProductInventoryWarehouse productInventoryWarehouseFrom =
+                                    _context.ProductInventoryWarehouses.SingleOrDefault(p =>
+                                        p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
+                                        p.Warehouse_fk == asnViewModel.FromWarehouse_fk);
+                                if (productInventoryWarehouseFrom != null)
+                                {
+                                    productInventoryWarehouseFrom.Inventory -= VARIABLE.Quantity;
+                                    productInventoryWarehouseFrom.OutCome += VARIABLE.Quantity;
+                                }
+
+                            }
                         }
+
                     }
                 }
                 _context.SaveChanges();
@@ -322,7 +357,7 @@ namespace ClubJumana.Core.Services
 
                 return true;
             }
-          
+
         }
 
         public bool AddOrUpdateGrnViewModel(GrnViewModel grnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
@@ -402,7 +437,7 @@ namespace ClubJumana.Core.Services
                 Item itemm = new Item();
                 foreach (var item in items)
                 {
-                    if (item.Id == 0)
+                    if (item.Id == 0 && !item.IsDeleted)
                     {
                         _context.Items.Add(new Item()
                         {
@@ -441,21 +476,26 @@ namespace ClubJumana.Core.Services
                     ProductInventoryWarehouse productInventory;
                     foreach (var VARIABLE in items)
                     {
-                        productInventory = _context.ProductInventoryWarehouses.SingleOrDefault(p =>
-                            p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                            p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
-                        if (productInventory != null)
+                        if (!VARIABLE.IsDeleted)
                         {
-                            productInventory.Income += VARIABLE.Quantity;
-                            productInventory.Inventory += VARIABLE.Quantity;
-                            productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
-                            if (PO.FromWarehouse_fk == 1)
+                            productInventory = _context.ProductInventoryWarehouses.SingleOrDefault(p =>
+                                p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
+                                p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
+                            if (productInventory != null)
                             {
-                                VARIABLE.ProductMaster.Income += VARIABLE.Quantity;
-                                VARIABLE.ProductMaster.StockOnHand += VARIABLE.Quantity;
-                            }
+                                productInventory.Income += VARIABLE.Quantity;
+                                productInventory.Inventory += VARIABLE.Quantity;
+                                productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
+                                productInventory.ProductMaster.StockOnHand += VARIABLE.Diffrent;
+                                if (PO.FromWarehouse_fk == 1)
+                                {
+                                    VARIABLE.ProductMaster.Income += VARIABLE.Quantity;
+                                    VARIABLE.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                                }
 
+                            }
                         }
+
                     }
                 }
 

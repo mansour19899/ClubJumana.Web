@@ -116,7 +116,7 @@ namespace ClubJumana.Wpf
                         btnPrint.Visibility = Visibility.Collapsed;
                         btnSendEmail.Visibility = Visibility.Collapsed;
                         btnRefund.Visibility = Visibility.Collapsed;
-                        
+
                     }
                     else
                     {
@@ -211,12 +211,33 @@ namespace ClubJumana.Wpf
                     btnRefund.Visibility = Visibility.Visible;
                     break;
                 case Mode.Nothong:
-
+                    if (sub == 2)
+                    {
+                        btnNewPurchaseOrder.Visibility = Visibility.Collapsed;
+                        btnAddItem.Visibility = Visibility.Collapsed;
+                        btnSave.Visibility = Visibility.Collapsed;
+                        btnRemove.Visibility = Visibility.Collapsed;
+                        btnDone.Visibility = Visibility.Collapsed;
+                        btnPrint.Visibility = Visibility.Visible;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        btnNewPurchaseOrder.Visibility = Visibility.Visible;
+                        btnAddItem.Visibility = Visibility.Collapsed;
+                        btnSave.Visibility = Visibility.Collapsed;
+                        btnRemove.Visibility = Visibility.Collapsed;
+                        btnDone.Visibility = Visibility.Collapsed;
+                        btnPrint.Visibility = Visibility.Collapsed;
+                        btnSendEmail.Visibility = Visibility.Collapsed;
+                        btnRefund.Visibility = Visibility.Collapsed;
+                    }
                     break;
             }
         }
 
-       private void ChangeLabelNameOfPurchaseOrder()
+        private void ChangeLabelNameOfPurchaseOrder()
         {
             switch (Mode)
             {
@@ -267,24 +288,37 @@ namespace ClubJumana.Wpf
             state = State.Update;
             lblSave.Content = "Update";
             IsViewDetail = true;
+            var modee = Mode.Nothong;
             switch (Mode)
             {
                 case Mode.PO:
                     DataContext = SelectedPo;
+                    if(SelectedPo.CreatedInvoice)
+                        ShowSideBar(Mode.Nothong, 2);
+                    else
+                        ShowSideBar(Mode, 2);
                     break;
                 case Mode.Asn:
                     DataContext = SelectedAsn;
+                    if (SelectedAsn.CreatedInvoice)
+                        ShowSideBar(Mode.Nothong, 2);
+                    else
+                        ShowSideBar(Mode, 2);
                     break;
                 case Mode.Grn:
                     DataContext = SelectedGrn;
+                    if (SelectedGrn.CreatedInvoice)
+                        ShowSideBar(Mode.Nothong, 2);
+                    else
+                        ShowSideBar(Mode, 2);
                     break;
                 default:
                     break;
             }
 
+            RemoveItemsOfPurchaseOrderViewModel.Clear();
             ChangeLabelNameOfPurchaseOrder();
             HidePanel();
-            ShowSideBar(Mode, 2);
             GrdNewPurchersOrder.Visibility = Visibility.Visible;
         }
 
@@ -311,6 +345,7 @@ namespace ClubJumana.Wpf
 
 
             itemsOfPurchaseOrderViewModel.Clear();
+            RemoveItemsOfPurchaseOrderViewModel.Clear();
             HidePanel();
             ShowSideBar(Mode, 2);
             GrdNewPurchersOrder.Visibility = Visibility.Visible;
@@ -338,8 +373,12 @@ namespace ClubJumana.Wpf
                     lblNewPo.Content = "New PO";
                     DataContext = SelectedPo;
                     itemsOfPurchaseOrderViewModel = convertor.CovertItemsOfPurchaseOrderViewModels(SelectedPurchaseOrder, Mode);
+                    RemoveItemsOfPurchaseOrderViewModel.Clear();
                     dgItems.ItemsSource = itemsOfPurchaseOrderViewModel;
-                    ShowSideBar(Mode.PO, 2);
+                    if (SelectedPo.CreatedInvoice)
+                        ShowSideBar(Mode.Nothong, 2);
+                    else
+                        ShowSideBar(Mode, 2);
                 }
                 else
                 {
@@ -384,8 +423,12 @@ namespace ClubJumana.Wpf
                             lblNewPo.Content = "New GIT";
                             DataContext = SelectedAsn;
                             itemsOfPurchaseOrderViewModel = convertor.CovertItemsOfPurchaseOrderViewModels(SelectedPurchaseOrder, Mode);
+                            RemoveItemsOfPurchaseOrderViewModel.Clear();
                             dgItems.ItemsSource = itemsOfPurchaseOrderViewModel;
-                            ShowSideBar(Mode.Asn, 2);
+                            if (SelectedAsn.CreatedInvoice)
+                                ShowSideBar(Mode.Nothong, 2);
+                            else
+                                ShowSideBar(Mode, 2);
                             break;
                         }
                     default:
@@ -428,8 +471,12 @@ namespace ClubJumana.Wpf
                     Mode = Mode.Grn;
                     DataContext = SelectedGrn;
                     itemsOfPurchaseOrderViewModel = convertor.CovertItemsOfPurchaseOrderViewModels(SelectedPurchaseOrder, Mode);
+                    RemoveItemsOfPurchaseOrderViewModel.Clear();
                     dgItems.ItemsSource = itemsOfPurchaseOrderViewModel;
-                    ShowSideBar(Mode.Grn, 2);
+                    if (SelectedGrn.CreatedInvoice)
+                        ShowSideBar(Mode.Nothong, 2);
+                    else
+                        ShowSideBar(Mode, 2);
                 }
 
                 else
@@ -614,8 +661,8 @@ namespace ClubJumana.Wpf
         private void BtnRefund_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var SelectedForRefund = dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList();
-            newRefund=new Refund();
-            refundItemsList=new ObservableCollection<RefundItemsViewModel>();
+            newRefund = new Refund();
+            refundItemsList = new ObservableCollection<RefundItemsViewModel>();
 
             foreach (var model in SelectedForRefund)
             {
@@ -624,14 +671,14 @@ namespace ClubJumana.Wpf
                     StyleNumber = model.ProductMaster.StyleNumber,
                     UPC = model.ProductMaster.UPC,
                     ProductMaster_fk = model.ProductMaster_fk,
-                    AbleReturn = model.Quantity- model.QuantityRefunded,
+                    AbleReturn = model.Quantity - model.QuantityRefunded,
                     Cost = model.Cost,
                     Price = model.Price
-                } );
+                });
             }
 
             dgRefundItem.ItemsSource = refundItemsList;
-            
+
             GrdTotalCharges.Visibility = Visibility.Visible;
         }
 
@@ -1394,7 +1441,7 @@ namespace ClubJumana.Wpf
         private void BtnSubmitRefund_OnClick(object sender, RoutedEventArgs e)
         {
 
-          
+
             newRefund.SaleOrder_fk = saleOrder.Id;
             newRefund.RefundTotalPrice = 0;
             newRefund.Tax = 0;
@@ -1415,7 +1462,7 @@ namespace ClubJumana.Wpf
             }
 
             newRefund.SubtotalPrice = sum;
-            lblSubtotalRefund.Text ="Subtotal : " +sum.ToString();
+            lblSubtotalRefund.Text = "Subtotal : " + sum.ToString();
             lblTaxRefund.Text = "Tax : " + newRefund.Tax.ToString();
             lblTotalPriceRefund.Text = "Total Price : " + newRefund.RefundTotalPrice.ToString();
 

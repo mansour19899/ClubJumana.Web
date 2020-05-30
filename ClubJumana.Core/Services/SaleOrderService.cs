@@ -199,6 +199,8 @@ namespace ClubJumana.Core.Services
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder, bool IsPrint = false)
         {
             saleOrder.SalesOrderNumber = _context.SaleOrders.Max(p => p.SalesOrderNumber) + 1;
+            if (saleOrder.SalesOrderNumber == null)
+                saleOrder.SalesOrderNumber = 345;
             ResrevdItemsOfSaleOrder(saleOrder.Id);
             SaveAndUpdateSaleOrder(saleOrder);
 
@@ -207,14 +209,16 @@ namespace ClubJumana.Core.Services
 
         public bool CreateInvoice(SaleOrderViewModel saleOrder)
         {
-            saleOrder.SalesOrderNumber = _context.SaleOrders.Max(p => p.InvoiceNumber) + 1;
-
+            saleOrder.InvoiceNumber = _context.SaleOrders.Max(p => p.InvoiceNumber) + 1;
+            if (saleOrder.InvoiceNumber == null)
+                saleOrder.InvoiceNumber = 890;
             //Edit Code Later
             var soItem = _context.SoItems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
             ProductInventoryWarehouse inventoryWarehouse;
             foreach (SoItem item in soItem)
             {
-                item.ProductMaster.GoodsReserved -= item.Quantity;
+                if (saleOrder.SalesOrderNumber != null)
+                    item.ProductMaster.GoodsReserved -= item.Quantity;
                 item.ProductMaster.StockOnHand -= item.Quantity;
                 item.ProductMaster.Outcome += item.Quantity;
                 inventoryWarehouse = item.ProductMaster.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
@@ -240,7 +244,7 @@ namespace ClubJumana.Core.Services
             {
                 model.ProductMaster.StockOnHand += model.Quantity;
                 model.ProductMaster.RefundQuantity += model.Quantity;
-                
+
                 x = inventorys.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk);
                 SoItems.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk).QuantityRefunded +=
                     model.Quantity;
