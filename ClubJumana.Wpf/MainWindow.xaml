@@ -864,7 +864,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Name="GrdCharge" Visibility="Hidden">
+                        <Grid Name="GrdCharge" Visibility="Visible">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -911,7 +911,8 @@
 
 
                         </Grid >
-                        <Grid Name="GrdRefund">
+
+                        <Grid Name="GrdRefund" Visibility="Hidden">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.25*"></RowDefinition>
                                 <RowDefinition Height="0.5*"></RowDefinition>

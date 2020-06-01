@@ -294,7 +294,25 @@ namespace ClubJumana.Wpf2
 
         private void BtnYesForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+
+            //db.AddProduct(product);
+            //int count = db.SaveChange();
+            //if (count > 0)
+            //{
+            //    btnSku.Content = "SKU :" + product.Sku;
+            //    btnStyleNumber.Content = "# : " + product.StyleNumber;
+            //    GrReview.Visibility = Visibility.Hidden;
+            //    GrResult.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Error From save db");
+            //    step = 3;
+            //    Scr4.Visibility = Visibility.Visible;
+            //    GrReview.Visibility = Visibility.Hidden;
+            //    GrAddInformation.Visibility = Visibility.Visible;
+            //}
+
         }
 
         private void BtnNoForAdd_OnClick(object sender, RoutedEventArgs e)
@@ -332,16 +350,30 @@ namespace ClubJumana.Wpf2
                 var index = Convert.ToInt16(cmbCategory.SelectedValue);
                 var list = categoriesSubCategoriesList.Where(p => p.CategoryFK == index || p.CategoryFK == 0).Select(p => p.SubCategory).ToList();
                 cmbSubCategory.ItemsSource = list;
-                cmbProductType.ItemsSource = null;
+                cmbProductType.SelectedIndex = 0;
                 cmbSubCategory.SelectedIndex = 0;
                 cmbProductType.IsEnabled = false;
-                cmbSubCategory.IsEditable = true;
+                cmbSubCategory.IsEnabled = true;
             }
         }
 
         private void CmbSubCategory_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (cmbSubCategory.SelectedIndex != 0)
+            {
+                int index = Convert.ToInt16(cmbCategory.SelectedValue);
+                int index1 = Convert.ToInt16(cmbSubCategory.SelectedValue);
+                var index2 = categoriesSubCategoriesList.SingleOrDefault(p => p.CategoryFK == index && p.SubCategoryFK == index1);
+                if (index2 != null)
+                {
+                    var tt = productTypeslist.Where(p => p.CategorysubcategoreisFK == index2.Id||p.Id==0).Select(p => p).ToList();
+                    cmbProductType.ItemsSource = tt;
+                    cmbProductType.SelectedIndex = 0;
+                    cmbProductType.IsEnabled = true;
+                }
+
+
+            }
         }
     }
 }

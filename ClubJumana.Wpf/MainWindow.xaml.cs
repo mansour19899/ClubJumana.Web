@@ -679,6 +679,8 @@ namespace ClubJumana.Wpf
 
             dgRefundItem.ItemsSource = refundItemsList;
 
+            GrdCharge.Visibility = Visibility.Hidden;
+            GrdRefund.Visibility = Visibility.Visible;
             GrdTotalCharges.Visibility = Visibility.Visible;
         }
 
@@ -894,7 +896,12 @@ namespace ClubJumana.Wpf
         private void btnTotalCharges_Click(object sender, RoutedEventArgs e)
         {
             if (Mode == Mode.Grn)
+            {
+                GrdCharge.Visibility = Visibility.Visible;
+                GrdRefund.Visibility = Visibility.Hidden;
                 GrdTotalCharges.Visibility = Visibility.Visible;
+            }
+                
             else
             {
                 MessageBox.Show("You can Import Charges when Grn Mode");

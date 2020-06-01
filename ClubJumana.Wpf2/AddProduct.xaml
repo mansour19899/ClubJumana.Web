@@ -115,11 +115,11 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <Label Content="Category" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.CategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbCategory_OnSelectionChanged" IsEnabled="False" />
+                        <ComboBox Name="cmbCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.CategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbCategory_OnSelectionChanged" IsEnabled="True" />
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="1">
                         <Label Content="Sub Category" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbSubCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.SubCategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbSubCategory_OnSelectionChanged"  />
+                        <ComboBox Name="cmbSubCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.SubCategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbSubCategory_OnSelectionChanged" IsEnabled="False" />
                     </StackPanel>
                   
                     <StackPanel Grid.Row="1" Grid.Column="0">
@@ -172,7 +172,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <Label Content="Product Type" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbProductType" SelectedValue="{Binding Towel.ProductTypeFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" IsEnabled="True" />
+                        <ComboBox Name="cmbProductType" SelectedValue="{Binding Towel.ProductTypeFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" IsEnabled="False" />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0">
                         <Label Name="lblWidth" Content="Width (in)" Style="{StaticResource lblAddProduct}" />
