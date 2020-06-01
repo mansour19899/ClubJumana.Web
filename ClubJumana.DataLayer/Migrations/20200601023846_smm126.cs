@@ -2,22 +2,21 @@
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class salam1 : Migration
+    public partial class smm126 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<decimal>(
-                name: "TotalDiscount",
-                table: "SaleOrders",
-                nullable: false,
-                defaultValue: 0m);
+            migrationBuilder.AddColumn<string>(
+                name: "ProductTittle",
+                table: "Productw",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "TotalDiscount",
-                table: "SaleOrders");
+                name: "ProductTittle",
+                table: "Productw");
         }
     }
 }

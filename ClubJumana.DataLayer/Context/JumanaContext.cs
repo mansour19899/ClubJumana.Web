@@ -17,7 +17,7 @@ namespace ClubJumana.DataLayer.Context
         //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm28;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm34;Trusted_Connection=True");
         }
         #region User
 
@@ -38,6 +38,22 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Refund> Refunds { get; set; }
         public DbSet<RefundItem> RefundItems { get; set; }
         public DbSet<Province> Provinces { get; set; }
+
+
+        public DbSet<Product> Productw { get; set; }
+        public DbSet<Towel> Towels { get; set; }
+        public DbSet<Beding> Bedings { get; set; }
+        public DbSet<Colour> Colours { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Barcode> Barcodes { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<CategoriesSubCategory> CategoriesSubCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
 
 
         #endregion
@@ -285,7 +301,190 @@ namespace ClubJumana.DataLayer.Context
 
             });
 
-            //----------------------------------- new ---------------------------------------
+            //----------------------------------- Product ---------------------------------------
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(p => p.RowVersion).IsRowVersion();
+
+                entity.HasOne<Country>(s => s.CountryOfOrgin)
+                    .WithMany(g => g.Products)
+                    .HasForeignKey(s => s.CountryOfOrginFK);
+
+                entity.HasOne<Brand>(s => s.Brand)
+                    .WithMany(g => g.Products)
+                    .HasForeignKey(s => s.BrandFK);
+
+                entity.HasOne<Company>(s => s.Company)
+                    .WithMany(g => g.Products)
+                    .HasForeignKey(s => s.CompanyFK);
+                entity.HasOne<Material>(s => s.Material)
+                    .WithMany(g => g.Products)
+                    .HasForeignKey(s => s.MaterialFK);
+
+            });
+            //----------------------------------- Towel ---------------------------------------
+            modelBuilder.Entity<Towel>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(p => p.RowVersion).IsRowVersion();
+
+                entity.HasOne<ProductType>(s => s.ProductType)
+                    .WithMany(g => g.Towels)
+                    .HasForeignKey(s => s.ProductTypeFK);
+
+                entity.HasOne<Colour>(s => s.Colour)
+                    .WithMany(g => g.Towels)
+                    .HasForeignKey(s => s.ColourFK);
+
+                entity.HasOne<Product>(s => s.Product)
+                    .WithMany(g => g.Towels)
+                    .HasForeignKey(s => s.ProductFK);
+            });
+            //----------------------------------- Beding ---------------------------------------
+            modelBuilder.Entity<Beding>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(p => p.RowVersion).IsRowVersion();
+
+                entity.HasOne<ProductType>(s => s.ProductType)
+                    .WithMany(g => g.Bedings)
+                    .HasForeignKey(s => s.ProductTypeFK);
+
+                entity.HasOne<Colour>(s => s.Colour)
+                    .WithMany(g => g.Bedings)
+                    .HasForeignKey(s => s.ColourFK);
+
+                entity.HasOne<Product>(s => s.Product)
+                    .WithMany(g => g.Bedings)
+                    .HasForeignKey(s => s.ProductFK);
+            });
+            //----------------------------------- Barcode ---------------------------------------
+            modelBuilder.Entity<Barcode>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(e => e.Towel)
+                    .WithOne(e => e.Barcode)
+                    .HasForeignKey<Towel>(p => p.BarcodeFK);
+
+                entity.HasOne(e => e.Beding)
+                    .WithOne(e => e.Barcode)
+                    .HasForeignKey<Beding>(p => p.BarcodeFK);
+            });
+            //----------------------------------- Image ---------------------------------------
+            modelBuilder.Entity<Image>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                //entity.HasOne<Towel>(s => s.Towel)
+                //    .WithMany(g => g.Images)
+                //    .HasForeignKey(s => s.TowelFK);
+
+                //entity.HasOne<Beding>(s => s.Beding)
+                //    .WithMany(g => g.Images)
+                //    .HasForeignKey(s => s.BedingFK);
+
+            });
+            //----------------------------------- Company ---------------------------------------
+            modelBuilder.Entity<Company>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<Country>(s => s.Country)
+                    .WithMany(g => g.Companies)
+                    .HasForeignKey(s => s.CountryFK);
+
+            });
+            //----------------------------------- Country ---------------------------------------
+            modelBuilder.Entity<Country>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- Brand ---------------------------------------
+            modelBuilder.Entity<Brand>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+
+            });
+            //----------------------------------- Material ---------------------------------------
+            modelBuilder.Entity<Material>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- Category ---------------------------------------
+            modelBuilder.Entity<Category>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- SubCategory ---------------------------------------
+            modelBuilder.Entity<SubCategory>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- CategoriesSubCategory ---------------------------------------
+            modelBuilder.Entity<CategoriesSubCategory>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<Category>(s => s.Category)
+                    .WithMany(g => g.CategoriesSubCategories)
+                    .HasForeignKey(s => s.CategoryFK);
+
+                entity.HasOne<SubCategory>(s => s.SubCategory)
+                    .WithMany(g => g.CategoriesSubCategories)
+                    .HasForeignKey(s => s.SubCategoryFK);
+
+            });
+            //----------------------------------- ProductType ---------------------------------------
+            modelBuilder.Entity<ProductType>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<CategoriesSubCategory>(s => s.CategoriesSubCategory)
+                    .WithMany(g => g.ProductTypes)
+                    .HasForeignKey(s => s.CategorysubcategoreisFK);
+
+
+            });
+            //----------------------------------- Colour ---------------------------------------
+            modelBuilder.Entity<ProductType>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
         }
 
     }

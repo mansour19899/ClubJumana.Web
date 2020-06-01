@@ -19,6 +19,219 @@ namespace ClubJumana.DataLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Barcode", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BarcodeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Barcodes");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Beding", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BarcodeFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ColourFK")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsKing")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastDateEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProductFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductTypeFK")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sku")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("Width")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("length")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BarcodeFK")
+                        .IsUnique();
+
+                    b.HasIndex("ColourFK");
+
+                    b.HasIndex("ProductFK");
+
+                    b.HasIndex("ProductTypeFK");
+
+                    b.ToTable("Bedings");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.CategoriesSubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCategoryFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryFK");
+
+                    b.HasIndex("SubCategoryFK");
+
+                    b.ToTable("CategoriesSubCategories");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sku_code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StyleNum_code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Colour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PantoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colours");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CountryFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FAX")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Manufacture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StateProvinceRegion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipPostlCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryFK");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -88,6 +301,35 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasIndex("CreatedBy_fk");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BedingFK")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BedingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TowelFK")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TowelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BedingId");
+
+                    b.HasIndex("TowelId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>
@@ -164,6 +406,63 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasIndex("ProductMaster_fk");
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Material", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaterialName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BrandFK")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CompanyFK")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CountryOfOrginFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DescribeMaterial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MaterialFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductTittle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StyleNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandFK");
+
+                    b.HasIndex("CompanyFK");
+
+                    b.HasIndex("CountryOfOrginFK");
+
+                    b.HasIndex("MaterialFK");
+
+                    b.ToTable("Productw");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductInventoryWarehouse", b =>
@@ -304,6 +603,27 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategorysubcategoreisFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategorysubcategoreisFK");
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Province", b =>
@@ -722,6 +1042,82 @@ namespace ClubJumana.DataLayer.Migrations
                     b.ToTable("SoItems");
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.SubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubCategories");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Towel", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BarcodeFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ColourFK")
+                        .HasColumnType("int");
+
+                    b.Property<short?>("Gsm")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("LastDateEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProductFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductTypeFK")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sku")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("Width")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("length")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BarcodeFK")
+                        .IsUnique();
+
+                    b.HasIndex("ColourFK");
+
+                    b.HasIndex("ProductFK");
+
+                    b.HasIndex("ProductTypeFK");
+
+                    b.ToTable("Towels");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
                 {
                     b.Property<int>("Id")
@@ -967,6 +1363,57 @@ namespace ClubJumana.DataLayer.Migrations
                     b.ToTable("Warehouses");
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Beding", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Barcode", "Barcode")
+                        .WithOne("Beding")
+                        .HasForeignKey("ClubJumana.DataLayer.Entities.Beding", "BarcodeFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Colour", "Colour")
+                        .WithMany("Bedings")
+                        .HasForeignKey("ColourFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Product", "Product")
+                        .WithMany("Bedings")
+                        .HasForeignKey("ProductFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.ProductType", "ProductType")
+                        .WithMany("Bedings")
+                        .HasForeignKey("ProductTypeFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.CategoriesSubCategory", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Category", "Category")
+                        .WithMany("CategoriesSubCategories")
+                        .HasForeignKey("CategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.SubCategory", "SubCategory")
+                        .WithMany("CategoriesSubCategories")
+                        .HasForeignKey("SubCategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Company", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Country", "Country")
+                        .WithMany("Companies")
+                        .HasForeignKey("CountryFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Customer", b =>
                 {
                     b.HasOne("ClubJumana.DataLayer.Entities.Users.User", "User")
@@ -974,6 +1421,17 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasForeignKey("CreatedBy_fk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Image", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Beding", "Beding")
+                        .WithMany("Images")
+                        .HasForeignKey("BedingId");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Towel", "Towel")
+                        .WithMany("Images")
+                        .HasForeignKey("TowelId");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>
@@ -991,6 +1449,25 @@ namespace ClubJumana.DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Product", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandFK");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Company", "Company")
+                        .WithMany("Products")
+                        .HasForeignKey("CompanyFK");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Country", "CountryOfOrgin")
+                        .WithMany("Products")
+                        .HasForeignKey("CountryOfOrginFK");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Material", "Material")
+                        .WithMany("Products")
+                        .HasForeignKey("MaterialFK");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductInventoryWarehouse", b =>
                 {
                     b.HasOne("ClubJumana.DataLayer.Entities.ProductMaster", "ProductMaster")
@@ -1002,6 +1479,15 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.Warehouse", "Warehouse")
                         .WithMany("ProductInventoryWarehouses")
                         .HasForeignKey("Warehouse_fk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductType", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.CategoriesSubCategory", "CategoriesSubCategory")
+                        .WithMany("ProductTypes")
+                        .HasForeignKey("CategorysubcategoreisFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1087,6 +1573,33 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
                         .WithMany("SoItems")
                         .HasForeignKey("So_fk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Towel", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Barcode", "Barcode")
+                        .WithOne("Towel")
+                        .HasForeignKey("ClubJumana.DataLayer.Entities.Towel", "BarcodeFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Colour", "Colour")
+                        .WithMany("Towels")
+                        .HasForeignKey("ColourFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Product", "Product")
+                        .WithMany("Towels")
+                        .HasForeignKey("ProductFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.ProductType", "ProductType")
+                        .WithMany("Towels")
+                        .HasForeignKey("ProductTypeFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

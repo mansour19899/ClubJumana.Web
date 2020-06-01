@@ -57,10 +57,52 @@ namespace ClubJumana.Core.Services
             return _context.PurchaseOrders.Where(p => p.CreatedAsn == true).AsNoTracking();
         }
 
+        public IQueryable<Country> AllCountriesList()
+        {
+            return _context.Countries;
+        }
+
+        public IQueryable<Category> AllCategoriesList()
+        {
+            return _context.Categories;
+        }
+
+        public IQueryable<SubCategory> AllSubCategoriesList()
+        {
+            return _context.SubCategories;
+        }
+
+        public IQueryable<CategoriesSubCategory> AllCategoriesSubCategoryList()
+        {
+            return _context.CategoriesSubCategories;
+        }
+
+        public IQueryable<ProductType> AllProductTypeList()
+        {
+            return _context.ProductTypes;
+        }
+
+        public IQueryable<Brand> AllBrandList()
+        {
+            return _context.Brands;
+        }
+
+        public IQueryable<Colour> AllColourList()
+        {
+            return _context.Colours;
+        }
+
+        public IQueryable<Material> AllMaterialList()
+        {
+            return _context.Materials;
+        }
+
 
         public IQueryable<Warehouse> AllWarehouse()
         {
             return _context.Warehouses;
         }
+
+
     }
 }

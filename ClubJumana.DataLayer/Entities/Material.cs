@@ -4,13 +4,11 @@ using System.Text;
 
 namespace ClubJumana.DataLayer.Entities
 {
-   public class Country
+  public  class Material
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
+        public string MaterialName { get; set; }
 
         public ICollection<Product> Products { get; set; }
-        public ICollection<Company> Companies { get; set; }
     }
 }
