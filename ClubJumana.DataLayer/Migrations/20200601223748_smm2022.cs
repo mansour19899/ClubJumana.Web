@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class smm123 : Migration
+    public partial class smm2022 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,8 +50,7 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "Colours",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PantoneNumber = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: true)
@@ -511,13 +510,13 @@ namespace ClubJumana.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false),
                     StyleNumber = table.Column<string>(nullable: true),
+                    ProductTittle = table.Column<string>(nullable: true),
                     BrandFK = table.Column<int>(nullable: true),
                     MaterialFK = table.Column<int>(nullable: true),
                     CompanyFK = table.Column<int>(nullable: true),
                     CountryOfOrginFK = table.Column<int>(nullable: true),
                     DescribeMaterial = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    MaterialId = table.Column<int>(nullable: true)
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -541,8 +540,8 @@ namespace ClubJumana.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Productw_Materials_MaterialId",
-                        column: x => x.MaterialId,
+                        name: "FK_Productw_Materials_MaterialFK",
+                        column: x => x.MaterialFK,
                         principalTable: "Materials",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -1001,9 +1000,9 @@ namespace ClubJumana.DataLayer.Migrations
                 column: "CountryOfOrginFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Productw_MaterialId",
+                name: "IX_Productw_MaterialFK",
                 table: "Productw",
-                column: "MaterialId");
+                column: "MaterialFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrders_ApproveAsnUser_fk",
