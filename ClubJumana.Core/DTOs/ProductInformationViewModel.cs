@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ClubJumana.DataLayer.Entities;
+using JetBrains.Annotations;
 
 namespace ClubJumana.Core.DTOs
 {
-   public class AddTowelInformationViewModel
+   public class AddTowelInformationViewModel : INotifyPropertyChanged
     {
         public AddTowelInformationViewModel()
         {
@@ -22,7 +25,11 @@ namespace ClubJumana.Core.DTOs
         public Company company
         {
             get { return _company; }
-            set { _company = value; }
+            set
+            {
+                _company = value;
+                OnPropertyChanged();
+            }
         }
 
         private Product _product;
@@ -40,5 +47,12 @@ namespace ClubJumana.Core.DTOs
         }
 
         public List<Towel> Towels { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

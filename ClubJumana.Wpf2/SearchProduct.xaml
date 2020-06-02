@@ -1,0 +1,103 @@
+﻿<Window x:Class="ClubJumana.Wpf2.SearchProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClubJumana.Wpf2"
+        mc:Ignorable="d"
+        Loaded="SearchProduct_OnLoaded"
+        Title="SearchProduct" Height="900" Width="1800" WindowState="Maximized" ShowInTaskbar="False" PreviewKeyDown="Window_PreviewKeyDown">
+    <Grid>
+        <Grid>
+            <Rectangle Fill="#030D21" Margin="20" RadiusY="50" RadiusX="50" />
+            <Rectangle Margin="40" RadiusY="30" RadiusX="30" >
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFCC201" Offset="0"/>
+                        <GradientStop Color="#FFEEB609" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Fill="#030D21" Margin="50" RadiusY="20" RadiusX="20" />
+            <Rectangle Fill="White" Margin="60" RadiusY="10" RadiusX="10" />
+            <Grid Visibility="Visible" Name="GrSearch" Margin="65,36,40,34">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="0.15*"/>
+                    <RowDefinition Height="0.15*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.1*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="338*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="507*" />
+                        <ColumnDefinition Width="253*" />
+                        <ColumnDefinition Width="422*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
+                    <TextBox x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}"  Margin="10" Grid.Column="2" FontSize="36" KeyDown="TextBox_KeyDown"/>
+                    <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
+                    </ComboBox>
+                    <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="1">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
+                            <ComboBox.Background>
+                                <ImageBrush/>
+                            </ComboBox.Background>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
+                    <StackPanel Grid.Column="6">
+                        <Label FontSize="20"></Label>
+                        <Label Name="lblCountResult" FontSize="20">Company :</Label>
+                        <Label Name="lblCountSelectedList" FontSize="20"></Label>
+
+                    </StackPanel>
+                </Grid>
+                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label  Content="{Binding Id}"  />
+                                <Label  Content="       "  />
+                                <Label  Content="{Binding StyleNumber}"  />
+                                <Label  Content="       "  />
+                                <Label  Content="{Binding Sku}"  />
+                                <Label  Content="       "  />
+                                <Label  Content="{Binding ProductType.Name}"  />
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

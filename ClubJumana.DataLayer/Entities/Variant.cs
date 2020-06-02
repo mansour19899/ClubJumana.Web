@@ -8,13 +8,13 @@ namespace ClubJumana.DataLayer.Entities
     {
         public int Id { get; set; }
         public string Sku { get; set; }
-        public int ProductFK { get; set; }
-        public int ColourFK { get; set; }
-        public int BarcodeFK { get; set; }
-        public int ProductTypeFK { get; set; }
-        public Nullable<float> Price { get; set; }
-        public Nullable<float> Width { get; set; }
-        public Nullable<float> length { get; set; }
+        public int? ProductFK { get; set; }
+        public int? ColourFK { get; set; }
+        public int? BarcodeFK { get; set; }
+        public int? ProductTypeFK { get; set; }
+        public float? Price { get; set; }
+        public float? Width { get; set; }
+        public float? length { get; set; }
         public string Size { get; set; }
         public string Note { get; set; }
         public DateTime LastDateEdited { get; set; }

@@ -23,6 +23,7 @@ namespace ClubJumana.Wpf2
     {
         private AddTowelInformationViewModel addTowel;
         private RepositoryService _repositoryService;
+        private ProductInformationService _productInformationService;
         List<ScrollViewer> panels;
         private List<Country> countriesList;
         private List<Category> categoriesList;
@@ -37,6 +38,7 @@ namespace ClubJumana.Wpf2
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
+            _productInformationService=new ProductInformationService();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -86,28 +88,36 @@ namespace ClubJumana.Wpf2
             {
                 if (step == 2)
                 {
-                    string messageBoxText = "Do you want to add another variant?";
-                    string caption = "Add Variant";
-                    MessageBoxButton button = MessageBoxButton.YesNo;
-                    MessageBoxImage icon = MessageBoxImage.Question;
-                    MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-
-                    switch (result)
+                    if (cmbProductType.SelectedIndex == 0)
                     {
-                        case MessageBoxResult.Yes:
-                            lblHeader.Content = "yes";
-                            AddVariant();
-                            txtGsm.IsEnabled = false;
-                            break;
-                        case MessageBoxResult.No:
-                            lblHeader.Content = "no";
-                            AddVariant();
-                            panels.ElementAt(2).Visibility = Visibility.Hidden;
-                            PeriveweAndPrepareForAdd();
-                            GrAddInformation.Visibility = Visibility.Hidden;
-                            GrReview.Visibility = Visibility.Visible;
-                            step = 4;
-                            break;
+                        MessageBox.Show("Select Product Type");
+                    }
+                    else
+                    {
+                        string messageBoxText = "Do you want to add another variant?";
+                        string caption = "Add Variant";
+                        MessageBoxButton button = MessageBoxButton.YesNo;
+                        MessageBoxImage icon = MessageBoxImage.Question;
+                        MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+                        switch (result)
+                        {
+                            case MessageBoxResult.Yes:
+                                lblHeader.Content = "yes";
+                                AddVariant();
+                                txtGsm.IsEnabled = false;
+                                break;
+                            case MessageBoxResult.No:
+                                lblHeader.Content = "no";
+                                AddVariant();
+                                panels.ElementAt(2).Visibility = Visibility.Hidden;
+                                PeriveweAndPrepareForAdd();
+                                GrAddInformation.Visibility = Visibility.Hidden;
+                                GrReview.Visibility = Visibility.Visible;
+                                step = 4;
+                                break;
+
+                        }
 
                     }
 
@@ -242,7 +252,9 @@ namespace ClubJumana.Wpf2
 
                 //product.Company_Id_fk = newCompanyId;
                 //product.DescribeMaterial = txtDescribeMaterial.Text;
-
+                addTowel.Product.StyleNumber =
+                    _productInformationService.GiveMeStyleNumber(cmbCategory.SelectedIndex,
+                        cmbSubCategory.SelectedIndex);
                 StringBuilder Review = new StringBuilder(String.Format($" StyleNumber : {addTowel.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
                                                                        $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addTowel.Towels.FirstOrDefault().Gsm}" +
                                                                        $" \n\n Material : {cmbMaterial.Text} " +
@@ -294,30 +306,16 @@ namespace ClubJumana.Wpf2
 
         private void BtnYesForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-
-            //db.AddProduct(product);
-            //int count = db.SaveChange();
-            //if (count > 0)
-            //{
-            //    btnSku.Content = "SKU :" + product.Sku;
-            //    btnStyleNumber.Content = "# : " + product.StyleNumber;
-            //    GrReview.Visibility = Visibility.Hidden;
-            //    GrResult.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Error From save db");
-            //    step = 3;
-            //    Scr4.Visibility = Visibility.Visible;
-            //    GrReview.Visibility = Visibility.Hidden;
-            //    GrAddInformation.Visibility = Visibility.Visible;
-            //}
-
+            _productInformationService.AddTowel(addTowel);
+            MessageBox.Show("Product Added");
         }
 
         private void BtnNoForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            step = 1;
+            Scr2.Visibility = Visibility.Visible;
+            GrReview.Visibility = Visibility.Hidden;
+            GrAddInformation.Visibility = Visibility.Visible;
         }
 
         private void LvVariants_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -354,6 +352,7 @@ namespace ClubJumana.Wpf2
                 cmbSubCategory.SelectedIndex = 0;
                 cmbProductType.IsEnabled = false;
                 cmbSubCategory.IsEnabled = true;
+                addTowel.Towels.Clear();
             }
         }
 
@@ -370,9 +369,30 @@ namespace ClubJumana.Wpf2
                     cmbProductType.ItemsSource = tt;
                     cmbProductType.SelectedIndex = 0;
                     cmbProductType.IsEnabled = true;
+                    addTowel.Towels.Clear();
                 }
 
 
+            }
+        }
+
+        private void TxtCompany_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var ExsitCompany = _productInformationService.ExistCompany(txtCompany.Text);
+
+            if (ExsitCompany != null)
+            {
+                var result = MessageBox.Show("This company already exists. Do you want to complate?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        addTowel.company = ExsitCompany;
+
+                        break;
+                    case MessageBoxResult.No:
+                        txtCompany.Text = "";
+                        break;
+                }
             }
         }
     }

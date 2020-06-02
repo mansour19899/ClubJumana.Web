@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using ClubJumana.Core.DTOs;
+using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Core.Services.Interfaces
 {
     interface IProductInformationService
     {
         public int AddTowel(AddTowelInformationViewModel product);
+        public string GiveMeStyleNumber(int Category, int SubCategory);
+        public Company ExistCompany(string CompanyName);
     }
+
 }

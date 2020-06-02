@@ -62,6 +62,11 @@ namespace ClubJumana.Core.Services
             return _context.Countries;
         }
 
+        public IQueryable<Company> AllCompaniesList()
+        {
+            return _context.Companies;
+        }
+
         public IQueryable<Category> AllCategoriesList()
         {
             return _context.Categories;

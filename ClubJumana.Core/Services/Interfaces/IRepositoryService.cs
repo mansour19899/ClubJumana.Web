@@ -19,6 +19,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<PurchaseOrder> AsnPurchaseOrder();
         IQueryable<PurchaseOrder> GrnPurchaseOrder();
         IQueryable<Country> AllCountriesList();
+        IQueryable<Company> AllCompaniesList();
         IQueryable<Category> AllCategoriesList();
         IQueryable<SubCategory> AllSubCategoriesList();
         IQueryable<CategoriesSubCategory> AllCategoriesSubCategoryList();
