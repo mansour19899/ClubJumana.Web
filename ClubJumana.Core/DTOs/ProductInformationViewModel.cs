@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ClubJumana.Core.Convertors;
 using ClubJumana.DataLayer.Entities;
 using JetBrains.Annotations;
 
@@ -77,7 +78,10 @@ namespace ClubJumana.Core.DTOs
         public int? ColourFK { get; set; }
         public int? BarcodeFK { get; set; }
         public int? ProductTypeFK { get; set; }
-        public float? Price { get; set; }
+        public float? FobPrice { get; set; }
+        public float? WholesaleA { get; set; }
+        public float? WholesaleB { get; set; }
+        public float? RetailPrice { get; set; }
         public string Size { get; set; }
         public Product Product { get; set; }
         public Colour Colour { get; set; }
@@ -86,7 +90,7 @@ namespace ClubJumana.Core.DTOs
 
     }
 
-    public class ProductInformationViewModel
+    public class ProductInformationViewModel : INotifyPropertyChanged
     {
         public ProductInformationViewModel(Product product)
         {
@@ -120,6 +124,27 @@ namespace ClubJumana.Core.DTOs
         public string DescriabeMaterial { get; set; }
 
         public List<Towel> List { get; set; }
+
+        private CostCenter _costCenter;
+
+        public CostCenter CostCenter
+        {
+            get { return _costCenter; }
+            set
+            {
+                _costCenter = value;
+                OnPropertyChanged();
+
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
 }

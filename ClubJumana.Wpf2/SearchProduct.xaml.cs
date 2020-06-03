@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Entities;
@@ -27,6 +28,7 @@ namespace ClubJumana.Wpf2
         List<VariantViewModel> TempList;
         List<VariantViewModel> SelectedList;
         Product SelectedProduct;
+        private ProductInformationViewModel InfoProduct;
 
         bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
@@ -272,7 +274,7 @@ namespace ClubJumana.Wpf2
         private void ShowProductInformation(int Id)
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
-            ProductInformationViewModel InfoProduct=new ProductInformationViewModel(SelectedProduct);
+            InfoProduct=new ProductInformationViewModel(SelectedProduct);
             lvVariant.ItemsSource = SelectedProduct.Towels.ToList();
             this.DataContext = InfoProduct;
 
@@ -290,6 +292,68 @@ namespace ClubJumana.Wpf2
         private void AddBarcode(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Barcode");
+        }
+
+        private void BtnInformationPrice(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            Towel variantSelected = b.CommandParameter as Towel;
+            CostCenter cost=new CostCenter();
+
+            cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
+            cost.ExchangeRate = 1.37m;
+            cost.LandedCostRate = 18m;
+            InfoProduct.CostCenter = cost;
+            GrdCostCenter.Visibility = Visibility.Visible;
+        }
+
+        private void txtMainPrice_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e, txtMainPrice);
+        }
+
+
+        private void txtCostRate_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e, txtCostRate);
+        }
+
+
+
+        public bool SetNumeric(object sender, KeyEventArgs e, TextBox txt)
+        {
+            bool result = false;
+            var tr = (sender as TextBox).Text.IndexOf('.');
+
+            if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || (e.Key == Key.Back) || (e.Key == Key.Decimal))
+            { result = false; }
+            else if ((e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key == Key.OemPeriod))
+            { result = false; }
+            else
+            { result = true; }
+
+            if (e.Key == Key.OemPeriod && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                result = true;
+            }
+            if (e.Key == Key.Decimal && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                result = true;
+            }
+            var count = txt.Text.Split('.');
+            if (count.Count() > 1)
+            {
+                if (count[1].Count() > 3)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        private void TxtExChangeRate_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e, txtExChangeRate);
         }
     }
 }
