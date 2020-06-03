@@ -13,6 +13,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public Company ExistCompany(string CompanyName);
 
         public List<VariantViewModel> AllVariantList();
+        public Product GiveMeProductWithId(int Id);
     }
 
 }

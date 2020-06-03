@@ -255,7 +255,41 @@ namespace ClubJumana.Wpf2
 
         private void lvProducts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
 
+            if (dep == null)
+                return;
+
+            var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
+
+           ShowProductInformation(wer.Product.Id);
+        }
+
+        private void ShowProductInformation(int Id)
+        {
+            SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
+            ProductInformationViewModel InfoProduct=new ProductInformationViewModel(SelectedProduct);
+            lvVariant.ItemsSource = SelectedProduct.Towels.ToList();
+            this.DataContext = InfoProduct;
+
+            GrSearch.Visibility = Visibility.Hidden;
+            GrdInformationProduct.Visibility = Visibility.Visible;
+        }
+
+        private void AddSku(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            Towel productCategory = b.CommandParameter as Towel;
+            MessageBox.Show(productCategory.Size);
+        }
+
+        private void AddBarcode(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Barcode");
         }
     }
 }

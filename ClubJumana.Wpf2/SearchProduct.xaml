@@ -20,7 +20,7 @@
             </Rectangle>
             <Rectangle Fill="#030D21" Margin="50" RadiusY="20" RadiusX="20" />
             <Rectangle Fill="White" Margin="60" RadiusY="10" RadiusX="10" />
-            <Grid Visibility="Hidden" Name="GrSearch" Margin="65,36,40,34">
+            <Grid Visibility="Visible" Name="GrSearch" Margin="65,36,40,34">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.1*" />
                     <RowDefinition Height="0.15*"/>
@@ -95,36 +95,63 @@
                     </ListView.View>
                 </ListView>
             </Grid>
-            <Grid Name="GrdInformationProduct" Margin="65,36,40,34">
+            <Grid Name="GrdInformationProduct" Margin="65,36,40,34" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.1*"/>
                     <RowDefinition Height="0.4*"/>
                     <RowDefinition Height="0.5*"/>
                 </Grid.RowDefinitions>
-                <TextBlock  Text=" Style number" FontSize="40" TextAlignment="Center" VerticalAlignment="Bottom"  Foreground="#FF301F68" FontWeight="Bold"/>
-                <UniformGrid Grid.Row="1" Columns="2">
+                <TextBlock  Text="{Binding StyleNumber}" FontSize="40" TextAlignment="Center" VerticalAlignment="Bottom"  Foreground="#FF301F68" FontWeight="Bold"/>
+                <UniformGrid Grid.Row="1" Columns="2"  Margin="50 20 0 0">
                     <UniformGrid.Resources>
                         <Style x:Key="Style1" TargetType="TextBlock" >
-                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="FontSize" Value="25" />
                             <Setter Property="FontWeight" Value="Bold" />
                             <Setter Property="Margin" Value="0 0 0 8" />
                         </Style>
                     </UniformGrid.Resources>
                     <UniformGrid Rows="6">
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Category, StringFormat= category : {0}}" />
+                        <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Subcategory, StringFormat= SubCategory : {0}}" />
+                        <TextBlock Style="{StaticResource Style1}" Text="{Binding ProductTittle, StringFormat= Product Tittle :  {0}}" />
+                        <TextBlock Style="{StaticResource Style1}" Text="{Binding CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
+                        <TextBlock Style="{StaticResource Style1}" Text="{Binding Company, StringFormat= Company : {0}}"/>
+                        <TextBlock Style="{StaticResource Style1}" Text="{Binding GSM, StringFormat= GSM : {0}}" />
                     </UniformGrid>
-                    <UniformGrid Rows="6">
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
-                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                    <UniformGrid Rows="2">
+                        <TextBlock Style="{StaticResource Style1}" Text="image" />
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding Material, StringFormat= Material : {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="Drscirbe Material :"/>
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  {}  {0}}" />
+                        </StackPanel>
+                        
                     </UniformGrid>
                 </UniformGrid>
+                <ListView SelectionMode="Multiple" Name="lvVariant" Grid.Row="3" Margin="70 10 70 20" FontSize="20" ItemsSource="{Binding Towels}" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                            <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
+                            <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
+                            <GridViewColumn Header="Price" Width="200" DisplayMemberBinding="{Binding Path=Price}" />
+                            <GridViewColumn Header="SKU" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="SKU" Click="AddSku" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Barcode" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="BarCode" Click="AddBarcode" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
 
 

@@ -8,6 +8,7 @@ using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -141,6 +142,18 @@ namespace ClubJumana.Core.Services
            //Add another Variant 
 
            return list;
+        }
+
+        public Product GiveMeProductWithId(int Id)
+        {
+            var product = _context.Productw.Include(p=>p.Company).Include(p=>p.Material)
+                .Include(p=>p.Brand).Include(p=>p.Towels).ThenInclude(p=>p.ProductType)
+                .ThenInclude(p=>p.CategoriesSubCategory).ThenInclude(p=>p.Category).Include(p => p.Towels).ThenInclude(p => p.ProductType)
+                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p=>p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
+
+
+
+            return product;
         }
     }
 }

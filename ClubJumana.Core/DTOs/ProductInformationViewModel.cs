@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using ClubJumana.DataLayer.Entities;
@@ -8,16 +9,16 @@ using JetBrains.Annotations;
 
 namespace ClubJumana.Core.DTOs
 {
-   public class AddTowelInformationViewModel : INotifyPropertyChanged
+    public class AddTowelInformationViewModel : INotifyPropertyChanged
     {
         public AddTowelInformationViewModel()
         {
-            _company=new Company();
-            _towel=new Towel();
-            _product=new Product();
-            _towel.ProductType=new ProductType();
-            _towel.ProductType.CategoriesSubCategory=new CategoriesSubCategory();
-            Towels=new List<Towel>();
+            _company = new Company();
+            _towel = new Towel();
+            _product = new Product();
+            _towel.ProductType = new ProductType();
+            _towel.ProductType.CategoriesSubCategory = new CategoriesSubCategory();
+            Towels = new List<Towel>();
         }
 
         private Company _company;
@@ -68,21 +69,57 @@ namespace ClubJumana.Core.DTOs
         }
     }
 
-   public class VariantViewModel
-   {
-       public int Id { get; set; }
-       public string Sku { get; set; }
-       public int? ProductFK { get; set; }
-       public int? ColourFK { get; set; }
-       public int? BarcodeFK { get; set; }
-       public int? ProductTypeFK { get; set; }
-       public float? Price { get; set; }
-       public string Size { get; set; }
-       public Product Product { get; set; }
-       public Colour Colour { get; set; }
-       public Barcode Barcode { get; set; }
-       public ProductType ProductType { get; set; }
+    public class VariantViewModel
+    {
+        public int Id { get; set; }
+        public string Sku { get; set; }
+        public int? ProductFK { get; set; }
+        public int? ColourFK { get; set; }
+        public int? BarcodeFK { get; set; }
+        public int? ProductTypeFK { get; set; }
+        public float? Price { get; set; }
+        public string Size { get; set; }
+        public Product Product { get; set; }
+        public Colour Colour { get; set; }
+        public Barcode Barcode { get; set; }
+        public ProductType ProductType { get; set; }
 
+    }
+
+    public class ProductInformationViewModel
+    {
+        public ProductInformationViewModel(Product product)
+        {
+            Id = product.Id;
+            StyleNumber = product.StyleNumber;
+            Category = product.Towels.ElementAt(0).ProductType.CategoriesSubCategory.Category.Name;
+            Subcategory = product.Towels.ElementAt(0).ProductType.CategoriesSubCategory.SubCategory.Name;
+            ProductTittle = product.ProductTittle;
+            if (product.CountryOfOrgin != null)
+                CountryOfOrigin = product.CountryOfOrgin.Name;
+            if (product.Brand != null)
+                Brand = product.Brand.Name;
+            GSM = product.Towels.ElementAt(0).Gsm.Value.ToString();
+            if (product.Company != null)
+                Company = product.Company.CompanyName;
+            if (product.Material != null)
+                Material = product.Material.MaterialName;
+            DescriabeMaterial = product.DescribeMaterial;
+            List = product.Towels.ToList();
+        }
+        public int Id { get; set; }
+        public string StyleNumber { get; set; }
+        public string Category { get; set; }
+        public string Subcategory { get; set; }
+        public string ProductTittle { get; set; }
+        public string CountryOfOrigin { get; set; }
+        public string Brand { get; set; }
+        public string GSM { get; set; }
+        public string Company { get; set; }
+        public string Material { get; set; }
+        public string DescriabeMaterial { get; set; }
+
+        public List<Towel> List { get; set; }
     }
 
 }
