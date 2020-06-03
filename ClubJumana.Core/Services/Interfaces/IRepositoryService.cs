@@ -9,7 +9,7 @@ namespace ClubJumana.Core.Services.Interfaces
 {
     interface IRepositoryService
     {
-        IQueryable<ProductMaster> AllProductList();
+        IQueryable<ProductMaster> AllProductMasterList();
         IQueryable<PurchaseOrder> AllPurchaseOrder();
         IQueryable<SaleOrder> AllOrders();
         IQueryable<Warehouse> AllWarehouse();
@@ -27,7 +27,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Brand> AllBrandList();
         IQueryable<Colour> AllColourList();
         IQueryable<Material> AllMaterialList();
-
+        IQueryable<Product> AllProductList();
 
     }
 }

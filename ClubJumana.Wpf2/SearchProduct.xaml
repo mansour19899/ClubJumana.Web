@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ClubJumana.Wpf2"
         mc:Ignorable="d"
         Loaded="SearchProduct_OnLoaded"
-        Title="SearchProduct" Height="900" Width="1800" WindowState="Maximized" ShowInTaskbar="False" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="SearchProduct" Height="900" Width="1800" WindowState="Maximized" ShowInTaskbar="True" PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid>
             <Rectangle Fill="#030D21" Margin="20" RadiusY="50" RadiusX="50" />
@@ -20,7 +20,7 @@
             </Rectangle>
             <Rectangle Fill="#030D21" Margin="50" RadiusY="20" RadiusX="20" />
             <Rectangle Fill="White" Margin="60" RadiusY="10" RadiusX="10" />
-            <Grid Visibility="Visible" Name="GrSearch" Margin="65,36,40,34">
+            <Grid Visibility="Hidden" Name="GrSearch" Margin="65,36,40,34">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.1*" />
                     <RowDefinition Height="0.15*"/>
@@ -80,23 +80,53 @@
 
                     </StackPanel>
                 </Grid>
-                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Label  Content="{Binding Id}"  />
-                                <Label  Content="       "  />
-                                <Label  Content="{Binding StyleNumber}"  />
-                                <Label  Content="       "  />
-                                <Label  Content="{Binding Sku}"  />
-                                <Label  Content="       "  />
-                                <Label  Content="{Binding ProductType.Name}"  />
-                            </StackPanel>
-
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+              
+                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                            <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
+                            <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
+                            <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
+                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
+                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
+                        </GridView>
+                    </ListView.View>
                 </ListView>
             </Grid>
+            <Grid Name="GrdInformationProduct" Margin="65,36,40,34">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.4*"/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text=" Style number" FontSize="40" TextAlignment="Center" VerticalAlignment="Bottom"  Foreground="#FF301F68" FontWeight="Bold"/>
+                <UniformGrid Grid.Row="1" Columns="2">
+                    <UniformGrid.Resources>
+                        <Style x:Key="Style1" TargetType="TextBlock" >
+                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Margin" Value="0 0 0 8" />
+                        </Style>
+                    </UniformGrid.Resources>
+                    <UniformGrid Rows="6">
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                    </UniformGrid>
+                    <UniformGrid Rows="6">
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                        <TextBlock Style="{StaticResource Style1}" Text="salam" />
+                    </UniformGrid>
+                </UniformGrid>
+            </Grid>
+
 
         </Grid>
     </Grid>

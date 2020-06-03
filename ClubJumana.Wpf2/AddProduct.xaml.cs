@@ -353,6 +353,7 @@ namespace ClubJumana.Wpf2
                 cmbProductType.IsEnabled = false;
                 cmbSubCategory.IsEnabled = true;
                 addTowel.Towels.Clear();
+
             }
         }
 

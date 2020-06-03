@@ -46,7 +46,19 @@ namespace ClubJumana.Core.DTOs
             set { _towel = value; }
         }
 
-        public List<Towel> Towels { get; set; }
+        private List<Towel> _towels;
+
+        public List<Towel> Towels
+        {
+            get { return _towels; }
+            set
+            {
+                _towels = value;
+                OnPropertyChanged();
+
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -55,4 +67,22 @@ namespace ClubJumana.Core.DTOs
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+   public class VariantViewModel
+   {
+       public int Id { get; set; }
+       public string Sku { get; set; }
+       public int? ProductFK { get; set; }
+       public int? ColourFK { get; set; }
+       public int? BarcodeFK { get; set; }
+       public int? ProductTypeFK { get; set; }
+       public float? Price { get; set; }
+       public string Size { get; set; }
+       public Product Product { get; set; }
+       public Colour Colour { get; set; }
+       public Barcode Barcode { get; set; }
+       public ProductType ProductType { get; set; }
+
+    }
+
 }

@@ -75,7 +75,7 @@ namespace ClubJumana.Wpf
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            lvProducts.ItemsSource = _repositoryService.AllProductList().ToList();
+            lvProducts.ItemsSource = _repositoryService.AllProductMasterList().ToList();
             itemsOfPurchaseOrderViewModel = new ObservableCollection<ItemsOfPurchaseOrderViewModel>();
             dgItems.ItemsSource = itemsOfPurchaseOrderViewModel;
 
@@ -588,7 +588,7 @@ namespace ClubJumana.Wpf
         private void BtnAddItem_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             ModeAddItem = true;
-            lvProducts.ItemsSource = _repositoryService.AllProductList().ToList();
+            lvProducts.ItemsSource = _repositoryService.AllProductMasterList().ToList();
             HidePanel();
             GrdProductList.Visibility = Visibility.Visible;
 

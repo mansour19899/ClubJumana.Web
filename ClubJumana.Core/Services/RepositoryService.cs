@@ -16,7 +16,7 @@ namespace ClubJumana.Core.Services
         {
             _context=new JummanaContext();
         }
-        public IQueryable<ProductMaster> AllProductList()
+        public IQueryable<ProductMaster> AllProductMasterList()
         {
             return _context.Products;
         }
@@ -100,6 +100,11 @@ namespace ClubJumana.Core.Services
         public IQueryable<Material> AllMaterialList()
         {
             return _context.Materials;
+        }
+
+        public IQueryable<Product> AllProductList()
+        {
+            return _context.Productw.Include(p=>p.Towels).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
         }
 
 

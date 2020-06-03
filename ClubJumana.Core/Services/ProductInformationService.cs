@@ -8,6 +8,7 @@ using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ClubJumana.Core.Services
@@ -110,6 +111,36 @@ namespace ClubJumana.Core.Services
         public Company ExistCompany(string CompanyName)
         {
             return _context.Companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
+        }
+
+        public List<VariantViewModel> AllVariantList()
+        {
+           List<VariantViewModel> list=new List<VariantViewModel>();
+
+           var towelList = _context.Towels.Include(p=>p.Product).Include(p=>p.ProductType).ThenInclude(p=>p.CategoriesSubCategory).Include(p=>p.Colour).ToList();
+
+           foreach (var VARIABLE in towelList)
+           {
+               list.Add(new VariantViewModel()
+               {
+                   Id = VARIABLE.Id,
+                   Sku = VARIABLE.Sku,
+                   ProductFK = VARIABLE.ProductFK,
+                   ColourFK = VARIABLE.ColourFK,
+                   BarcodeFK = VARIABLE.BarcodeFK,
+                   ProductTypeFK = VARIABLE.ProductTypeFK,
+                   Price = VARIABLE.Price,
+                   Size = VARIABLE.Size,
+                   Product = VARIABLE.Product,
+                   Colour = VARIABLE.Colour,
+                   Barcode = VARIABLE.Barcode,
+                   ProductType = VARIABLE.ProductType
+               });
+           }
+           
+           //Add another Variant 
+
+           return list;
         }
     }
 }

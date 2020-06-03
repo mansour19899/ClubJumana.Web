@@ -399,21 +399,6 @@
                             <GridViewColumn Header="Quantity" Width="300" DisplayMemberBinding="{Binding Path=ItemsPoCount}" />
                         </GridView>
                     </ListView.View>
-
-                    <!--<ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Label  Content="{Binding Id}"  />
-                            <Label  Content="       "  />
-                            <Label  Content="{Binding StyleNumber}"  />
-                            <Label  Content="       "  />
-                            <Label  Content="{Binding Size}"  />
-                            <Label  Content="       "  />
-                            <Label  Content="{Binding  Color}"  />
-                        </StackPanel>
-
-                    </DataTemplate>
-                </ListView.ItemTemplate>-->
                 </ListView>
 
             </Grid>
