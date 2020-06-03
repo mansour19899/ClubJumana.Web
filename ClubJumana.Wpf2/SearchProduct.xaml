@@ -138,7 +138,7 @@
                             <GridViewColumn Header="SKU" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="SKU" Click="AddSku" CommandParameter="{Binding}"/>
+                                        <Button Content="{Binding Sku}" Click="AddSku" CommandParameter="{Binding}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
