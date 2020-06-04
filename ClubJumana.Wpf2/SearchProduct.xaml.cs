@@ -35,10 +35,10 @@ namespace ClubJumana.Wpf2
         public SearchProduct()
         {
             InitializeComponent();
-            _repositoryService=new RepositoryService();
-            _productInformationService=new ProductInformationService();
-            SelectedList=new List<VariantViewModel>();
-            TempList=new List<VariantViewModel>();
+            _repositoryService = new RepositoryService();
+            _productInformationService = new ProductInformationService();
+            SelectedList = new List<VariantViewModel>();
+            TempList = new List<VariantViewModel>();
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
@@ -47,7 +47,7 @@ namespace ClubJumana.Wpf2
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
-            
+
             VaraintList = _productInformationService.AllVariantList();
 
             cmbType.ItemsSource = new[]{
@@ -120,7 +120,7 @@ namespace ClubJumana.Wpf2
                             .Where(p => p.Product.StyleNumber.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         break;
                     case "3":
-                        lvProducts.ItemsSource = VaraintList.Where(p=>p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim())==0).ToList();
+                        lvProducts.ItemsSource = VaraintList.Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).ToList();
                         txtSearch.Clear();
                         break;
                     case "4":
@@ -268,13 +268,13 @@ namespace ClubJumana.Wpf2
 
             var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
 
-           ShowProductInformation(wer.Product.Id);
+            ShowProductInformation(wer.Product.Id);
         }
 
         private void ShowProductInformation(int Id)
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
-            InfoProduct=new ProductInformationViewModel(SelectedProduct);
+            InfoProduct = new ProductInformationViewModel(SelectedProduct);
             lvVariant.ItemsSource = SelectedProduct.Towels.ToList();
             this.DataContext = InfoProduct;
 
@@ -298,7 +298,7 @@ namespace ClubJumana.Wpf2
         {
             Button b = sender as Button;
             Towel variantSelected = b.CommandParameter as Towel;
-            CostCenter cost=new CostCenter();
+            CostCenter cost = new CostCenter();
 
             cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
             cost.ExchangeRate = 1.37m;
@@ -307,25 +307,82 @@ namespace ClubJumana.Wpf2
             GrdCostCenter.Visibility = Visibility.Visible;
         }
 
+
+
+        #region CostCenter
+
         private void txtMainPrice_KeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = SetNumeric(sender, e, txtMainPrice);
+            e.Handled = SetNumeric(sender, e);
+            ControlKeyDown(e.Key, txtMainPrice);
         }
-
-
         private void txtCostRate_KeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = SetNumeric(sender, e, txtCostRate);
+            e.Handled = SetNumeric(sender, e);
+            ControlKeyDown(e.Key, txtCostRate);
+
+        }
+        private void TxtExChangeRate_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e);
+            ControlKeyDown(e.Key, txtExChangeRate);
         }
 
 
+        private void TxtMainPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtMainPrice.SelectAll();
+        }
 
-        public bool SetNumeric(object sender, KeyEventArgs e, TextBox txt)
+        private void TxtMainPrice_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtMainPrice.SelectAll();
+        }
+
+        private void TxtCostRate_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtCostRate.SelectAll();
+        }
+
+        private void TxtCostRate_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtCostRate.SelectAll();
+        }
+
+        private void TxtExChangeRate_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtExChangeRate.SelectAll();
+        }
+
+        private void TxtExChangeRate_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtExChangeRate.SelectAll();
+        }
+
+        #endregion
+
+        private void ControlKeyDown(Key keyPress, TextBox textBox)
+        {
+            if (keyPress == Key.Enter || keyPress == Key.Tab)
+            {
+                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+
+            }
+            else if (keyPress == Key.Escape)
+            {
+                textBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            }
+            else
+            {
+
+            }
+        }
+
+        public bool SetNumeric(object sender, KeyEventArgs e)
         {
             bool result = false;
-            var tr = (sender as TextBox).Text.IndexOf('.');
 
-            if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || (e.Key == Key.Back) || (e.Key == Key.Decimal))
+            if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || (e.Key == Key.Back) || (e.Key == Key.Decimal) || (e.Key == Key.Tab))
             { result = false; }
             else if ((e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key == Key.OemPeriod))
             { result = false; }
@@ -340,10 +397,13 @@ namespace ClubJumana.Wpf2
             {
                 result = true;
             }
-            var count = txt.Text.Split('.');
+            var hi = sender as TextBox;
+            var hii = hi.Text;
+            var count = hi.Text.Split('.');
+
             if (count.Count() > 1)
             {
-                if (count[1].Count() > 3)
+                if (count[1].Count() > 3 && e.Key != Key.Tab)
                 {
                     result = true;
                 }
@@ -351,9 +411,5 @@ namespace ClubJumana.Wpf2
             return result;
         }
 
-        private void TxtExChangeRate_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = SetNumeric(sender, e, txtExChangeRate);
-        }
     }
 }
