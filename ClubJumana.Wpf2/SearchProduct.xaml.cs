@@ -301,6 +301,9 @@ namespace ClubJumana.Wpf2
             CostCenter cost = new CostCenter();
 
             cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
+            cost.WholeSaleA = variantSelected.WholesaleA.ToString();
+            cost.WholeSaleB = variantSelected.WholesaleB.ToString();
+            cost.RetailPrice = variantSelected.RetailPrice.ToString();
             cost.ExchangeRate = 1.37m;
             cost.LandedCostRate = 18m;
             InfoProduct.CostCenter = cost;
@@ -411,5 +414,19 @@ namespace ClubJumana.Wpf2
             return result;
         }
 
+
+        private void BtnShowMoreInformation_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (GrdCostShowMore.Visibility == Visibility.Visible)
+                GrdCostShowMore.Visibility = Visibility.Collapsed;
+            else
+                GrdCostShowMore.Visibility = Visibility.Visible;
+        }
+
+        private void BtnCloseCostCenter_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdCostCenter.Visibility = Visibility.Hidden;
+            GrdCostShowMore.Visibility = Visibility.Collapsed;
+        }
     }
 }

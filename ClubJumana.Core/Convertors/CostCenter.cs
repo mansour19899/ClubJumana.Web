@@ -154,6 +154,9 @@ namespace ClubJumana.Core.Convertors
 
         }
 
+        public string WholeSaleA { get; set; }
+        public string WholeSaleB { get; set; }
+        public string RetailPrice { get; set; }
         private void Calculate()
         {
             _landedCostUSD = Math.Round((_fobPrice * (1 + (LandedCostRate / 100)) * 1.05m), 2, MidpointRounding.AwayFromZero);
@@ -170,7 +173,7 @@ namespace ClubJumana.Core.Convertors
 
             _landedCostD = Math.Round(_landedCostUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholesaleD = Math.Round(_wholesaleUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
-            _sales5D = Math.Round(_sales5D * 0.05m, 2, MidpointRounding.AwayFromZero);
+            _sales5D = Math.Round(_wholesaleD * 0.05m, 2, MidpointRounding.AwayFromZero);
             _creditIN10D = Math.Round(_creditIN10USD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholeCashD = Math.Round(_wholeCashUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholeCreditD = Math.Round(_wholeCreditUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
