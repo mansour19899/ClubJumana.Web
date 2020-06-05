@@ -10,10 +10,11 @@ namespace ClubJumana.Core.Services.Interfaces
     {
         public int AddTowel(AddTowelInformationViewModel product);
         public string GiveMeStyleNumber(int Category, int SubCategory);
+        public string GiveMeSku(string CategoryCode,string SubCategoryCode,string ProductTypeCode,string ColourCode);
         public Company ExistCompany(string CompanyName);
 
         public List<VariantViewModel> AllVariantList();
         public Product GiveMeProductWithId(int Id);
     }
-
+    
 }

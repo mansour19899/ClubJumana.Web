@@ -112,6 +112,20 @@ namespace ClubJumana.Core.Services
             return CategoryStyleCode + "." + SubCategoryCode + "." + newStyleNumber.ToString().NumtoStr(6); ;
         }
 
+        public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode, string ColourCode)
+            
+        {
+           // var yt = _context.Towels.ToCharArray().Skip(10).ToArray();
+            //var ytt = yt.SkipWhile(p => p.CompareTo('0') == 0).ToArray();
+            //var yttt = new string(ytt);
+            //var newSkuNumber = Convert.ToDecimal(yttt) + 1;
+
+            //string Sku = CategoryCode + SubCategoryCode + ProductTypeCode + ColourCode + newSkuNumber.ToString().NumtoStr(6);
+
+            return "";
+        }
+
+
         public Company ExistCompany(string CompanyName)
         {
             return _context.Companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);

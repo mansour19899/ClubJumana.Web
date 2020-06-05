@@ -20,9 +20,14 @@ namespace ClubJumana.DataLayer.Entities
         public float? length { get; set; }
         public string Size { get; set; }
         public string Note { get; set; }
+        public string Data1 { get; set; }
+        public string Data2 { get; set; }
+        public string Data3 { get; set; }
+        public string Data4 { get; set; }
+        public string Data5 { get; set; }
+        public string Data6 { get; set; }
         public DateTime LastDateEdited { get; set; }
         public byte[] RowVersion { get; set; }
-
         public Product Product { get; set; }
         public  Colour Colour { get; set; }
         public Barcode Barcode { get; set; }
