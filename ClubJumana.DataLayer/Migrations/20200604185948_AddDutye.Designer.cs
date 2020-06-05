@@ -4,14 +4,16 @@ using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200604185948_AddDutye")]
+    partial class AddDutye
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ClubJumana.DataLayer.Entities;
 using JetBrains.Annotations;
 
 namespace ClubJumana.Core.Convertors
@@ -35,7 +36,7 @@ namespace ClubJumana.Core.Convertors
                 //_retailUSD = _landedCostUSD * 4;
                 //_rtlGrossUSD = (_retailUSD - _landedCostUSD) / _retailUSD * 100;
 
-                if (_fobPrice == 0 || _landedCostRate == 0 || _exChangeRate == 1)
+                if (_fobPrice == -1 || _duty == -1 || _exChangeRate == 1)
                 {
 
                 }
@@ -49,16 +50,23 @@ namespace ClubJumana.Core.Convertors
             }
         }
 
-        private decimal _landedCostRate = 0;
-        public decimal LandedCostRate
+        private decimal _duty = -1;
+        public decimal Duty
         {
-            get => _landedCostRate;
+            get => _duty;
             set
             {
-                _landedCostRate = value;
+                _duty = value;
 
 
-               Calculate();
+                if (_fobPrice == -1 || _duty == -1 || _exChangeRate == 1)
+                {
+
+                }
+                else
+                {
+                    Calculate();
+                }
 
 
             }
@@ -74,14 +82,33 @@ namespace ClubJumana.Core.Convertors
                 _exChangeRate = value;
 
 
-                Calculate();
+                if (_fobPrice == -1 || _duty == -1 || _exChangeRate == 1)
+                {
+
+                }
+                else
+                {
+                    Calculate();
+                }
 
 
 
             }
         }
 
+        private string _landedCostRate;
 
+        public string LandedCostRate
+        {
+            get
+            {
+                return _landedCostRate;
+            }
+            set
+            {
+                _landedCostRate = value;
+            }
+        }
 
 
         private decimal _landedCostUSD ;
@@ -145,6 +172,32 @@ namespace ClubJumana.Core.Convertors
         private decimal _rtlGrossD = 0;
         public decimal RTLGrossD { get => _rtlGrossD; }
 
+        private Country _country;
+
+        public Country Country
+        {
+            get
+            {
+                return _country;
+            }
+            set
+            {
+                _country = value;
+                if (_country.ExChangeRate == null)
+                {
+                    _exChangeRate = -1;
+                    _country.Currency = "Error";
+                    Calculate();
+                }
+                else
+                {
+                    _exChangeRate = value.ExChangeRate.Value;
+                    Calculate();
+                }
+               
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -159,7 +212,7 @@ namespace ClubJumana.Core.Convertors
         public string RetailPrice { get; set; }
         private void Calculate()
         {
-            _landedCostUSD = Math.Round((_fobPrice * (1 + (LandedCostRate / 100)) * 1.05m), 2, MidpointRounding.AwayFromZero);
+            _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);
             _wholesaleUSD = Math.Round(_landedCostUSD * 1.55m, 2, MidpointRounding.AwayFromZero);
             _sales5USD = Math.Round(_wholesaleUSD * 0.05m, 2, MidpointRounding.AwayFromZero);
             _creditIN10USD = Math.Round(_wholesaleUSD * 0.1m + _sales5USD, 2, MidpointRounding.AwayFromZero);
@@ -182,6 +235,8 @@ namespace ClubJumana.Core.Convertors
             _retailD = Math.Round(_retailUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _rtlGrossD = Math.Round((_retailD - _landedCostD) / _retailD * 100, 2, MidpointRounding.AwayFromZero);
 
+            _landedCostRate = "Landed Cost Rate : " + (_duty + 15)+" %";
+
             OnPropertyChanged();
             OnPropertyChanged(nameof(LandedCostUSD));
             OnPropertyChanged(nameof(LandedCostD));
@@ -203,6 +258,9 @@ namespace ClubJumana.Core.Convertors
             OnPropertyChanged(nameof(RetailD));
             OnPropertyChanged(nameof(RTLGrossUSD));
             OnPropertyChanged(nameof(RTLGrossD));
+            OnPropertyChanged(nameof(LandedCostRate));
+            OnPropertyChanged(nameof(ExchangeRate));
+            OnPropertyChanged(nameof(Country));
         }
     }
 }

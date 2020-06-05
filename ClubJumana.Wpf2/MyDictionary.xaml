@@ -8,14 +8,15 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
     <Style x:Key="txtCostCentreStyle" TargetType="TextBox" >
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Height" Value="40" />
         <Setter Property="Padding" Value="5" />
-        <Setter Property="Margin" Value="10" />        
+        <Setter Property="Margin" Value="5" />        
     </Style>
     <Style x:Key="lblCostCentreStyle" TargetType="Label" >
-        <Setter Property="FontSize" Value="25" />
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Margin" Value="5" />
     </Style>

@@ -413,6 +413,8 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.ExChangeRate).HasColumnType("decimal(14,5)");
+                entity.Property(e => e.Duty).HasColumnType("decimal(5, 2)");
 
             });
             //----------------------------------- Brand ---------------------------------------

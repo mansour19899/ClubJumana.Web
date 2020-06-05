@@ -5,6 +5,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
+    <None Remove="Content\Images\Vanme Fashion - Logos 12.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="MaterialDesignColors" Version="1.2.4" />
@@ -24,5 +29,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ClubJumana.Core\ClubJumana.Core.csproj" />
     <ProjectReference Include="..\ClubJumana.DataLayer\ClubJumana.DataLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
+    <Resource Include="Content\Images\Vanme Fashion - Logos 12.jpg" />
   </ItemGroup>
 </Project>

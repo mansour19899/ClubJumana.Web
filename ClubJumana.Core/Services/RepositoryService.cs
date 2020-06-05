@@ -107,6 +107,11 @@ namespace ClubJumana.Core.Services
             return _context.Productw.Include(p=>p.Towels).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
         }
 
+        public Country GiveMeCountryByID(int Id)
+        {
+            return _context.Countries.FirstOrDefault(p => p.Id == Id);
+        }
+
 
         public IQueryable<Warehouse> AllWarehouse()
         {

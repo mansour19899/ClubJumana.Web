@@ -10,8 +10,18 @@
         Title="SearchProduct" Height="900" Width="1800" WindowState="Maximized" ShowInTaskbar="True" PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid>
-            <Rectangle Fill="#030D21" Margin="20" RadiusY="50" RadiusX="50" />
-            <Rectangle Margin="40" RadiusY="30" RadiusX="30" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.05*"/>
+                <RowDefinition Height="0.85*"/>
+            </Grid.RowDefinitions>
+            <UniformGrid Columns="3">
+                <Image  Grid.Row="0" Grid.Column="5"   Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg" Stretch="Uniform" Margin="0 -10 0 -10"  />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style"></TextBlock>
+                <Image Name="btnLogo"  Grid.Row="0" Grid.Column="5"   Source="Content/Images/Vanme Fashion - Logos 12.jpg" Stretch="Uniform" Margin="20 20 20 15" RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased" MouseDown="BtnLogo_OnMouseDown" />
+            </UniformGrid>
+            <Rectangle Grid.Row="1" Fill="#030D21" Margin="20 10 20 0" RadiusY="2" RadiusX="2"/>
+            <Rectangle Grid.Row="1" Margin="20 30 20 10">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFCC201" Offset="0"/>
@@ -19,155 +29,153 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Rectangle Fill="#030D21" Margin="50" RadiusY="20" RadiusX="20" />
-            <Rectangle Fill="White" Margin="60" RadiusY="10" RadiusX="10" />
-            <Grid Visibility="Visible" Name="GrSearch" Margin="65,36,40,34">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*" />
-                    <RowDefinition Height="0.15*"/>
-                    <RowDefinition Height="0.15*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="0.1*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="338*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="507*" />
-                        <ColumnDefinition Width="253*" />
-                        <ColumnDefinition Width="422*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
-                    <TextBox x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}"  Margin="10" Grid.Column="2" FontSize="36" KeyDown="TextBox_KeyDown"/>
-                    <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
-                    </ComboBox>
-                    <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel  Grid.Column="1">
-                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
-                            <ComboBox.Background>
-                                <ImageBrush/>
-                            </ComboBox.Background>
+            <ScrollViewer Name="GrSearch" Visibility="Visible" Grid.Row="2" Margin="0 20 50 0">
+                <Grid    Margin="65,36,40,34">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.15*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="0.1*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="338*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="507*" />
+                            <ColumnDefinition Width="253*" />
+                            <ColumnDefinition Width="422*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
+                        <TextBox x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}"  Margin="10" Grid.Column="2" FontSize="36" KeyDown="TextBox_KeyDown"/>
+                        <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
                         </ComboBox>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
-                    </StackPanel>
-                    <StackPanel Grid.Column="3">
-                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
-                    </StackPanel>
-                    <StackPanel Grid.Column="4">
-                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
-                    </StackPanel>
-                    <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
-                    <StackPanel Grid.Column="6">
-                        <Label FontSize="20"></Label>
-                        <Label Name="lblCountResult" FontSize="20">Company :</Label>
-                        <Label Name="lblCountSelectedList" FontSize="20"></Label>
-
-                    </StackPanel>
-                </Grid>
-
-                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
-                    <ListView.View>
-                        <GridView >
-                            <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
-                            <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
-                            <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
-                            <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
-                            <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
-                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
-                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-            <Grid Name="GrdInformationProduct" Margin="65,36,40,34" Visibility="Hidden">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.4*"/>
-                    <RowDefinition Height="0.5*"/>
-                </Grid.RowDefinitions>
-                <TextBlock  Text="{Binding StyleNumber}" FontSize="40" TextAlignment="Center" VerticalAlignment="Bottom"  Foreground="#FF301F68" FontWeight="Bold"/>
-                <UniformGrid Grid.Row="1" Columns="2"  Margin="50 20 0 0">
-                    <UniformGrid.Resources>
-                        <Style x:Key="Style1" TargetType="TextBlock" >
-                            <Setter Property="FontSize" Value="25" />
-                            <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="Margin" Value="0 0 0 8" />
-                        </Style>
-                    </UniformGrid.Resources>
-                    <UniformGrid Rows="6">
-                        <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Category, StringFormat= category : {0}}" />
-                        <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Subcategory, StringFormat= SubCategory : {0}}" />
-                        <TextBlock Style="{StaticResource Style1}" Text="{Binding ProductTittle, StringFormat= Product Tittle :  {0}}" />
-                        <TextBlock Style="{StaticResource Style1}" Text="{Binding CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
-                        <TextBlock Style="{StaticResource Style1}" Text="{Binding Company, StringFormat= Company : {0}}"/>
-                        <TextBlock Style="{StaticResource Style1}" Text="{Binding GSM, StringFormat= GSM : {0}}" />
-                    </UniformGrid>
-                    <UniformGrid Rows="2">
-                        <TextBlock Style="{StaticResource Style1}" Text="image" />
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource Style1}" Text="{Binding Material, StringFormat= Material : {0}}" />
-                            <TextBlock Style="{StaticResource Style1}" Text="Drscirbe Material :"/>
-                            <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  {}  {0}}" />
+                        <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Column="1">
+                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
+                            <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
+                                <ComboBox.Background>
+                                    <ImageBrush/>
+                                </ComboBox.Background>
+                            </ComboBox>
                         </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
+                            <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3">
+                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
+                            <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
+                            <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
+                        </StackPanel>
+                        <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
+                        <StackPanel Grid.Column="6">
+                            <Label FontSize="20"></Label>
+                            <Label Name="lblCountResult" FontSize="20">Company :</Label>
+                            <Label Name="lblCountSelectedList" FontSize="20"></Label>
 
+                        </StackPanel>
+                    </Grid>
+
+                    <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                                <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                                <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
+                                <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
+                                <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
+                                <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
+                                <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+            <ScrollViewer Name="GrdInformationProduct" Grid.Row="2" Margin="0 0 0 0" Visibility="Hidden">
+                <Grid  Margin="65,36,40,34" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.4*"/>
+                    </Grid.RowDefinitions>
+                    <UniformGrid Grid.Row="0" Columns="2"  Margin="50 20 0 0">
+                        <UniformGrid.Resources>
+                            <Style x:Key="Style1" TargetType="TextBlock" >
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Margin" Value="0 0 0 8" />
+                            </Style>
+                        </UniformGrid.Resources>
+                        <UniformGrid Rows="9">
+                            <TextBlock Name="txtCategoryw" Style="{StaticResource Style1}" Text="{Binding StyleNumber, StringFormat= Style Nember : {0}}" />
+                            <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Category, StringFormat= Category : {0}}" />
+                            <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Subcategory, StringFormat= SubCategory : {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding ProductTittle, StringFormat= Product Tittle :  {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding Company, StringFormat= Company : {0}}"/>
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding GSM, StringFormat= GSM : {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding Material, StringFormat= Material : {0}}" />
+                            <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  Describe :  {0}}" />
+                        </UniformGrid>
+                        <UniformGrid Rows="2">
+                            <TextBlock Style="{StaticResource Style1}" Text="image" />
+                            <StackPanel>
+                            </StackPanel>
+
+                        </UniformGrid>
                     </UniformGrid>
-                </UniformGrid>
-                <ListView SelectionMode="Multiple" Name="lvVariant" Grid.Row="3" Margin="70 10 70 60" FontSize="20" ItemsSource="{Binding Towels}" >
-                    <ListView.View>
-                        <GridView >
-                            <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}"/>
-                            <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
-                            <GridViewColumn Header="Size" Width="140" DisplayMemberBinding="{Binding Path=Size}" />
-                            <GridViewColumn Header="F.O.B Price(US)"  Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding Path=FobPrice}" Width="100" Click="BtnInformationPrice" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="SKU" Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding Sku}" Width="150" Click="AddSku" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Barcode" Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="BarCode" Width="150" Click="AddBarcode" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Wholesale A" Width="200" DisplayMemberBinding="{Binding Path=WholesaleA}" />
-                            <GridViewColumn Header="Wholesale B" Width="200" DisplayMemberBinding="{Binding Path=WholesaleB}" />
-                            <GridViewColumn Header="Retail Price" Width="200" DisplayMemberBinding="{Binding Path=RetailPrice}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-            <Grid Name="GrdCostCenter" Background="#80B9ADAD" RowSpan="2" ColumnSpan="2" Visibility="Visible" >
-                <Border  MinWidth="400" MinHeight="800" MaxWidth="1200" MaxHeight="700"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding Towels}" >
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}"/>
+                                <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
+                                <GridViewColumn Header="Size" Width="140" DisplayMemberBinding="{Binding Path=Size}" />
+                                <GridViewColumn Header="F.O.B Price(US)"  Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding Path=FobPrice}" Width="100" Click="BtnInformationPrice" CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="SKU" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding Sku}" Width="150" Click="AddSku" CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Barcode" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="BarCode" Width="150" Click="AddBarcode" CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Wholesale A" Width="200" DisplayMemberBinding="{Binding Path=WholesaleA}" />
+                                <GridViewColumn Header="Wholesale B" Width="200" DisplayMemberBinding="{Binding Path=WholesaleB}" />
+                                <GridViewColumn Header="Retail Price" Width="200" DisplayMemberBinding="{Binding Path=RetailPrice}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+            <Grid   Name="GrdCostCenter" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
+                <Border  MinWidth="400" MinHeight="800" MaxWidth="1200" MaxHeight="900"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
+                    <ScrollViewer Name="ScrollViewerCostCenter" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.1*"/>
@@ -179,6 +187,7 @@
                                 <Label Content="Cost Center" FontSize="40" FontWeight="Bold" Foreground="Navy"/>
                                 <Button
                                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="300 0 0 0" Name="btnCloseCostCenter" Click="BtnCloseCostCenter_OnClick"
+
                                     >
                                     <TextBlock Text="X" FontSize="25"/>
                                 </Button>
@@ -204,7 +213,7 @@
                                             </TextBlock>
                                             <Separator
                                                 Style="{StaticResource MaterialDesignLightSeparator}" />
-                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding CostCenter.WholeSaleA}"/>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"  Text="{Binding CostCenter.WholeSaleA}"/>
                                         </StackPanel>
                                     </materialDesign:Card>
                                     <materialDesign:Card
@@ -294,29 +303,30 @@
                                                 <RowDefinition></RowDefinition>
                                                 <RowDefinition></RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="30"/>
-                                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Landed Cost Rate    " FontSize="30"/>
-                                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="ExChange Rate    " FontSize="30"/>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture" Height="39" Margin="10,10,10,0" VerticalAlignment="Top" >
+                                            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="25"/>
+                                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Duty    " FontSize="25"/>
+                                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="ExChange Rate    " FontSize="25"/>
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture"  Margin="10,10,10,-5" VerticalAlignment="Top" >
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding CostCenter.LandedCostRate,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding CostCenter.Duty,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus"  Margin="10,0,10,-5">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding CostCenter.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding CostCenter.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus"  Margin="10,0,10,15">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
 
-                                            <StackPanel Margin="10" Grid.Row="1" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                            <StackPanel Margin="10" Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                                                 <Label Content="%" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
-                                                <TextBox FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">DropDown</TextBox>
+                                                <Label Content="{Binding CostCenter.LandedCostRate}" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
                                             </StackPanel>
+                                            <ComboBox Name="cmbCountry" Grid.Row="2" SelectedIndex="37" Grid.Column="2" FontSize="20" DisplayMemberPath="Name" SelectedValuePath="Id" MaxWidth="300" SelectionChanged="CmbCountry_OnSelectionChanged" />
 
                                         </Grid>
                                         <Grid  Margin="0 0 0 50" >
@@ -341,8 +351,8 @@
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="USD" FontSize="30"/>
-                                            <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="CAD" FontSize="30"/>
+                                            <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="USD" FontSize="25"/>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding CostCenter.Country.Currency}" FontSize="25"/>
                                             <Label Grid.Row="1" Grid.Column="1" Content=" Landed Cost" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="2" Grid.Column="1" Content=" Wholesale Price" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="3" Grid.Column="1" Content=" Sales Com 5%" Style="{StaticResource lblCostCentreStyle}"  />

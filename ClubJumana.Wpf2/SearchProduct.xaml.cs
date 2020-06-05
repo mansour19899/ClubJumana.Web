@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,6 +33,8 @@ namespace ClubJumana.Wpf2
         List<VariantViewModel> SelectedList;
         Product SelectedProduct;
         private ProductInformationViewModel InfoProduct;
+        private List<Country> countriesList;
+        private CostCenter cost;
 
         bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
@@ -47,6 +53,9 @@ namespace ClubJumana.Wpf2
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
+
+            countriesList= _repositoryService.AllCountriesList().ToList();
+            cmbCountry.ItemsSource = countriesList;
 
             VaraintList = _productInformationService.AllVariantList();
 
@@ -298,14 +307,21 @@ namespace ClubJumana.Wpf2
         {
             Button b = sender as Button;
             Towel variantSelected = b.CommandParameter as Towel;
-            CostCenter cost = new CostCenter();
+            cost = new CostCenter();
 
             cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
             cost.WholeSaleA = variantSelected.WholesaleA.ToString();
             cost.WholeSaleB = variantSelected.WholesaleB.ToString();
             cost.RetailPrice = variantSelected.RetailPrice.ToString();
-            cost.ExchangeRate = 1.37m;
-            cost.LandedCostRate = 18m;
+            var country = _repositoryService.GiveMeCountryByID(38);
+            if (country.ExChangeRate == null)
+                cost.ExchangeRate = -1;
+            else
+                cost.ExchangeRate = country.ExChangeRate.Value;
+            if (variantSelected.Product.CountryOfOrgin.Duty != null)
+                cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+            else
+                cost.Duty = -1;
             InfoProduct.CostCenter = cost;
             GrdCostCenter.Visibility = Visibility.Visible;
         }
@@ -418,15 +434,46 @@ namespace ClubJumana.Wpf2
         private void BtnShowMoreInformation_OnGotMouseCapture(object sender, MouseEventArgs e)
         {
             if (GrdCostShowMore.Visibility == Visibility.Visible)
+            {
                 GrdCostShowMore.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 GrdCostShowMore.Visibility = Visibility.Visible;
+                ScrollViewerCostCenter.ScrollToVerticalOffset(500);
+            }
+
         }
 
         private void BtnCloseCostCenter_OnClick(object sender, RoutedEventArgs e)
         {
             GrdCostCenter.Visibility = Visibility.Hidden;
             GrdCostShowMore.Visibility = Visibility.Collapsed;
+        }
+
+        private void CmbCountry_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cost != null)
+            {
+                var t = countriesList.FirstOrDefault(p => p.Id == cmbCountry.SelectedIndex + 1);
+                if (t != null)
+                    cost.Country = t;
+            }
+        }
+
+
+        private void BtnLogo_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (GrdInformationProduct.Visibility == Visibility.Visible)
+            {
+                GrdInformationProduct.Visibility = Visibility.Hidden;
+                GrSearch.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                GrdInformationProduct.Visibility = Visibility.Visible;
+                GrSearch.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

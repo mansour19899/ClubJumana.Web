@@ -29,5 +29,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Material> AllMaterialList();
         IQueryable<Product> AllProductList();
 
+        Country GiveMeCountryByID(int Id);
+
     }
 }
