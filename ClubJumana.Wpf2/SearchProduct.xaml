@@ -29,83 +29,81 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <ScrollViewer Name="GrSearch" Visibility="Visible" Grid.Row="2" Margin="0 20 50 0">
-                <Grid    Margin="65,36,40,34">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.1*" />
-                        <RowDefinition Height="0.15*"/>
-                        <RowDefinition Height="0.15*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="0.1*" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="338*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="507*" />
-                            <ColumnDefinition Width="253*" />
-                            <ColumnDefinition Width="422*" />
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
-                        <TextBox x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}"  Margin="10" Grid.Column="2" FontSize="36" KeyDown="TextBox_KeyDown"/>
-                        <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
-                        </ComboBox>
-                        <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel  Grid.Column="1">
-                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
-                            <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
-                                <ComboBox.Background>
-                                    <ImageBrush/>
-                                </ComboBox.Background>
-                            </ComboBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
-                            <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="3">
-                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
-                            <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="4">
-                            <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
-                            <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
-                        </StackPanel>
-                        <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
-                        <StackPanel Grid.Column="6">
-                            <Label FontSize="20"></Label>
-                            <Label Name="lblCountResult" FontSize="20">Company :</Label>
-                            <Label Name="lblCountSelectedList" FontSize="20"></Label>
-
-                        </StackPanel>
-                    </Grid>
-
-                    <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
-                        <ListView.View>
-                            <GridView >
-                                <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
-                                <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
-                                <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
-                                <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
-                                <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
-                                <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
-                                <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+            <Grid   Name="GrSearch" Visibility="Visible" Grid.Row="2" Margin="0 20 50 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*" />
+                    <RowDefinition Height="0.15*"/>
+                    <RowDefinition Height="0.15*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="0.1*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="338*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="507*" />
+                        <ColumnDefinition Width="253*" />
+                        <ColumnDefinition Width="422*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
+                    <TextBox  x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}" Height="60" Grid.Column="2" FontSize="25" KeyDown="TextBox_KeyDown"/>
+                    <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
+                    </ComboBox>
+                    <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
                 </Grid>
-            </ScrollViewer>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Grid.Column="1">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
+                            <ComboBox.Background>
+                                <ImageBrush/>
+                            </ComboBox.Background>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
+                    <StackPanel Grid.Column="6">
+                        <Label FontSize="20"></Label>
+                        <Label Name="lblCountResult" FontSize="20">Company :</Label>
+                        <Label Name="lblCountSelectedList" FontSize="20"></Label>
+
+                    </StackPanel>
+                </Grid>
+
+                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                            <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
+                            <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
+                            <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
+                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
+                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
             <ScrollViewer Name="GrdInformationProduct" Grid.Row="2" Margin="0 0 0 0" Visibility="Hidden">
                 <Grid  Margin="65,36,40,34" >
                     <Grid.RowDefinitions>
