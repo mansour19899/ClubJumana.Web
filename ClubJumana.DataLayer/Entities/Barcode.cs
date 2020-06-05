@@ -10,8 +10,7 @@ namespace ClubJumana.DataLayer.Entities
         public string BarcodeNumber { get; set; }
         public bool Active { get; set; }
 
-       public Towel Towel { get; set; }
-       public Beding Beding { get; set; }
+       public Variant Variant { get; set; }
 
     }
 }

@@ -21,14 +21,14 @@ namespace ClubJumana.Core.Services
         {
             _context = new JummanaContext();
         }
-        public int AddTowel(AddTowelInformationViewModel TowelInformation)
+        public int AddTowel(AddVariantInformationViewModel TowelInformation)
         {
 
 
             if (TowelInformation.company.Id == 0)
             {
                 int CompanyId = 1;
-                if (EnumerableExtensions.Any(_context.Productw))
+                if (EnumerableExtensions.Any(_context.Products))
                 {
                     TowelInformation.company.Id = _context.Companies.Max(x => x.Id) + 1;
                 }
@@ -39,12 +39,12 @@ namespace ClubJumana.Core.Services
 
 
             int Id = 1;
-            if (EnumerableExtensions.Any(_context.Productw))
+            if (EnumerableExtensions.Any(_context.Products))
             {
-                Id = _context.Productw.Max(x => x.Id)+1;
+                Id = _context.Products.Max(x => x.Id)+1;
             }
 
-            _context.Productw.Add(new Product()
+            _context.Products.Add(new Product()
             {
                 Id = Id,
                 StyleNumber = TowelInformation.Product.StyleNumber,
@@ -58,14 +58,14 @@ namespace ClubJumana.Core.Services
             });
 
             int TowelId = 1;
-            if (EnumerableExtensions.Any(_context.Towels))
+            if (EnumerableExtensions.Any(_context.Variants))
             {
-                TowelId = _context.Towels.Max(x => x.Id) + 1;
+                TowelId = _context.Variants.Max(x => x.Id) + 1;
             }
 
-            foreach (var VARIABLE in TowelInformation.Towels)
+            foreach (var VARIABLE in TowelInformation.Variants)
             {
-                _context.Towels.Add(new Towel()
+                _context.Variants.Add(new Variant()
                 {
                     Id = TowelId,
                     ProductFK = Id,
@@ -80,7 +80,7 @@ namespace ClubJumana.Core.Services
                     Size = VARIABLE.Size,
                     Note = VARIABLE.Note,
                     LastDateEdited = DateTime.Now,
-                    Gsm = VARIABLE.Gsm
+                    Data1 = VARIABLE.Data1
                 });
                 TowelId++;
             }
@@ -94,7 +94,7 @@ namespace ClubJumana.Core.Services
             var CategoryStyleCode = _context.Categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
             var SubCategoryCode = _context.SubCategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _context.Productw.ToList().LastOrDefault();
+            var tt = _context.Products.ToList().LastOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
@@ -135,7 +135,7 @@ namespace ClubJumana.Core.Services
         {
            List<VariantViewModel> list=new List<VariantViewModel>();
 
-           var towelList = _context.Towels.Include(p=>p.Product).Include(p=>p.ProductType).ThenInclude(p=>p.CategoriesSubCategory).Include(p=>p.Colour).ToList();
+           var towelList = _context.Variants.Include(p=>p.Product).Include(p=>p.ProductType).ThenInclude(p=>p.CategoriesSubCategory).Include(p=>p.Colour).ToList();
 
            foreach (var VARIABLE in towelList)
            {
@@ -166,9 +166,9 @@ namespace ClubJumana.Core.Services
 
         public Product GiveMeProductWithId(int Id)
         {
-            var product = _context.Productw.Include(p=>p.Company).Include(p=>p.Material)
-                .Include(p=>p.Brand).Include(p=>p.Towels).ThenInclude(p=>p.ProductType)
-                .ThenInclude(p=>p.CategoriesSubCategory).ThenInclude(p=>p.Category).Include(p => p.Towels).ThenInclude(p => p.ProductType)
+            var product = _context.Products.Include(p=>p.Company).Include(p=>p.Material)
+                .Include(p=>p.Brand).Include(p=>p.Variants).ThenInclude(p=>p.ProductType)
+                .ThenInclude(p=>p.CategoriesSubCategory).ThenInclude(p=>p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
                 .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p=>p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
 
 

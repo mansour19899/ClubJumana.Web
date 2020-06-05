@@ -11,8 +11,7 @@ namespace ClubJumana.DataLayer.Entities
         public string PantoneNumber { get; set; }
         public string Code { get; set; }
 
-        public ICollection<Towel> Towels { get; set; }
-        public ICollection<Beding> Bedings { get; set; }
+        public ICollection<Variant> Variants { get; set; }
 
     }
 }

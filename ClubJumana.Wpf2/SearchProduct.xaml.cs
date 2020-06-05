@@ -284,7 +284,7 @@ namespace ClubJumana.Wpf2
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
             InfoProduct = new ProductInformationViewModel(SelectedProduct);
-            lvVariant.ItemsSource = SelectedProduct.Towels.ToList();
+            lvVariant.ItemsSource = SelectedProduct.Variants.ToList();
             this.DataContext = InfoProduct;
 
             GrSearch.Visibility = Visibility.Hidden;
@@ -294,7 +294,7 @@ namespace ClubJumana.Wpf2
         private void AddSku(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
-            Towel productCategory = b.CommandParameter as Towel;
+            Variant productCategory = b.CommandParameter as Variant;
             MessageBox.Show(productCategory.Size);
         }
 
@@ -306,7 +306,7 @@ namespace ClubJumana.Wpf2
         private void BtnInformationPrice(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
-            Towel variantSelected = b.CommandParameter as Towel;
+            Variant variantSelected = b.CommandParameter as Variant;
             cost = new CostCenter();
 
             cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);

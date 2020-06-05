@@ -18,7 +18,7 @@ namespace ClubJumana.Core.Services
         }
         public IQueryable<ProductMaster> AllProductMasterList()
         {
-            return _context.Products;
+            return _context.ProductMasters;
         }
 
         public IQueryable<PurchaseOrder> AllPurchaseOrder()
@@ -104,7 +104,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Product> AllProductList()
         {
-            return _context.Productw.Include(p=>p.Towels).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
+            return _context.Products.Include(p=>p.Variants).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
         }
 
         public Country GiveMeCountryByID(int Id)

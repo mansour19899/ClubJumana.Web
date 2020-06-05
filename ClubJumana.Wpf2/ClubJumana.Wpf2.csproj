@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\Images\ClubJummanaLogo.jpg" />
     <None Remove="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
     <None Remove="Content\Images\Vanme Fashion - Logos 12.jpg" />
+    <None Remove="Content\Images\VanmeFasionLogo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
@@ -32,7 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Content\Images\ClubJummanaLogo.jpg" />
     <Resource Include="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
     <Resource Include="Content\Images\Vanme Fashion - Logos 12.jpg" />
+    <Resource Include="Content\Images\VanmeFasionLogo.jpg" />
   </ItemGroup>
 </Project>

@@ -16,9 +16,9 @@
                 <RowDefinition Height="0.85*"/>
             </Grid.RowDefinitions>
             <UniformGrid Columns="3">
-                <Image  Grid.Row="0" Grid.Column="5"   Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg" Stretch="Uniform" Margin="0 -10 0 -10"  />
+                <Image  Grid.Row="0" Grid.Column="5"   Source="Content/Images/ClubJummanaLogo.jpg" Stretch="Uniform" Margin="0 -10 0 -10"  />
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style"></TextBlock>
-                <Image Name="btnLogo"  Grid.Row="0" Grid.Column="5"   Source="Content/Images/Vanme Fashion - Logos 12.jpg" Stretch="Uniform" Margin="20 20 20 15" RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.EdgeMode="Aliased" MouseDown="BtnLogo_OnMouseDown" />
+                <Image Name="btnLogo"  Grid.Row="0" Grid.Column="5"   Source="Content/Images/VanmeFasionLogo.jpg" Stretch="Uniform"   MouseDown="BtnLogo_OnMouseDown" />
             </UniformGrid>
             <Rectangle Grid.Row="1" Fill="#030D21" Margin="20 10 20 0" RadiusY="2" RadiusX="2"/>
             <Rectangle Grid.Row="1" Margin="20 30 20 10">

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClubJumana.DataLayer.Entities
 {
-  public abstract class Variant
+  public  class Variant
     {
         public int Id { get; set; }
         public string Sku { get; set; }

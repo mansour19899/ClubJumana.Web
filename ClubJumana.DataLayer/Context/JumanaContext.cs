@@ -17,7 +17,7 @@ namespace ClubJumana.DataLayer.Context
         //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm35;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
         }
         #region User
 
@@ -26,7 +26,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
 
-        public DbSet<ProductMaster> Products { get; set; }
+        public DbSet<ProductMaster> ProductMasters { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
@@ -40,9 +40,8 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Province> Provinces { get; set; }
 
 
-        public DbSet<Product> Productw { get; set; }
-        public DbSet<Towel> Towels { get; set; }
-        public DbSet<Beding> Bedings { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Variant> Variants { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -325,7 +324,7 @@ namespace ClubJumana.DataLayer.Context
 
             });
             //----------------------------------- Towel ---------------------------------------
-            modelBuilder.Entity<Towel>(entity =>
+            modelBuilder.Entity<Variant>(entity =>
             {
 
                 entity.HasKey(e => e.Id);
@@ -333,37 +332,18 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<ProductType>(s => s.ProductType)
-                    .WithMany(g => g.Towels)
+                    .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ProductTypeFK);
 
                 entity.HasOne<Colour>(s => s.Colour)
-                    .WithMany(g => g.Towels)
+                    .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ColourFK);
 
                 entity.HasOne<Product>(s => s.Product)
-                    .WithMany(g => g.Towels)
+                    .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ProductFK);
             });
-            //----------------------------------- Beding ---------------------------------------
-            modelBuilder.Entity<Beding>(entity =>
-            {
 
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(p => p.RowVersion).IsRowVersion();
-
-                entity.HasOne<ProductType>(s => s.ProductType)
-                    .WithMany(g => g.Bedings)
-                    .HasForeignKey(s => s.ProductTypeFK);
-
-                entity.HasOne<Colour>(s => s.Colour)
-                    .WithMany(g => g.Bedings)
-                    .HasForeignKey(s => s.ColourFK);
-
-                entity.HasOne<Product>(s => s.Product)
-                    .WithMany(g => g.Bedings)
-                    .HasForeignKey(s => s.ProductFK);
-            });
             //----------------------------------- Barcode ---------------------------------------
             modelBuilder.Entity<Barcode>(entity =>
             {
@@ -371,13 +351,9 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.HasOne(e => e.Towel)
+                entity.HasOne(e => e.Variant)
                     .WithOne(e => e.Barcode)
-                    .HasForeignKey<Towel>(p => p.BarcodeFK);
-
-                entity.HasOne(e => e.Beding)
-                    .WithOne(e => e.Barcode)
-                    .HasForeignKey<Beding>(p => p.BarcodeFK);
+                    .HasForeignKey<Variant>(p => p.BarcodeFK);
             });
             //----------------------------------- Image ---------------------------------------
             modelBuilder.Entity<Image>(entity =>

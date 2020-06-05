@@ -21,7 +21,7 @@ namespace ClubJumana.Wpf2
     /// </summary>
     public partial class AddProduct : Window
     {
-        private AddTowelInformationViewModel addTowel;
+        private AddVariantInformationViewModel addVariant;
         private RepositoryService _repositoryService;
         private ProductInformationService _productInformationService;
         List<ScrollViewer> panels;
@@ -62,10 +62,10 @@ namespace ClubJumana.Wpf2
             cmbColors.ItemsSource = coloursList;
             cmbMaterial.ItemsSource = materialsList;
 
-            addTowel = new AddTowelInformationViewModel();
+            addVariant = new AddVariantInformationViewModel();
 
-            this.DataContext = addTowel;
-            var tt = addTowel.Product.MaterialFK;
+            this.DataContext = addVariant;
+            var tt = addVariant.Product.MaterialFK;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -84,7 +84,7 @@ namespace ClubJumana.Wpf2
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(addTowel.company.CompanyName))
+            if (!String.IsNullOrWhiteSpace(addVariant.company.CompanyName))
             {
                 if (step == 2)
                 {
@@ -134,29 +134,31 @@ namespace ClubJumana.Wpf2
             else
             {
                 MessageBox.Show("Enter Company Name");
-                addTowel.company.CompanyName = "";
+                addVariant.company.CompanyName = "";
             }
 
             void AddVariant()
             {
-                addTowel.Towels.Add(new Towel()
+                addVariant.Variants.Add(new Variant()
                 {
-                    ColourFK = addTowel.Towel.ColourFK,
+                    ColourFK = addVariant.Variant.ColourFK,
                     Colour = new Colour() { Name = cmbColors.Text },
-                    ProductTypeFK = addTowel.Towel.ProductTypeFK,
+                    ProductTypeFK = addVariant.Variant.ProductTypeFK,
                     ProductType = new ProductType() { Name = cmbProductType.Text},
-                    FobPrice = addTowel.Towel.FobPrice,
-                    WholesaleA = addTowel.Towel.WholesaleA,
-                    WholesaleB = addTowel.Towel.WholesaleB,
-                    RetailPrice = addTowel.Towel.RetailPrice,
-                    Width = addTowel.Towel.Width,
-                    length = addTowel.Towel.length,
-                    Size = addTowel.Towel.Size,
-                    Note = addTowel.Towel.Note,
-                    Gsm = addTowel.Towel.Gsm,
+                    FobPrice = addVariant.Variant.FobPrice,
+                    WholesaleA = addVariant.Variant.WholesaleA,
+                    WholesaleB = addVariant.Variant.WholesaleB,
+                    RetailPrice = addVariant.Variant.RetailPrice,
+                    Width = addVariant.Variant.Width,
+                    length = addVariant.Variant.length,
+                    Size = addVariant.Variant.Size,
+                    Note = addVariant.Variant.Note,
+                    Data1 = addVariant.Variant.Data1,
                     
                 });
             }
+
+            var t = addVariant;
         }
 
         private void PeriveweAndPrepareForAdd()
@@ -255,14 +257,14 @@ namespace ClubJumana.Wpf2
 
                 //product.Company_Id_fk = newCompanyId;
                 //product.DescribeMaterial = txtDescribeMaterial.Text;
-                addTowel.Product.StyleNumber =
+                addVariant.Product.StyleNumber =
                     _productInformationService.GiveMeStyleNumber(cmbCategory.SelectedIndex,
                         cmbSubCategory.SelectedIndex);
-                StringBuilder Review = new StringBuilder(String.Format($" StyleNumber : {addTowel.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
-                                                                       $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addTowel.Towels.FirstOrDefault().Gsm}" +
+                StringBuilder Review = new StringBuilder(String.Format($" StyleNumber : {addVariant.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
+                                                                       $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addVariant.Variants.FirstOrDefault().Data1}" +
                                                                        $" \n\n Material : {cmbMaterial.Text} " +
-                                                                       $"\n\n\n\n Descibe Material :\n{addTowel.Product.DescribeMaterial}"));
-                lvVariants.ItemsSource = addTowel.Towels;
+                                                                       $"\n\n\n\n Descibe Material :\n{addVariant.Product.DescribeMaterial}"));
+                lvVariants.ItemsSource = addVariant.Variants;
                 //foreach (var VARIABLE in addTowel.Towels)
                 //{
                 //    Review.AppendLine(string.Format($"Product Type: {cmbProductType.Text.Trim()} Color :{cmbColors.Text.Trim()} GSM : {addTowel.Towel.Gsm}   Price:{addTowel.Towel.Price}\n\n"));
@@ -309,7 +311,7 @@ namespace ClubJumana.Wpf2
 
         private void BtnYesForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            _productInformationService.AddTowel(addTowel);
+            _productInformationService.AddTowel(addVariant);
             MessageBox.Show("Product Added");
         }
 
@@ -332,9 +334,9 @@ namespace ClubJumana.Wpf2
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    addTowel.Towels.RemoveAt(lvVariants.SelectedIndex);
+                    addVariant.Variants.RemoveAt(lvVariants.SelectedIndex);
                     lvVariants.ItemsSource = null;
-                    lvVariants.ItemsSource = addTowel.Towels;
+                    lvVariants.ItemsSource = addVariant.Variants;
                     
                     break;
                 case MessageBoxResult.No:
@@ -355,7 +357,7 @@ namespace ClubJumana.Wpf2
                 cmbSubCategory.SelectedIndex = 0;
                 cmbProductType.IsEnabled = false;
                 cmbSubCategory.IsEnabled = true;
-                addTowel.Towels.Clear();
+                addVariant.Variants.Clear();
 
             }
         }
@@ -373,7 +375,7 @@ namespace ClubJumana.Wpf2
                     cmbProductType.ItemsSource = tt;
                     cmbProductType.SelectedIndex = 0;
                     cmbProductType.IsEnabled = true;
-                    addTowel.Towels.Clear();
+                    addVariant.Variants.Clear();
                 }
 
 
@@ -390,7 +392,7 @@ namespace ClubJumana.Wpf2
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        addTowel.company = ExsitCompany;
+                        addVariant.company = ExsitCompany;
 
                         break;
                     case MessageBoxResult.No:

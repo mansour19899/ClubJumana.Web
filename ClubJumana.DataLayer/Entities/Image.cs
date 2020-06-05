@@ -11,7 +11,6 @@ namespace ClubJumana.DataLayer.Entities
         public int TowelFK { get; set; }
         public int BedingFK { get; set; }
 
-        public Towel Towel { get; set; }
-        public Beding Beding { get; set; }
+        public Variant Variant { get; set; }
     }
 }

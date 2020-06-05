@@ -8,7 +8,7 @@ namespace ClubJumana.Core.Services.Interfaces
 {
     interface IProductInformationService
     {
-        public int AddTowel(AddTowelInformationViewModel product);
+        public int AddTowel(AddVariantInformationViewModel product);
         public string GiveMeStyleNumber(int Category, int SubCategory);
         public string GiveMeSku(string CategoryCode,string SubCategoryCode,string ProductTypeCode,string ColourCode);
         public Company ExistCompany(string CompanyName);

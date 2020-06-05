@@ -11,7 +11,6 @@ namespace ClubJumana.DataLayer.Entities
         public string Code { get; set; }
         public int CategorysubcategoreisFK { get; set; }
         public CategoriesSubCategory CategoriesSubCategory { get; set; }
-        public ICollection<Towel> Towels { get; set; }
-        public ICollection<Beding> Bedings { get; set; }
+        public ICollection<Variant> Variants { get; set; }
     }
 }

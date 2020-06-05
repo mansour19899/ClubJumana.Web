@@ -4,14 +4,16 @@ using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200605174740_RemoveTowel")]
+    partial class RemoveTowel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,7 +412,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("MaterialFK");
 
-                    b.ToTable("Products");
+                    b.ToTable("Productw");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductInventoryWarehouse", b =>
@@ -550,7 +552,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductMasters");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductType", b =>
@@ -1212,7 +1214,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("ProductTypeFK");
 
-                    b.ToTable("Variants");
+                    b.ToTable("Towels");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Vendor", b =>

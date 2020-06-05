@@ -115,11 +115,11 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <Label Content="Category" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.CategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbCategory_OnSelectionChanged" IsEnabled="True" />
+                        <ComboBox Name="cmbCategory" SelectedValue="{Binding Variant.ProductType.CategoriesSubCategory.CategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbCategory_OnSelectionChanged" IsEnabled="True" />
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="1">
                         <Label Content="Sub Category" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbSubCategory" SelectedValue="{Binding Towel.ProductType.CategoriesSubCategory.SubCategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbSubCategory_OnSelectionChanged" IsEnabled="False" />
+                        <ComboBox Name="cmbSubCategory" SelectedValue="{Binding Variant.ProductType.CategoriesSubCategory.SubCategoryFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbSubCategory_OnSelectionChanged" IsEnabled="False" />
                     </StackPanel>
                   
                     <StackPanel Grid.Row="1" Grid.Column="0">
@@ -168,31 +168,31 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="1">
                         <Label Content="Color" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbColors" SelectedValue="{Binding Towel.ColourFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" />
+                        <ComboBox Name="cmbColors" SelectedValue="{Binding Variant.ColourFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" />
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <Label Content="Product Type" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbProductType" SelectedValue="{Binding Towel.ProductTypeFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" IsEnabled="False" />
+                        <ComboBox Name="cmbProductType" SelectedValue="{Binding Variant.ProductTypeFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" IsEnabled="False" />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0">
                         <Label Name="lblWidth" Content="Width (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtWidth" Text="{Binding Towel.Width}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp" KeyDown="txtWidth_KeyDown"  />
+                        <TextBox Name="txtWidth" Text="{Binding Variant.Width}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp" KeyDown="txtWidth_KeyDown"  />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1">
                         <Label Name="lblLenght" Content="Lenght (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtLenght" Text="{Binding Towel.length}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" KeyDown="txtLenght_KeyDown" />
+                        <TextBox Name="txtLenght" Text="{Binding Variant.length}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="0">
                         <Label Name="lblSize" Content="Size (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtSize" Text="{Binding Towel.Size}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" />
+                        <TextBox Name="txtSize" Text="{Binding Variant.Size}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" />
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1">
                         <Label Content="GSM " Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtGsm" Text="{Binding Towel.Gsm}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtGsm_KeyDown" />
+                        <TextBox Name="txtGsm" Text="{Binding Variant.Data1}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtGsm_KeyDown" />
                     </StackPanel>
                     <StackPanel Grid.Row="3" Grid.Column="0" >
                         <Label Content="Note" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtNoteVariant" Text="{Binding Towel.Note}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                        <TextBox Name="txtNoteVariant" Text="{Binding Variant.Note}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
                                  AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 0 0" >
                             <TextBox.RenderTransform>
                                 <TransformGroup>
@@ -206,7 +206,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2">
                         <Label Content="Price" Style="{StaticResource lblAddProduct}" Margin="0 0 0 20" />
-                        <TextBox Name="txtPrice" Text="{Binding Towel.Price}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Style="{StaticResource txtCostCentreStyle}" Padding="20"  />
+                        <TextBox Name="txtPrice" Text="{Binding Variant.FobPrice}" FontSize="25" Margin="{StaticResource LabelMargin}" Style="{StaticResource txtCostCentreStyle}" Height="60"  />
                     </StackPanel>
 
                 </Grid>
@@ -244,7 +244,7 @@
                         <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
                         <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
                         <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
-                        <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
+                        <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=FobPrice}" />
                     </GridView>
                 </ListView.View>
             </ListView>

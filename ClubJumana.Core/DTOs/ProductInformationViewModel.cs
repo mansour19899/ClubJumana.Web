@@ -10,16 +10,16 @@ using JetBrains.Annotations;
 
 namespace ClubJumana.Core.DTOs
 {
-    public class AddTowelInformationViewModel : INotifyPropertyChanged
+    public class AddVariantInformationViewModel : INotifyPropertyChanged
     {
-        public AddTowelInformationViewModel()
+        public AddVariantInformationViewModel()
         {
             _company = new Company();
-            _towel = new Towel();
+            _variant = new Variant();
             _product = new Product();
-            _towel.ProductType = new ProductType();
-            _towel.ProductType.CategoriesSubCategory = new CategoriesSubCategory();
-            Towels = new List<Towel>();
+            _variant.ProductType = new ProductType();
+            _variant.ProductType.CategoriesSubCategory = new CategoriesSubCategory();
+            Variants = new List<Variant>();
         }
 
         private Company _company;
@@ -41,21 +41,21 @@ namespace ClubJumana.Core.DTOs
             set { _product = value; }
         }
 
-        private Towel _towel;
-        public Towel Towel
+        private Variant _variant;
+        public Variant Variant
         {
-            get { return _towel; }
-            set { _towel = value; }
+            get { return _variant; }
+            set { _variant = value; }
         }
 
-        private List<Towel> _towels;
+        private List<Variant> _variants;
 
-        public List<Towel> Towels
+        public List<Variant> Variants
         {
-            get { return _towels; }
+            get { return _variants; }
             set
             {
-                _towels = value;
+                _variants = value;
                 OnPropertyChanged();
 
             }
@@ -96,20 +96,20 @@ namespace ClubJumana.Core.DTOs
         {
             Id = product.Id;
             StyleNumber = product.StyleNumber;
-            Category = product.Towels.ElementAt(0).ProductType.CategoriesSubCategory.Category.Name;
-            Subcategory = product.Towels.ElementAt(0).ProductType.CategoriesSubCategory.SubCategory.Name;
+            Category = product.Variants.ElementAt(0).ProductType.CategoriesSubCategory.Category.Name;
+            Subcategory = product.Variants.ElementAt(0).ProductType.CategoriesSubCategory.SubCategory.Name;
             ProductTittle = product.ProductTittle;
             if (product.CountryOfOrgin != null)
                 CountryOfOrigin = product.CountryOfOrgin.Name;
             if (product.Brand != null)
                 Brand = product.Brand.Name;
-            GSM = product.Towels.ElementAt(0).Gsm.Value.ToString();
+            GSM = product.Variants.ElementAt(0).Data1.ToString();
             if (product.Company != null)
                 Company = product.Company.CompanyName;
             if (product.Material != null)
                 Material = product.Material.MaterialName;
             DescriabeMaterial = product.DescribeMaterial;
-            List = product.Towels.ToList();
+            List = product.Variants.ToList();
         }
         public int Id { get; set; }
         public string StyleNumber { get; set; }
@@ -123,7 +123,7 @@ namespace ClubJumana.Core.DTOs
         public string Material { get; set; }
         public string DescriabeMaterial { get; set; }
 
-        public List<Towel> List { get; set; }
+        public List<Variant> List { get; set; }
 
         private CostCenter _costCenter;
 
