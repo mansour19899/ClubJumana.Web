@@ -1,0 +1,82 @@
+﻿<Window x:Class="ClubJumana.Wpf.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClubJumana.Wpf"
+        xmlns:uc="clr-namespace:ClubJumana.Wpf.UserControls"
+
+        mc:Ignorable="d"
+        Title="Dashboard" Height="1000" Width="1920">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="White" Grid.Row="1"/>
+        <Rectangle Fill="#23272a" Grid.Row="0"/>
+        <Rectangle Fill="GhostWhite" Grid.Row="2"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="2" Padding="40 0 0 0" Text="ClubJummana Pro" Foreground="White" FontSize="30" VerticalAlignment="Center"/>
+            <Image Grid.Column="1" Source="Content/Icon/menuIcon.png" Margin="10"/>
+            <Image Grid.Column="3" Source="Content/Icon/searchIcon.png" Margin="10"/>
+            <Image Grid.Column="4" Source="Content/Icon/NotificationIcon.png" Margin="10"/>
+            <Image Grid.Column="5" Source="Content/Icon/SettingIcon.png" Margin="10"/>
+            <Image Grid.Column="6" Source="Content/Icon/questionIcon.png" Margin="11" />
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Dashboard" FontSize="28" Margin="110 5 0 0"/>
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="Finance" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="Cash Managment" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="Seles" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="Purchasing" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="SetupAndExtensions" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                <TextBlock Text="Intelligent Cloud Insights" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+            </StackPanel>
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
+            <Image  Source="Content/Icon/Menu1Icon.png" Height="25" Margin="20 0 0 0"  />
+        </StackPanel>
+        <Grid Grid.Row="1" RowSpan="2" Name="GrdTotalCharges" Background="#80B9ADAD"  ColumnSpan="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+            <Border Name="Bordermanagement" Grid.Column="1"  MaxWidth="1800"  Background="White">
+                <uc:ucCustomerCard/>
+            </Border>
+        </Grid>
+
+
+    </Grid>
+</Window>

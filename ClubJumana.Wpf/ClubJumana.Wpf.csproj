@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\Icon\compressIcon.png" />
+    <None Remove="Content\Icon\CreateNewEntry.png" />
+    <None Remove="Content\Icon\DeleteIcon.png" />
+    <None Remove="Content\Icon\EditIcon.png" />
+    <None Remove="Content\Icon\EnLargeIcon.png" />
+    <None Remove="Content\Icon\ExpandArrowIcon.png" />
+    <None Remove="Content\Icon\externallinkIcon.png" />
+    <None Remove="Content\Icon\high_importanceIcon.png" />
+    <None Remove="Content\Icon\Menu1Icon.png" />
+    <None Remove="Content\Icon\menuIcon.png" />
+    <None Remove="Content\Icon\NotificationIcon.png" />
+    <None Remove="Content\Icon\questionIcon.png" />
+    <None Remove="Content\Icon\searchIcon.png" />
+    <None Remove="Content\Icon\SettingIcon.png" />
     <None Remove="Content\Images\icons8_add_new_52px_3.png" />
     <None Remove="Content\Images\icons8_borrow_book_64px.png" />
     <None Remove="Content\Images\icons8_cargo_ship_64px.png" />
@@ -46,6 +60,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Content\Icon\compressIcon.png" />
+    <Resource Include="Content\Icon\CreateNewEntry.png" />
+    <Resource Include="Content\Icon\DeleteIcon.png" />
+    <Resource Include="Content\Icon\EditIcon.png" />
+    <Resource Include="Content\Icon\EnLargeIcon.png" />
+    <Resource Include="Content\Icon\ExpandArrowIcon.png" />
+    <Resource Include="Content\Icon\externallinkIcon.png" />
+    <Resource Include="Content\Icon\high_importanceIcon.png" />
+    <Resource Include="Content\Icon\Menu1Icon.png" />
+    <Resource Include="Content\Icon\menuIcon.png" />
+    <Resource Include="Content\Icon\NotificationIcon.png" />
+    <Resource Include="Content\Icon\questionIcon.png" />
+    <Resource Include="Content\Icon\searchIcon.png" />
+    <Resource Include="Content\Icon\SettingIcon.png" />
     <Resource Include="Content\Images\icons8_add_new_52px_3.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
