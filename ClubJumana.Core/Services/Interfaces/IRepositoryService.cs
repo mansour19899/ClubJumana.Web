@@ -31,5 +31,8 @@ namespace ClubJumana.Core.Services.Interfaces
 
         Country GiveMeCountryByID(int Id);
 
+        public int AddAndUpdateCustomer(Customer customer);
+        public int AddAndUpdateVendor(Vendor vendor);
+
     }
 }

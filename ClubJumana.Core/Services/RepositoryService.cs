@@ -118,6 +118,30 @@ namespace ClubJumana.Core.Services
             return _context.Warehouses;
         }
 
+        public int AddAndUpdateCustomer(Customer customer)
+        {
+            if (customer.Id == 0)
+                _context.Customers.Add(customer);
+            else
+            {
+                _context.Update(customer);
+            }
 
+            _context.SaveChanges();
+            return 1;
+        }
+
+        public int AddAndUpdateVendor(Vendor vendor)
+        {
+            if (vendor.Id == 0)
+                _context.Vendors.Add(vendor);
+            else
+            {
+                _context.Update(vendor);
+            }
+
+            _context.SaveChanges();
+            return 1;
+        }
     }
 }

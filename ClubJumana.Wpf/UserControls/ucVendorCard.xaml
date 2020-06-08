@@ -36,7 +36,7 @@
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
-                <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9">
+                <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSaveVendor" Click="BtnSaveVendor_OnClick">
                     <Button.Foreground>
                         <SolidColorBrush Color="White" Opacity="1"/>
                     </Button.Foreground>
@@ -319,7 +319,7 @@
                                 <TextBlock Text="Name" Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
-                            <TextBox />
+                            <TextBox Text="{Binding Name}" />
                         </UniformGrid>
                         <UniformGrid Columns="2" Rows="1">
                             <StackPanel Orientation="Horizontal" >
@@ -438,14 +438,14 @@
                                     <TextBlock Text="Address" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Address1}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Address 2" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Address2}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
@@ -459,14 +459,14 @@
                                     <TextBlock Text="City" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Address3}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Post Code" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding PostalCode}" />
                             </UniformGrid>
                         </UniformGrid>
                         <UniformGrid Columns="1" Rows="9" >
@@ -490,21 +490,21 @@
                                     <TextBlock Text="Phone No." Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Phone1}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Email" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Email}"  />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Fax No." Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox Text="{Binding Phone2}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >

@@ -20,11 +20,11 @@ namespace ClubJumana.Wpf.UserControls
     /// </summary>
     public partial class ucCustomerCard : UserControl
     {
-        private CustomerService _customerService;
+        
         public ucCustomerCard()
         {
             InitializeComponent();
-            _customerService=new CustomerService();
+            
         }
 
 
@@ -38,11 +38,12 @@ namespace ClubJumana.Wpf.UserControls
                 ColumnOfImageCustomer.Width = new GridLength(0, GridUnitType.Pixel);
         }
 
-        private void BtnSaveCustomer_OnClick(object sender, RoutedEventArgs e)
+        public event EventHandler<EventArgs> BtnSaveOnClick;
+        public void BtnSaveCustomer_OnClick(object sender, RoutedEventArgs e)
         {
-            var re = DataContext as Customer;
-            _customerService.AddAndUpdateCustomer(re);
-            int x = 0;
+            e.Handled = true;
+            if (BtnSaveOnClick != null)
+                BtnSaveOnClick(sender, e);
         }
     }
 }

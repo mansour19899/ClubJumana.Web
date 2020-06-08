@@ -73,7 +73,7 @@
                 <ColumnDefinition Width="75"/>
             </Grid.ColumnDefinitions>
             <Border Name="Bordermanagement" Grid.Column="1"  MaxWidth="1800"  Background="White">
-                <uc:ucCustomerCard DataContext="{Binding Customer}"/>
+               
             </Border>
         </Grid>
 

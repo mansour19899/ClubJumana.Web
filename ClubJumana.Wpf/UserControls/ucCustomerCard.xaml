@@ -47,7 +47,7 @@
         </Grid>
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="40" Text="30000 ∙ School of Fine Art" FontWeight="ExtraLight"/>
         <Border Padding="0 0" Grid.Row="2" Grid.Column="1" BorderThickness="0,1,0,1" BorderBrush="Black"  >
-            <Grid Grid.Row="2" Grid.Column="1">
+            <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="60"/>
@@ -418,25 +418,25 @@
                             <TextBlock Text="Address 2 " Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Text="{Binding Address2}" Grid.Row="2" Grid.Column="1"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
                             <TextBlock Text="Country/Region Code" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="3" Grid.Column="1"/>
+                        <TextBox  Grid.Row="3" Grid.Column="1"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
                             <TextBlock Text="City" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="4" Grid.Column="1"/>
+                        <TextBox Text="{Binding Address3}" Grid.Row="4" Grid.Column="1"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
                             <TextBlock Text="Post Code" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="5" Grid.Column="1"/>
+                        <TextBox Text="{Binding PostalCode}" Grid.Row="5" Grid.Column="1"/>
 
 
 
@@ -460,19 +460,19 @@
                             <TextBlock Text="Phone No." Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="3" Grid.Column="4"/>
+                        <TextBox Text="{Binding Phone1}" Grid.Row="3" Grid.Column="4"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
                             <TextBlock Text="Email" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="4" Grid.Column="4"/>
+                        <TextBox Text="{Binding Email}" Grid.Row="4" Grid.Column="4"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
                             <TextBlock Text="Fax No." Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="5" Grid.Column="4"/>
+                        <TextBox Text="{Binding Phone2}" Grid.Row="5" Grid.Column="4"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
                             <TextBlock Text="Home Page" Style="{StaticResource Style1}"/>

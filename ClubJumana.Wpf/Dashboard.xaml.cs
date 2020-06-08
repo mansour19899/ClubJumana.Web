@@ -22,23 +22,41 @@ namespace ClubJumana.Wpf
     public partial class Dashboard : Window
     {
         private RepositoryService _repositoryService;
+        private Test tt;
         public Dashboard()
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
             //TestBorder.Child=new ucTest();
-            var tt=new Test();
-            tt.Customer = _repositoryService.AllCustomers().FirstOrDefault();
 
+             tt=new Test();
+            tt.Customer = _repositoryService.AllCustomers().FirstOrDefault();
+            tt.Vendor = _repositoryService.AllVendor().FirstOrDefault();
+            var t= new ucCustomerCard();
+            var yy=new ucVendorCard();
+
+            yy.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
+            t.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
 
             DataContext = tt;
+            t.DataContext = tt.Customer;
+            yy.DataContext = tt.Vendor;
+            Bordermanagement.Child = yy;
+
+
         }
 
-        private void BtnChange_OnClick(object sender, RoutedEventArgs e)
+        private void BtnSaveForCustomer_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-           //TestBorder.Child=new ucTest2();
+            MessageBox.Show(tt.Customer.FirstName);
+            _repositoryService.AddAndUpdateCustomer(tt.Customer);
         }
 
+        private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
+        {
+            MessageBox.Show(tt.Customer.FirstName);
+            _repositoryService.AddAndUpdateVendor(tt.Vendor);
+        }
     }
 
     public class Test

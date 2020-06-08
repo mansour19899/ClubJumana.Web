@@ -32,5 +32,13 @@ namespace ClubJumana.Wpf.UserControls
             else
                 ColumnOfImageVendor.Width = new GridLength(0, GridUnitType.Pixel);
         }
+
+        public event EventHandler<EventArgs> BtnSaveOnClick;
+        public void BtnSaveVendor_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnSaveOnClick != null)
+                BtnSaveOnClick(sender, e);
+        }
     }
 }
