@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClubJumana.DataLayer.Entities;
+using ClubJumana.Core.Services;
 
 namespace ClubJumana.Wpf.UserControls
 {
@@ -18,9 +20,11 @@ namespace ClubJumana.Wpf.UserControls
     /// </summary>
     public partial class ucCustomerCard : UserControl
     {
+        private CustomerService _customerService;
         public ucCustomerCard()
         {
             InitializeComponent();
+            _customerService=new CustomerService();
         }
 
 
@@ -32,6 +36,13 @@ namespace ClubJumana.Wpf.UserControls
                 ColumnOfImageCustomer.Width = new GridLength(350, GridUnitType.Pixel);
             else
                 ColumnOfImageCustomer.Width = new GridLength(0, GridUnitType.Pixel);
+        }
+
+        private void BtnSaveCustomer_OnClick(object sender, RoutedEventArgs e)
+        {
+            var re = DataContext as Customer;
+            _customerService.AddAndUpdateCustomer(re);
+            int x = 0;
         }
     }
 }
