@@ -48,287 +48,763 @@
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="40" Text="30000 ∙ School of Fine Art" FontWeight="ExtraLight"/>
         <Border Padding="0 0" Grid.Row="2" Grid.Column="1" BorderThickness="0,1,0,1" BorderBrush="Black"  >
             <Grid Grid.Row="2" Grid.Column="1">
-               <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="*"/>
-                   <ColumnDefinition Width="60"/>
-               </Grid.ColumnDefinitions>
-               <StackPanel Orientation="Horizontal" >
-                   <StackPanel.Resources>
-                       <Style TargetType="TextBlock">
-                           <Setter Property="FontSize" Value="16"/>
-                           <Setter Property="Foreground" Value="#FF505C6D"/>
-                           <Setter Property="VerticalAlignment" Value="Center"/>
-                           <Setter Property="Margin" Value="20 0 30 0"></Setter>
-                       </Style>
-                   </StackPanel.Resources>
-                   <TextBlock Text="New Document" />
-                   <TextBlock Text="Request Approval" />
-                   <TextBlock Text="Navigate" />
-                   <TextBlock Text="Customer" />
-                   <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-                   <TextBlock Text="More options" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" >
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Foreground" Value="#FF505C6D"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="20 0 30 0"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="New Document" />
+                    <TextBlock Text="Request Approval" />
+                    <TextBlock Text="Navigate" />
+                    <TextBlock Text="Customer" />
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
+                    <TextBlock Text="More options" />
 
-               </StackPanel>
-                <Rectangle Grid.Column="1" Fill="White"/>
-                <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/high_importanceIcon.png" />
+                </StackPanel>
+                <Border Name="btnShowImageOfCustomer" Grid.Column="1" Style="{StaticResource BorderMouseOver}" MouseDown="BtnShowImageOfCustomer_OnMouseDown">
+                    <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/high_importanceIcon.png" />
+                </Border>
+
             </Grid>
         </Border>
-        <ScrollViewer Grid.Row="3" Grid.Column="1" >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="75"/>
-                    <RowDefinition Height="400"/>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="400"/>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="400"/>
-                </Grid.RowDefinitions>
-                <Grid.Resources>
-                    <Style x:Key="Styledot" TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="25"/>
-                        <Setter Property="Foreground" Value="LightGray"/>
-                    </Style>
-                    <Style x:Key="Style1" TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Foreground" Value="#505C6D"/>
-                        <Setter Property="Margin" Value="30 0 0 0"/>
-                    </Style>
-                </Grid.Resources>
-                <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="0" >
-                    <TextBlock Text=" General" FontSize="25" Margin="0 0 0 10"/>
-                </Border>
-                <Grid Grid.Row="1" Margin="10 30 10 10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+        <Grid Grid.Row="3" Grid.Column="1" Margin="0 20 0 50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Name="ColumnOfImageCustomer" Width="350"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="1">
+                <UniformGrid Columns="1" Height="700" Margin="0 0 0 60">
+                    <UniformGrid.Resources>
+                        <Style TargetType="TextBlock" x:Key="HeaderFont">
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Margin" Value="20 0 0 0"/>
+                        </Style>
+                        <Style TargetType="Border" x:Key="Divider">
+                            <Setter Property="BorderThickness" Value="0 0 0 3"/>
+                            <Setter Property="BorderBrush" Value="#919191"/>
+                        </Style>
+                    </UniformGrid.Resources>
+                    <Border Style="{StaticResource Divider}">
+                        <StackPanel>
+                            <TextBlock Text="Customer Picture" Style="{StaticResource HeaderFont}"/>
+                            <Ellipse Height="200" Width="200" Margin="0 40">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="../Content/Images/../Images/30000 School of Fine Art.jpg" AlignmentX="Center" AlignmentY="Center" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </StackPanel>
+                    </Border>
+
+                    <Border>
+                        <StackPanel>
+                            <TextBlock Text="Sell-to Customer Sales History" FontSize="20" Margin="20 0 0 0"/>
+                            <UniformGrid Columns="3">
+                                <UniformGrid.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Height" Value="100"/>
+                                        <Setter Property="Background" Value="#32467F"/>
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="Padding" Value="5"/>
+                                    </Style>
+                                    <Style TargetType="TextBlock" x:Key="Count">
+                                        <Setter Property="FontSize" Value="30"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="Margin" Value="0 0 4 0"></Setter>
+                                    </Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="Margin" Value="0 10 0 0"></Setter>
+                                    </Style>
+                                </UniformGrid.Resources>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}"  Text="21" />
+                                        <TextBlock Text="Ongoing Sales Quotes"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="32"/>
+                                        <TextBlock Text="Ongoing Sales Blanket Orders"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="45"/>
+                                        <TextBlock Text="Ongoing Sales Orders"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="122"/>
+                                        <TextBlock Text="Ongoing Sales Invoices"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="244"/>
+                                        <TextBlock Text="Ongoing Sales Return Orders"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="213"/>
+                                        <TextBlock Text="Ongoing Sales Credit Memos"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="432"/>
+                                        <TextBlock Text="Posted Sales Shipments"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="322"/>
+                                        <TextBlock Text="Posted Sales Invoices"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="872"/>
+                                        <TextBlock Text="Posted Sales Return Receipts"/>
+                                    </UniformGrid>
+                                </Border>
+                                <Border >
+                                    <UniformGrid Rows="2">
+                                        <TextBlock Style="{StaticResource Count}" Text="22"/>
+                                        <TextBlock Text="Posted Sales Credit Memos"/>
+                                    </UniformGrid>
+                                </Border>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </ScrollViewer>
+            <ScrollViewer >
+                <Grid Margin="0 0 0 100">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="400"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="400"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="400"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="130"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="250"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="No" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0 0 0 0"/>
+                    <Grid.Resources>
+                        <Style x:Key="Styledot" TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="25"/>
+                            <Setter Property="Foreground" Value="LightGray"/>
+                        </Style>
+                        <Style x:Key="Style1" TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="#505C6D"/>
+                            <Setter Property="Margin" Value="30 0 0 0"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="0" >
+                        <UniformGrid Columns="2">
+                            <TextBlock Text=" General" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="Name" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="1" Grid.Column="1"/>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="10 30 10 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="No" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="C132" Grid.Row="0" Grid.Column="1"  />
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
-                        <TextBlock Text="IC Partner" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="2" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="Name" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
-                        <TextBlock Text="Balance (LCY)" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="3" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="IC Partner" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
-                        <TextBlock Text="Balance Due (LCY)" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="4" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+                            <TextBlock Text="Balance (LCY)" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle Grid.Row="3" Grid.Column="1" Style="{StaticResource StyleReadOnlyRec}"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="12433242" Grid.Row="3" Grid.Column="1"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
-                        <TextBlock Text="Credit Limit (LCY)" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="5" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                            <TextBlock Text="Balance Due (LCY)" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Grid.Row="4" Grid.Column="1" Style="{StaticResource StyleReadOnlyRec}"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="4" Grid.Column="1" Text="12"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0">
-                        <TextBlock Text="Blocked" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="6" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+                            <TextBlock Text="Credit Limit (LCY)" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="5" Grid.Column="1"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="0">
-                        <TextBlock Text="Privacy Blocked" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
-                    </StackPanel>
-                    <TextBox Grid.Row="7" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0">
+                            <TextBlock Text="Blocked" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <ComboBox Grid.Row="6" Grid.Column="1"   >
+                            <ComboBoxItem Content=""></ComboBoxItem>
+                            <ComboBoxItem Content="Ship"></ComboBoxItem>
+                            <ComboBoxItem Content="Invoice"></ComboBoxItem>
+                            <ComboBoxItem Content="All"></ComboBoxItem>
+                        </ComboBox>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="0">
-                        <TextBlock Text="Salesperson Code" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . ." />
-                    </StackPanel>
-                    <TextBox Grid.Row="8" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="0">
+                            <TextBlock Text="Privacy Blocked" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <Viewbox Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="6">
+                            <ToggleButton
+                            Style="{StaticResource MyToggleButton}"
+                            ToolTip="MaterialDesignSwitchAccentToggleButton"
+                            IsChecked="True"  HorizontalAlignment="Left" OpacityMask="#FF0DA228" BorderBrush="#FF1C257C"  >
+                                <ToggleButton.Foreground>
+                                    <SolidColorBrush Color="#FF601717" Opacity="1"/>
+                                </ToggleButton.Foreground>
+                            </ToggleButton>
+                        </Viewbox>
 
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
-                        <TextBlock Text="Responsibility Center" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="0" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="0">
+                            <TextBlock Text="Salesperson Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . ." />
+                        </StackPanel>
+                        <TextBox Grid.Row="8" Grid.Column="1"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
-                        <TextBlock Text="Document Sending Profile" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="1" Grid.Column="4"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
-                        <TextBlock Text="Total Sales" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="2" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                            <TextBlock Text="Responsibility Center" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="0" Grid.Column="4"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
-                        <TextBlock Text="Costs (LCY)" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="3" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
+                            <TextBlock Text="Document Sending Profile" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="4"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
-                        <TextBlock Text="Profit (LCY)" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="4" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
+                            <TextBlock Text="Total Sales" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="2" Grid.Column="4"/>
+                        <TextBlock  Style="{StaticResource StyleReadOnly}" Grid.Row="2" Grid.Column="4" Text="124335"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
-                        <TextBlock Text="Profit %" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="5" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
+                            <TextBlock Text="Costs (LCY)" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="3" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="3" Grid.Column="4" Text="2535"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
-                        <TextBlock Text="Last Date Modified" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="6" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
+                            <TextBlock Text="Profit (LCY)" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="4" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="4" Grid.Column="4" Text="13325"/>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="3">
-                        <TextBlock Text="Disable Search by Name" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
-                    </StackPanel>
-                    <TextBox Grid.Row="7" Grid.Column="4"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
+                            <TextBlock Text="Profit %" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="5" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="5" Grid.Column="4" Text="15325"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
+                            <TextBlock Text="Last Date Modified" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="6" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="6" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="3">
+                            <TextBlock Text="Disable Search by Name" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <TextBox Grid.Row="7" Grid.Column="4"/>
+
+                    </Grid>
+
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="2" >
+                        <UniformGrid Columns="2">
+                            <TextBlock  Text=" Address &amp; Contact" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+
+                    </Border>
+                    <Grid Grid.Row="3" Margin="10 30 10 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Address" Style="{StaticResource Style1}" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="Address" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Address 2 " Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+                            <TextBlock Text="Country/Region Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="3" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                            <TextBlock Text="City" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="4" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+                            <TextBlock Text="Post Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="5" Grid.Column="1"/>
+
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                            <TextBlock Text="CONTACT" Style="{StaticResource Style1}" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
+                            <TextBlock Text="Contact Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
+                            <TextBlock Text="Contact Name" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
+                            <TextBlock Text="Phone No." Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="3" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
+                            <TextBlock Text="Email" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="4" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
+                            <TextBlock Text="Fax No." Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="5" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
+                            <TextBlock Text="Home Page" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="6" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="3">
+                            <TextBlock Text="Language Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <TextBox Grid.Row="7" Grid.Column="4"/>
+
+                    </Grid>
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="4" >
+                        <UniformGrid Columns="2">
+                            <TextBlock  Text=" Invoicing" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Border>
+                    <Grid Grid.Row="5" Margin="10 30 10 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Bill-to Customer" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="0" Grid.Column="1" />
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="VAT Registration No." Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="GLN" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+                            <TextBlock Text="Use GLN in Electronic Documents" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Viewbox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="6">
+                            <ToggleButton
+                            Style="{StaticResource MyToggleButton}"
+                            ToolTip="MaterialDesignSwitchAccentToggleButton"
+                            IsChecked="True"  HorizontalAlignment="Left" OpacityMask="#FF0DA228" BorderBrush="#FF1C257C"  >
+                                <ToggleButton.Foreground>
+                                    <SolidColorBrush Color="#FF601717" Opacity="1"/>
+                                </ToggleButton.Foreground>
+                            </ToggleButton>
+                        </Viewbox>
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                            <TextBlock Text="Copy Sell-to Addr. to Qte From" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="4" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+                            <TextBlock Text="Tax Liable" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <Viewbox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="6">
+                            <ToggleButton
+                            Style="{StaticResource MyToggleButton}"
+                            ToolTip="MaterialDesignSwitchAccentToggleButton"
+                            IsChecked="True"  HorizontalAlignment="Left" OpacityMask="#FF0DA228" BorderBrush="#FF1C257C"  >
+                                <ToggleButton.Foreground>
+                                    <SolidColorBrush Color="#FF601717" Opacity="1"/>
+                                </ToggleButton.Foreground>
+                            </ToggleButton>
+                        </Viewbox>
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0">
+                            <TextBlock Text="Tax Area Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="6" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="0">
+                            <TextBlock Text="Tax Identification Type" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <TextBox Grid.Row="7" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="0">
+                            <TextBlock Text="Tax Exemption No." Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . ." />
+                        </StackPanel>
+                        <TextBox Grid.Row="8" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="0">
+                            <TextBlock Text="Invoice Copies" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . ." />
+                        </StackPanel>
+                        <TextBox Grid.Row="9" Grid.Column="1"/>
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                            <TextBlock Text="POSTING DETAILS" FontWeight="Bold" Style="{StaticResource Style1}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
+                            <TextBlock Text="Gen. Bus. Posting Group" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
+                            <TextBlock Text="VAT Bus. Posting Group" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="2" Grid.Column="4"/>
+                        <TextBlock  Style="{StaticResource StyleReadOnly}" Grid.Row="2" Grid.Column="4" Text="124335"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
+                            <TextBlock Text="Customer Posting Group" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="3" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="3" Grid.Column="4" Text="2535"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
+                            <TextBlock Text="PRICES AND DISCOUNTS" FontWeight="Bold" Style="{StaticResource Style1}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
+                            <TextBlock Text="Currency Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="5" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="5" Grid.Column="4" Text="15325"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
+                            <TextBlock Text="Customer Price Group" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="6" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="6" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="3">
+                            <TextBlock Text="Customer Disc. Group" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <TextBox Grid.Row="7" Grid.Column="4"/>
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="3">
+                            <TextBlock Text="Allow Line Disc." Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <Viewbox Grid.Row="8" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="6">
+                            <ToggleButton
+                            Style="{StaticResource MyToggleButton}"
+                            ToolTip="MaterialDesignSwitchAccentToggleButton"
+                            IsChecked="True"  HorizontalAlignment="Left" OpacityMask="#FF0DA228" BorderBrush="#FF1C257C"  >
+                                <ToggleButton.Foreground>
+                                    <SolidColorBrush Color="#FF601717" Opacity="1"/>
+                                </ToggleButton.Foreground>
+                            </ToggleButton>
+                        </Viewbox>
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="3">
+                            <TextBlock Text="Invoice Disc. Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
+                        </StackPanel>
+                        <TextBox Grid.Row="9" Grid.Column="4"/>
+
+                    </Grid>
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="6" >
+                        <UniformGrid Columns="2">
+                            <TextBlock  Text=" Payment" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Border>
+                    <Grid Grid.Row="7" Margin="10 30 10 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Payment Terms Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="0" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="Bank Communication" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                            <TextBlock Text="Check Date Format" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="0" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
+                            <TextBlock Text="Check Date Separator" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="4"/>
+
+
+                    </Grid>
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="8" >
+                        <UniformGrid Columns="2">
+                            <TextBlock  Text=" Shipping" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Border>
+                    <Grid Grid.Row="9" Margin="10 30 10 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Ship-to Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="0" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Text="Location Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Combine Shipments" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+                            <TextBlock Text="Reserve" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="3" Grid.Column="1"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
+                            <TextBlock Text="Shipping Advice" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="4" Grid.Column="1"/>
+
+
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                            <TextBlock Text="SHIPMENT METHOD" Style="{StaticResource Style1}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
+                            <TextBlock Text="Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
+                            <TextBlock Text="Base Calender Code" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <TextBox Grid.Row="2" Grid.Column="4"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
+                            <TextBlock Text="Customized Calendar" Style="{StaticResource Style1}"/>
+                            <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
+                        </StackPanel>
+                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="3" Grid.Column="4"/>
+                        <TextBlock Style="{StaticResource StyleReadOnly}" Grid.Row="3" Grid.Column="4"/>
+
+
+                    </Grid>
 
                 </Grid>
+            </ScrollViewer>
+        </Grid>
 
-
-                <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="2" >
-                    <TextBlock Text=" Address &amp; Contact" FontSize="25" Margin="0 0 0 10"/>
-                </Border>
-                <Grid Grid.Row="3" Margin="10 30 10 10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                        <TextBlock Text="Address" Style="{StaticResource Style1}" FontWeight="Bold"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="Address" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="1" Grid.Column="1"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
-                        <TextBlock Text="Address 2 " Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="2" Grid.Column="1"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
-                        <TextBlock Text="Country/Region Code" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="3" Grid.Column="1"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
-                        <TextBlock Text="City" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="4" Grid.Column="1"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
-                        <TextBlock Text="Post Code" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="5" Grid.Column="1"/>
-
-
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
-                        <TextBlock Text="CONTACT" Style="{StaticResource Style1}" FontWeight="Bold"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3">
-                        <TextBlock Text="Contact Code" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="1" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
-                        <TextBlock Text="Contact Name" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="2" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
-                        <TextBlock Text="Phone No." Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="3" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3">
-                        <TextBlock Text="Email" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="4" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="3">
-                        <TextBlock Text="Fax No." Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="5" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
-                        <TextBlock Text="Home Page" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . " />
-                    </StackPanel>
-                    <TextBox Grid.Row="6" Grid.Column="4"/>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="3">
-                        <TextBlock Text="Language Code" Style="{StaticResource Style1}"/>
-                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . .  " />
-                    </StackPanel>
-                    <TextBox Grid.Row="7" Grid.Column="4"/>
-
-                </Grid>
-            </Grid>
-        </ScrollViewer>
 
     </Grid>
 </UserControl>

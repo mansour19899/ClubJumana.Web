@@ -21,6 +21,7 @@
     <None Remove="Content\Icon\questionIcon.png" />
     <None Remove="Content\Icon\searchIcon.png" />
     <None Remove="Content\Icon\SettingIcon.png" />
+    <None Remove="Content\Images\30000 School of Fine Art.jpg" />
     <None Remove="Content\Images\icons8_add_new_52px_3.png" />
     <None Remove="Content\Images\icons8_borrow_book_64px.png" />
     <None Remove="Content\Images\icons8_cargo_ship_64px.png" />
@@ -74,6 +75,7 @@
     <Resource Include="Content\Icon\questionIcon.png" />
     <Resource Include="Content\Icon\searchIcon.png" />
     <Resource Include="Content\Icon\SettingIcon.png" />
+    <Resource Include="Content\Images\30000 School of Fine Art.jpg" />
     <Resource Include="Content\Images\icons8_add_new_52px_3.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

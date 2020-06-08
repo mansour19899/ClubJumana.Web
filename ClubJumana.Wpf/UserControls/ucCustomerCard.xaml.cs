@@ -22,5 +22,16 @@ namespace ClubJumana.Wpf.UserControls
         {
             InitializeComponent();
         }
+
+
+        private void BtnShowImageOfCustomer_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GridLength currentGridLength = new GridLength(0, GridUnitType.Pixel);
+
+            if (ColumnOfImageCustomer.Width == currentGridLength)
+                ColumnOfImageCustomer.Width = new GridLength(350, GridUnitType.Pixel);
+            else
+                ColumnOfImageCustomer.Width = new GridLength(0, GridUnitType.Pixel);
+        }
     }
 }
