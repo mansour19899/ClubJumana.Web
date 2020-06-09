@@ -319,6 +319,7 @@ namespace ClubJumana.Wpf2
         {
             step = 1;
             Scr2.Visibility = Visibility.Visible;
+            addVariant.Variants.Clear();
             GrReview.Visibility = Visibility.Hidden;
             GrAddInformation.Visibility = Visibility.Visible;
         }

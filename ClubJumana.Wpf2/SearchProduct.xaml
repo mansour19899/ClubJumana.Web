@@ -99,7 +99,7 @@
                             <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
                             <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
                             <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
-                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode}" />
+                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode.BarcodeNumber}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -159,7 +159,7 @@
                                 <GridViewColumn Header="Barcode" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="BarCode" Width="150" Click="AddBarcode" CommandParameter="{Binding}"/>
+                                            <Button Content="{Binding Barcode.BarcodeNumber}" Width="150" Click="AddBarcode" CommandParameter="{Binding}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

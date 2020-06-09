@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ClubJumana.Core.Services
 {
-  public  class ProductInformationService: IProductInformationService
+    public class ProductInformationService : IProductInformationService
     {
         private JummanaContext _context;
         public ProductInformationService()
@@ -41,7 +41,7 @@ namespace ClubJumana.Core.Services
             int Id = 1;
             if (EnumerableExtensions.Any(_context.Products))
             {
-                Id = _context.Products.Max(x => x.Id)+1;
+                Id = _context.Products.Max(x => x.Id) + 1;
             }
 
             _context.Products.Add(new Product()
@@ -113,16 +113,32 @@ namespace ClubJumana.Core.Services
         }
 
         public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode, string ColourCode)
-            
+
         {
-           // var yt = _context.Towels.ToCharArray().Skip(10).ToArray();
-            //var ytt = yt.SkipWhile(p => p.CompareTo('0') == 0).ToArray();
-            //var yttt = new string(ytt);
-            //var newSkuNumber = Convert.ToDecimal(yttt) + 1;
+            var list = _context.Variants.Where(p => p.Sku != null).ToList();
+            string LastSkuNumber = "";
+            int SkuNumber = 0;
+            int MaxSku = 0;
+            if (list.Count == 0)
+            {
+                MaxSku= 6068;
+            }
+            else
+            {
+                foreach (var VARIABLE in list)
+                {
+                    SkuNumber = Convert.ToInt16(VARIABLE.Sku.Substring(10, 6));
+                    if (MaxSku < SkuNumber)
+                        MaxSku = SkuNumber;
 
-            //string Sku = CategoryCode + SubCategoryCode + ProductTypeCode + ColourCode + newSkuNumber.ToString().NumtoStr(6);
+                }
+            }
 
-            return "";
+
+
+            string Sku = CategoryCode + SubCategoryCode + ProductTypeCode + ColourCode + (MaxSku+1).ToString().NumtoStr(6);
+
+            return Sku;
         }
 
 
@@ -133,47 +149,80 @@ namespace ClubJumana.Core.Services
 
         public List<VariantViewModel> AllVariantList()
         {
-           List<VariantViewModel> list=new List<VariantViewModel>();
+            List<VariantViewModel> list = new List<VariantViewModel>();
 
-           var towelList = _context.Variants.Include(p=>p.Product).Include(p=>p.ProductType).ThenInclude(p=>p.CategoriesSubCategory).Include(p=>p.Colour).ToList();
+            var VariantslList = _context.Variants.Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
 
-           foreach (var VARIABLE in towelList)
-           {
-               list.Add(new VariantViewModel()
-               {
-                   Id = VARIABLE.Id,
-                   Sku = VARIABLE.Sku,
-                   ProductFK = VARIABLE.ProductFK,
-                   ColourFK = VARIABLE.ColourFK,
-                   BarcodeFK = VARIABLE.BarcodeFK,
-                   ProductTypeFK = VARIABLE.ProductTypeFK,
-                   FobPrice = VARIABLE.FobPrice,
-                   WholesaleA = VARIABLE.WholesaleA,
-                   WholesaleB = VARIABLE.WholesaleB,
-                   RetailPrice = VARIABLE.RetailPrice,
-                   Size = VARIABLE.Size,
-                   Product = VARIABLE.Product,
-                   Colour = VARIABLE.Colour,
-                   Barcode = VARIABLE.Barcode,
-                   ProductType = VARIABLE.ProductType
-               });
-           }
-           
-           //Add another Variant 
+            foreach (var VARIABLE in VariantslList)
+            {
+                list.Add(new VariantViewModel()
+                {
+                    Id = VARIABLE.Id,
+                    Sku = VARIABLE.Sku,
+                    ProductFK = VARIABLE.ProductFK,
+                    ColourFK = VARIABLE.ColourFK,
+                    BarcodeFK = VARIABLE.BarcodeFK,
+                    ProductTypeFK = VARIABLE.ProductTypeFK,
+                    FobPrice = VARIABLE.FobPrice,
+                    WholesaleA = VARIABLE.WholesaleA,
+                    WholesaleB = VARIABLE.WholesaleB,
+                    RetailPrice = VARIABLE.RetailPrice,
+                    Size = VARIABLE.Size,
+                    Product = VARIABLE.Product,
+                    Colour = VARIABLE.Colour,
+                    Barcode = VARIABLE.Barcode,
+                    ProductType = VARIABLE.ProductType
+                });
+            }
 
-           return list;
+            //Add another Variant 
+
+            return list;
         }
 
         public Product GiveMeProductWithId(int Id)
         {
-            var product = _context.Products.Include(p=>p.Company).Include(p=>p.Material)
-                .Include(p=>p.Brand).Include(p=>p.Variants).ThenInclude(p=>p.ProductType)
-                .ThenInclude(p=>p.CategoriesSubCategory).ThenInclude(p=>p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
-                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p=>p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
+            var product = _context.Products.AsNoTracking().Include(p=>p.Variants).ThenInclude(p=>p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
+                .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
 
 
 
             return product;
+        }
+
+        public int AddSku(int Id, string Sku)
+        {
+            var Variant = _context.Variants.SingleOrDefault(p => p.Id == Id);
+            if (Variant == null)
+            {
+
+            }
+            else
+            {
+                Variant.Sku = Sku;
+                _context.Variants.Update(Variant);
+                _context.SaveChanges();
+            }
+            return 1;
+        }
+
+        public int AddBarcode(int Id)
+        {
+            
+            var Variant = _context.Variants.SingleOrDefault(p => p.Id == Id);
+            var NewBarcode = _context.Barcodes.FirstOrDefault(p => p.Active == false);
+            if (NewBarcode == null)
+                return -1;
+            else
+            {
+                Variant.BarcodeFK = NewBarcode.Id;
+                NewBarcode.Active = true;
+                _context.SaveChanges();
+                return 1;
+            }
+            
         }
     }
 }

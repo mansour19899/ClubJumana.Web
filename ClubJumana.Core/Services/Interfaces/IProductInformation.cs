@@ -15,6 +15,8 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public List<VariantViewModel> AllVariantList();
         public Product GiveMeProductWithId(int Id);
+        public int AddSku(int Id, string Sku);
+        public int AddBarcode(int Id);
     }
     
 }

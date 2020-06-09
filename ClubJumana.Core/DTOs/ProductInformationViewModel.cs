@@ -110,6 +110,13 @@ namespace ClubJumana.Core.DTOs
                 Material = product.Material.MaterialName;
             DescriabeMaterial = product.DescribeMaterial;
             List = product.Variants.ToList();
+            foreach (var VARIABLE in List)
+            {
+                if (VARIABLE.Sku == null)
+                    VARIABLE.Sku = "Add SKU";
+                if(VARIABLE.BarcodeFK==null)
+                    VARIABLE.Barcode=new Barcode(){BarcodeNumber = "Add Barcode"};
+            }
         }
         public int Id { get; set; }
         public string StyleNumber { get; set; }

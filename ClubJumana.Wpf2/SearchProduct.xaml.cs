@@ -293,14 +293,85 @@ namespace ClubJumana.Wpf2
 
         private void AddSku(object sender, RoutedEventArgs e)
         {
+
             Button b = sender as Button;
-            Variant productCategory = b.CommandParameter as Variant;
-            MessageBox.Show(productCategory.Size);
+            Variant variant = b.CommandParameter as Variant;
+
+            if (variant.ColourFK == 0)
+            {
+                MessageBox.Show("Assign Color");
+            }
+            else
+            {
+
+                if (variant.Sku.CompareTo("Add SKU") == 0)
+                {
+                    string messageBoxText = "Do you want to add Sku Number?";
+                    string caption = "Add Sku";
+                    MessageBoxButton button = MessageBoxButton.YesNo;
+                    MessageBoxImage icon = MessageBoxImage.Question;
+                    MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
+                                variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code, variant.Colour.Code);
+                            _productInformationService.AddSku(variant.Id, tet);
+                            MessageBox.Show(tet);
+                            break;
+                        case MessageBoxResult.No:
+
+                            break;
+
+                    }
+                }
+                else
+                {
+                    Clipboard.SetText(variant.Sku);
+                    MessageBox.Show(variant.Sku + " Copied");
+                }
+            }
+
+
+
+
+
+
+
         }
 
         private void AddBarcode(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Barcode");
+            Button b = sender as Button;
+            Variant variant = b.CommandParameter as Variant;
+
+            if (variant.Barcode.BarcodeNumber.CompareTo("Add Barcode") == 0)
+            {
+                string messageBoxText = "Do you want to add Barcode Number?";
+                string caption = "Add Barcode";
+                MessageBoxButton button = MessageBoxButton.YesNo;
+                MessageBoxImage icon = MessageBoxImage.Question;
+                MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        _productInformationService.AddBarcode(variant.Id);
+                        MessageBox.Show("Barcode Added" + variant.Id);
+                        break;
+                    case MessageBoxResult.No:
+
+                        break;
+
+                }
+            }
+            else
+            {
+                Clipboard.SetText(variant.Barcode.BarcodeNumber);
+                MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
+            }
+            
         }
 
         private void BtnInformationPrice(object sender, RoutedEventArgs e)
