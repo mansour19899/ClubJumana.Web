@@ -112,6 +112,9 @@ namespace ClubJumana.Wpf2
                                 AddVariant();
                                 panels.ElementAt(2).Visibility = Visibility.Hidden;
                                 PeriveweAndPrepareForAdd();
+                                lblReview.Visibility = Visibility.Visible;
+                                lblSuccessOfAddProduct.Visibility = Visibility.Hidden;
+                                lblAskQoustionInReview.Content = "Are You Sure For Add?";
                                 GrAddInformation.Visibility = Visibility.Hidden;
                                 GrReview.Visibility = Visibility.Visible;
                                 step = 4;
@@ -175,88 +178,6 @@ namespace ClubJumana.Wpf2
                 lblReview1.Foreground = Brushes.Black;
                 btnYesForAdd.IsEnabled = true;
 
-                //string mac = GetMACAddress().ToString();
-                //int categoryId = Convert.ToInt16(cmbCategory.SelectedValue.ToString());
-                //int SubCategoryId = Convert.ToInt16(cmbSubCategory.SelectedValue.ToString());
-                //int ProducttypeId = Convert.ToInt16(cmbProductType.SelectedValue.ToString());
-                //int colorId = Convert.ToInt16(cmbColors.SelectedValue.ToString());
-
-                //if (!IsExistCompany)
-                //{
-                //    Company company = new Company();
-                //    company.Id = db.GiveMeCompanyId(mac);
-                //    company.CompanyName = txtCompany.Text;
-                //    company.Manufacture = txtManufacture.Text;
-                //    company.Website = txtWebSite.Text;
-                //    company.Email = txtEmail.Text;
-                //    company.StreetAddress = txtStreetAddress.Text;
-                //    company.AddressLine2 = txtAddressLine2.Text;
-                //    company.City = txtCity.Text;
-                //    company.StateProvinceRegion = txtStateProvineRegion.Text;
-                //    company.ZipPostlCode = txtZipPostalCode.Text;
-                //    company.Country_Id_fk = Convert.ToInt16(cmbCountry.SelectedValue.ToString());
-                //    company.Phone = txtPhone.Text;
-                //    company.FAX = txtFax.Text;
-
-                //    db.AddCompany(company);
-                //    //if (ttt)
-                //    //    MessageBox.Show("Sucsess Save   " + company.CompanyName);
-                //    //else
-                //    //    MessageBox.Show("Error Db Save Company");
-                //}
-
-
-
-
-                //string lastSku = db.LastSku();
-                //string LastStyleNumber = db.LastStyleNumber();
-
-                //GenerateSkuStyle cd = new GenerateSkuStyle();
-                //var tt = cd.Generate(categoryId, SubCategoryId, ProducttypeId, colorId, lastSku, LastStyleNumber);
-
-                //product = new OwnProduct();
-                //product.Id = db.GiveMeProductId(mac);
-                //product.ProductType_Id_fk = ProducttypeId;
-                //product.Sku = tt["Sku"];
-                //product.StyleNumber = tt["StyleNumber"];
-                //product.ProductTittle = txtProductTittle.Text;
-                //product.Color_Id_fk = Convert.ToInt16(colorId);
-                //product.Material_Id_fk = Convert.ToInt16(cmbMaterial.SelectedValue.ToString());
-                //product.Brand_Id_fk = Convert.ToInt16(cmbBrand.SelectedValue.ToString());
-                //product.CountryofOrgin_Id_fk = Convert.ToInt16(cmbCountryOfOrgin.SelectedValue.ToString());
-                //product.Box = chkBox.IsChecked;
-                //product.Bag = chkBag.IsChecked;
-                //product.Wrap = chkWrap.IsChecked;
-                //product.NoPackaging = chkNoPacking.IsChecked;
-                //product.AirTransportation = chkAirTransportation.IsChecked;
-                //product.ShipTransportation = chkShipTransportation.IsChecked;
-                //product.Train = chkTrain.IsChecked;
-                //product.Truck = chkTruck.IsChecked;
-
-                //if (txtGsm.Text.Trim() != "")
-                //    product.Gsm = Int16.Parse(txtGsm.Text);
-                ////if (txtWidth.Text.Trim() != "")
-                ////    product.Width = float.Parse(txtWidth.Text);
-                ////if (txtLenght.Text.Trim() != "")
-                ////    product.length = float.Parse(txtLenght.Text);
-                ////if (txtDepth.Text.Trim() != "")
-                ////    product.Depth = float.Parse(txtDepth.Text);
-                ////if (txtHeight.Text.Trim() != "")
-                ////    product.Height = float.Parse(txtHeight.Text);
-                ////if (txtWeight.Text.Trim() != "")
-                ////    product.Weight = float.Parse(txtWeight.Text);
-                //product.SpecialPackingInstructions = txtSpecialPackaing.Text;
-                //if (txtPrice.Text.Trim() != "")
-                //    product.Price = float.Parse(txtPrice.Text);
-
-                //product.Width = float.Parse(cvrt.WidthI.ToString());
-                //product.length = float.Parse(cvrt.LenghtI.ToString());
-                //product.Depth = float.Parse(cvrt.DepthI.ToString());
-                //product.Height = float.Parse(cvrt.HeightI.ToString());
-                //product.Weight = float.Parse(cvrt.WeightI.ToString());
-
-                //product.Company_Id_fk = newCompanyId;
-                //product.DescribeMaterial = txtDescribeMaterial.Text;
                 addVariant.Product.StyleNumber =
                     _productInformationService.GiveMeStyleNumber(cmbCategory.SelectedIndex,
                         cmbSubCategory.SelectedIndex);
@@ -264,11 +185,11 @@ namespace ClubJumana.Wpf2
                                                                        $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addVariant.Variants.FirstOrDefault().Data1}" +
                                                                        $" \n\n Material : {cmbMaterial.Text} " +
                                                                        $"\n\n\n\n Descibe Material :\n{addVariant.Product.DescribeMaterial}"));
+                lvVariants.ItemsSource = null;
+                lvVariants.Items.Refresh();
                 lvVariants.ItemsSource = addVariant.Variants;
-                //foreach (var VARIABLE in addTowel.Towels)
-                //{
-                //    Review.AppendLine(string.Format($"Product Type: {cmbProductType.Text.Trim()} Color :{cmbColors.Text.Trim()} GSM : {addTowel.Towel.Gsm}   Price:{addTowel.Towel.Price}\n\n"));
-                //}
+
+
                 lblReview1.Content = Review;
                 lblReview2.Foreground = Brushes.Black;
                 lblReview2.Content = "";
@@ -311,17 +232,43 @@ namespace ClubJumana.Wpf2
 
         private void BtnYesForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            _productInformationService.AddTowel(addVariant);
-            MessageBox.Show("Product Added");
+            if (lblReview.Visibility == Visibility.Visible)
+            {
+                _productInformationService.AddTowel(addVariant);
+                lblReview.Visibility = Visibility.Hidden;
+                lblSuccessOfAddProduct.Visibility = Visibility.Visible;
+                lblAskQoustionInReview.Content = "Do you want to add another product?";
+            }
+            else
+            {
+                step = 1;
+                Scr2.Visibility = Visibility.Visible;
+                GrReview.Visibility = Visibility.Hidden;
+                addVariant.Variants.Clear();
+                txtGsm.IsEnabled = true;
+                GrAddInformation.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void BtnNoForAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            step = 1;
-            Scr2.Visibility = Visibility.Visible;
-            addVariant.Variants.Clear();
-            GrReview.Visibility = Visibility.Hidden;
-            GrAddInformation.Visibility = Visibility.Visible;
+            if (lblReview.Visibility == Visibility.Visible)
+            {
+                step = 1;
+                Scr2.Visibility = Visibility.Visible;
+                if (addVariant.Variants.Count == 1)
+                {
+                    addVariant.Variants.Clear();
+                }
+                GrReview.Visibility = Visibility.Hidden;
+                GrAddInformation.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.Close();
+            }
+
         }
 
         private void LvVariants_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -377,6 +324,7 @@ namespace ClubJumana.Wpf2
                     cmbProductType.SelectedIndex = 0;
                     cmbProductType.IsEnabled = true;
                     addVariant.Variants.Clear();
+                    txtGsm.IsEnabled = true;
                 }
 
 
@@ -401,6 +349,12 @@ namespace ClubJumana.Wpf2
                         break;
                 }
             }
+        }
+
+        private void LblSize_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            addVariant.Variant.Size = addVariant.Variant.Width.ToString() + "x" + addVariant.Variant.length.ToString();
+            txtSize.Text = addVariant.Variant.Size;
         }
     }
 }

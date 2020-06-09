@@ -299,7 +299,7 @@ namespace ClubJumana.Wpf2
 
             if (variant.ColourFK == 0)
             {
-                MessageBox.Show("Assign Color");
+                MessageBox.Show("First assign Color for Variant");
             }
             else
             {

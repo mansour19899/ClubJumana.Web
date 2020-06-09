@@ -176,14 +176,14 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0">
                         <Label Name="lblWidth" Content="Width (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtWidth" Text="{Binding Variant.Width}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp" KeyDown="txtWidth_KeyDown"  />
+                        <TextBox Name="txtWidth" Text="{Binding Variant.Width,UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp" KeyDown="txtWidth_KeyDown"  />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1">
                         <Label Name="lblLenght" Content="Lenght (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtLenght" Text="{Binding Variant.length}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" KeyDown="txtLenght_KeyDown" />
+                        <TextBox Name="txtLenght" Text="{Binding Variant.length,UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="0">
-                        <Label Name="lblSize" Content="Size (in)" Style="{StaticResource lblAddProduct}" />
+                        <Label Name="lblSize" Content="Size (in)" Style="{StaticResource lblAddProduct}" MouseDown="LblSize_OnMouseDown" />
                         <TextBox Name="txtSize" Text="{Binding Variant.Size}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" />
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1">
@@ -234,7 +234,8 @@
                 <RowDefinition Height="0.1*" />
                 <RowDefinition Height="0.1*" />
             </Grid.RowDefinitions>
-            <Label Content="Review" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label Name="lblReview" Content="Review" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label Name="lblSuccessOfAddProduct" Content="Product added successfully" Visibility="Hidden" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="40" HorizontalAlignment="Center" Foreground="DarkGreen" VerticalAlignment="Center" FontWeight="Bold"/>
             <Label Name="lblReview1" Content="Part1" Grid.Row="1" Grid.Column="0" Style="{StaticResource lblAddProduct}" />
             <Label Name="lblReview2" Content="Part2" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblAddProduct}" />
 
@@ -248,7 +249,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Content="Are You Sure For Add?" Grid.Column="0" Grid.Row="2"  Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource LableStyle}" Foreground="#FF08227A" />
+            <Label Name="lblAskQoustionInReview" Content="Are You Sure For Add?" Grid.Column="0" Grid.Row="2"  Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource LableStyle}" Foreground="#FF08227A" />
             <Button Name="btnYesForAdd" Content="Yes" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="200" MinHeight="80" FontSize="30" Margin="40 0" Background="#0a5d00" Click="BtnYesForAdd_OnClick" />
             <Button Name="btnNoForAdd" Content="No" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="200" MinHeight="80" FontSize="30" Margin="40 0" Background="#940000" Click="BtnNoForAdd_OnClick" />
 

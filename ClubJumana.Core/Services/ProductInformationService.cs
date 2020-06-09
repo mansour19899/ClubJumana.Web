@@ -94,7 +94,7 @@ namespace ClubJumana.Core.Services
             var CategoryStyleCode = _context.Categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
             var SubCategoryCode = _context.SubCategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _context.Products.ToList().LastOrDefault();
+            var tt = _context.Products.AsNoTracking().ToList().LastOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
