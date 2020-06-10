@@ -34,11 +34,12 @@ namespace ClubJumana.Wpf2
         private List<Colour> coloursList;
         private List<Material> materialsList;
         int step = 0;
+
         public AddProduct()
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
-            _productInformationService=new ProductInformationService();
+            _productInformationService = new ProductInformationService();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -52,7 +53,7 @@ namespace ClubJumana.Wpf2
             coloursList = _repositoryService.AllColourList().ToList();
             materialsList = _repositoryService.AllMaterialList().ToList();
 
-            panels = new List<ScrollViewer>() { Scr1, Scr2, Scr3/*, Scr4, Scr5 */};
+            panels = new List<ScrollViewer>() {Scr1, Scr2, Scr3 /*, Scr4, Scr5 */};
             cmbCountry.ItemsSource = countriesList;
             cmbCountryOfOrgin.ItemsSource = countriesList;
             cmbCategory.ItemsSource = categoriesList;
@@ -145,9 +146,9 @@ namespace ClubJumana.Wpf2
                 addVariant.Variants.Add(new Variant()
                 {
                     ColourFK = addVariant.Variant.ColourFK,
-                    Colour = new Colour() { Name = cmbColors.Text },
+                    Colour = new Colour() {Name = cmbColors.Text},
                     ProductTypeFK = addVariant.Variant.ProductTypeFK,
-                    ProductType = new ProductType() { Name = cmbProductType.Text},
+                    ProductType = new ProductType() {Name = cmbProductType.Text},
                     FobPrice = addVariant.Variant.FobPrice,
                     WholesaleA = addVariant.Variant.WholesaleA,
                     WholesaleB = addVariant.Variant.WholesaleB,
@@ -157,7 +158,7 @@ namespace ClubJumana.Wpf2
                     Size = addVariant.Variant.Size,
                     Note = addVariant.Variant.Note,
                     Data1 = addVariant.Variant.Data1,
-                    
+
                 });
             }
 
@@ -181,10 +182,11 @@ namespace ClubJumana.Wpf2
                 addVariant.Product.StyleNumber =
                     _productInformationService.GiveMeStyleNumber(cmbCategory.SelectedIndex,
                         cmbSubCategory.SelectedIndex);
-                StringBuilder Review = new StringBuilder(String.Format($" StyleNumber : {addVariant.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
-                                                                       $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addVariant.Variants.FirstOrDefault().Data1}" +
-                                                                       $" \n\n Material : {cmbMaterial.Text} " +
-                                                                       $"\n\n\n\n Descibe Material :\n{addVariant.Product.DescribeMaterial}"));
+                StringBuilder Review = new StringBuilder(String.Format(
+                    $" StyleNumber : {addVariant.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
+                    $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addVariant.Variants.FirstOrDefault().Data1}" +
+                    $" \n\n Material : {cmbMaterial.Text} " +
+                    $"\n\n\n\n Descibe Material :\n{addVariant.Product.DescribeMaterial}"));
                 lvVariants.ItemsSource = null;
                 lvVariants.Items.Refresh();
                 lvVariants.ItemsSource = addVariant.Variants;
@@ -202,6 +204,7 @@ namespace ClubJumana.Wpf2
 
 
         #region MyRegion
+
         private void txtLenght_KeyUp(object sender, KeyEventArgs e)
         {
 
@@ -261,6 +264,7 @@ namespace ClubJumana.Wpf2
                 {
                     addVariant.Variants.Clear();
                 }
+
                 GrReview.Visibility = Visibility.Hidden;
                 GrAddInformation.Visibility = Visibility.Visible;
             }
@@ -285,7 +289,7 @@ namespace ClubJumana.Wpf2
                     addVariant.Variants.RemoveAt(lvVariants.SelectedIndex);
                     lvVariants.ItemsSource = null;
                     lvVariants.ItemsSource = addVariant.Variants;
-                    
+
                     break;
                 case MessageBoxResult.No:
 
@@ -299,7 +303,8 @@ namespace ClubJumana.Wpf2
             if (cmbCategory.SelectedIndex != 0)
             {
                 var index = Convert.ToInt16(cmbCategory.SelectedValue);
-                var list = categoriesSubCategoriesList.Where(p => p.CategoryFK == index || p.CategoryFK == 0).Select(p => p.SubCategory).ToList();
+                var list = categoriesSubCategoriesList.Where(p => p.CategoryFK == index || p.CategoryFK == 0)
+                    .Select(p => p.SubCategory).ToList();
                 cmbSubCategory.ItemsSource = list;
                 cmbProductType.SelectedIndex = 0;
                 cmbSubCategory.SelectedIndex = 0;
@@ -307,6 +312,14 @@ namespace ClubJumana.Wpf2
                 cmbSubCategory.IsEnabled = true;
                 addVariant.Variants.Clear();
 
+            }
+            else
+            {
+
+                cmbSubCategory.IsEnabled = false;
+                cmbProductType.IsEnabled = false;
+                cmbSubCategory.SelectedIndex = 0;
+                cmbProductType.SelectedIndex=0;
             }
         }
 
@@ -316,10 +329,13 @@ namespace ClubJumana.Wpf2
             {
                 int index = Convert.ToInt16(cmbCategory.SelectedValue);
                 int index1 = Convert.ToInt16(cmbSubCategory.SelectedValue);
-                var index2 = categoriesSubCategoriesList.SingleOrDefault(p => p.CategoryFK == index && p.SubCategoryFK == index1);
+                var index2 =
+                    categoriesSubCategoriesList.SingleOrDefault(p =>
+                        p.CategoryFK == index && p.SubCategoryFK == index1);
                 if (index2 != null)
                 {
-                    var tt = productTypeslist.Where(p => p.CategorysubcategoreisFK == index2.Id||p.Id==0).Select(p => p).ToList();
+                    var tt = productTypeslist.Where(p => p.CategorysubcategoreisFK == index2.Id || p.Id == 0)
+                        .Select(p => p).ToList();
                     cmbProductType.ItemsSource = tt;
                     cmbProductType.SelectedIndex = 0;
                     cmbProductType.IsEnabled = true;
@@ -329,6 +345,11 @@ namespace ClubJumana.Wpf2
 
 
             }
+            else
+            {
+                cmbProductType.IsEnabled = false;
+                cmbProductType.SelectedIndex = 0;
+            }
         }
 
         private void TxtCompany_OnLostFocus(object sender, RoutedEventArgs e)
@@ -337,7 +358,8 @@ namespace ClubJumana.Wpf2
 
             if (ExsitCompany != null)
             {
-                var result = MessageBox.Show("This company already exists. Do you want to complate?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("This company already exists. Do you want to complate?", "Confirmation",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -355,6 +377,45 @@ namespace ClubJumana.Wpf2
         {
             addVariant.Variant.Size = addVariant.Variant.Width.ToString() + "x" + addVariant.Variant.length.ToString();
             txtSize.Text = addVariant.Variant.Size;
+        }
+
+        private void TxtWidth_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtWidth.SelectAll();
+        }
+
+        private void TxtWidth_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtWidth.SelectAll();
+        }
+
+        private void TxtLenght_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtLenght.SelectAll();
+        }
+
+        private void TxtLenght_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtLenght.SelectAll();
+        }
+
+        private void TxtPrice_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            txtPrice.SelectAll();
+        }
+
+        private void TxtPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            txtPrice.SelectAll();
+        }
+
+        private void TxtSize_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter & string.IsNullOrWhiteSpace(txtSize.Text))
+            {
+                addVariant.Variant.Size = addVariant.Variant.Width.ToString() + "x" + addVariant.Variant.length.ToString();
+                txtSize.Text = addVariant.Variant.Size;
+            }
         }
     }
 }
