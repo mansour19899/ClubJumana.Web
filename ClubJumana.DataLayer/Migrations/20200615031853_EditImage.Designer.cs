@@ -4,14 +4,16 @@ using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200615031853_EditImage")]
+    partial class EditImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,9 +269,12 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int>("VariantFK")
                         .HasColumnType("int");
 
+                    b.Property<int?>("VariantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("VariantFK");
+                    b.HasIndex("VariantId");
 
                     b.ToTable("Images");
                 });
@@ -1367,9 +1372,7 @@ namespace ClubJumana.DataLayer.Migrations
                 {
                     b.HasOne("ClubJumana.DataLayer.Entities.Variant", "Variant")
                         .WithMany("Images")
-                        .HasForeignKey("VariantFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VariantId");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>

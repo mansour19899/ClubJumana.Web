@@ -33,6 +33,7 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public int AddAndUpdateCustomer(Customer customer);
         public int AddAndUpdateVendor(Vendor vendor);
+        public int AddAndUpdateItem(ProductMaster productMaster);
 
     }
 }

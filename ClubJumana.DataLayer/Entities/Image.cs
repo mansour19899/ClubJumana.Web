@@ -8,8 +8,7 @@ namespace ClubJumana.DataLayer.Entities
     {
         public int Id { get; set; }
         public string ImageName { get; set; }
-        public int TowelFK { get; set; }
-        public int BedingFK { get; set; }
+        public int VariantFK { get; set; }
 
         public Variant Variant { get; set; }
     }

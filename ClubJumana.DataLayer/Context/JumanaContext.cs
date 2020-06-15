@@ -323,7 +323,7 @@ namespace ClubJumana.DataLayer.Context
                     .HasForeignKey(s => s.MaterialFK);
 
             });
-            //----------------------------------- Towel ---------------------------------------
+            //----------------------------------- Variant ---------------------------------------
             modelBuilder.Entity<Variant>(entity =>
             {
 
@@ -362,9 +362,9 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                //entity.HasOne<Towel>(s => s.Towel)
-                //    .WithMany(g => g.Images)
-                //    .HasForeignKey(s => s.TowelFK);
+                entity.HasOne<Variant>(s => s.Variant)
+                    .WithMany(g => g.Images)
+                    .HasForeignKey(s => s.VariantFK);
 
                 //entity.HasOne<Beding>(s => s.Beding)
                 //    .WithMany(g => g.Images)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -103,19 +104,20 @@ namespace ClubJumana.Core.DTOs
                 CountryOfOrigin = product.CountryOfOrgin.Name;
             if (product.Brand != null)
                 Brand = product.Brand.Name;
-            GSM = product.Variants.ElementAt(0).Data1.ToString();
+            if (product.Variants.ElementAt(0).Data1!=null)
+                GSM = product.Variants.ElementAt(0).Data1.ToString();
             if (product.Company != null)
                 Company = product.Company.CompanyName;
             if (product.Material != null)
                 Material = product.Material.MaterialName;
             DescriabeMaterial = product.DescribeMaterial;
-            List = product.Variants.ToList();
+            List = new ObservableCollection<Variant>(product.Variants) ;
             foreach (var VARIABLE in List)
             {
                 if (VARIABLE.Sku == null)
                     VARIABLE.Sku = "Add SKU";
-                if(VARIABLE.BarcodeFK==null)
-                    VARIABLE.Barcode=new Barcode(){BarcodeNumber = "Add Barcode"};
+                if (VARIABLE.BarcodeFK == null)
+                    VARIABLE.Barcode = new Barcode() { BarcodeNumber = "Add Barcode" };
             }
         }
         public int Id { get; set; }
@@ -130,7 +132,20 @@ namespace ClubJumana.Core.DTOs
         public string Material { get; set; }
         public string DescriabeMaterial { get; set; }
 
-        public List<Variant> List { get; set; }
+        private Variant _variantSelected;
+
+        public Variant VariantSelected
+        {
+            get { return _variantSelected; }
+            set
+            {
+                _variantSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public ObservableCollection<Variant> List { get; set; }
 
         private CostCenter _costCenter;
 

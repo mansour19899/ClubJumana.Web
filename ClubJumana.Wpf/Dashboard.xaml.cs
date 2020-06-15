@@ -32,16 +32,21 @@ namespace ClubJumana.Wpf
              tt=new Test();
             tt.Customer = _repositoryService.AllCustomers().FirstOrDefault();
             tt.Vendor = _repositoryService.AllVendor().FirstOrDefault();
+            tt.ProductMaster = _repositoryService.AllProductMasterList().FirstOrDefault();
+            
             var t= new ucCustomerCard();
             var yy=new ucVendorCard();
+            var yyy=new ucItemCard();
 
             yy.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
+            yyy.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             t.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
 
             DataContext = tt;
             t.DataContext = tt.Customer;
             yy.DataContext = tt.Vendor;
-            Bordermanagement.Child = yy;
+            yyy.DataContext = tt.ProductMaster;
+            Bordermanagement.Child = yyy ;
 
 
         }
@@ -57,11 +62,17 @@ namespace ClubJumana.Wpf
             MessageBox.Show(tt.Customer.FirstName);
             _repositoryService.AddAndUpdateVendor(tt.Vendor);
         }
+        private void BtnSaveForItem_OnBtnSaveOnClick(object? sender, EventArgs e)
+        {
+            MessageBox.Show(tt.Customer.FirstName);
+            _repositoryService.AddAndUpdateItem(tt.ProductMaster);
+        }
     }
 
     public class Test
     {
         public Customer Customer { get; set; }
         public Vendor Vendor { get; set; }
+        public ProductMaster ProductMaster { get; set; }
     }
 }

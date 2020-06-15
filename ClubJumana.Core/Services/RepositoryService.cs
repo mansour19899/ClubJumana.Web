@@ -143,5 +143,18 @@ namespace ClubJumana.Core.Services
             _context.SaveChanges();
             return 1;
         }
+
+        public int AddAndUpdateItem(ProductMaster productMaster)
+        {
+            if (productMaster.Id == 0)
+                _context.ProductMasters.Add(productMaster);
+            else
+            {
+                _context.Update(productMaster);
+            }
+
+            _context.SaveChanges();
+            return 1;
+        }
     }
 }

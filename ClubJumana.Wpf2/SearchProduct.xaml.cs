@@ -53,6 +53,7 @@ namespace ClubJumana.Wpf2
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
+            cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
 
             countriesList= _repositoryService.AllCountriesList().ToList();
             cmbCountry.ItemsSource = countriesList;
@@ -284,7 +285,7 @@ namespace ClubJumana.Wpf2
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
             InfoProduct = new ProductInformationViewModel(SelectedProduct);
-            lvVariant.ItemsSource = SelectedProduct.Variants.ToList();
+            lvVariant.ItemsSource = InfoProduct.List;
             this.DataContext = InfoProduct;
 
             GrSearch.Visibility = Visibility.Hidden;
@@ -372,6 +373,15 @@ namespace ClubJumana.Wpf2
                 MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
             }
             
+        }
+
+        private void EditVariant(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            Variant variantSelected = b.CommandParameter as Variant;
+            InfoProduct.VariantSelected = variantSelected;
+            var ttt = variantSelected;
+            GrdEditProduct.Visibility = Visibility.Visible;
         }
 
         private void BtnInformationPrice(object sender, RoutedEventArgs e)
@@ -545,6 +555,23 @@ namespace ClubJumana.Wpf2
                 GrdInformationProduct.Visibility = Visibility.Visible;
                 GrSearch.Visibility = Visibility.Hidden;
             }
+        }
+
+
+        private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            _productInformationService.UpdateVariant(InfoProduct.VariantSelected);
+            InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
+                cmbEditVariantColor.Text;
+            lvVariant.ItemsSource = null;
+            lvVariant.ItemsSource = InfoProduct.List;
+            GrdEditProduct.Visibility = Visibility.Hidden;
+
+        }
+
+        private void BtnCloseGrdEditVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdEditProduct.Visibility = Visibility.Hidden;
         }
     }
 }

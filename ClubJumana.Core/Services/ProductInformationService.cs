@@ -224,5 +224,27 @@ namespace ClubJumana.Core.Services
             }
             
         }
+
+        public int UpdateVariant(Variant variant)
+        {
+            Variant variantdb = _context.Variants.SingleOrDefault(p => p.Id == variant.Id);
+            if (variantdb == null)
+                return -1;
+            else
+            {
+                variantdb.WholesaleA = variant.WholesaleA;
+                variantdb.WholesaleB = variant.WholesaleB;
+                variantdb.RetailPrice = variant.RetailPrice;
+                variantdb.FobPrice = variant.FobPrice;
+                variantdb.ColourFK = variant.ColourFK;
+                variantdb.length = variant.length;
+                variantdb.Width = variant.Width;
+                variantdb.Size = variant.Size;
+
+                _context.Variants.Update(variantdb);
+                _context.SaveChanges();
+                return 1;
+            }
+        }
     }
 }
