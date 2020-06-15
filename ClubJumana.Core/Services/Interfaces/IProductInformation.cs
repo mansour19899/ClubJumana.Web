@@ -18,6 +18,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddSku(int Id, string Sku);
         public int AddBarcode(int Id);
         public int UpdateVariant(Variant variant);
+        public int AddImageVariant(int variantFK, string imageName);
     }
     
 }

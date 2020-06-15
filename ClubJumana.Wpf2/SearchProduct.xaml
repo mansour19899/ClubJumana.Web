@@ -16,7 +16,23 @@
                 <RowDefinition Height="0.85*"/>
             </Grid.RowDefinitions>
             <UniformGrid Columns="3">
-                <Image  Grid.Row="0" Grid.Column="5"   Source="Content/Images/ClubJummanaLogo.jpg" Stretch="Uniform" Margin="0 -10 0 -10"  />
+                <Border Width="200" Margin="0 10 0 0">
+                    <Border.Background>
+                        <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Margin" Value="2 0"/>
+                            <Setter Property="CornerRadius" Value="15"/>
+                            <Setter Property="Width" Value="400"/>
+                        </Style>
+                    </Border.Style>
+                </Border>
+               
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style"></TextBlock>
                 <Image Name="btnLogo"  Grid.Row="0" Grid.Column="5"   Source="Content/Images/VanmeFasionLogo.jpg" Stretch="Uniform"   MouseDown="BtnLogo_OnMouseDown" />
             </UniformGrid>
@@ -29,7 +45,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Grid   Name="GrSearch" Visibility="Visible" Grid.Row="2" Margin="0 20 50 0">
+            <Grid   Name="GrSearch" Visibility="Hidden" Grid.Row="2" Margin="0 20 50 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.1*" />
                     <RowDefinition Height="0.15*"/>
@@ -90,7 +106,7 @@
                     </StackPanel>
                 </Grid>
 
-                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20" MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20"  MouseDoubleClick="lvProducts_MouseDoubleClick" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
@@ -138,11 +154,44 @@
                                <ColumnDefinition Width="0.3*" />
                                <ColumnDefinition Width="0.7*" />
                            </Grid.ColumnDefinitions>
+                           <Grid.RowDefinitions>
+                               <RowDefinition Height="0.75*"/>
+                               <RowDefinition Height="0.25*"/>
+                           </Grid.RowDefinitions>
+                            <Border Name="imgVariant" Grid.Column="1" MouseDown="ImgVariant_OnMouseDown">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+                                </Border.Effect>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Margin" Value="2 0"/>
+                                        <Setter Property="CornerRadius" Value="15"/>
+                                        <Setter Property="Width" Value="400"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                           <Button
+                               Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="70 0 0 0" Name="btnPerviosImageVariant" Click="BtnPreviousImageVariant_OnClick"
+                                Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           >
+                               <TextBlock Text="&lt;" FontSize="25"/>
+                           </Button>
+                           <Button
+                               Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="0 0 70 0" Name="btnNextImageVariant" Click="BtnNextImageVariant_OnClick"
+                               Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                           >
+                               <TextBlock Text="&gt;" FontSize="25"/>
+                           </Button>
+                            <Button Name="btnAddPicture" Grid.Column="1" Grid.Row="1" MaxWidth="200" Height="60" Content="AddPicture" FontSize="20" Click="BtnAddPicture_OnClick"/>
 
-                           <Image Grid.Column="1"  Source="Content/Images/ClubJummanaLogo.jpg"/>
                         </Grid>
                     </UniformGrid>
-                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding Towels}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding List}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="LvVariant_OnSelectionChanged"  >
                         <ListView.View>
                             <GridView >
                                 <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}"/>
@@ -416,7 +465,7 @@
 
 
             </Grid>
-            <Grid   Name="GrdEditProduct" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Visible" >
+            <Grid   Name="GrdEditProduct" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
                 <Border  Width="600" Height="699"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
                     <UniformGrid Rows="11" Columns="1"  >
                         <UniformGrid.Resources>
@@ -478,6 +527,24 @@
 
                     </UniformGrid >
 
+                </Border>
+
+
+            </Grid>
+            <Grid   Name="GrdShowImage" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Visible" MouseDown="GrdShowImage_OnMouseDown" >
+                <Grid Name="btnCloseImageFull" PreviewMouseDown="BtnCloseImageFull_OnMouseDown" ></Grid>
+                <Border Name="imgFullImage"  MinWidth="400" MinHeight="900" MaxWidth="900" MaxHeight="900"  VerticalAlignment="Center" CornerRadius="20" Padding="60" Visibility="Hidden">
+                    <Border.Background>
+                        <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
+                    </Border.Background>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Margin" Value="2 0"/>
+                            <Setter Property="CornerRadius" Value="15"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                    </Border.Style>
                 </Border>
 
 

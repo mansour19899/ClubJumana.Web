@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Printing;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -35,6 +36,10 @@ namespace ClubJumana.Wpf2
         private ProductInformationViewModel InfoProduct;
         private List<Country> countriesList;
         private CostCenter cost;
+        private string Path;
+        private int SelectedIndexVariant=0;
+        private int ImageSelected = 0;
+        private int countImageVariant = 0;
 
         bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
@@ -45,6 +50,7 @@ namespace ClubJumana.Wpf2
             _productInformationService = new ProductInformationService();
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
+            Path = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\VariantsImage\\";
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
@@ -285,9 +291,11 @@ namespace ClubJumana.Wpf2
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
             InfoProduct = new ProductInformationViewModel(SelectedProduct);
-            lvVariant.ItemsSource = InfoProduct.List;
+            //lvVariant.ItemsSource = InfoProduct.List;
             this.DataContext = InfoProduct;
-
+           ShowImageVariant(0);
+           btnNextImageVariant.Visibility = Visibility.Hidden;
+           btnPerviosImageVariant.Visibility = Visibility.Hidden;
             GrSearch.Visibility = Visibility.Hidden;
             GrdInformationProduct.Visibility = Visibility.Visible;
         }
@@ -563,8 +571,8 @@ namespace ClubJumana.Wpf2
             _productInformationService.UpdateVariant(InfoProduct.VariantSelected);
             InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
                 cmbEditVariantColor.Text;
-            lvVariant.ItemsSource = null;
-            lvVariant.ItemsSource = InfoProduct.List;
+            //lvVariant.ItemsSource = null;
+            //lvVariant.ItemsSource = InfoProduct.List;
             GrdEditProduct.Visibility = Visibility.Hidden;
 
         }
@@ -572,6 +580,142 @@ namespace ClubJumana.Wpf2
         private void BtnCloseGrdEditVariant_OnClick(object sender, RoutedEventArgs e)
         {
             GrdEditProduct.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnAddPicture_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            if (lvVariant.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("First Choose Variant");
+            }
+            else
+            {
+                // Set filter for file extension and default file extension 
+                dlg.DefaultExt = ".png";
+                dlg.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+                Nullable<bool> result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    var Path = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\VariantsImage\\";
+                    DateTime date = DateTime.Now;
+                    string ImageName = date.Year.ToString() + date.Month.ToString().NumtoStr(2) + date.Day.ToString().NumtoStr(2) + date.Hour.ToString().NumtoStr(2) + date.Minute.ToString().NumtoStr(2) + date.Second.ToString().NumtoStr(2);
+                    var ext = System.IO.Path.GetExtension(dlg.FileName);
+                    string FullNameImage = ImageName + ext;
+                    var DestentionPath = Path + FullNameImage;
+                    File.Copy(dlg.FileName, DestentionPath);
+                    var tt = lvVariant.SelectedItems[0] as Variant;
+                    _productInformationService.AddImageVariant(tt.Id, FullNameImage);
+                    imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(DestentionPath)));
+
+
+
+                    // Open document 
+                    //string filename = dlg.FileName;
+                    //ManageFileFolder ff = new ManageFileFolder();
+                    //string pic = ff.copy(filename);
+                    //UploadedPicturs.Add(pic);
+                    //imgMain.Source = new BitmapImage(new Uri(pic));
+                    //var yt = pic.Split('\\').Last();
+                    //if (connect.AddImage(SelectedProduct.Id, yt))
+                    //    UploadPictures();
+                    //MessageBox.Show("pic added");
+
+                }
+            }
+
+
+        }
+
+
+
+        private void LvVariant_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            SelectedIndexVariant= lvVariant.SelectedIndex;
+            
+            if (SelectedIndexVariant != -1)
+            {
+                countImageVariant = InfoProduct.List[SelectedIndexVariant].Images.Count;
+                ShowImageVariant(SelectedIndexVariant);
+                ImageSelected = 0;
+                btnNextImageVariant.Visibility = Visibility.Visible;
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+
+            }
+
+            else
+            {
+                btnNextImageVariant.Visibility = Visibility.Hidden;
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+
+        private void ShowImageVariant(int index,int imgSelect=0)
+        {
+            var images = InfoProduct.List[index].Images;
+            if (images.Count == 0)
+            {
+                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "NoImage.JPG")));
+                btnNextImageVariant.Visibility = Visibility.Hidden;
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                var imageName = InfoProduct.List[index].Images.ElementAt(imgSelect).ImageName;
+                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
+                imgFullImage.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
+            }
+        }
+
+        private void BtnNextImageVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            ImageSelected++;
+            ShowImageVariant(SelectedIndexVariant, ImageSelected);
+            if (ImageSelected == countImageVariant-1)
+            {
+
+                btnNextImageVariant.Visibility = Visibility.Hidden;
+            }
+            if (ImageSelected == 1)
+            {
+                btnPerviosImageVariant.Visibility = Visibility.Visible;
+            }
+        }
+
+
+        private void BtnPreviousImageVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            ImageSelected--;
+            ShowImageVariant(SelectedIndexVariant, ImageSelected);
+            if (ImageSelected == countImageVariant - 2)
+            {
+
+                btnNextImageVariant.Visibility = Visibility.Visible;
+            }
+
+            if (ImageSelected == 0)
+            {
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void ImgVariant_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GrdShowImage.Visibility = Visibility.Visible;
+        }
+
+        private void GrdShowImage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void BtnCloseImageFull_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("sattt");
         }
     }
 }

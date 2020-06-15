@@ -182,7 +182,7 @@ namespace ClubJumana.Core.Services
 
         public Product GiveMeProductWithId(int Id)
         {
-            var product = _context.Products.AsNoTracking().Include(p=>p.Variants).ThenInclude(p=>p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
+            var product = _context.Products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p=>p.Variants).ThenInclude(p=>p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
                 .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
                 .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
                 .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
@@ -245,6 +245,20 @@ namespace ClubJumana.Core.Services
                 _context.SaveChanges();
                 return 1;
             }
+        }
+
+        public int AddImageVariant(int variantFK, string imageName)
+        {
+            var NewId = _context.Images.Max(p => p.Id) + 1;
+            _context.Images.Add(new Image()
+            {
+                Id = NewId,
+                VariantFK = variantFK,
+                ImageName = imageName
+
+            });
+            _context.SaveChanges();
+            return 1;
         }
     }
 }
