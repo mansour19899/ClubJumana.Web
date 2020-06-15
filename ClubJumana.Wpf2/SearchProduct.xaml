@@ -531,9 +531,17 @@
 
 
             </Grid>
-            <Grid   Name="GrdShowImage" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Visible" MouseDown="GrdShowImage_OnMouseDown" >
-                <Grid Name="btnCloseImageFull" PreviewMouseDown="BtnCloseImageFull_OnMouseDown" ></Grid>
-                <Border Name="imgFullImage"  MinWidth="400" MinHeight="900" MaxWidth="900" MaxHeight="900"  VerticalAlignment="Center" CornerRadius="20" Padding="60" Visibility="Hidden">
+            <Grid   Name="GrdShowImage" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Visible" >
+                <Grid Name="btnCloseImageFull"  >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="btnPreviousFullImage" Height="100" Width="80" Background="DarkGreen" Click="BtnPreviousImageVariant_OnClick"/>
+                    <Button Name="btnNextFullImage" Grid.Column="2" Height="100" Width="80" Background="DarkRed" Click="BtnNextImageVariant_OnClick"/>
+                </Grid>
+                <Border Name="imgFullImage"  MinWidth="400" MinHeight="900" MaxWidth="900" MaxHeight="900"  VerticalAlignment="Center" CornerRadius="20" Padding="60" Visibility="Visible" MouseDown="ImgFullImage_OnMouseDown">
                     <Border.Background>
                         <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
                     </Border.Background>
@@ -542,7 +550,6 @@
                             <Setter Property="BorderThickness" Value="1"/>
                             <Setter Property="Margin" Value="2 0"/>
                             <Setter Property="CornerRadius" Value="15"/>
-                            <Setter Property="Cursor" Value="Hand"/>
                         </Style>
                     </Border.Style>
                 </Border>

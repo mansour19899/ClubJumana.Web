@@ -642,6 +642,8 @@ namespace ClubJumana.Wpf2
                 ImageSelected = 0;
                 btnNextImageVariant.Visibility = Visibility.Visible;
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Visible;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
 
             }
 
@@ -649,6 +651,8 @@ namespace ClubJumana.Wpf2
             {
                 btnNextImageVariant.Visibility = Visibility.Hidden;
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Hidden;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
             }
 
         }
@@ -679,10 +683,12 @@ namespace ClubJumana.Wpf2
             {
 
                 btnNextImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Hidden;
             }
             if (ImageSelected == 1)
             {
                 btnPerviosImageVariant.Visibility = Visibility.Visible;
+                btnPreviousFullImage.Visibility = Visibility.Visible;
             }
         }
 
@@ -695,11 +701,13 @@ namespace ClubJumana.Wpf2
             {
 
                 btnNextImageVariant.Visibility = Visibility.Visible;
+                btnNextFullImage.Visibility = Visibility.Visible;
             }
 
             if (ImageSelected == 0)
             {
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
             }
         }
 
@@ -708,14 +716,9 @@ namespace ClubJumana.Wpf2
             GrdShowImage.Visibility = Visibility.Visible;
         }
 
-        private void GrdShowImage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void ImgFullImage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-           
-        }
-
-        private void BtnCloseImageFull_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("sattt");
+            GrdShowImage.Visibility = Visibility.Hidden;
         }
     }
 }
