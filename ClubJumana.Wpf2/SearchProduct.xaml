@@ -45,7 +45,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Grid   Name="GrSearch" Visibility="Hidden" Grid.Row="2" Margin="0 20 50 0">
+            <Grid   Name="GrSearch" Visibility="Visible" Grid.Row="2" Margin="0 20 50 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.1*" />
                     <RowDefinition Height="0.15*"/>
@@ -120,7 +120,7 @@
                     </ListView.View>
                 </ListView>
             </Grid>
-            <ScrollViewer Name="GrdInformationProduct" Grid.Row="2" Margin="0 0 0 0" Visibility="Visible">
+            <ScrollViewer Name="GrdInformationProduct" Grid.Row="2" Margin="0 0 0 0" Visibility="Hidden">
                 <Grid  Margin="65,36,40,34" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.6*"/>
@@ -144,7 +144,7 @@
                                 <TextBlock Style="{StaticResource Style1}" Text="{Binding Company, StringFormat= Company : {0}}"/>
                                 <TextBlock Style="{StaticResource Style1}" Text="{Binding GSM, StringFormat= GSM : {0}}" />
                                 <TextBlock Style="{StaticResource Style1}" Text="{Binding Material, StringFormat= Material : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  Describe :  {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  Remarks :  {0}}" />
 
                             </StackPanel>
                         </ScrollViewer>
@@ -234,25 +234,25 @@
                 </Grid>
             </ScrollViewer>
             <Grid   Name="GrdCostCenter" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
-                <Border  MinWidth="400" MinHeight="800" MaxWidth="1200" MaxHeight="900"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
-                    <ScrollViewer Name="ScrollViewerCostCenter" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <Grid >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.1*"/>
-                                <RowDefinition Height="0.15*"/>
-                                <RowDefinition Height="0.75*"/>
-                            </Grid.RowDefinitions>
-                            <UniformGrid Columns="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock/>
-                                <Label Content="Cost Center" FontSize="40" FontWeight="Bold" Foreground="Navy"/>
-                                <Button
+                <Border  Width="1200" Height="1000" VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.15*"/>
+                            <RowDefinition Height="0.75*"/>
+                        </Grid.RowDefinitions>
+                        <UniformGrid Columns="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock/>
+                            <Label Content="Cost Center" FontSize="40" FontWeight="Bold" Foreground="Navy"/>
+                            <Button
                                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="300 0 0 0" Name="btnCloseCostCenter" Click="BtnCloseCostCenter_OnClick"
 
                                     >
-                                    <TextBlock Text="X" FontSize="25"/>
-                                </Button>
-                            </UniformGrid>
-                            <Grid Grid.Row="2" >
+                                <TextBlock Text="X" FontSize="25"/>
+                            </Button>
+                        </UniformGrid>
+                        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Name="ScrollViewerCostCenter" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <Grid  >
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -264,7 +264,8 @@
                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                         Width="200"
                                         Padding="8"
-                                        Margin="0 20">
+                                        Margin="0 20"
+                                        ToolTip="{Binding CostCenter.MarginWholeSaleA}">
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
@@ -281,7 +282,9 @@
                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                         Width="200"
                                         Padding="8"
-                                        Margin="0 20">
+                                        Margin="0 20"
+                                        ToolTip="{Binding CostCenter.MarginWholeSaleB}">
+
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
@@ -298,7 +301,8 @@
                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                                         Width="200"
                                         Padding="8"
-                                        Margin="0 20">
+                                        Margin="0 20"
+                                        ToolTip="{Binding CostCenter.MarginRetailPrice}">
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
@@ -316,7 +320,8 @@
                                     Grid.Row="1"
                                     MaxWidth="1000"
                                     Background="{DynamicResource MaterialDesignBackground}"
-                                    Margin="0 40 0 60">
+                                    Margin="0 40 0 60"
+                                    MaxHeight="50">
                                     <StackPanel >
                                         <Expander
                                             HorizontalAlignment="Stretch"
@@ -340,7 +345,7 @@
                                                         <BeginStoryboard>
                                                             <Storyboard>
                                                                 <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                                                 From="0.0" To="900.0"
+                                                                                 From="0.0" To="760.0"
                                                                                  Duration="0:0:1"
                                                                 />
                                                             </Storyboard>
@@ -452,14 +457,15 @@
 
 
                             </Grid>
+                        </ScrollViewer>
 
 
 
 
 
 
-                        </Grid >
-                    </ScrollViewer>
+
+                    </Grid >
 
                 </Border>
 
@@ -512,7 +518,7 @@
                             <TextBox Text="{Binding VariantSelected.Width}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
-                            <TextBlock Text=" Size"/>
+                            <TextBlock Name="btnSizeEditProduct" Text=" Size" MouseDown="BtnSizeEditProduct_OnMouseDown" />
                             <TextBox Text="{Binding VariantSelected.Size}"/>
                         </UniformGrid>
                         <TextBlock></TextBlock>
@@ -531,15 +537,23 @@
 
 
             </Grid>
-            <Grid   Name="GrdShowImage" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Visible" >
+            <Grid   Name="GrdShowImage" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
                 <Grid Name="btnCloseImageFull"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="btnPreviousFullImage" Height="100" Width="80" Background="DarkGreen" Click="BtnPreviousImageVariant_OnClick"/>
-                    <Button Name="btnNextFullImage" Grid.Column="2" Height="100" Width="80" Background="DarkRed" Click="BtnNextImageVariant_OnClick"/>
+                    <Button Name="btnPreviousFullImage" Height="100" Width="80"  Click="BtnPreviousImageVariant_OnClick">
+                        <Button.Background>
+                            <ImageBrush ImageSource="Content/Icon/BackIcon.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button Name="btnNextFullImage" Grid.Column="2" Height="100" Width="80"  Click="BtnNextImageVariant_OnClick">
+                        <Button.Background>
+                            <ImageBrush ImageSource="Content/Icon/NextIcon.png"/>
+                        </Button.Background>
+                    </Button>
                 </Grid>
                 <Border Name="imgFullImage"  MinWidth="400" MinHeight="900" MaxWidth="900" MaxHeight="900"  VerticalAlignment="Center" CornerRadius="20" Padding="60" Visibility="Visible" MouseDown="ImgFullImage_OnMouseDown">
                     <Border.Background>

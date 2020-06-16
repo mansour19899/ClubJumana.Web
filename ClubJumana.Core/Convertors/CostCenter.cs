@@ -207,9 +207,48 @@ namespace ClubJumana.Core.Convertors
 
         }
 
-        public string WholeSaleA { get; set; }
-        public string WholeSaleB { get; set; }
-        public string RetailPrice { get; set; }
+        private string _wholeSaleA;
+
+        public string WholeSaleA
+        {
+            get { return _wholeSaleA; }
+            set
+            {
+                _wholeSaleA = value;
+                if (value != ""&value!="0")
+                    MarginWholeSaleA ="Margin : "+ Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value)*100, 2, MidpointRounding.AwayFromZero)+" %";
+            }
+        }
+
+        private string _wholeSaleB;
+
+        public string WholeSaleB
+        {
+            get { return _wholeSaleB; }
+            set
+            {
+                _wholeSaleB = value;
+                if (value != "" & value != "0")
+                    MarginWholeSaleB = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
+            }
+        }
+        private string _retailPrice;
+        public string RetailPrice
+        {
+            get { return _retailPrice; }
+            set
+            {
+                _retailPrice = value;
+                if (value != "" & value != "0")
+                    MarginRetailPrice = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
+            }
+        }
+
+        public string MarginWholeSaleA { get; set; }
+
+        public string MarginWholeSaleB { get; set; }
+
+        public string MarginRetailPrice { get; set; }
         private void Calculate()
         {
             _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);

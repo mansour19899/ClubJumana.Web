@@ -50,7 +50,7 @@ namespace ClubJumana.Wpf2
             _productInformationService = new ProductInformationService();
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
-            Path = AppDomain.CurrentDomain.BaseDirectory + "\\Images\\VariantsImage\\";
+            Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
@@ -296,6 +296,8 @@ namespace ClubJumana.Wpf2
            ShowImageVariant(0);
            btnNextImageVariant.Visibility = Visibility.Hidden;
            btnPerviosImageVariant.Visibility = Visibility.Hidden;
+           btnNextFullImage.Visibility = Visibility.Hidden;
+           btnPreviousFullImage.Visibility = Visibility.Hidden;
             GrSearch.Visibility = Visibility.Hidden;
             GrdInformationProduct.Visibility = Visibility.Visible;
         }
@@ -398,10 +400,7 @@ namespace ClubJumana.Wpf2
             Variant variantSelected = b.CommandParameter as Variant;
             cost = new CostCenter();
 
-            cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
-            cost.WholeSaleA = variantSelected.WholesaleA.ToString();
-            cost.WholeSaleB = variantSelected.WholesaleB.ToString();
-            cost.RetailPrice = variantSelected.RetailPrice.ToString();
+
             var country = _repositoryService.GiveMeCountryByID(38);
             if (country.ExChangeRate == null)
                 cost.ExchangeRate = -1;
@@ -411,6 +410,10 @@ namespace ClubJumana.Wpf2
                 cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
             else
                 cost.Duty = -1;
+            cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
+            cost.WholeSaleA = variantSelected.WholesaleA.ToString();
+            cost.WholeSaleB = variantSelected.WholesaleB.ToString();
+            cost.RetailPrice = variantSelected.RetailPrice.ToString();
             InfoProduct.CostCenter = cost;
             GrdCostCenter.Visibility = Visibility.Visible;
         }
@@ -663,7 +666,7 @@ namespace ClubJumana.Wpf2
             var images = InfoProduct.List[index].Images;
             if (images.Count == 0)
             {
-                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "NoImage.JPG")));
+                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
                 btnNextImageVariant.Visibility = Visibility.Hidden;
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
             }
@@ -719,6 +722,13 @@ namespace ClubJumana.Wpf2
         private void ImgFullImage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             GrdShowImage.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnSizeEditProduct_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //InfoProduct.VariantSelected.Size = InfoProduct.VariantSelected.length.ToString() + "X" +
+            //                                   InfoProduct.VariantSelected.Width.ToString();
+            //MessageBox.Show(InfoProduct.VariantSelected.Size);
         }
     }
 }
