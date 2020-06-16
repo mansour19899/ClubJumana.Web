@@ -54,11 +54,14 @@ namespace ClubJumana.DataLayer.Context
 
         #endregion
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
              //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
-            //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-            optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
+           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+            optionsBuilder.UseMySQL("server=148.72.112.16:3306;port=3306;database=MagicDTS;user=mansour1989;password=Man1989sour");
+
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -20,6 +20,7 @@ using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
+using MySql.Data.MySqlClient;
 
 namespace ClubJumana.Wpf2
 {
@@ -56,8 +57,19 @@ namespace ClubJumana.Wpf2
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
+            //MySqlConnection conn;
+            //string salam =
+            //    "server = 148.72.112.16:3306; port = 3306;  Database = MagicDTS; Uid = mansour1989; Pwd = Man1989sour";
+
+            //conn = new MySqlConnection();
+            //conn.ConnectionString = salam;
+            //conn.Open();
+            //MessageBox.Show("ey val");
+
+
+
             var db=new JummanaContext();
-            var rr = db.Brands;
+            var rr = db.Brands.ToList();
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
