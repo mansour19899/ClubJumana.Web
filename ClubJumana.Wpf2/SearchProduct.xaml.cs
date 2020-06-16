@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services;
+using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf2
@@ -55,6 +56,8 @@ namespace ClubJumana.Wpf2
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
+            var db=new JummanaContext();
+            var rr = db.Brands;
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();

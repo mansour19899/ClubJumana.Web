@@ -15,10 +15,7 @@ namespace ClubJumana.DataLayer.Context
         //{
             
         //}
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
-        }
+
         #region User
 
         public DbSet<Role> Roles { get; set; }
@@ -57,6 +54,12 @@ namespace ClubJumana.DataLayer.Context
 
         #endregion
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+             //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
+            //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+            optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -125,7 +128,7 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(e => e.CreateOrder).HasDefaultValueSql("getdate()");
+                //entity.Property(e => e.CreateOrder).HasDefaultValueSql("getdate()");
                 entity.Property(a => a.RowVersion).IsRowVersion();
                 //entity.HasData();
 
@@ -195,8 +198,8 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<SaleOrder>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.OrderedDate).HasColumnType("smalldatetime");
-                entity.Property(e => e.CancelDate).HasColumnType("smalldatetime");
+                //entity.Property(e => e.OrderedDate).HasColumnType("smalldatetime");
+                //entity.Property(e => e.CancelDate).HasColumnType("smalldatetime");
                 entity.Property(e => e.RowVersion).IsRowVersion();
 
                 entity.HasOne<User>(s => s.User)
