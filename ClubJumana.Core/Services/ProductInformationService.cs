@@ -151,7 +151,7 @@ namespace ClubJumana.Core.Services
         {
             List<VariantViewModel> list = new List<VariantViewModel>();
 
-            var VariantslList = _context.variants.Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
+            var VariantslList = _context.variants.OrderBy(p=>p.Id).Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
 
             foreach (var VARIABLE in VariantslList)
             {

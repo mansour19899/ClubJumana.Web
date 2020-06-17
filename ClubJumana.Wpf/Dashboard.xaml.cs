@@ -37,6 +37,7 @@ namespace ClubJumana.Wpf
             var t= new ucCustomerCard();
             var yy=new ucVendorCard();
             var yyy=new ucItemCard();
+            var yyyy=new ucPurchasing();
 
             yy.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             yyy.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
@@ -46,7 +47,7 @@ namespace ClubJumana.Wpf
             t.DataContext = tt.Customer;
             yy.DataContext = tt.Vendor;
             yyy.DataContext = tt.ProductMaster;
-            Bordermanagement.Child = yyy ;
+            Bordermanagement.Child = yyyy ;
 
 
         }
