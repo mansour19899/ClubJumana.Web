@@ -249,7 +249,12 @@ namespace ClubJumana.Core.Services
 
         public int AddImageVariant(int variantFK, string imageName)
         {
-            var NewId = _context.images.Max(p => p.Id) + 1;
+            int NewId = 1;
+            if (_context.images.Count() != 0)
+            {
+                 NewId = _context.images.Max(p => p.Id) + 1;
+            }
+
             _context.images.Add(new Image()
             {
                 Id = NewId,
