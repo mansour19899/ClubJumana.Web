@@ -655,11 +655,6 @@ namespace ClubJumana.Wpf2
                 countImageVariant = InfoProduct.List[SelectedIndexVariant].Images.Count;
                 ShowImageVariant(SelectedIndexVariant);
                 ImageSelected = 0;
-                btnNextImageVariant.Visibility = Visibility.Visible;
-                btnPerviosImageVariant.Visibility = Visibility.Hidden;
-                btnNextFullImage.Visibility = Visibility.Visible;
-                btnPreviousFullImage.Visibility = Visibility.Hidden;
-
             }
 
             else
@@ -676,17 +671,47 @@ namespace ClubJumana.Wpf2
         private void ShowImageVariant(int index,int imgSelect=0)
         {
             var images = InfoProduct.List[index].Images;
-            if (images.Count == 0)
+            if (images.Count == 0 )
             {
                 imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
                 btnNextImageVariant.Visibility = Visibility.Hidden;
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Hidden;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
+            }
+            else if (images.Count == 1)
+            {
+                btnNextImageVariant.Visibility = Visibility.Hidden;
+                btnPerviosImageVariant.Visibility = Visibility.Hidden; 
+                btnNextFullImage.Visibility = Visibility.Hidden;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
+                ShowImage();
             }
             else
             {
+                ShowImage();
+                btnNextImageVariant.Visibility = Visibility.Visible;
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Visible;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
+            }
+
+            void ShowImage()
+            {
                 var imageName = InfoProduct.List[index].Images.ElementAt(imgSelect).ImageName;
-                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
-                imgFullImage.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
+                try
+                {
+                    imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
+                    imgFullImage.Background = new ImageBrush(new BitmapImage(new Uri(Path + imageName)));
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Could Not Find ImageFile.Please Update");
+                    imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
+
+                }
+
+                
             }
         }
 
