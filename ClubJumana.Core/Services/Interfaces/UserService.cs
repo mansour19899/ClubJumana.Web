@@ -22,21 +22,21 @@ namespace ClubJumana.Core.Services.Interfaces
         }
         public Invitation AllowRegister(string activeCode)
         {
-            var invitation = _context.Invitations.SingleOrDefault(u => u.ActiveCode == activeCode);
+            var invitation = _context.invitations.SingleOrDefault(u => u.ActiveCode == activeCode);
             return invitation ?? new Invitation(){Id = 0};
         }
 
         public int AddInvitation(Invitation invitation)
         {
-            _context.Invitations.Add(invitation);
+            _context.invitations.Add(invitation);
             _context.SaveChanges();
             return invitation.Id;
         }
 
         public int AddUser(User user)
         {
-            _context.Users.Add(user);
-            var invitation = _context.Invitations.SingleOrDefault(p => p.ActiveCode == user.ActiveCode);
+            _context.users.Add(user);
+            var invitation = _context.invitations.SingleOrDefault(p => p.ActiveCode == user.ActiveCode);
             if (invitation == null)
                 return -2;
 
@@ -49,29 +49,29 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public User GetUserByActiveCode(string activeCode)
         {
-            return _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
+            return _context.users.SingleOrDefault(u => u.ActiveCode == activeCode);
         }
 
         public User GetUserByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(u => u.Email == email);
+            return _context.users.SingleOrDefault(u => u.Email == email);
         }
 
         public bool IsExistEmail(string email)
         {
-            return _context.Users.Any(p => p.Email == email);
+            return _context.users.Any(p => p.Email == email);
         }
 
         public bool IsExistUserName(string userName)
         {
-            return _context.Users.Any(p => p.UserName == userName);
+            return _context.users.Any(p => p.UserName == userName);
         }
 
         public User LoginUser(LoginViewModel login)
         {
             string hashPasword = PasswordHelper.EncodePasswordMd5(login.Password);
             string emailUser = FixedText.FixEmail(login.UserNameEmail);
-            var user= _context.Users.SingleOrDefault(u => (u.Email == emailUser||u.UserName==emailUser)&&u.Password==hashPasword);
+            var user= _context.users.SingleOrDefault(u => (u.Email == emailUser||u.UserName==emailUser)&&u.Password==hashPasword);
             return user;
             //if (user == null)
             //{
@@ -85,13 +85,13 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public void UpdateUser(User user)
         {
-            _context.Users.Update(user);
+            _context.users.Update(user);
             _context.SaveChanges();
         }
 
         public User LoginUser()
         {
-            return _context.Users.FirstOrDefault();
+            return _context.users.FirstOrDefault();
         }
     }
 }

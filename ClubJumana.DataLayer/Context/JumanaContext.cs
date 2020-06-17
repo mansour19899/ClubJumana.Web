@@ -18,38 +18,38 @@ namespace ClubJumana.DataLayer.Context
 
         #region User
 
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<Role> roles { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<UserRole> userroles { get; set; }
+        public DbSet<Invitation> invitations { get; set; }
 
-        public DbSet<ProductMaster> ProductMasters { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public DbSet<Vendor> Vendors { get; set; }
-        public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
-        public DbSet<SaleOrder> SaleOrders { get; set; }
-        public DbSet<SoItem> SoItems { get; set; }
-        public DbSet<Refund> Refunds { get; set; }
-        public DbSet<RefundItem> RefundItems { get; set; }
-        public DbSet<Province> Provinces { get; set; }
+        public DbSet<ProductMaster> productmasters { get; set; }
+        public DbSet<Item> items { get; set; }
+        public DbSet<PurchaseOrder> purchaseorders { get; set; }
+        public DbSet<Vendor> vendors { get; set; }
+        public DbSet<Warehouse> warehouses { get; set; }
+        public DbSet<Customer> customers { get; set; }
+        public DbSet<ProductInventoryWarehouse> productinventorywarehouses { get; set; }
+        public DbSet<SaleOrder> saleorders { get; set; }
+        public DbSet<SoItem> soitems { get; set; }
+        public DbSet<Refund> refunds { get; set; }
+        public DbSet<RefundItem> refunditems { get; set; }
+        public DbSet<Province> provinces { get; set; }
 
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Variant> Variants { get; set; }
-        public DbSet<Colour> Colours { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Barcode> Barcodes { get; set; }
-        public DbSet<Brand> Brands { get; set; }
-        public DbSet<Material> Materials { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<ProductType> ProductTypes { get; set; }
-        public DbSet<CategoriesSubCategory> CategoriesSubCategories { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Product> products { get; set; }
+        public DbSet<Variant> variants { get; set; }
+        public DbSet<Colour> colours { get; set; }
+        public DbSet<Company> companies { get; set; }
+        public DbSet<Country> countries { get; set; }
+        public DbSet<Barcode> barcodes { get; set; }
+        public DbSet<Brand> brands { get; set; }
+        public DbSet<Material> materials { get; set; }
+        public DbSet<Image> images { get; set; }
+        public DbSet<ProductType> producttypes { get; set; }
+        public DbSet<CategoriesSubCategory> categoriessubcategories { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<SubCategory> subcategories { get; set; }
 
 
         #endregion
@@ -57,9 +57,10 @@ namespace ClubJumana.DataLayer.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-             //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
-           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-            optionsBuilder.UseMySQL("server=148.72.112.16:3306;port=3306;database=MagicDTS;user=mansour1989;password=Man1989sour");
+            // optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
+            // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
+            optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
 
         }

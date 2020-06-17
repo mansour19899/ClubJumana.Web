@@ -18,110 +18,110 @@ namespace ClubJumana.Core.Services
         }
         public IQueryable<ProductMaster> AllProductMasterList()
         {
-            return _context.ProductMasters;
+            return _context.productmasters;
         }
 
         public IQueryable<PurchaseOrder> AllPurchaseOrder()
         {
-            return _context.PurchaseOrders.AsNoTracking();
+            return _context.purchaseorders.AsNoTracking();
         }
 
         public IQueryable<SaleOrder> AllOrders()
         {
-            return _context.SaleOrders.Include(p => p.SoItems).ThenInclude(p=>p.ProductMaster).Include(p => p.TaxArea)
+            return _context.saleorders.Include(p => p.SoItems).ThenInclude(p=>p.ProductMaster).Include(p => p.TaxArea)
                 .Include(p=>p.Customer).AsNoTracking();
         }
 
         public IQueryable<Vendor> AllVendor()
         {
-            return _context.Vendors;
+            return _context.vendors;
         }
 
         public IQueryable<Province> AllProvinces()
         {
-            return _context.Provinces;
+            return _context.provinces;
         }
 
         public IQueryable<Customer> AllCustomers()
         {
-            return _context.Customers;
+            return _context.customers;
         }
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
         {
-            return _context.PurchaseOrders.Where(p=>p.CreatedPO==true).AsNoTracking();
+            return _context.purchaseorders.Where(p=>p.CreatedPO==true).AsNoTracking();
         }
 
         public IQueryable<PurchaseOrder> GrnPurchaseOrder()
         {
-            return _context.PurchaseOrders.Where(p => p.CreatedAsn == true).AsNoTracking();
+            return _context.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
         }
 
         public IQueryable<Country> AllCountriesList()
         {
-            return _context.Countries;
+            return _context.countries;
         }
 
         public IQueryable<Company> AllCompaniesList()
         {
-            return _context.Companies;
+            return _context.companies;
         }
 
         public IQueryable<Category> AllCategoriesList()
         {
-            return _context.Categories;
+            return _context.categories;
         }
 
         public IQueryable<SubCategory> AllSubCategoriesList()
         {
-            return _context.SubCategories;
+            return _context.subcategories;
         }
 
         public IQueryable<CategoriesSubCategory> AllCategoriesSubCategoryList()
         {
-            return _context.CategoriesSubCategories;
+            return _context.categoriessubcategories;
         }
 
         public IQueryable<ProductType> AllProductTypeList()
         {
-            return _context.ProductTypes;
+            return _context.producttypes;
         }
 
         public IQueryable<Brand> AllBrandList()
         {
-            return _context.Brands;
+            return _context.brands;
         }
 
         public IQueryable<Colour> AllColourList()
         {
-            return _context.Colours;
+            return _context.colours;
         }
 
         public IQueryable<Material> AllMaterialList()
         {
-            return _context.Materials;
+            return _context.materials;
         }
 
         public IQueryable<Product> AllProductList()
         {
-            return _context.Products.Include(p=>p.Variants).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
+            return _context.products.Include(p=>p.Variants).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
         }
 
         public Country GiveMeCountryByID(int Id)
         {
-            return _context.Countries.FirstOrDefault(p => p.Id == Id);
+            return _context.countries.FirstOrDefault(p => p.Id == Id);
         }
 
 
         public IQueryable<Warehouse> AllWarehouse()
         {
-            return _context.Warehouses;
+            return _context.warehouses;
         }
 
         public int AddAndUpdateCustomer(Customer customer)
         {
             if (customer.Id == 0)
-                _context.Customers.Add(customer);
+                _context.customers.Add(customer);
             else
             {
                 _context.Update(customer);
@@ -134,7 +134,7 @@ namespace ClubJumana.Core.Services
         public int AddAndUpdateVendor(Vendor vendor)
         {
             if (vendor.Id == 0)
-                _context.Vendors.Add(vendor);
+                _context.vendors.Add(vendor);
             else
             {
                 _context.Update(vendor);
@@ -147,7 +147,7 @@ namespace ClubJumana.Core.Services
         public int AddAndUpdateItem(ProductMaster productMaster)
         {
             if (productMaster.Id == 0)
-                _context.ProductMasters.Add(productMaster);
+                _context.productmasters.Add(productMaster);
             else
             {
                 _context.Update(productMaster);

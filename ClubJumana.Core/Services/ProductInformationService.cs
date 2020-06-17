@@ -28,23 +28,23 @@ namespace ClubJumana.Core.Services
             if (TowelInformation.company.Id == 0)
             {
                 int CompanyId = 1;
-                if (EnumerableExtensions.Any(_context.Products))
+                if (EnumerableExtensions.Any(_context.products))
                 {
-                    TowelInformation.company.Id = _context.Companies.Max(x => x.Id) + 1;
+                    TowelInformation.company.Id = _context.companies.Max(x => x.Id) + 1;
                 }
 
-                _context.Companies.Add(TowelInformation.company);
+                _context.companies.Add(TowelInformation.company);
 
             }
 
 
             int Id = 1;
-            if (EnumerableExtensions.Any(_context.Products))
+            if (EnumerableExtensions.Any(_context.products))
             {
-                Id = _context.Products.Max(x => x.Id) + 1;
+                Id = _context.products.Max(x => x.Id) + 1;
             }
 
-            _context.Products.Add(new Product()
+            _context.products.Add(new Product()
             {
                 Id = Id,
                 StyleNumber = TowelInformation.Product.StyleNumber,
@@ -58,14 +58,14 @@ namespace ClubJumana.Core.Services
             });
 
             int TowelId = 1;
-            if (EnumerableExtensions.Any(_context.Variants))
+            if (EnumerableExtensions.Any(_context.variants))
             {
-                TowelId = _context.Variants.Max(x => x.Id) + 1;
+                TowelId = _context.variants.Max(x => x.Id) + 1;
             }
 
             foreach (var VARIABLE in TowelInformation.Variants)
             {
-                _context.Variants.Add(new Variant()
+                _context.variants.Add(new Variant()
                 {
                     Id = TowelId,
                     ProductFK = Id,
@@ -91,10 +91,10 @@ namespace ClubJumana.Core.Services
 
         public string GiveMeStyleNumber(int Category, int SubCategory)
         {
-            var CategoryStyleCode = _context.Categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
-            var SubCategoryCode = _context.SubCategories.SingleOrDefault(p => p.Id == SubCategory).Code;
+            var CategoryStyleCode = _context.categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
+            var SubCategoryCode = _context.subcategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _context.Products.AsNoTracking().ToList().LastOrDefault();
+            var tt = _context.products.AsNoTracking().ToList().LastOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
@@ -115,7 +115,7 @@ namespace ClubJumana.Core.Services
         public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode, string ColourCode)
 
         {
-            var list = _context.Variants.Where(p => p.Sku != null).ToList();
+            var list = _context.variants.Where(p => p.Sku != null).ToList();
             string LastSkuNumber = "";
             int SkuNumber = 0;
             int MaxSku = 0;
@@ -144,14 +144,14 @@ namespace ClubJumana.Core.Services
 
         public Company ExistCompany(string CompanyName)
         {
-            return _context.Companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
+            return _context.companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
         }
 
         public List<VariantViewModel> AllVariantList()
         {
             List<VariantViewModel> list = new List<VariantViewModel>();
 
-            var VariantslList = _context.Variants.Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
+            var VariantslList = _context.variants.Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
 
             foreach (var VARIABLE in VariantslList)
             {
@@ -182,7 +182,7 @@ namespace ClubJumana.Core.Services
 
         public Product GiveMeProductWithId(int Id)
         {
-            var product = _context.Products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p=>p.Variants).ThenInclude(p=>p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
+            var product = _context.products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p=>p.Variants).ThenInclude(p=>p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
                 .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
                 .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
                 .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
@@ -194,7 +194,7 @@ namespace ClubJumana.Core.Services
 
         public int AddSku(int Id, string Sku)
         {
-            var Variant = _context.Variants.SingleOrDefault(p => p.Id == Id);
+            var Variant = _context.variants.SingleOrDefault(p => p.Id == Id);
             if (Variant == null)
             {
 
@@ -202,7 +202,7 @@ namespace ClubJumana.Core.Services
             else
             {
                 Variant.Sku = Sku;
-                _context.Variants.Update(Variant);
+                _context.variants.Update(Variant);
                 _context.SaveChanges();
             }
             return 1;
@@ -211,8 +211,8 @@ namespace ClubJumana.Core.Services
         public int AddBarcode(int Id)
         {
             
-            var Variant = _context.Variants.SingleOrDefault(p => p.Id == Id);
-            var NewBarcode = _context.Barcodes.FirstOrDefault(p => p.Active == false);
+            var Variant = _context.variants.SingleOrDefault(p => p.Id == Id);
+            var NewBarcode = _context.barcodes.FirstOrDefault(p => p.Active == false);
             if (NewBarcode == null)
                 return -1;
             else
@@ -227,7 +227,7 @@ namespace ClubJumana.Core.Services
 
         public int UpdateVariant(Variant variant)
         {
-            Variant variantdb = _context.Variants.SingleOrDefault(p => p.Id == variant.Id);
+            Variant variantdb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
             if (variantdb == null)
                 return -1;
             else
@@ -241,7 +241,7 @@ namespace ClubJumana.Core.Services
                 variantdb.Width = variant.Width;
                 variantdb.Size = variant.Size;
 
-                _context.Variants.Update(variantdb);
+                _context.variants.Update(variantdb);
                 _context.SaveChanges();
                 return 1;
             }
@@ -249,8 +249,8 @@ namespace ClubJumana.Core.Services
 
         public int AddImageVariant(int variantFK, string imageName)
         {
-            var NewId = _context.Images.Max(p => p.Id) + 1;
-            _context.Images.Add(new Image()
+            var NewId = _context.images.Max(p => p.Id) + 1;
+            _context.images.Add(new Image()
             {
                 Id = NewId,
                 VariantFK = variantFK,

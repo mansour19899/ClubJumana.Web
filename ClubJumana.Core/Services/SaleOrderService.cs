@@ -51,14 +51,14 @@ namespace ClubJumana.Core.Services
                     IsDeleted = false,
 
                 };
-                _context.SaleOrders.Add(So);
+                _context.saleorders.Add(So);
 
                 _context.SaveChanges();
 
             }
             else
             {
-                So = _context.SaleOrders.SingleOrDefault(p => p.Id == saleOrder.Id);
+                So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
                 So.OrderedDate = saleOrder.OrderedDate;
                 So.ShipDate = saleOrder.ShipDate;
@@ -92,7 +92,7 @@ namespace ClubJumana.Core.Services
             {
                 if (model.Id == 0 && !model.IsDeleted)
                 {
-                    _context.SoItems.Add(new SoItem()
+                    _context.soitems.Add(new SoItem()
                     {
                         So_fk = So.Id,
                         ProductMaster_fk = model.ProductMaster_fk,
@@ -105,12 +105,12 @@ namespace ClubJumana.Core.Services
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {
-                    soItem = _context.SoItems.SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
                     _context.Remove(soItem);
                 }
                 else if (model.Id != 0)
                 {
-                    soItem = _context.SoItems.SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
                     soItem.Cost = model.Cost;
                     soItem.Discount = model.Discount;
                     soItem.Quantity = model.Quantity;
@@ -131,7 +131,7 @@ namespace ClubJumana.Core.Services
         public SaleOrderViewModel GiveSaleOrderById(int id)
         {
 
-            var saleOrder = _context.SaleOrders.Where(p => p.Id == id).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+            var saleOrder = _context.saleorders.Where(p => p.Id == id).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
@@ -198,7 +198,7 @@ namespace ClubJumana.Core.Services
 
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder, bool IsPrint = false)
         {
-            saleOrder.SalesOrderNumber = _context.SaleOrders.Max(p => p.SalesOrderNumber) + 1;
+            saleOrder.SalesOrderNumber = _context.saleorders.Max(p => p.SalesOrderNumber) + 1;
             if (saleOrder.SalesOrderNumber == null)
                 saleOrder.SalesOrderNumber = 345;
             ResrevdItemsOfSaleOrder(saleOrder.Id);
@@ -209,11 +209,11 @@ namespace ClubJumana.Core.Services
 
         public bool CreateInvoice(SaleOrderViewModel saleOrder)
         {
-            saleOrder.InvoiceNumber = _context.SaleOrders.Max(p => p.InvoiceNumber) + 1;
+            saleOrder.InvoiceNumber = _context.saleorders.Max(p => p.InvoiceNumber) + 1;
             if (saleOrder.InvoiceNumber == null)
                 saleOrder.InvoiceNumber = 890;
             //Edit Code Later
-            var soItem = _context.SoItems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
+            var soItem = _context.soitems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
             ProductInventoryWarehouse inventoryWarehouse;
             foreach (SoItem item in soItem)
             {
@@ -235,10 +235,10 @@ namespace ClubJumana.Core.Services
         {
             refund.RefundDate = DateTime.Now;
             refund.RefundNumber = 1368;
-            _context.Refunds.Add(refund);
+            _context.refunds.Add(refund);
 
-            var inventorys = _context.ProductInventoryWarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
-            var SoItems = _context.SoItems.Where(p => p.So_fk == refund.SaleOrder_fk);
+            var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
+            var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrder_fk);
             ProductInventoryWarehouse x;
             foreach (var model in refund.RefundItems)
             {
@@ -276,7 +276,7 @@ namespace ClubJumana.Core.Services
 
         private void ResrevdItemsOfSaleOrder(int Id)
         {
-            var soItem = _context.SoItems.Where(p => p.So_fk == Id).Include(p => p.ProductMaster).ToList();
+            var soItem = _context.soitems.Where(p => p.So_fk == Id).Include(p => p.ProductMaster).ToList();
 
             foreach (SoItem item in soItem)
             {

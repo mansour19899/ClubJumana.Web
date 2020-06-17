@@ -31,7 +31,7 @@ namespace ClubJumana.Core.Services
             int InventoryCount = 0;
 
             //var InventoryDetail = _context.ProductInventoryWarehouses.Where(p => p.ProductMaster_fk == Id).AsNoTracking().ToList();
-            var InventoryDetail = _context.ProductMasters.Include(p=>p.ProductInventoryWarehouses).AsNoTracking().SingleOrDefault(p => p.Id == Id);
+            var InventoryDetail = _context.productmasters.Include(p=>p.ProductInventoryWarehouses).AsNoTracking().SingleOrDefault(p => p.Id == Id);
 
             var MainWarehouseCount = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p=>p.Warehouse_fk==2);
             var Store1Count = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 3);

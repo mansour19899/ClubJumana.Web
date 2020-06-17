@@ -67,9 +67,6 @@ namespace ClubJumana.Wpf2
             //MessageBox.Show("ey val");
 
 
-
-            var db=new JummanaContext();
-            var rr = db.Brands.ToList();
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();

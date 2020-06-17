@@ -39,7 +39,7 @@ namespace ClubJumana.Core.Services
                 {
                     PO = new PurchaseOrder()
                     {
-                        Id = _context.PurchaseOrders.Max(p => p.Id) + 1,
+                        Id = _context.purchaseorders.Max(p => p.Id) + 1,
                         Vendor_fk = poViewModel.Vendor_fk,
                         OrderDate = poViewModel.DateCompleted,
                         ShipDate = poViewModel.ShipDate,
@@ -72,12 +72,12 @@ namespace ClubJumana.Core.Services
                         TotalCharges = 0
                     };
                     if (done)
-                        PO.PoNumber = _context.PurchaseOrders.Max(p => p.PoNumber) + 1;
-                    _context.PurchaseOrders.Add(PO);
+                        PO.PoNumber = _context.purchaseorders.Max(p => p.PoNumber) + 1;
+                    _context.purchaseorders.Add(PO);
                 }
                 else
                 {
-                    PO = _context.PurchaseOrders.SingleOrDefault(p => p.Id == poViewModel.Id);
+                    PO = _context.purchaseorders.SingleOrDefault(p => p.Id == poViewModel.Id);
                     PO.Vendor_fk = poViewModel.Vendor_fk;
                     PO.OrderDate = poViewModel.DateCompleted;
                     PO.ShipDate = poViewModel.ShipDate;
@@ -95,15 +95,15 @@ namespace ClubJumana.Core.Services
                     PO.ApproveAsnUser_fk = poViewModel.ApproveUser_fk;
 
                     if (done)
-                        PO.PoNumber = _context.PurchaseOrders.Max(p => p.PoNumber) + 1;
+                        PO.PoNumber = _context.purchaseorders.Max(p => p.PoNumber) + 1;
 
                 }
                 _context.SaveChanges();
 
                 // Edit Code Later
                 int IdOfItems = 0;
-                if (_context.Items.Any())
-                    IdOfItems = _context.Items.Max(p => p.Id);
+                if (_context.items.Any())
+                    IdOfItems = _context.items.Max(p => p.Id);
                 else
                     IdOfItems = 1;
 
@@ -114,7 +114,7 @@ namespace ClubJumana.Core.Services
                     if (item.Id == 0 && !item.IsDeleted)
                     {
                         IdOfItems++;
-                        _context.Items.Add(new Item()
+                        _context.items.Add(new Item()
                         {
                             Id = IdOfItems,
                             Po_fk = PO.Id,
@@ -135,7 +135,7 @@ namespace ClubJumana.Core.Services
 
                     else if (item.IsChanged && item.Id != 0)
                     {
-                        itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.PoQuantity = item.Quantity;
                         itemm.AsnQuantity = item.Quantity;
@@ -152,9 +152,9 @@ namespace ClubJumana.Core.Services
                     }
                     else if (item.Id != 0 && item.IsDeleted)
                     {
-                        ItemDeleted = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        ItemDeleted = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         if (ItemDeleted != null)
-                            _context.Items.Remove(ItemDeleted);
+                            _context.items.Remove(ItemDeleted);
                     }
 
                     else
@@ -186,7 +186,7 @@ namespace ClubJumana.Core.Services
                 {
                     PO = new PurchaseOrder()
                     {
-                        Id = _context.PurchaseOrders.Max(p => p.Id) + 1,
+                        Id = _context.purchaseorders.Max(p => p.Id) + 1,
                         Vendor_fk = asnViewModel.Vendor_fk,
                         AsnDate = asnViewModel.DateCompleted,
                         ShipDate = asnViewModel.ShipDate,
@@ -218,12 +218,12 @@ namespace ClubJumana.Core.Services
 
                     };
                     if (done)
-                        PO.Asnumber = _context.PurchaseOrders.Max(p => p.Asnumber) + 1;
-                    _context.PurchaseOrders.Add(PO);
+                        PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
+                    _context.purchaseorders.Add(PO);
                 }
                 else
                 {
-                    PO = _context.PurchaseOrders.SingleOrDefault(p => p.Id == asnViewModel.Id);
+                    PO = _context.purchaseorders.SingleOrDefault(p => p.Id == asnViewModel.Id);
                     PO.Vendor_fk = asnViewModel.Vendor_fk;
                     PO.AsnDate = asnViewModel.DateCompleted;
                     PO.ShipDate = asnViewModel.ShipDate;
@@ -240,14 +240,14 @@ namespace ClubJumana.Core.Services
                     PO.ApproveAsnUser_fk = asnViewModel.ApproveUser_fk;
 
                     if (done)
-                        PO.Asnumber = _context.PurchaseOrders.Max(p => p.Asnumber) + 1;
+                        PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
 
                 }
                 _context.SaveChanges();
 
                 int IdOfItems = 0;
-                if (_context.Items.Any())
-                    IdOfItems = _context.Items.Max(p => p.Id);
+                if (_context.items.Any())
+                    IdOfItems = _context.items.Max(p => p.Id);
                 else
                     IdOfItems = 1;
                 Item itemm = new Item();
@@ -257,7 +257,7 @@ namespace ClubJumana.Core.Services
                     IdOfItems++;
                     if (item.Id == 0 && !item.IsDeleted)
                     {
-                        _context.Items.Add(new Item()
+                        _context.items.Add(new Item()
                         {
                             Id = IdOfItems,
                             Po_fk = PO.Id,
@@ -275,7 +275,7 @@ namespace ClubJumana.Core.Services
 
                     else if (item.IsChanged && item.Id != 0)
                     {
-                        itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.AsnQuantity = item.Quantity;
                         itemm.AsnPrice = item.Price;
@@ -289,7 +289,7 @@ namespace ClubJumana.Core.Services
                     }
                     else if (item.Id != 0 && item.IsDeleted)
                     {
-                        itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.AsnQuantity = 0;
                         item.Quantity = 0;
                         itemm.IsDeleted = true;
@@ -305,8 +305,8 @@ namespace ClubJumana.Core.Services
                 if (done)
                 {
                     int ID = 0;
-                    if (_context.ProductInventoryWarehouses.ToList().Count != 0)
-                        ID = _context.ProductInventoryWarehouses.Max(p => p.Id);
+                    if (_context.productinventorywarehouses.ToList().Count != 0)
+                        ID = _context.productinventorywarehouses.Max(p => p.Id);
                     else
                     {
                         ID = 1;
@@ -317,7 +317,7 @@ namespace ClubJumana.Core.Services
                         {
                             ID++;
                             ProductInventoryWarehouse productInventoryWarehouse =
-                                _context.ProductInventoryWarehouses.SingleOrDefault(p =>
+                                _context.productinventorywarehouses.SingleOrDefault(p =>
                                     p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                     p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
                             if (productInventoryWarehouse != null)
@@ -338,7 +338,7 @@ namespace ClubJumana.Core.Services
                             if (asnViewModel.FromWarehouse_fk != 1)
                             {
                                 ProductInventoryWarehouse productInventoryWarehouseFrom =
-                                    _context.ProductInventoryWarehouses.SingleOrDefault(p =>
+                                    _context.productinventorywarehouses.SingleOrDefault(p =>
                                         p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                         p.Warehouse_fk == asnViewModel.FromWarehouse_fk);
                                 if (productInventoryWarehouseFrom != null)
@@ -373,7 +373,7 @@ namespace ClubJumana.Core.Services
                 {
                     PO = new PurchaseOrder()
                     {
-                        Id = _context.PurchaseOrders.Max(p => p.Id) + 1,
+                        Id = _context.purchaseorders.Max(p => p.Id) + 1,
                         Vendor_fk = grnViewModel.Vendor_fk,
                         GrnDate = grnViewModel.DateCompleted,
                         ShipDate = grnViewModel.ShipDate,
@@ -399,12 +399,12 @@ namespace ClubJumana.Core.Services
                         TotalCharges = grnViewModel.TotalCharges
                     };
                     if (done)
-                        PO.Grnumber = _context.PurchaseOrders.Max(p => p.Grnumber) + 1;
-                    _context.PurchaseOrders.Add(PO);
+                        PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
+                    _context.purchaseorders.Add(PO);
                 }
                 else
                 {
-                    PO = _context.PurchaseOrders.SingleOrDefault(p => p.Id == grnViewModel.Id);
+                    PO = _context.purchaseorders.SingleOrDefault(p => p.Id == grnViewModel.Id);
                     PO.Vendor_fk = grnViewModel.Vendor_fk;
                     PO.Vendor_fk = grnViewModel.Vendor_fk;
                     PO.GrnDate = grnViewModel.DateCompleted;
@@ -428,18 +428,18 @@ namespace ClubJumana.Core.Services
                     PO.GrnTotal = grnViewModel.TotalPrice;
                     PO.TotalCharges = grnViewModel.TotalCharges;
                     if (done)
-                        PO.Grnumber = _context.PurchaseOrders.Max(p => p.Grnumber) + 1;
+                        PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
 
                 }
                 _context.SaveChanges();
 
-                int IdOfItems = _context.Items.Max(p => p.Id) + 1;
+                int IdOfItems = _context.items.Max(p => p.Id) + 1;
                 Item itemm = new Item();
                 foreach (var item in items)
                 {
                     if (item.Id == 0 && !item.IsDeleted)
                     {
-                        _context.Items.Add(new Item()
+                        _context.items.Add(new Item()
                         {
                             Id = IdOfItems,
                             Po_fk = PO.Id,
@@ -456,7 +456,7 @@ namespace ClubJumana.Core.Services
 
                     if (item.IsChanged && item.Id != 0)
                     {
-                        itemm = _context.Items.SingleOrDefault(p => p.Id == item.Id);
+                        itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.GrnQuantity = item.Quantity;
                         itemm.Diffrent = item.Diffrent;
@@ -478,7 +478,7 @@ namespace ClubJumana.Core.Services
                     {
                         if (!VARIABLE.IsDeleted)
                         {
-                            productInventory = _context.ProductInventoryWarehouses.SingleOrDefault(p =>
+                            productInventory = _context.productinventorywarehouses.SingleOrDefault(p =>
                                 p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                 p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
                             if (productInventory != null)
@@ -509,7 +509,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<AsnViewModel> AsnList()
         {
-            var AsnViewModels = _context.PurchaseOrders.Select(p => new AsnViewModel()
+            var AsnViewModels = _context.purchaseorders.Select(p => new AsnViewModel()
             {
                 Id = p.Id,
                 Number = p.Asnumber.ShowAsnNumber(),
@@ -535,7 +535,7 @@ namespace ClubJumana.Core.Services
 
         public PurchaseOrder GivePurchaseOrderById(int id)
         {
-            return _context.PurchaseOrders.Include(p => p.Items).ThenInclude(p => p.ProductMaster)
+            return _context.purchaseorders.Include(p => p.Items).ThenInclude(p => p.ProductMaster)
                 .Include(p => p.FromWarehouse).Include(p => p.ToWarehouse)
                 .Include(p => p.UserCreatePo).Include(p => p.UserCreateAsn)
                 .Include(p => p.UserCreateGrn)
@@ -546,7 +546,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<GrnViewModel> GrnList()
         {
-            var GrnViewModels = _context.PurchaseOrders.Select(p => new GrnViewModel()
+            var GrnViewModels = _context.purchaseorders.Select(p => new GrnViewModel()
             {
                 Id = p.Id,
                 Number = p.Grnumber.ShowGrnNumber(),
@@ -572,7 +572,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<PoViewModel> PoList()
         {
-            var poViewModels = _context.PurchaseOrders.Select(p => new PoViewModel()
+            var poViewModels = _context.purchaseorders.Select(p => new PoViewModel()
             {
                 Id = p.Id,
                 Number = p.PoNumber.ShowPoNumber(),
