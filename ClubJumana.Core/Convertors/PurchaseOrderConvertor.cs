@@ -43,9 +43,11 @@ namespace ClubJumana.Core.Convertors
                 CreatedInvoice = purchaseOrder.CreatedPO,
                 WarehousesList = warehouses,
                 VendorsList = vendors,
-                ModeName = "PO "
+                ModeName = "PO ",
+                LastEdit = purchaseOrder.LastEditDate,
+                ItemsOfPurchaseOrderViewModels= CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.PO)
 
-            };
+        };
         }
         public AsnViewModel ConvertToAsn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
         {
@@ -72,7 +74,20 @@ namespace ClubJumana.Core.Convertors
                 CreatedInvoice = purchaseOrder.CreatedAsn,
                 WarehousesList = warehouses,
                 VendorsList = vendors,
-                ModeName = "GIT "
+                Freight = purchaseOrder.Freight,
+                DiscountPercent = purchaseOrder.DiscountPercent,
+                Percent = purchaseOrder.Percent,
+                DiscountDollers = purchaseOrder.DiscountDollers,
+                Insurance = purchaseOrder.Insurance,
+                CustomsDuty = purchaseOrder.CustomsDuty,
+                Handling = purchaseOrder.Handling,
+                Forwarding = purchaseOrder.Forwarding,
+                LandTransport = purchaseOrder.LandTransport,
+                Others = purchaseOrder.Others,
+                TotalCharges = purchaseOrder.TotalCharges,
+                ModeName = "GIT ",
+                LastEdit = purchaseOrder.LastEditDate,
+                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Asn)
             };
         }
         public GrnViewModel ConvertToGrn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
@@ -111,7 +126,9 @@ namespace ClubJumana.Core.Convertors
                 LandTransport = purchaseOrder.LandTransport,
                 Others = purchaseOrder.Others,
                 TotalCharges = purchaseOrder.TotalCharges,
-                ModeName = "GRN "
+                ModeName = "GRN ",
+                LastEdit = purchaseOrder.LastEditDate,
+                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Grn)
             };
         }
 
@@ -192,5 +209,6 @@ namespace ClubJumana.Core.Convertors
             }
             return itemsOfPurchaseOrderViewModel;
         }
+         
    }
 }

@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClubJumana.Wpf.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1750" Background="White">
+             d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcPurchasing_OnLoaded">
     <Grid Margin="0 40 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -297,28 +298,44 @@
                                     <TextBlock Text="Vendor Name" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Text="{Binding Address1}" />
+                                <ComboBox Name="cmbVendor" FontSize="16"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="True"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id" ItemsSource="{Binding VendorsList}"  SelectedValue="{Binding Vendor_fk}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Contact" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Text="{Binding Address1}" />
+                                <TextBox FontSize="16" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Ship From" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Text="{Binding Address1}" />
+                                <ComboBox Name="cmbShipFrom" Grid.Row="2" Grid.Column="1"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="True"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          ItemsSource="{Binding WarehousesList}"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"  SelectedValue="{Binding FromWarehouse_fk}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Ship To " Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Text="{Binding Address1}" />
+                                <ComboBox Name="cmbShipToStore" Grid.Row="3" Grid.Column="1"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="True"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"  ItemsSource="{Binding WarehousesList}" SelectedValue="{Binding ToWarehouse_fk}" />
                             </UniformGrid>
 
 
@@ -329,14 +346,14 @@
                                     <TextBlock Text="Doucment Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
+                                <DatePicker Margin="10 3" SelectedDate="{Binding  DateCompleted}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                     <TextBlock Text="Ship Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3"  SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
+                                <DatePicker Margin="10 3"  SelectedDate="{Binding ShipDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
@@ -353,7 +370,7 @@
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='dd MMM yyyy , HH : mm  '}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                         </UniformGrid>
@@ -372,7 +389,7 @@
                     </Border>
                     <StackPanel Grid.Row="3" >
                         <Border Height="350" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgItems"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"  >
+                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"  >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="True"/>
@@ -460,7 +477,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalPrice}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
@@ -470,7 +487,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalPrice}" FontSize="28" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
 

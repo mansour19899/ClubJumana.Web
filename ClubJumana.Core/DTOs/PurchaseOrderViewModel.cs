@@ -19,6 +19,7 @@ namespace ClubJumana.Core.DTOs
         public DateTime? DateCompleted { get; set; }
         public DateTime? ShipDate { get; set; }
         public DateTime? CancelDate { get; set; }
+        public DateTime? LastEdit { get; set; }
         public virtual decimal? TotalPrice { get; set; }
         public decimal? SubtotalPrice { get; set; }
         public int? ItemsCount { get; set; }
@@ -34,16 +35,13 @@ namespace ClubJumana.Core.DTOs
         public Warehouse FromWarehouse { get; set; }
         public List<Vendor> VendorsList { get; set; }
         public List<Warehouse> WarehousesList { get; set; }
+        public ObservableCollection<ItemsOfPurchaseOrderViewModel> ItemsOfPurchaseOrderViewModels { get; set; }
     }
-    public class PoViewModel:PurchaseOrderViewModel
-    {
-        
-    }
-    public class AsnViewModel : PurchaseOrderViewModel
+    public class PoViewModel : PurchaseOrderViewModel
     {
 
     }
-    public class GrnViewModel : PurchaseOrderViewModel , INotifyPropertyChanged
+    public class AsnViewModel : PurchaseOrderViewModel, INotifyPropertyChanged
     {
         private decimal _totalPrice;
         public override decimal? TotalPrice
@@ -92,9 +90,9 @@ namespace ClubJumana.Core.DTOs
 
                 if (String.IsNullOrWhiteSpace(_percent))
                     _percent = "0";
-              
-                _discountPercent = Math.Round(Convert.ToDecimal(_percent) * SubtotalPrice.Value / 100, 2, MidpointRounding.ToEven)*-1;
-                _totalCharge = _freight+_discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+
+                _discountPercent = Math.Round(Convert.ToDecimal(_percent) * SubtotalPrice.Value / 100, 2, MidpointRounding.ToEven) * -1;
+                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
                 _percent = _percent + " %";
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
@@ -107,7 +105,7 @@ namespace ClubJumana.Core.DTOs
             get { return _discountDollers; }
             set
             {
-                _discountDollers = (value>0)? (-1 * value) :value;
+                _discountDollers = (value > 0) ? (-1 * value) : value;
                 _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
@@ -202,7 +200,7 @@ namespace ClubJumana.Core.DTOs
             foreach (var VARIABLE in items)
             {
 
-                x = (decimal) ((TotalCharges/ SubtotalPrice * VARIABLE.Price) +
+                x = (decimal)((TotalCharges / SubtotalPrice * VARIABLE.Price) +
                                VARIABLE.Price);
                 VARIABLE.Cost = Math.Round(x, 2, MidpointRounding.ToEven);
             }
@@ -219,8 +217,12 @@ namespace ClubJumana.Core.DTOs
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+    public class GrnViewModel : AsnViewModel
+    {
 
-    public class TotalFreightsViewModel 
+    }
+
+    public class TotalFreightsViewModel
     {
         public decimal? Freight { get; set; }
         public decimal? DiscountPercent { get; set; }
@@ -241,7 +243,7 @@ namespace ClubJumana.Core.DTOs
     {
         public ItemsOfPurchaseOrderViewModel()
         {
-            
+
         }
         public int Id { get; set; }
         public int Po_fk { get; set; }
@@ -255,7 +257,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _quantity = value;
-                _TotalItemPrice =Math.Round(_quantity * _price,2,MidpointRounding.ToEven) ;
+                _TotalItemPrice = Math.Round(_quantity * _price, 2, MidpointRounding.ToEven);
                 Diffrent = value - PreviousQuantity;
                 if (Diffrent != 0)
                 {
@@ -271,7 +273,7 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
-        private decimal _price=0;
+        private decimal _price = 0;
 
         public decimal Price
         {
@@ -309,10 +311,11 @@ namespace ClubJumana.Core.DTOs
         public string Note { get; set; }
         public bool? Checked { get; set; }
         private bool _isChanged = false;
-        public bool IsChanged {
+        public bool IsChanged
+        {
             get { return _isChanged; }
             set { _isChanged = value; }
-        } 
+        }
         public bool IsDeleted { get; set; }
         public ProductMaster ProductMaster { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }
