@@ -67,56 +67,76 @@ namespace ClubJumana.Wpf.UserControls
         {
             decimal sum = 0;
             DataGridColumn col1 = e.Column;
-            DataGridRow row1 = e.Row;
-            ItemsOfPurchaseOrderViewModel t = e.Row.DataContext as ItemsOfPurchaseOrderViewModel;
-            TextBox tt = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
-            DataGridColumn dgc = e.Column;
+            //DataGridRow row1 = e.Row;
+            //ItemsOfPurchaseOrderViewModel t = e.Row.DataContext as ItemsOfPurchaseOrderViewModel;
+            //TextBox tt = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+            //DataGridColumn dgc = e.Column;
+            SumItemsprice();
+            //string header = col1.Header as string;
 
-            string header = col1.Header as string;
-
-            if (header.CompareTo("UPC") == 0)
-            {
-                MessageBox.Show(tt.Text);
-                t.ProductMaster_fk = 1;
-            }
-            else
-            {
-                switch (Mode)
-                {
-                    case Mode.PO:
-                        foreach (var VARIABLE in PoViewModel.ItemsOfPurchaseOrderViewModels)
-                        {
-                            sum = VARIABLE.TotalItemPrice + sum;
-                        }
-                        PoViewModel.SubtotalPrice = sum;
-                        break;
-                    case Mode.Asn:
-                        foreach (var VARIABLE in AsnViewModel.ItemsOfPurchaseOrderViewModels)
-                        {
-                            sum = VARIABLE.TotalItemPrice + sum;
-                        }
-                        AsnViewModel.SubtotalPrice = sum;
-                        break;
-                    case Mode.Grn:
-                        foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
-                        {
-                            sum = VARIABLE.TotalItemPrice + sum;
-                        }
-                        GrnViewModel.SubtotalPrice = sum;
-                        break;
-                }
-            }
-
-           
-
-
-
-
-
-
-
+            //if (header.CompareTo("UPC") == 0)
+            //{
+            //    //MessageBox.Show(tt.Text);
+            //    //t.ProductMaster_fk = 1;
+            //}
+            //else
+            //{
+            //    switch (Mode)
+            //    {
+            //        case Mode.PO:
+            //            foreach (var VARIABLE in PoViewModel.ItemsOfPurchaseOrderViewModels)
+            //            {
+            //                sum = VARIABLE.TotalItemPrice + sum;
+            //            }
+            //            PoViewModel.SubtotalPrice = sum;
+            //            break;
+            //        case Mode.Asn:
+            //            foreach (var VARIABLE in AsnViewModel.ItemsOfPurchaseOrderViewModels)
+            //            {
+            //                sum = VARIABLE.TotalItemPrice + sum;
+            //            }
+            //            AsnViewModel.SubtotalPrice = sum;
+            //            break;
+            //        case Mode.Grn:
+            //            foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
+            //            {
+            //                sum = VARIABLE.TotalItemPrice + sum;
+            //            }
+            //            GrnViewModel.SubtotalPrice = sum;
+            //            break;
+            //    }
+            //}
+            
         }
 
+        public void SumItemsprice()
+        {
+            decimal sum = 0;
+            switch (Mode)
+            {
+                case Mode.PO:
+                    foreach (var VARIABLE in PoViewModel.ItemsOfPurchaseOrderViewModels)
+                    {
+                        sum = VARIABLE.TotalItemPrice + sum;
+                    }
+                    PoViewModel.SubtotalPrice = sum;
+                    break;
+                case Mode.Asn:
+                    foreach (var VARIABLE in AsnViewModel.ItemsOfPurchaseOrderViewModels)
+                    {
+                        sum = VARIABLE.TotalItemPrice + sum;
+                    }
+                    AsnViewModel.SubtotalPrice = sum;
+                    break;
+                case Mode.Grn:
+                    foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
+                    {
+                        sum = VARIABLE.TotalItemPrice + sum;
+                    }
+                    GrnViewModel.SubtotalPrice = sum;
+                    break;
+            }
+        }
 
         private void BtnCalculateCost_OnClick(object sender, RoutedEventArgs e)
         {
@@ -143,6 +163,8 @@ namespace ClubJumana.Wpf.UserControls
                 case Mode.Grn:
                     break;
             }
+
+            SumItemsprice();
         }
     }
 }

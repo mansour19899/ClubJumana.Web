@@ -14,7 +14,9 @@ using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Enums;
 using ClubJumana.Core.Services;
+using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Entities;
+using ClubJumana.DataLayer.Entities.Users;
 using ClubJumana.Wpf.UserControls;
 
 namespace ClubJumana.Wpf
@@ -26,20 +28,27 @@ namespace ClubJumana.Wpf
     {
         private RepositoryService _repositoryService;
         private PerchaseOrderService _purchaseOrderService;
+        private UserService _userService;
         private PurchaseOrder SelectedPurchaseOrder;
         private PoViewModel SelectedPo;
         private AsnViewModel SelectedAsn;
         private GrnViewModel SelectedGrn;
         private List<Vendor> vendors;
         private List<Warehouse> warehouses;
+        public Mode Mode = Mode.Nothong;
+        public static User user;
 
         public ucPurchasing Purchasing;
         private Test tt;
         public Dashboard()
         {
             InitializeComponent();
+
             _repositoryService = new RepositoryService();
             _purchaseOrderService = new PerchaseOrderService();
+            _userService = new UserService();
+
+            user = _userService.LoginUser();
             //TestBorder.Child=new ucTest();
 
             tt =new Test();
@@ -91,7 +100,60 @@ namespace ClubJumana.Wpf
         {
             var ttt = SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel);
 
+            SaveAndUpdate();
+            
         }
+
+        void SaveAndUpdate(bool done = false)
+        {
+            string message = "";
+            bool IsSuccessSavedOrUpdated = false;
+            Mode = Mode.Asn;
+            switch (Mode)
+            {
+                case Mode.PO:
+                    SelectedPo.ApproveUser_fk = user.Id;
+                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdatePoViewModel(SelectedPo, SelectedPo.ItemsOfPurchaseOrderViewModels, done);
+                    break;
+                case Mode.Asn:
+                    SelectedAsn.ApproveUser_fk = user.Id;
+                   // IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateAsnViewModel(SelectedAsn,  done);
+                    break;
+                case Mode.Grn:
+                    SelectedGrn.ApproveUser_fk = user.Id;
+                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn,SelectedGrn.ItemsOfPurchaseOrderViewModels, done);
+                    break;
+            }
+
+            if (IsSuccessSavedOrUpdated)
+            {
+                if (done)
+                {
+                    message = "Purchase Order Done";
+                }
+                else if (SelectedAsn != null)
+                {
+
+                    if (SelectedAsn.Id == 0)
+                        message = "Goods Transit Saved";
+
+                }
+                else if (SelectedPo != null)
+                {
+                    if (SelectedPo.Id == 0)
+                        message = "Purchase Order Saved";
+                }
+                else
+                {
+                    message = "Purchase Order Updated";
+                }
+
+                //myMessageQueue.Enqueue(message);
+            }
+
+
+        }
+
         private void BtnAddItem_OnClick(object? sender, EventArgs e)
         {
             var ttttr = Purchasing.txtSearch.Text;

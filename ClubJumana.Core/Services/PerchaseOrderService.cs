@@ -238,6 +238,19 @@ namespace ClubJumana.Core.Services
                     PO.FromWarehouse_fk = asnViewModel.FromWarehouse_fk;
                     PO.ToWarehouse_fk = asnViewModel.ToWarehouse_fk;
                     PO.ApproveAsnUser_fk = asnViewModel.ApproveUser_fk;
+                    PO.Freight = asnViewModel.Freight;
+                    PO.DiscountPercent = asnViewModel.DiscountPercent;
+                    PO.Percent = asnViewModel.Percent;
+                    PO.DiscountDollers = asnViewModel.DiscountDollers;
+                    PO.Insurance = asnViewModel.Insurance;
+                    PO.CustomsDuty = asnViewModel.CustomsDuty;
+                    PO.Handling = asnViewModel.Handling;
+                    PO.Forwarding = asnViewModel.Forwarding;
+                    PO.LandTransport = asnViewModel.LandTransport;
+                    PO.Others = asnViewModel.Others;
+                    PO.GrnTotal = asnViewModel.TotalPrice;
+                    PO.TotalCharges = asnViewModel.TotalCharges;
+
 
                     if (done)
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;

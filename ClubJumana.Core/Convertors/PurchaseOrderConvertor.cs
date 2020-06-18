@@ -29,8 +29,6 @@ namespace ClubJumana.Core.Convertors
                 DateCompleted = purchaseOrder.OrderDate,
                 ShipDate = purchaseOrder.ShipDate,
                 CancelDate = purchaseOrder.CancelDate,
-                TotalPrice = purchaseOrder.PoTotal,
-                SubtotalPrice = purchaseOrder.PoSubtotal,
                 ItemsCount = purchaseOrder.ItemsPoCount,
                 ToWarehouse_fk = purchaseOrder.ToWarehouse_fk,
                 FromWarehouse_fk = purchaseOrder.FromWarehouse_fk,
@@ -46,9 +44,11 @@ namespace ClubJumana.Core.Convertors
                 ModeName = "PO ",
                 PurchasingName = "PURCHASE ORDER",
                 LastEdit = purchaseOrder.LastEditDate,
-                ItemsOfPurchaseOrderViewModels= CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.PO)
+                ItemsOfPurchaseOrderViewModels= CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.PO),
+                TotalPrice = purchaseOrder.PoTotal,
+                SubtotalPrice = purchaseOrder.PoSubtotal,
 
-        };
+            };
         }
         public AsnViewModel ConvertToAsn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
         {
@@ -61,8 +61,6 @@ namespace ClubJumana.Core.Convertors
                 DateCompleted = purchaseOrder.AsnDate,
                 ShipDate = purchaseOrder.ShipDate,
                 CancelDate = purchaseOrder.CancelDate,
-                TotalPrice = purchaseOrder.AsnTotal,
-                SubtotalPrice = purchaseOrder.AsnSubtotal,
                 ItemsCount = purchaseOrder.ItemsAsnCount,
                 ToWarehouse_fk = purchaseOrder.ToWarehouse_fk,
                 FromWarehouse_fk = purchaseOrder.FromWarehouse_fk,
@@ -89,7 +87,9 @@ namespace ClubJumana.Core.Convertors
                 ModeName = "GIT ",
                 PurchasingName = "GOODS IN TRANSIT",
                 LastEdit = purchaseOrder.LastEditDate,
-                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Asn)
+                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Asn),
+                TotalPrice = purchaseOrder.AsnTotal,
+                SubtotalPrice = purchaseOrder.AsnSubtotal,
             };
         }
         public GrnViewModel ConvertToGrn(PurchaseOrder purchaseOrder, List<Vendor> vendors, List<Warehouse> warehouses)
@@ -103,8 +103,6 @@ namespace ClubJumana.Core.Convertors
                 DateCompleted = purchaseOrder.GrnDate,
                 ShipDate = purchaseOrder.ShipDate,
                 CancelDate = purchaseOrder.CancelDate,
-                TotalPrice = purchaseOrder.GrnTotal,
-                SubtotalPrice = purchaseOrder.GrnSubtotal,
                 ItemsCount = purchaseOrder.ItemsGrnCount,
                 ToWarehouse_fk = purchaseOrder.ToWarehouse_fk,
                 FromWarehouse_fk = purchaseOrder.FromWarehouse_fk,
@@ -131,7 +129,9 @@ namespace ClubJumana.Core.Convertors
                 ModeName = "GRN ",
                 PurchasingName = "GOODS RECEIVE NOTE",
                 LastEdit = purchaseOrder.LastEditDate,
-                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Grn)
+                ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Grn),
+                TotalPrice = purchaseOrder.GrnTotal,
+                SubtotalPrice = purchaseOrder.GrnSubtotal
             };
         }
 

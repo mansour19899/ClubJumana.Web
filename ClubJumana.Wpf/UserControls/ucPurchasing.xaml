@@ -401,7 +401,7 @@
                     </Border>
                     <StackPanel Grid.Row="3" >
                         <Border Height="350" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"  >
+                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"   >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
