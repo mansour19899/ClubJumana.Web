@@ -30,6 +30,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Product> AllProductList();
 
         Country GiveMeCountryByID(int Id);
+        ProductMaster GiveMeProductMasterByUPC(string UPC);
 
         public int AddAndUpdateCustomer(Customer customer);
         public int AddAndUpdateVendor(Vendor vendor);

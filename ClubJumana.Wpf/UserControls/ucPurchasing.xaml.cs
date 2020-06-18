@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClubJumana.Core.DTOs;
+using ClubJumana.Core.Enums;
 using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf.UserControls
@@ -25,9 +26,12 @@ namespace ClubJumana.Wpf.UserControls
         public List<Vendor> vendors;
         public List<Warehouse> Warehouses;
         public ObservableCollection<ItemsOfPurchaseOrderViewModel> ItemsOfPurchaseOrderViewModels { get; set; }
+        public PoViewModel PoViewModel { get; set; }
+        public AsnViewModel AsnViewModel { get; set; }
         public GrnViewModel GrnViewModel { get; set; }
+        public Mode Mode = Mode.Nothong;
 
-
+        public List<ItemsOfPurchaseOrderViewModel> RemoveItemsOfPurchaseOrderViewModel;
 
 
 
@@ -38,8 +42,17 @@ namespace ClubJumana.Wpf.UserControls
         }
         private void UcPurchasing_OnLoaded(object sender, RoutedEventArgs e)
         {
-            GrnViewModel.ItemsOfPurchaseOrderViewModels.RemoveAt(0);
-            this.DataContext = GrnViewModel;
+            RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
+            PoViewModel.ItemsOfPurchaseOrderViewModels.RemoveAt(0);
+            this.DataContext = AsnViewModel;
+        }
+
+        public event EventHandler<EventArgs> BtnAddItemOnClick;
+        private void BtnAddItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (btnAddItem != null)
+                BtnAddItemOnClick(sender, e);
         }
 
         public event EventHandler<EventArgs> BtnSaveOnClick;
@@ -53,15 +66,83 @@ namespace ClubJumana.Wpf.UserControls
         private void DgItems_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             decimal sum = 0;
-            foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
+            DataGridColumn col1 = e.Column;
+            DataGridRow row1 = e.Row;
+            ItemsOfPurchaseOrderViewModel t = e.Row.DataContext as ItemsOfPurchaseOrderViewModel;
+            TextBox tt = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+            DataGridColumn dgc = e.Column;
+
+            string header = col1.Header as string;
+
+            if (header.CompareTo("UPC") == 0)
             {
-                sum = VARIABLE.TotalItemPrice + sum;
+                MessageBox.Show(tt.Text);
+                t.ProductMaster_fk = 1;
+            }
+            else
+            {
+                switch (Mode)
+                {
+                    case Mode.PO:
+                        foreach (var VARIABLE in PoViewModel.ItemsOfPurchaseOrderViewModels)
+                        {
+                            sum = VARIABLE.TotalItemPrice + sum;
+                        }
+                        PoViewModel.SubtotalPrice = sum;
+                        break;
+                    case Mode.Asn:
+                        foreach (var VARIABLE in AsnViewModel.ItemsOfPurchaseOrderViewModels)
+                        {
+                            sum = VARIABLE.TotalItemPrice + sum;
+                        }
+                        AsnViewModel.SubtotalPrice = sum;
+                        break;
+                    case Mode.Grn:
+                        foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
+                        {
+                            sum = VARIABLE.TotalItemPrice + sum;
+                        }
+                        GrnViewModel.SubtotalPrice = sum;
+                        break;
+                }
             }
 
-            GrnViewModel.TotalPrice = sum;
+           
+
+
+
+
+
+
 
         }
 
-   
+
+        private void BtnCalculateCost_OnClick(object sender, RoutedEventArgs e)
+        {
+            AsnViewModel.CalculateCost();
+            var ttt = AsnViewModel.ItemsOfPurchaseOrderViewModels;
+        }
+
+
+        private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            RemoveItemsOfPurchaseOrderViewModel.AddRange(dgItems.SelectedItems.Cast<ItemsOfPurchaseOrderViewModel>().ToList());
+
+            switch (Mode)
+            {
+                case Mode.PO:
+                    break;
+                case Mode.Asn:
+                    foreach (var VARIABLE in RemoveItemsOfPurchaseOrderViewModel)
+                    {
+                        VARIABLE.IsDeleted = true;
+                        AsnViewModel.ItemsOfPurchaseOrderViewModels.Remove(VARIABLE);
+                    }
+                    break;
+                case Mode.Grn:
+                    break;
+            }
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace ClubJumana.Core.Convertors
                 WarehousesList = warehouses,
                 VendorsList = vendors,
                 ModeName = "PO ",
+                PurchasingName = "PURCHASE ORDER",
                 LastEdit = purchaseOrder.LastEditDate,
                 ItemsOfPurchaseOrderViewModels= CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.PO)
 
@@ -86,6 +87,7 @@ namespace ClubJumana.Core.Convertors
                 Others = purchaseOrder.Others,
                 TotalCharges = purchaseOrder.TotalCharges,
                 ModeName = "GIT ",
+                PurchasingName = "GOODS IN TRANSIT",
                 LastEdit = purchaseOrder.LastEditDate,
                 ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Asn)
             };
@@ -127,6 +129,7 @@ namespace ClubJumana.Core.Convertors
                 Others = purchaseOrder.Others,
                 TotalCharges = purchaseOrder.TotalCharges,
                 ModeName = "GRN ",
+                PurchasingName = "GOODS RECEIVE NOTE",
                 LastEdit = purchaseOrder.LastEditDate,
                 ItemsOfPurchaseOrderViewModels = CovertItemsOfPurchaseOrderViewModels(purchaseOrder, Mode.Grn)
             };

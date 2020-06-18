@@ -112,6 +112,11 @@ namespace ClubJumana.Core.Services
             return _context.countries.FirstOrDefault(p => p.Id == Id);
         }
 
+        public ProductMaster GiveMeProductMasterByUPC(string UPC)
+        {
+            return _context.productmasters.FirstOrDefault(p => p.UPC.Trim().CompareTo(UPC.Trim()) == 0);
+        }
+
 
         public IQueryable<Warehouse> AllWarehouse()
         {

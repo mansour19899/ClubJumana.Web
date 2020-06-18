@@ -847,6 +847,7 @@ namespace ClubJumana.Wpf
 
 
             var SelectItem = itemsOfPurchaseOrderViewModel.FirstOrDefault(p => p.Id == t.Id);
+
             string header = col1.Header as string;
 
             //if (header.CompareTo("Price") == 0)

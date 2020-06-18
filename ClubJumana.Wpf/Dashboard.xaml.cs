@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
+using ClubJumana.Core.Enums;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Entities;
 using ClubJumana.Wpf.UserControls;
@@ -88,22 +89,49 @@ namespace ClubJumana.Wpf
         }
         private void BtnSavePurchasing_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            var ttt = SelectedGrn.ItemsOfPurchaseOrderViewModels;
+            var ttt = SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel);
+
+        }
+        private void BtnAddItem_OnClick(object? sender, EventArgs e)
+        {
+            var ttttr = Purchasing.txtSearch.Text;
+            var SearchMasterProduct = _repositoryService.GiveMeProductMasterByUPC(ttttr);
+            if (SearchMasterProduct == null)
+            {
+                MessageBox.Show("Item Not Found");
+            }
+            else
+            {
+                SelectedAsn.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
+                {
+                    Price = SearchMasterProduct.FobPrice.Value,
+                    ProductMaster = SearchMasterProduct,
+                    ProductMaster_fk = SearchMasterProduct.Id
+                });
+
+            }
+
+
+            var ttt = SelectedAsn.ItemsOfPurchaseOrderViewModels;
 
         }
 
         private void Dashboard_OnLoaded(object sender, RoutedEventArgs e)
         {
            var convertor = new PurchaseOrderConvertor();
-            SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(6);
+            SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
             SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
             SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
             SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
 
             Purchasing = new ucPurchasing();
             Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
+            Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
             //Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
+            Purchasing.PoViewModel = SelectedPo;
+            Purchasing.AsnViewModel = SelectedAsn;
             Purchasing.GrnViewModel = SelectedGrn;
+            Purchasing.Mode = Mode.Asn;
             //Purchasing.DataContext = SelectedGrn;
             Bordermanagement.Child = Purchasing;
         }

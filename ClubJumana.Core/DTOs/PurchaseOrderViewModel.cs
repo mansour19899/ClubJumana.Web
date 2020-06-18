@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 
 namespace ClubJumana.Core.DTOs
 {
-    public class PurchaseOrderViewModel
+    public class PurchaseOrderViewModel: INotifyPropertyChanged
     {
         public int Id { get; set; }
         public string Number { get; set; }
@@ -20,31 +20,8 @@ namespace ClubJumana.Core.DTOs
         public DateTime? ShipDate { get; set; }
         public DateTime? CancelDate { get; set; }
         public DateTime? LastEdit { get; set; }
-        public virtual decimal? TotalPrice { get; set; }
-        public decimal? SubtotalPrice { get; set; }
-        public int? ItemsCount { get; set; }
-        public int? ToWarehouse_fk { get; set; }
-        public int? FromWarehouse_fk { get; set; }
-        public int? ApproveUser_fk { get; set; }
-        public bool CreatedInvoice { get; set; }
-        public ICollection<Item> Items { get; set; }
-        public string ModeName { get; set; }
-        public Vendor Vendor { get; set; }
-        public User UserCreate { get; set; }
-        public Warehouse ToWarehouse { get; set; }
-        public Warehouse FromWarehouse { get; set; }
-        public List<Vendor> VendorsList { get; set; }
-        public List<Warehouse> WarehousesList { get; set; }
-        public ObservableCollection<ItemsOfPurchaseOrderViewModel> ItemsOfPurchaseOrderViewModels { get; set; }
-    }
-    public class PoViewModel : PurchaseOrderViewModel
-    {
-
-    }
-    public class AsnViewModel : PurchaseOrderViewModel, INotifyPropertyChanged
-    {
         private decimal _totalPrice;
-        public override decimal? TotalPrice
+        public  decimal? TotalPrice
         {
             get { return _totalPrice; }
             set
@@ -54,6 +31,60 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
+        protected decimal _subtotalPrice;
+        public virtual decimal? SubtotalPrice
+        {
+            get { return _subtotalPrice; }
+            set
+            {
+                _subtotalPrice = value.Value;
+                TotalPrice = _subtotalPrice;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+        public int? ItemsCount { get; set; }
+        public int? ToWarehouse_fk { get; set; }
+        public int? FromWarehouse_fk { get; set; }
+        public int? ApproveUser_fk { get; set; }
+        public bool CreatedInvoice { get; set; }
+        public ICollection<Item> Items { get; set; }
+        public string ModeName { get; set; }
+        public string PurchasingName { get; set; }
+        public Vendor Vendor { get; set; }
+        public User UserCreate { get; set; }
+        public Warehouse ToWarehouse { get; set; }
+        public Warehouse FromWarehouse { get; set; }
+        public List<Vendor> VendorsList { get; set; }
+        public List<Warehouse> WarehousesList { get; set; }
+        public ObservableCollection<ItemsOfPurchaseOrderViewModel> ItemsOfPurchaseOrderViewModels { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    public class PoViewModel : PurchaseOrderViewModel
+    {
+
+    }
+    public class AsnViewModel : PurchaseOrderViewModel
+    {
+        public override decimal? SubtotalPrice
+        {
+            get { return _subtotalPrice; }
+            set
+            {
+                _subtotalPrice = value.Value;
+                TotalPrice = _subtotalPrice+TotalCharges;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
 
         private decimal _freight;
         public decimal Freight
@@ -62,7 +93,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _freight = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -75,7 +106,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _discountPercent = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -92,7 +123,7 @@ namespace ClubJumana.Core.DTOs
                     _percent = "0";
 
                 _discountPercent = Math.Round(Convert.ToDecimal(_percent) * SubtotalPrice.Value / 100, 2, MidpointRounding.ToEven) * -1;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 _percent = _percent + " %";
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
@@ -106,7 +137,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _discountDollers = (value > 0) ? (-1 * value) : value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -118,7 +149,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _insurance = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -130,7 +161,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _customsDuty = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -142,7 +173,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _handling = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -154,7 +185,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _forwarding = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -166,7 +197,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _landTransport = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -179,7 +210,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _others = value;
-                _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+                SumTotalCharge();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalCharges));
             }
@@ -191,6 +222,14 @@ namespace ClubJumana.Core.DTOs
         {
             get { return _totalCharge; }
             set => _totalCharge = value;
+        }
+
+        private void SumTotalCharge()
+        {
+            _totalCharge = _freight + _discountPercent + _discountDollers + _insurance + _customsDuty + _handling + _forwarding + _landTransport + _others;
+            TotalPrice = TotalCharges + SubtotalPrice;
+
+
         }
 
         public ObservableCollection<ItemsOfPurchaseOrderViewModel> CalculateCost(
@@ -208,14 +247,23 @@ namespace ClubJumana.Core.DTOs
             return items;
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void CalculateCost()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            decimal x = 0;
+            var tte = TotalCharges;
+            var rfd = _totalCharge;
+            var oi = SubtotalPrice;
+
+            foreach (var VARIABLE in ItemsOfPurchaseOrderViewModels)
+            {
+
+                x = (decimal)((TotalCharges / SubtotalPrice * VARIABLE.Price) +
+                              VARIABLE.Price);
+                VARIABLE.Cost = Math.Round(x, 2, MidpointRounding.ToEven);
+            }
         }
+
+
     }
     public class GrnViewModel : AsnViewModel
     {
