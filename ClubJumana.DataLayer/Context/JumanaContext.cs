@@ -57,12 +57,12 @@ namespace ClubJumana.DataLayer.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
+             //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
+             optionsBuilder.UseMySQL("server=localhost;database=smm48;user=root;password=Man1989sour");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
-
+            //Update - Database - Context JummanaContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -473,4 +473,23 @@ namespace ClubJumana.DataLayer.Context
         }
 
     }
+
+
+   public class OnlineContext : JummanaContext
+   {
+       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+       {
+           
+           //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm60;Trusted_Connection=True");
+           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+            optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
+           //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
+
+
+       }
+    }
+   public class text2Context : JummanaContext
+   {
+
+   }
 }

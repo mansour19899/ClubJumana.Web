@@ -57,16 +57,9 @@ namespace ClubJumana.Wpf2
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //MySqlConnection conn;
-            //string salam =
-            //    "server = 148.72.112.16:3306; port = 3306;  Database = MagicDTS; Uid = mansour1989; Pwd = Man1989sour";
 
-            //conn = new MySqlConnection();
-            //conn.ConnectionString = salam;
-            //conn.Open();
-            //MessageBox.Show("ey val");
-
-
+            _repositoryService.UpdateLocalDb();
+            
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
@@ -92,6 +85,8 @@ namespace ClubJumana.Wpf2
             cmbProductType.SelectedIndex = 0;
             cmbSubCategory.SelectedIndex = 0;
         }
+
+
         void SetFilter()
         {
             var t = TempList;

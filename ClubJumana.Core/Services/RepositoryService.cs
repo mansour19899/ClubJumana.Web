@@ -12,10 +12,44 @@ namespace ClubJumana.Core.Services
    public class RepositoryService: IRepositoryService
     {
         private JummanaContext _context;
+        private OnlineContext onlineDb;
         public RepositoryService()
         {
             _context=new JummanaContext();
+
+            onlineDb=new OnlineContext();
         }
+
+        public void UpdateLocalDb()
+        {
+            
+
+            var list1 = _context.countries.OrderBy(p => p.Id).Select(p => new { Id = p.Id, Barcode = p.Name, }).ToList();
+            var list2 = onlineDb.countries.OrderBy(p => p.Id).Select(p => new { Id = p.Id, Barcode = p.Name }).ToList();
+
+            var IdForAdd = list2.Select(p => p.Id).Except(list1.Select(p => p.Id));
+
+            var list3 = list2.Except(list1);
+                Country w;
+
+                foreach (var VARIABLE in list3)
+                {
+                    w = onlineDb.countries.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                    if (IdForAdd.Contains(VARIABLE.Id))
+                    {
+                        _context.countries.Add(w);
+
+                    }
+                    else
+                    {
+                        _context.countries.Update(w);
+                    }
+                }
+                _context.SaveChanges();
+
+
+        }
+
         public IQueryable<ProductMaster> AllProductMasterList()
         {
             return _context.productmasters;
