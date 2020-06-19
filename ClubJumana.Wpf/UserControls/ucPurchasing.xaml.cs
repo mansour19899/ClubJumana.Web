@@ -43,7 +43,7 @@ namespace ClubJumana.Wpf.UserControls
         private void UcPurchasing_OnLoaded(object sender, RoutedEventArgs e)
         {
             RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
-            PoViewModel.ItemsOfPurchaseOrderViewModels.RemoveAt(0);
+           
             this.DataContext = AsnViewModel;
         }
 
@@ -140,10 +140,13 @@ namespace ClubJumana.Wpf.UserControls
 
         private void BtnCalculateCost_OnClick(object sender, RoutedEventArgs e)
         {
-            AsnViewModel.CalculateCost();
-            var ttt = AsnViewModel.ItemsOfPurchaseOrderViewModels;
+           CalculateCost();
         }
 
+        public void CalculateCost()
+        {
+            AsnViewModel.CalculateCost();
+        }
 
         private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
         {
@@ -165,6 +168,18 @@ namespace ClubJumana.Wpf.UserControls
             }
 
             SumItemsprice();
+        }
+
+        private void UIElement_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            TextBox tb = (sender as TextBox);
+            tb.SelectAll();
+        }
+
+        private void UIElement_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            TextBox tb = (sender as TextBox);
+            tb.SelectAll();
         }
     }
 }

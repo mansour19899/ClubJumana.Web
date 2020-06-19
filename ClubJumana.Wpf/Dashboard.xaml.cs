@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -98,8 +99,8 @@ namespace ClubJumana.Wpf
         }
         private void BtnSavePurchasing_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            var ttt = SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel);
-
+           
+            Purchasing.CalculateCost();
             SaveAndUpdate();
             
         }
@@ -113,15 +114,15 @@ namespace ClubJumana.Wpf
             {
                 case Mode.PO:
                     SelectedPo.ApproveUser_fk = user.Id;
-                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdatePoViewModel(SelectedPo, SelectedPo.ItemsOfPurchaseOrderViewModels, done);
+                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdatePoViewModel(SelectedPo, SelectedPo.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
                 case Mode.Asn:
                     SelectedAsn.ApproveUser_fk = user.Id;
-                   // IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateAsnViewModel(SelectedAsn,  done);
+                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateAsnViewModel(SelectedAsn, SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
                 case Mode.Grn:
                     SelectedGrn.ApproveUser_fk = user.Id;
-                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn,SelectedGrn.ItemsOfPurchaseOrderViewModels, done);
+                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn, SelectedGrn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
             }
 
@@ -181,7 +182,9 @@ namespace ClubJumana.Wpf
         private void Dashboard_OnLoaded(object sender, RoutedEventArgs e)
         {
            var convertor = new PurchaseOrderConvertor();
-            SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
+           // SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
+            SelectedPurchaseOrder=new PurchaseOrder(){};
+            SelectedPurchaseOrder.Items=new List<Item>();
             SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
             SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
             SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);

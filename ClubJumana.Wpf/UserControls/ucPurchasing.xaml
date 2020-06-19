@@ -390,11 +390,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="20" VerticalAlignment="Center" Text="UPC "/>
                                 <TextBox Name="txtSearch" Width="300"/>
-                                <Button Name="btnAddItem" Content="  Add Item  " Click="BtnAddItem_OnClick"/>
+                                <Button Name="btnAddItem" Background="DarkGreen" Foreground="White" Content="  Add Item  " Click="BtnAddItem_OnClick"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Name="btnDeleteItem" Content="Delete Item" Background="DarkRed" Foreground="AliceBlue"  Width="150" Margin="0 0 40 10" Click="BtnDeleteItem_OnClick" />
-                                <Button Name="btnCalculateCost" Content="Calculate Cost"  Width="200" Margin="0 0 10 10" Click="BtnCalculateCost_OnClick" />
+                                <Button Name="btnDeleteItem" Content="Delete Item" Background="DarkRed" Foreground="White"  Width="150" Margin="0 0 40 10" Click="BtnDeleteItem_OnClick" />
+                                <Button Name="btnCalculateCost" Content="Calculate Cost" Background="Purple" Foreground="White" Width="200" Margin="0 0 10 10" Click="BtnCalculateCost_OnClick" />
                             </StackPanel>
                         </UniformGrid>
 
@@ -422,42 +422,42 @@
                                         <TextBlock Text="Freight" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Freight}" />
+                                    <TextBox Text="{Binding Freight}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Discount %" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding DiscountPercent}" />
+                                    <TextBox Text="{Binding DiscountPercent}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Discount $" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding DiscountDollers}" />
+                                    <TextBox Text="{Binding DiscountDollers}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Insurance" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Insurance}" />
+                                    <TextBox Text="{Binding Insurance}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="CustomsDuty" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding CustomsDuty}" />
+                                    <TextBox Text="{Binding CustomsDuty}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Handling" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Handling}" />
+                                    <TextBox Text="{Binding Handling}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                             </UniformGrid>
                             <UniformGrid Rows="8" Columns="1">
@@ -466,21 +466,21 @@
                                         <TextBlock Text="Forwarding" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Forwarding}" />
+                                    <TextBox Text="{Binding Forwarding}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Land Transport" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding LandTransport}" />
+                                    <TextBox Text="{Binding LandTransport}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Others" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Others}" />
+                                    <TextBox Text="{Binding Others}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
