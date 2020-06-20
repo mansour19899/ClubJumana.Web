@@ -11,6 +11,7 @@
     <None Remove="Content\Icon\NextIcon.png" />
     <None Remove="Content\Images\ClubJummanaLogo.jpg" />
     <None Remove="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
+    <None Remove="Content\Images\Spalsh.jpg" />
     <None Remove="Content\Images\Vanme Fashion - Logos 12.jpg" />
     <None Remove="Content\Images\Vanme150x62.png" />
     <None Remove="Content\Images\VanmeFasionLogo.jpg" />
@@ -47,5 +48,9 @@
     <Resource Include="Content\Images\Vanme Fashion - Logos 12.jpg" />
     <Resource Include="Content\Images\Vanme150x62.png" />
     <Resource Include="Content\Images\VanmeFasionLogo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="Content\Images\Spalsh.jpg" />
   </ItemGroup>
 </Project>

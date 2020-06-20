@@ -39,12 +39,13 @@ namespace ClubJumana.Wpf2
         private List<Country> countriesList;
         private CostCenter cost;
         private string Path;
-        private int SelectedIndexVariant=0;
+        private int SelectedIndexVariant = 0;
         private int ImageSelected = 0;
         private int countImageVariant = 0;
-
+        private string ErrorConection = "";
         bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
+        private bool IsConnectToServer = true;
         public SearchProduct()
         {
             InitializeComponent();
@@ -53,20 +54,23 @@ namespace ClubJumana.Wpf2
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
             Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
+
+            CheckConectionToServe();
+
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
 
-            _repositoryService.UpdateLocalDb();
-            
+            ShowErrorMassegeToConectionInternet();
+
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
             cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
             cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
 
-            countriesList= _repositoryService.AllCountriesList().ToList();
+            countriesList = _repositoryService.AllCountriesList().ToList();
             cmbCountry.ItemsSource = countriesList;
 
             VaraintList = _productInformationService.AllVariantList();
@@ -86,7 +90,40 @@ namespace ClubJumana.Wpf2
             cmbSubCategory.SelectedIndex = 0;
         }
 
+        private void CheckConectionToServe()
+        {
+            if (CheckInternetConnection.IsConnectedToServer() == true)
+            {
+                _repositoryService.UpdateLocalDb();
+                IsConnectToServer = true;
+                ErrorConection = "";
+                txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
+            }
+            else
+            {
+                IsConnectToServer = false;
+                if (CheckInternetConnection.IsConnectedToInternet() == true)
+                    ErrorConection = "Mode is Offline.Please Check Server";
+                else
+                    ErrorConection = "Mode is Offline.Check your internet connection";
+            }
+        }
 
+        private void ShowErrorMassegeToConectionInternet()
+        {
+            if (ErrorConection != "")
+            {
+                txtMagicStyle.Foreground = new SolidColorBrush(Color.FromRgb(191, 155, 48));
+                MessageBox.Show(ErrorConection);
+            }
+
+        }
+
+        private void TxtMagicStyle_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //CheckConectionToServe();
+            //ShowErrorMassegeToConectionInternet();
+        }
         void SetFilter()
         {
             var t = TempList;
@@ -300,11 +337,11 @@ namespace ClubJumana.Wpf2
             InfoProduct = new ProductInformationViewModel(SelectedProduct);
             //lvVariant.ItemsSource = InfoProduct.List;
             this.DataContext = InfoProduct;
-           ShowImageVariant(0);
-           btnNextImageVariant.Visibility = Visibility.Hidden;
-           btnPerviosImageVariant.Visibility = Visibility.Hidden;
-           btnNextFullImage.Visibility = Visibility.Hidden;
-           btnPreviousFullImage.Visibility = Visibility.Hidden;
+            ShowImageVariant(0);
+            btnNextImageVariant.Visibility = Visibility.Hidden;
+            btnPerviosImageVariant.Visibility = Visibility.Hidden;
+            btnNextFullImage.Visibility = Visibility.Hidden;
+            btnPreviousFullImage.Visibility = Visibility.Hidden;
             GrSearch.Visibility = Visibility.Hidden;
             GrdInformationProduct.Visibility = Visibility.Visible;
         }
@@ -389,16 +426,24 @@ namespace ClubJumana.Wpf2
                 Clipboard.SetText(variant.Barcode.BarcodeNumber);
                 MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
             }
-            
+
         }
 
         private void EditVariant(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
-            Variant variantSelected = b.CommandParameter as Variant;
-            InfoProduct.VariantSelected = variantSelected;
-            var ttt = variantSelected;
-            GrdEditProduct.Visibility = Visibility.Visible;
+            if (IsConnectToServer)
+            {
+                Button b = sender as Button;
+                Variant variantSelected = b.CommandParameter as Variant;
+                InfoProduct.VariantSelected = variantSelected;
+               // InfoProduct.VariantSelected = new Variant();
+                var ttt = variantSelected;
+                GrdEditProduct.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("Mode Is Offline");
+            }
         }
 
         private void BtnInformationPrice(object sender, RoutedEventArgs e)
@@ -578,12 +623,27 @@ namespace ClubJumana.Wpf2
 
         private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
         {
-            _productInformationService.UpdateVariant(InfoProduct.VariantSelected);
-            InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
-                cmbEditVariantColor.Text;
-            //lvVariant.ItemsSource = null;
-            //lvVariant.ItemsSource = InfoProduct.List;
-            GrdEditProduct.Visibility = Visibility.Hidden;
+            try
+            {
+                _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected,InfoProduct.Id);
+                InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
+                    cmbEditVariantColor.Text;
+                //lvVariant.ItemsSource = null;
+                //lvVariant.ItemsSource = InfoProduct.List;
+                GrdEditProduct.Visibility = Visibility.Hidden;
+            }
+            catch (Exception exception)
+            {
+                var x = exception;
+                CheckConectionToServe();
+                if (IsConnectToServer == true)
+                    MessageBox.Show("Error 110");
+                else
+                {
+                    ShowErrorMassegeToConectionInternet();
+                }
+            }
+
 
         }
 
@@ -642,9 +702,9 @@ namespace ClubJumana.Wpf2
 
         private void LvVariant_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-            SelectedIndexVariant= lvVariant.SelectedIndex;
-            
+
+            SelectedIndexVariant = lvVariant.SelectedIndex;
+
             if (SelectedIndexVariant != -1)
             {
                 countImageVariant = InfoProduct.List[SelectedIndexVariant].Images.Count;
@@ -663,10 +723,10 @@ namespace ClubJumana.Wpf2
         }
 
 
-        private void ShowImageVariant(int index,int imgSelect=0)
+        private void ShowImageVariant(int index, int imgSelect = 0)
         {
             var images = InfoProduct.List[index].Images;
-            if (images.Count == 0 )
+            if (images.Count == 0)
             {
                 imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
                 btnNextImageVariant.Visibility = Visibility.Hidden;
@@ -677,7 +737,7 @@ namespace ClubJumana.Wpf2
             else if (images.Count == 1)
             {
                 btnNextImageVariant.Visibility = Visibility.Hidden;
-                btnPerviosImageVariant.Visibility = Visibility.Hidden; 
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
                 btnNextFullImage.Visibility = Visibility.Hidden;
                 btnPreviousFullImage.Visibility = Visibility.Hidden;
                 ShowImage();
@@ -706,7 +766,7 @@ namespace ClubJumana.Wpf2
 
                 }
 
-                
+
             }
         }
 
@@ -714,7 +774,7 @@ namespace ClubJumana.Wpf2
         {
             ImageSelected++;
             ShowImageVariant(SelectedIndexVariant, ImageSelected);
-            if (ImageSelected == countImageVariant-1)
+            if (ImageSelected == countImageVariant - 1)
             {
 
                 btnNextImageVariant.Visibility = Visibility.Hidden;
@@ -762,5 +822,6 @@ namespace ClubJumana.Wpf2
             //                                   InfoProduct.VariantSelected.Width.ToString();
             //MessageBox.Show(InfoProduct.VariantSelected.Size);
         }
+
     }
 }

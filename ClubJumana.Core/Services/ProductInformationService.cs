@@ -270,37 +270,93 @@ namespace ClubJumana.Core.Services
             
         }
 
-        public int UpdateVariant(Variant variant)
+        public int AddOrUpdateVariant(Variant variant,int ProductId)
         {
-            Variant variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
-            Variant variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
-            if (variantdb == null)
-                return -1;
+            if (variant.Id == 0)
+            {
+                int id = _onlineContext.variants.Max(p => p.Id);
+                variant.Id = id + 1;
+                variant.ProductFK = ProductId;
+                _onlineContext.variants.Add(new Variant()
+                {
+                    Id = variant.Id,
+                    Sku = variant.Sku,
+                    ProductFK = variant.ProductFK,
+                    ColourFK = variant.ColourFK,
+
+                    ProductTypeFK = variant.ProductTypeFK,
+                    FobPrice = variant.FobPrice,
+                    WholesaleA = variant.WholesaleA,
+                    WholesaleB = variant.WholesaleB,
+                    RetailPrice = variant.RetailPrice,
+                    Width = variant.Width,
+                    length = variant.length,
+                    Size = variant.Size,
+                    Note = variant.Note,
+                    Data1 = variant.Data1,
+                    Data2 = variant.Data2,
+                    Data3 = variant.Data3,
+                    Data4 = variant.Data4,
+                    Data5 = variant.Data5,
+                    Data6 = variant.Data6,
+                    LastDateEdited = variant.LastDateEdited
+                });
+                _context.variants.Add(new Variant()
+                {
+                    Id = variant.Id,
+                    Sku = variant.Sku,
+                    ProductFK = variant.ProductFK,
+                    ColourFK = variant.ColourFK,
+
+                    ProductTypeFK = variant.ProductTypeFK,
+                    FobPrice = variant.FobPrice,
+                    WholesaleA = variant.WholesaleA,
+                    WholesaleB = variant.WholesaleB,
+                    RetailPrice = variant.RetailPrice,
+                    Width = variant.Width,
+                    length = variant.length,
+                    Size = variant.Size,
+                    Note = variant.Note,
+                    Data1 = variant.Data1,
+                    Data2 = variant.Data2,
+                    Data3 = variant.Data3,
+                    Data4 = variant.Data4,
+                    Data5 = variant.Data5,
+                    Data6 = variant.Data6,
+                    LastDateEdited = variant.LastDateEdited
+                });
+            }
             else
             {
-                variantdb.WholesaleA = variant.WholesaleA;
-                variantdb.WholesaleB = variant.WholesaleB;
-                variantdb.RetailPrice = variant.RetailPrice;
-                variantdb.FobPrice = variant.FobPrice;
-                variantdb.ColourFK = variant.ColourFK;
-                variantdb.length = variant.length;
-                variantdb.Width = variant.Width;
-                variantdb.Size = variant.Size;
+                Variant variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
+                Variant variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
+                if (variantdb == null)
+                    return -1;
+                else
+                {
+                    variantdb.WholesaleA = variant.WholesaleA;
+                    variantdb.WholesaleB = variant.WholesaleB;
+                    variantdb.RetailPrice = variant.RetailPrice;
+                    variantdb.FobPrice = variant.FobPrice;
+                    variantdb.ColourFK = variant.ColourFK;
+                    variantdb.length = variant.length;
+                    variantdb.Width = variant.Width;
+                    variantdb.Size = variant.Size;
 
-                variantdbb.WholesaleA = variant.WholesaleA;
-                variantdbb.WholesaleB = variant.WholesaleB;
-                variantdbb.RetailPrice = variant.RetailPrice;
-                variantdbb.FobPrice = variant.FobPrice;
-                variantdbb.ColourFK = variant.ColourFK;
-                variantdbb.length = variant.length;
-                variantdbb.Width = variant.Width;
-                variantdbb.Size = variant.Size;
+                    variantdbb.WholesaleA = variant.WholesaleA;
+                    variantdbb.WholesaleB = variant.WholesaleB;
+                    variantdbb.RetailPrice = variant.RetailPrice;
+                    variantdbb.FobPrice = variant.FobPrice;
+                    variantdbb.ColourFK = variant.ColourFK;
+                    variantdbb.length = variant.length;
+                    variantdbb.Width = variant.Width;
+                    variantdbb.Size = variant.Size;
 
-
-                _onlineContext.SaveChanges();
-                _context.SaveChanges();
-                return 1;
+                }
             }
+            _onlineContext.SaveChanges();
+            _context.SaveChanges();
+            return 1;
         }
 
         public int AddImageVariant(int variantFK, string imageName)

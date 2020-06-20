@@ -33,7 +33,7 @@
                     </Border.Style>
                 </Border>
                
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style"></TextBlock>
+                <TextBlock Name="txtMagicStyle" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style" MouseDown="TxtMagicStyle_OnMouseDown"></TextBlock>
                 <Border  Name="btnLogo" Width="200" Margin="-10 -20 0 0" MouseDown="BtnLogo_OnMouseDown">
                     <Border.Background>
                         <ImageBrush ImageSource="Content/Images/Vanme150x62.png"></ImageBrush>

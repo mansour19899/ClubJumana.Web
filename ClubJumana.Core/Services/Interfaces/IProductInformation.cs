@@ -17,7 +17,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public Product GiveMeProductWithId(int Id);
         public int AddSku(int Id, string Sku);
         public int AddBarcode(int Id);
-        public int UpdateVariant(Variant variant);
+        public int AddOrUpdateVariant(Variant variant, int ProductId);
         public int AddImageVariant(int variantFK, string imageName);
     }
     
