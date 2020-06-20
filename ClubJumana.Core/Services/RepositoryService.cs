@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
+using ClubJumana.Core.Comparer;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
@@ -22,33 +24,702 @@ namespace ClubJumana.Core.Services
 
         public void UpdateLocalDb()
         {
+
+            BarcodeUpdate();
+            BrandUpdate();
+            ColourUpdate();
+            CountryUpdate();
+            MaterialUpdate();
+            CompanyUpdate();
+            ProductUpdate();
+            CategoryUpdate();
+            SubcategoryUpdate();
+            CategorySubcategoryUpdate();
+            ProductTypeUpdate();
+            VariantUpdate();
+            ImageUpdate();
+            ProvinceUpdate();
             
+        }
 
-            var list1 = _context.countries.OrderBy(p => p.Id).Select(p => new { Id = p.Id, Barcode = p.Name, }).ToList();
-            var list2 = onlineDb.countries.OrderBy(p => p.Id).Select(p => new { Id = p.Id, Barcode = p.Name }).ToList();
+        #region Update Function
 
-            var IdForAdd = list2.Select(p => p.Id).Except(list1.Select(p => p.Id));
+        
+        public void BarcodeUpdate()
+        {
+            //var list1 = _context.countries.OrderBy(p => p.Id).Select(p => new Country() { Id = p.Id, Code = p.Code,Name = p.Name}).ToList();
+            //var list2 = onlineDb.countries.OrderBy(p => p.Id).Select(p => new Country() { Id = p.Id, Code = p.Code,Name = p.Name}).ToList();
 
-            var list3 = list2.Except(list1);
-                Country w;
+            //var list4 = _context.barcodes.AsNoTracking().Select(p => new{Id=p.Id,Bracode=p.BarcodeNumber,Active=p.Active}).ToList();
+            //var list5 = onlineDb.barcodes.AsNoTracking().Select(p => new { Id = p.Id, Bracode = p.BarcodeNumber, Active = p.Active }).ToList();
 
-                foreach (var VARIABLE in list3)
+            var _contextList = _context.barcodes.AsNoTracking().ToList();
+            var OnlineList = onlineDb.barcodes.AsNoTracking().ToList();
+
+            var comparer = new BarcodeComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Barcode w;
+            Barcode ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.barcodes.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.barcodes.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
                 {
-                    w = onlineDb.countries.SingleOrDefault(p => p.Id == VARIABLE.Id);
-                    if (IdForAdd.Contains(VARIABLE.Id))
-                    {
-                        _context.countries.Add(w);
+                    _context.barcodes.Add(w);
 
-                    }
-                    else
-                    {
-                        _context.countries.Update(w);
-                    }
                 }
-                _context.SaveChanges();
+                else
+                {
+                    ww.BarcodeNumber = w.BarcodeNumber;
+                    ww.Active = w.Active;
 
+                    _context.barcodes.Update(ww);
+                }
+            }
+
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.barcodes.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.barcodes.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
 
         }
+
+        public void BrandUpdate()
+        {
+            var _contextList = _context.brands.AsNoTracking().ToList();
+            var OnlineList = onlineDb.brands.AsNoTracking().ToList();
+
+            var comparer = new BrandComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Brand w;
+            Brand ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.brands.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.brands.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.brands.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+
+                    _context.brands.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.brands.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.brands.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void CategoryUpdate()
+        {
+            var _contextList = _context.categories.AsNoTracking().ToList();
+            var OnlineList = onlineDb.categories.AsNoTracking().ToList();
+
+            var comparer = new CategoryComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Category w;
+            Category ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.categories.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.categories.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.categories.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+                    ww.Sku_code = w.Sku_code;
+                    ww.StyleNum_code = w.StyleNum_code;
+
+                    _context.categories.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.categories.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.categories.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+        public void SubcategoryUpdate()
+        {
+            var _contextList = _context.subcategories.AsNoTracking().ToList();
+            var OnlineList = onlineDb.subcategories.AsNoTracking().ToList();
+
+            var comparer = new SubcategoryComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            SubCategory w;
+            SubCategory ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.subcategories.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.subcategories.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.subcategories.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+
+                    _context.subcategories.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.subcategories.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.subcategories.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void CategorySubcategoryUpdate()
+        {
+            var _contextList = _context.categoriessubcategories.AsNoTracking().ToList();
+            var OnlineList = onlineDb.categoriessubcategories.AsNoTracking().ToList();
+
+            var comparer = new CategorySubcategoryComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            CategoriesSubCategory w;
+            CategoriesSubCategory ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.categoriessubcategories.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.categoriessubcategories.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.categoriessubcategories.Add(w);
+
+                }
+                else
+                {
+                    ww.CategoryFK = w.CategoryFK;
+                    ww.SubCategoryFK = w.SubCategoryFK;
+
+                    _context.categoriessubcategories.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.categoriessubcategories.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.categoriessubcategories.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+        public void ProductTypeUpdate()
+        {
+            var _contextList = _context.producttypes.AsNoTracking().ToList();
+            var OnlineList = onlineDb.producttypes.AsNoTracking().ToList();
+
+            var comparer = new ProductTypeComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            ProductType w;
+            ProductType ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.producttypes.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.producttypes.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.producttypes.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+                    ww.Code = w.Code;
+                    ww.CategorysubcategoreisFK = w.CategorysubcategoreisFK;
+                    _context.producttypes.Update(ww);
+                }
+            }
+
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.producttypes.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.producttypes.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void ColourUpdate()
+        {
+            var _contextList = _context.colours.AsNoTracking().ToList();
+            var OnlineList = onlineDb.colours.AsNoTracking().ToList();
+
+            var comparer = new ColourComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Colour w;
+            Colour ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.colours.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.colours.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.colours.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+                    ww.PantoneNumber = w.PantoneNumber;
+                    ww.Code = w.Code;
+                    _context.colours.Update(ww);
+                }
+            }
+
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.colours.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.colours.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+        public void CountryUpdate()
+        {
+            var _contextList = _context.countries.AsNoTracking().ToList();
+            var OnlineList = onlineDb.countries.AsNoTracking().ToList();
+
+            var comparer = new CountryComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Country w;
+            Country ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.countries.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.countries.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.countries.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+                    ww.Code = w.Code;
+                    ww.Duty = w.Duty;
+                    ww.ExChangeRate = w.ExChangeRate;
+                    ww.Currency = w.Currency;
+                    ww.CurrencyName = w.CurrencyName;
+                    ww.DigitalCode = w.DigitalCode;
+
+                    _context.countries.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.countries.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.countries.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void MaterialUpdate()
+        {
+            var _contextList = _context.materials.AsNoTracking().ToList();
+            var OnlineList = onlineDb.materials.AsNoTracking().ToList();
+
+            var comparer = new MaterialComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Material w;
+            Material ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.materials.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.materials.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.materials.Add(w);
+
+                }
+                else
+                {
+                    ww.MaterialName = w.MaterialName;
+
+                    _context.materials.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.materials.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.materials.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+        public void CompanyUpdate()
+        {
+            var _contextList = _context.companies.AsNoTracking().ToList();
+            var OnlineList = onlineDb.companies.AsNoTracking().ToList();
+
+            var comparer = new CompanyComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Company w;
+            Company ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.companies.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.companies.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.companies.Add(w);
+
+                }
+                else
+                {
+                    ww.CompanyName = w.CompanyName;
+                    ww.Manufacture = w.Manufacture;
+                    ww.Website = w.Website;
+                    ww.Email = w.Email;
+                    ww.StreetAddress = w.StreetAddress;
+                    ww.AddressLine2 = w.AddressLine2;
+                    ww.City = w.City;
+                    ww.StateProvinceRegion = w.StateProvinceRegion;
+                    ww.ZipPostlCode = w.ZipPostlCode;
+                    ww.CountryFK = w.CountryFK;
+                    ww.Phone = w.Phone;
+                    ww.FAX = w.FAX;
+                    _context.companies.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.companies.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.companies.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void ProductUpdate()
+        {
+            var _contextList = _context.products.AsNoTracking().ToList();
+            var OnlineList = onlineDb.products.AsNoTracking().ToList();
+
+            var comparer = new ProductComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Product w;
+            Product ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.products.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.products.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.products.Add(w);
+
+                }
+                else
+                {
+                    ww.StyleNumber = w.StyleNumber;
+                    ww.ProductTittle = w.ProductTittle;
+                    ww.BrandFK = w.BrandFK;
+                    ww.MaterialFK = w.MaterialFK;
+                    ww.CompanyFK = w.CompanyFK;
+                    ww.CountryOfOrginFK = w.CountryOfOrginFK;
+                    ww.DescribeMaterial = w.DescribeMaterial;
+                    _context.products.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.products.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.products.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+        }
+        public void VariantUpdate()
+        {
+            var _contextList = _context.variants.AsNoTracking().ToList();
+            var OnlineList = onlineDb.variants.AsNoTracking().ToList();
+
+            var comparer = new VariantComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Variant w;
+            Variant ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.variants.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.variants.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.variants.Add(w);
+
+                }
+                else
+                {
+                    ww.Sku = w.Sku;
+                    ww.ProductFK = w.ProductFK;
+                    ww.ColourFK = w.ColourFK;
+                    ww.BarcodeFK = w.BarcodeFK;
+                    ww.ProductTypeFK = w.ProductTypeFK;
+                    ww.FobPrice = w.FobPrice;
+                    ww.WholesaleA = w.WholesaleA;
+                    ww.WholesaleB = w.WholesaleB;
+                    ww.RetailPrice = w.RetailPrice;
+                    ww.Width = w.Width;
+                    ww.length = w.length;
+                    ww.Size = w.Size;
+                    ww.Note = w.Note;
+                    ww.Data1 = w.Data1;
+                    ww.Data2 = w.Data2;
+                    ww.Data3 = w.Data3;
+                    ww.Data4 = w.Data4;
+                    ww.Data5 = w.Data5;
+                    ww.Data6 = w.Data6;
+
+                    _context.variants.Update(ww);
+                }
+            }
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.variants.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.variants.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+
+        public void ImageUpdate()
+        {
+            var _contextList = _context.images.AsNoTracking().ToList();
+            var OnlineList = onlineDb.images.AsNoTracking().ToList();
+
+            var comparer = new imageComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Image w;
+            Image ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.images.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.images.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.images.Add(w);
+
+                }
+                else
+                {
+                    ww.ImageName = w.ImageName;
+                    ww.VariantFK = w.VariantFK;
+
+                    _context.images.Update(ww);
+                }
+            }
+
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.images.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.images.Remove(ww);
+                }
+
+            }
+
+            _context.SaveChanges();
+
+        }
+        public void ProvinceUpdate()
+        {
+            var _contextList = _context.provinces.AsNoTracking().ToList();
+            var OnlineList = onlineDb.provinces.AsNoTracking().ToList();
+
+            var comparer = new ProvinceComparer();
+            var DiffrentItems = OnlineList.Except(_contextList, comparer).ToList();
+
+            var IdForAdd = OnlineList.Select(p => p.Id).Except(_contextList.Select(p => p.Id));
+
+            Province w;
+            Province ww;
+            foreach (var VARIABLE in DiffrentItems)
+            {
+                w = onlineDb.provinces.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.provinces.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                if (IdForAdd.Contains(VARIABLE.Id))
+                {
+                    _context.provinces.Add(w);
+
+                }
+                else
+                {
+                    ww.Name = w.Name;
+                    ww.HST = w.HST;
+                    ww.GST = w.GST;
+                    ww.QST = w.QST;
+                    ww.Active = w.Active;
+
+                    _context.provinces.Update(ww);
+                }
+            }
+
+            var IdForDelete = _contextList.Select(p => p.Id).Except(OnlineList.Select(p => p.Id));
+
+            if (IdForDelete.Count() != 0)
+            {
+                foreach (var VARIABLE in IdForDelete)
+                {
+                    ww = _context.provinces.SingleOrDefault(p => p.Id == VARIABLE);
+                    _context.provinces.Remove(ww);
+                }
+
+            }
+            _context.SaveChanges();
+
+        }
+        #endregion
+
+
+
+
 
         public IQueryable<ProductMaster> AllProductMasterList()
         {

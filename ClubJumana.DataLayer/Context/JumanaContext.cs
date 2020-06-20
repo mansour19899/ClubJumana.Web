@@ -8,12 +8,12 @@ using ClubJumana.DataLayer.Entities.Users;
 
 namespace ClubJumana.DataLayer.Context
 {
-   public class JummanaContext:DbContext
+    public class JummanaContext : DbContext
     {
 
         //public JummanaContext(DbContextOptions<JummanaContext> options):base(options)
         //{
-            
+
         //}
 
         #region User
@@ -57,9 +57,10 @@ namespace ClubJumana.DataLayer.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-             //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm36;Trusted_Connection=True");
+            var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging()
+                .Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-             optionsBuilder.UseMySQL("server=localhost;database=smm48;user=root;password=Man1989sour");
+            // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
             //Update - Database - Context JummanaContext
@@ -270,8 +271,8 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SendInvitations)
                     .HasForeignKey(s => s.UserSendInvitation_fk);
 
-                entity.HasOne<User>(s=>s.UserRegisterWithInvitation)
-                    .WithOne(g=>g.RegisterWithInvitation)
+                entity.HasOne<User>(s => s.UserRegisterWithInvitation)
+                    .WithOne(g => g.RegisterWithInvitation)
                     .HasForeignKey<Invitation>(s => s.UserRegisterWithInvitation_fk);
             });
 
@@ -287,7 +288,7 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.Refunds)
                     .HasForeignKey(s => s.SaleOrder_fk);
 
-                
+
             });
 
             //----------------------------------- RefundItem ---------------------------------------
@@ -475,21 +476,27 @@ namespace ClubJumana.DataLayer.Context
     }
 
 
-   public class OnlineContext : JummanaContext
-   {
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       {
-           
-           //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm60;Trusted_Connection=True");
-           // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-            optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-           //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
+    public class OnlineContext : JummanaContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm68;Trusted_Connection=True").EnableSensitiveDataLogging()
+                .Options; ;
+            // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+            //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
+            //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
 
-       }
+            //Update -Database -Context JummanaContext
+            //Update -Database -Context OnlineContext
+
+            //Add-Migration InitialCreate -Context OnlineContext
+            //Add-Migration InitialCreate -Context OnlineContext
+        }
     }
-   public class text2Context : JummanaContext
-   {
+    public class text2Context : JummanaContext
+    {
 
-   }
+    }
 }

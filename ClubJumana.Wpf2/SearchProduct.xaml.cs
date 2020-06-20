@@ -58,7 +58,7 @@ namespace ClubJumana.Wpf2
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
 
-            _repositoryService.UpdateLocalDb();
+            //_repositoryService.UpdateLocalDb();
             
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();

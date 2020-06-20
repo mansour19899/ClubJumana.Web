@@ -9,8 +9,7 @@ namespace ClubJumana.DataLayer.Entities
         public int Id { get; set; }
         public string BarcodeNumber { get; set; }
         public bool Active { get; set; }
-
-       public Variant Variant { get; set; }
+        public Variant Variant { get; set; }
 
     }
 }

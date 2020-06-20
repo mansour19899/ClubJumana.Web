@@ -1,28 +1,28 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class mysqlstartqq : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Barcodes",
+                name: "barcodes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
                     BarcodeNumber = table.Column<string>(nullable: true),
-                    Active = table.Column<bool>(nullable: false)
+                    Active = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Barcodes", x => x.Id);
+                    table.PrimaryKey("PK_barcodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Brands",
+                name: "brands",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -30,11 +30,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brands", x => x.Id);
+                    table.PrimaryKey("PK_brands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -44,11 +44,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Colours",
+                name: "colours",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -58,11 +58,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Colours", x => x.Id);
+                    table.PrimaryKey("PK_colours", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Countries",
+                name: "countries",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -76,11 +76,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.Id);
+                    table.PrimaryKey("PK_countries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "materials",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -88,11 +88,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.PrimaryKey("PK_materials", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductMasters",
+                name: "productmasters",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -122,15 +122,14 @@ namespace ClubJumana.DataLayer.Migrations
                     Active = table.Column<bool>(nullable: true),
                     Note = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductMasters", x => x.Id);
+                    table.PrimaryKey("PK_productmasters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Provinces",
+                name: "provinces",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -140,28 +139,27 @@ namespace ClubJumana.DataLayer.Migrations
                     QST = table.Column<decimal>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Provinces", x => x.Id);
+                    table.PrimaryKey("PK_provinces", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "roles",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleTitle = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                    table.PrimaryKey("PK_roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCategories",
+                name: "subcategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -170,15 +168,15 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.PrimaryKey("PK_subcategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(maxLength: 200, nullable: false),
                     Email = table.Column<string>(maxLength: 200, nullable: false),
                     Password = table.Column<string>(maxLength: 200, nullable: false),
@@ -189,11 +187,11 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vendors",
+                name: "vendors",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false),
@@ -218,15 +216,14 @@ namespace ClubJumana.DataLayer.Migrations
                     Info2 = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vendors", x => x.ID);
+                    table.PrimaryKey("PK_vendors", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Warehouses",
+                name: "warehouses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -235,15 +232,14 @@ namespace ClubJumana.DataLayer.Migrations
                     Tel = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Warehouses", x => x.Id);
+                    table.PrimaryKey("PK_warehouses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
+                name: "companies",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -262,17 +258,17 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.PrimaryKey("PK_companies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Companies_Countries_CountryFK",
+                        name: "FK_companies_countries_CountryFK",
                         column: x => x.CountryFK,
-                        principalTable: "Countries",
+                        principalTable: "countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoriesSubCategories",
+                name: "categoriessubcategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -281,23 +277,23 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoriesSubCategories", x => x.Id);
+                    table.PrimaryKey("PK_categoriessubcategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoriesSubCategories_Categories_CategoryFK",
+                        name: "FK_categoriessubcategories_categories_CategoryFK",
                         column: x => x.CategoryFK,
-                        principalTable: "Categories",
+                        principalTable: "categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoriesSubCategories_SubCategories_SubCategoryFK",
+                        name: "FK_categoriessubcategories_subcategories_SubCategoryFK",
                         column: x => x.SubCategoryFK,
-                        principalTable: "SubCategories",
+                        principalTable: "subcategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "customers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -320,25 +316,24 @@ namespace ClubJumana.DataLayer.Migrations
                     LastSaleDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_customers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customers_Users_CreatedBy_fk",
+                        name: "FK_customers_users_CreatedBy_fk",
                         column: x => x.CreatedBy_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invitations",
+                name: "invitations",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     Email = table.Column<string>(maxLength: 200, nullable: false),
                     ActiveCode = table.Column<string>(maxLength: 50, nullable: true),
@@ -349,49 +344,49 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.PrimaryKey("PK_invitations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invitations_Users_UserRegisterWithInvitation_fk",
+                        name: "FK_invitations_users_UserRegisterWithInvitation_fk",
                         column: x => x.UserRegisterWithInvitation_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Invitations_Users_UserSendInvitation_fk",
+                        name: "FK_invitations_users_UserSendInvitation_fk",
                         column: x => x.UserSendInvitation_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "userroles",
                 columns: table => new
                 {
                     UR_Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => x.UR_Id);
+                    table.PrimaryKey("PK_userroles", x => x.UR_Id);
                     table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
+                        name: "FK_userroles_roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
+                        name: "FK_userroles_users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductInventoryWarehouses",
+                name: "productinventorywarehouses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -405,27 +400,26 @@ namespace ClubJumana.DataLayer.Migrations
                     Aile = table.Column<string>(nullable: true),
                     Bin = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductInventoryWarehouses", x => x.Id);
+                    table.PrimaryKey("PK_productinventorywarehouses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductInventoryWarehouses_ProductMasters_ProductMaster_fk",
+                        name: "FK_productinventorywarehouses_productmasters_ProductMaster_fk",
                         column: x => x.ProductMaster_fk,
-                        principalTable: "ProductMasters",
+                        principalTable: "productmasters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductInventoryWarehouses_Warehouses_Warehouse_fk",
+                        name: "FK_productinventorywarehouses_warehouses_Warehouse_fk",
                         column: x => x.Warehouse_fk,
-                        principalTable: "Warehouses",
+                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PurchaseOrders",
+                name: "purchaseorders",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -474,51 +468,50 @@ namespace ClubJumana.DataLayer.Migrations
                     ApproveAsnUser_fk = table.Column<int>(nullable: true),
                     ApproveGrnUser_fk = table.Column<int>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PurchaseOrders", x => x.Id);
+                    table.PrimaryKey("PK_purchaseorders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Users_ApproveAsnUser_fk",
+                        name: "FK_purchaseorders_users_ApproveAsnUser_fk",
                         column: x => x.ApproveAsnUser_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Users_ApproveGrnUser_fk",
+                        name: "FK_purchaseorders_users_ApproveGrnUser_fk",
                         column: x => x.ApproveGrnUser_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Users_ApprovePoUser_fk",
+                        name: "FK_purchaseorders_users_ApprovePoUser_fk",
                         column: x => x.ApprovePoUser_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Warehouses_FromWarehouse_fk",
+                        name: "FK_purchaseorders_warehouses_FromWarehouse_fk",
                         column: x => x.FromWarehouse_fk,
-                        principalTable: "Warehouses",
+                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Warehouses_ToWarehouse_fk",
+                        name: "FK_purchaseorders_warehouses_ToWarehouse_fk",
                         column: x => x.ToWarehouse_fk,
-                        principalTable: "Warehouses",
+                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PurchaseOrders_Vendors_Vendor_fk",
+                        name: "FK_purchaseorders_vendors_Vendor_fk",
                         column: x => x.Vendor_fk,
-                        principalTable: "Vendors",
+                        principalTable: "vendors",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "products",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -530,39 +523,38 @@ namespace ClubJumana.DataLayer.Migrations
                     CountryOfOrginFK = table.Column<int>(nullable: true),
                     DescribeMaterial = table.Column<string>(nullable: true),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Brands_BrandFK",
+                        name: "FK_products_brands_BrandFK",
                         column: x => x.BrandFK,
-                        principalTable: "Brands",
+                        principalTable: "brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Companies_CompanyFK",
+                        name: "FK_products_companies_CompanyFK",
                         column: x => x.CompanyFK,
-                        principalTable: "Companies",
+                        principalTable: "companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Countries_CountryOfOrginFK",
+                        name: "FK_products_countries_CountryOfOrginFK",
                         column: x => x.CountryOfOrginFK,
-                        principalTable: "Countries",
+                        principalTable: "countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Materials_MaterialFK",
+                        name: "FK_products_materials_MaterialFK",
                         column: x => x.MaterialFK,
-                        principalTable: "Materials",
+                        principalTable: "materials",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductTypes",
+                name: "producttypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -572,21 +564,21 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductTypes", x => x.Id);
+                    table.PrimaryKey("PK_producttypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductTypes_CategoriesSubCategories_CategorysubcategoreisFK",
+                        name: "FK_producttypes_categoriessubcategories_CategorysubcategoreisFK",
                         column: x => x.CategorysubcategoreisFK,
-                        principalTable: "CategoriesSubCategories",
+                        principalTable: "categoriessubcategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SaleOrders",
+                name: "saleorders",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<bool>(nullable: false),
                     OrderedDate = table.Column<DateTime>(nullable: true),
                     ShipDate = table.Column<DateTime>(nullable: true),
@@ -612,39 +604,38 @@ namespace ClubJumana.DataLayer.Migrations
                     Quantity = table.Column<int>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SaleOrders", x => x.Id);
+                    table.PrimaryKey("PK_saleorders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SaleOrders_Users_Cashier_fk",
+                        name: "FK_saleorders_users_Cashier_fk",
                         column: x => x.Cashier_fk,
-                        principalTable: "Users",
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SaleOrders_Customers_Customer_fk",
+                        name: "FK_saleorders_customers_Customer_fk",
                         column: x => x.Customer_fk,
-                        principalTable: "Customers",
+                        principalTable: "customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SaleOrders_Provinces_TaxArea_fk",
+                        name: "FK_saleorders_provinces_TaxArea_fk",
                         column: x => x.TaxArea_fk,
-                        principalTable: "Provinces",
+                        principalTable: "provinces",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SaleOrders_Warehouses_Warehouse_fk",
+                        name: "FK_saleorders_warehouses_Warehouse_fk",
                         column: x => x.Warehouse_fk,
-                        principalTable: "Warehouses",
+                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "items",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -664,27 +655,26 @@ namespace ClubJumana.DataLayer.Migrations
                     Checked = table.Column<bool>(nullable: true, defaultValue: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.PrimaryKey("PK_items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_PurchaseOrders_Po_fk",
+                        name: "FK_items_purchaseorders_Po_fk",
                         column: x => x.Po_fk,
-                        principalTable: "PurchaseOrders",
+                        principalTable: "purchaseorders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_ProductMasters_ProductMaster_fk",
+                        name: "FK_items_productmasters_ProductMaster_fk",
                         column: x => x.ProductMaster_fk,
-                        principalTable: "ProductMasters",
+                        principalTable: "productmasters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Variants",
+                name: "variants",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -709,43 +699,42 @@ namespace ClubJumana.DataLayer.Migrations
                     Data6 = table.Column<string>(nullable: true),
                     LastDateEdited = table.Column<DateTime>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Variants", x => x.Id);
+                    table.PrimaryKey("PK_variants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Variants_Barcodes_BarcodeFK",
+                        name: "FK_variants_barcodes_BarcodeFK",
                         column: x => x.BarcodeFK,
-                        principalTable: "Barcodes",
+                        principalTable: "barcodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Variants_Colours_ColourFK",
+                        name: "FK_variants_colours_ColourFK",
                         column: x => x.ColourFK,
-                        principalTable: "Colours",
+                        principalTable: "colours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Variants_Products_ProductFK",
+                        name: "FK_variants_products_ProductFK",
                         column: x => x.ProductFK,
-                        principalTable: "Products",
+                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Variants_ProductTypes_ProductTypeFK",
+                        name: "FK_variants_producttypes_ProductTypeFK",
                         column: x => x.ProductTypeFK,
-                        principalTable: "ProductTypes",
+                        principalTable: "producttypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Refunds",
+                name: "refunds",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RefundDate = table.Column<DateTime>(nullable: true),
                     RefundNumber = table.Column<int>(nullable: true),
                     SaleOrder_fk = table.Column<int>(nullable: false),
@@ -754,25 +743,24 @@ namespace ClubJumana.DataLayer.Migrations
                     SubtotalPrice = table.Column<decimal>(nullable: false),
                     Tax = table.Column<decimal>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Refunds", x => x.Id);
+                    table.PrimaryKey("PK_refunds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Refunds_SaleOrders_SaleOrder_fk",
+                        name: "FK_refunds_saleorders_SaleOrder_fk",
                         column: x => x.SaleOrder_fk,
-                        principalTable: "SaleOrders",
+                        principalTable: "saleorders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoItems",
+                name: "soitems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     So_fk = table.Column<int>(nullable: false),
                     ProductMaster_fk = table.Column<int>(nullable: false),
                     Cost = table.Column<decimal>(nullable: false),
@@ -783,27 +771,26 @@ namespace ClubJumana.DataLayer.Migrations
                     Price = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoItems", x => x.Id);
+                    table.PrimaryKey("PK_soitems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SoItems_ProductMasters_ProductMaster_fk",
+                        name: "FK_soitems_productmasters_ProductMaster_fk",
                         column: x => x.ProductMaster_fk,
-                        principalTable: "ProductMasters",
+                        principalTable: "productmasters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SoItems_SaleOrders_So_fk",
+                        name: "FK_soitems_saleorders_So_fk",
                         column: x => x.So_fk,
-                        principalTable: "SaleOrders",
+                        principalTable: "saleorders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "images",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -812,337 +799,338 @@ namespace ClubJumana.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Variants_VariantFK",
+                        name: "FK_images_variants_VariantFK",
                         column: x => x.VariantFK,
-                        principalTable: "Variants",
+                        principalTable: "variants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefundItems",
+                name: "refunditems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Refund_fk = table.Column<int>(nullable: false),
                     ProductMaster_fk = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefundItems", x => x.Id);
+                    table.PrimaryKey("PK_refunditems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefundItems_ProductMasters_ProductMaster_fk",
+                        name: "FK_refunditems_productmasters_ProductMaster_fk",
                         column: x => x.ProductMaster_fk,
-                        principalTable: "ProductMasters",
+                        principalTable: "productmasters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RefundItems_Refunds_Refund_fk",
+                        name: "FK_refunditems_refunds_Refund_fk",
                         column: x => x.Refund_fk,
-                        principalTable: "Refunds",
+                        principalTable: "refunds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Vendors",
+                table: "vendors",
                 columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
                 values: new object[] { 1, null, null, null, null, null, null, null, null, null, null, null, null, "ClubJummana", null, null, null, null, null, null, null });
 
             migrationBuilder.InsertData(
-                table: "Vendors",
+                table: "vendors",
                 columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
                 values: new object[] { 2, null, null, null, null, null, null, null, null, null, null, null, null, "Anzir", null, null, null, null, null, null, null });
 
             migrationBuilder.InsertData(
-                table: "Vendors",
+                table: "vendors",
                 columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
                 values: new object[] { 3, null, null, null, null, null, null, null, null, null, null, null, null, "Noman", null, null, null, null, null, null, null });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoriesSubCategories_CategoryFK",
-                table: "CategoriesSubCategories",
+                name: "IX_categoriessubcategories_CategoryFK",
+                table: "categoriessubcategories",
                 column: "CategoryFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoriesSubCategories_SubCategoryFK",
-                table: "CategoriesSubCategories",
+                name: "IX_categoriessubcategories_SubCategoryFK",
+                table: "categoriessubcategories",
                 column: "SubCategoryFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Companies_CountryFK",
-                table: "Companies",
+                name: "IX_companies_CountryFK",
+                table: "companies",
                 column: "CountryFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CreatedBy_fk",
-                table: "Customers",
+                name: "IX_customers_CreatedBy_fk",
+                table: "customers",
                 column: "CreatedBy_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_VariantFK",
-                table: "Images",
+                name: "IX_images_VariantFK",
+                table: "images",
                 column: "VariantFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitations_UserRegisterWithInvitation_fk",
-                table: "Invitations",
+                name: "IX_invitations_UserRegisterWithInvitation_fk",
+                table: "invitations",
                 column: "UserRegisterWithInvitation_fk",
-                unique: true);
+                unique: true,
+                filter: "[UserRegisterWithInvitation_fk] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitations_UserSendInvitation_fk",
-                table: "Invitations",
+                name: "IX_invitations_UserSendInvitation_fk",
+                table: "invitations",
                 column: "UserSendInvitation_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_Po_fk",
-                table: "Items",
+                name: "IX_items_Po_fk",
+                table: "items",
                 column: "Po_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_ProductMaster_fk",
-                table: "Items",
+                name: "IX_items_ProductMaster_fk",
+                table: "items",
                 column: "ProductMaster_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductInventoryWarehouses_ProductMaster_fk",
-                table: "ProductInventoryWarehouses",
+                name: "IX_productinventorywarehouses_ProductMaster_fk",
+                table: "productinventorywarehouses",
                 column: "ProductMaster_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductInventoryWarehouses_Warehouse_fk",
-                table: "ProductInventoryWarehouses",
+                name: "IX_productinventorywarehouses_Warehouse_fk",
+                table: "productinventorywarehouses",
                 column: "Warehouse_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandFK",
-                table: "Products",
+                name: "IX_products_BrandFK",
+                table: "products",
                 column: "BrandFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CompanyFK",
-                table: "Products",
+                name: "IX_products_CompanyFK",
+                table: "products",
                 column: "CompanyFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CountryOfOrginFK",
-                table: "Products",
+                name: "IX_products_CountryOfOrginFK",
+                table: "products",
                 column: "CountryOfOrginFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_MaterialFK",
-                table: "Products",
+                name: "IX_products_MaterialFK",
+                table: "products",
                 column: "MaterialFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductTypes_CategorysubcategoreisFK",
-                table: "ProductTypes",
+                name: "IX_producttypes_CategorysubcategoreisFK",
+                table: "producttypes",
                 column: "CategorysubcategoreisFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_ApproveAsnUser_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_ApproveAsnUser_fk",
+                table: "purchaseorders",
                 column: "ApproveAsnUser_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_ApproveGrnUser_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_ApproveGrnUser_fk",
+                table: "purchaseorders",
                 column: "ApproveGrnUser_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_ApprovePoUser_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_ApprovePoUser_fk",
+                table: "purchaseorders",
                 column: "ApprovePoUser_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_FromWarehouse_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_FromWarehouse_fk",
+                table: "purchaseorders",
                 column: "FromWarehouse_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_ToWarehouse_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_ToWarehouse_fk",
+                table: "purchaseorders",
                 column: "ToWarehouse_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_Vendor_fk",
-                table: "PurchaseOrders",
+                name: "IX_purchaseorders_Vendor_fk",
+                table: "purchaseorders",
                 column: "Vendor_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefundItems_ProductMaster_fk",
-                table: "RefundItems",
+                name: "IX_refunditems_ProductMaster_fk",
+                table: "refunditems",
                 column: "ProductMaster_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefundItems_Refund_fk",
-                table: "RefundItems",
+                name: "IX_refunditems_Refund_fk",
+                table: "refunditems",
                 column: "Refund_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Refunds_SaleOrder_fk",
-                table: "Refunds",
+                name: "IX_refunds_SaleOrder_fk",
+                table: "refunds",
                 column: "SaleOrder_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaleOrders_Cashier_fk",
-                table: "SaleOrders",
+                name: "IX_saleorders_Cashier_fk",
+                table: "saleorders",
                 column: "Cashier_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaleOrders_Customer_fk",
-                table: "SaleOrders",
+                name: "IX_saleorders_Customer_fk",
+                table: "saleorders",
                 column: "Customer_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaleOrders_TaxArea_fk",
-                table: "SaleOrders",
+                name: "IX_saleorders_TaxArea_fk",
+                table: "saleorders",
                 column: "TaxArea_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaleOrders_Warehouse_fk",
-                table: "SaleOrders",
+                name: "IX_saleorders_Warehouse_fk",
+                table: "saleorders",
                 column: "Warehouse_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoItems_ProductMaster_fk",
-                table: "SoItems",
+                name: "IX_soitems_ProductMaster_fk",
+                table: "soitems",
                 column: "ProductMaster_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoItems_So_fk",
-                table: "SoItems",
+                name: "IX_soitems_So_fk",
+                table: "soitems",
                 column: "So_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_RoleId",
-                table: "UserRoles",
+                name: "IX_userroles_RoleId",
+                table: "userroles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_UserId",
-                table: "UserRoles",
+                name: "IX_userroles_UserId",
+                table: "userroles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Variants_BarcodeFK",
-                table: "Variants",
+                name: "IX_variants_BarcodeFK",
+                table: "variants",
                 column: "BarcodeFK",
-                unique: true);
+                unique: true,
+                filter: "[BarcodeFK] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Variants_ColourFK",
-                table: "Variants",
+                name: "IX_variants_ColourFK",
+                table: "variants",
                 column: "ColourFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Variants_ProductFK",
-                table: "Variants",
+                name: "IX_variants_ProductFK",
+                table: "variants",
                 column: "ProductFK");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Variants_ProductTypeFK",
-                table: "Variants",
+                name: "IX_variants_ProductTypeFK",
+                table: "variants",
                 column: "ProductTypeFK");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "images");
 
             migrationBuilder.DropTable(
-                name: "Invitations");
+                name: "invitations");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "items");
 
             migrationBuilder.DropTable(
-                name: "ProductInventoryWarehouses");
+                name: "productinventorywarehouses");
 
             migrationBuilder.DropTable(
-                name: "RefundItems");
+                name: "refunditems");
 
             migrationBuilder.DropTable(
-                name: "SoItems");
+                name: "soitems");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
+                name: "userroles");
 
             migrationBuilder.DropTable(
-                name: "Variants");
+                name: "variants");
 
             migrationBuilder.DropTable(
-                name: "PurchaseOrders");
+                name: "purchaseorders");
 
             migrationBuilder.DropTable(
-                name: "Refunds");
+                name: "refunds");
 
             migrationBuilder.DropTable(
-                name: "ProductMasters");
+                name: "productmasters");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "roles");
 
             migrationBuilder.DropTable(
-                name: "Barcodes");
+                name: "barcodes");
 
             migrationBuilder.DropTable(
-                name: "Colours");
+                name: "colours");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "products");
 
             migrationBuilder.DropTable(
-                name: "ProductTypes");
+                name: "producttypes");
 
             migrationBuilder.DropTable(
-                name: "Vendors");
+                name: "vendors");
 
             migrationBuilder.DropTable(
-                name: "SaleOrders");
+                name: "saleorders");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                name: "brands");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "companies");
 
             migrationBuilder.DropTable(
-                name: "Materials");
+                name: "materials");
 
             migrationBuilder.DropTable(
-                name: "CategoriesSubCategories");
+                name: "categoriessubcategories");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "customers");
 
             migrationBuilder.DropTable(
-                name: "Provinces");
+                name: "provinces");
 
             migrationBuilder.DropTable(
-                name: "Warehouses");
+                name: "warehouses");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "countries");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "categories");
 
             migrationBuilder.DropTable(
-                name: "SubCategories");
+                name: "subcategories");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "users");
         }
     }
 }

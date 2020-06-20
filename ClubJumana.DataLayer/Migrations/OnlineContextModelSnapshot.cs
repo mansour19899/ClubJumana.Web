@@ -3,21 +3,21 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    [DbContext(typeof(JummanaContext))]
-    [Migration("20200616192640_mysqlstartqq")]
-    partial class mysqlstartqq
+    [DbContext(typeof(OnlineContext))]
+    partial class OnlineContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Barcode", b =>
                 {
@@ -28,11 +28,11 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("BarcodeNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Barcodes");
+                    b.ToTable("barcodes");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Brand", b =>
@@ -41,11 +41,11 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("brands");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.CategoriesSubCategory", b =>
@@ -65,7 +65,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("SubCategoryFK");
 
-                    b.ToTable("CategoriesSubCategories");
+                    b.ToTable("categoriessubcategories");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Category", b =>
@@ -74,17 +74,17 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sku_code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StyleNum_code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("categories");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Colour", b =>
@@ -93,17 +93,17 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PantoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colours");
+                    b.ToTable("colours");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Company", b =>
@@ -112,46 +112,46 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AddressLine2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountryFK")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FAX")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Manufacture")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StateProvinceRegion")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetAddress")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Website")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipPostlCode")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryFK");
 
-                    b.ToTable("Companies");
+                    b.ToTable("companies");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Country", b =>
@@ -160,16 +160,16 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Currency")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CurrencyName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DigitalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Duty")
                         .HasColumnType("decimal(5, 2)");
@@ -178,11 +178,11 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("decimal(14,5)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("countries");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Customer", b =>
@@ -194,66 +194,66 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Address1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address3")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Company")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CreatedBy_fk")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("EditedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
 
                     b.Property<string>("ImageName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastSaleDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy_fk");
 
-                    b.ToTable("Customers");
+                    b.ToTable("customers");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Image", b =>
@@ -262,7 +262,7 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VariantFK")
                         .HasColumnType("int");
@@ -271,7 +271,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("VariantFK");
 
-                    b.ToTable("Images");
+                    b.ToTable("images");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>
@@ -285,10 +285,10 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<decimal>("AsnItemsPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("AsnPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("AsnQuantity")
                         .ValueGeneratedOnAdd()
@@ -301,7 +301,7 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Diffrent")
                         .HasColumnType("int");
@@ -315,14 +315,14 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PoItemsPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PoPrice")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
                     b.Property<int>("PoQuantity")
@@ -339,7 +339,7 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -347,7 +347,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("ProductMaster_fk");
 
-                    b.ToTable("Items");
+                    b.ToTable("items");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Material", b =>
@@ -356,11 +356,11 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("MaterialName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materials");
+                    b.ToTable("materials");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Product", b =>
@@ -378,21 +378,21 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DescribeMaterial")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MaterialFK")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductTittle")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("StyleNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -404,7 +404,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("MaterialFK");
 
-                    b.ToTable("Products");
+                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductInventoryWarehouse", b =>
@@ -413,10 +413,10 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Aile")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Bin")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Income")
                         .HasColumnType("int");
@@ -443,7 +443,7 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Warehouse_fk")
                         .HasColumnType("int");
@@ -454,7 +454,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("Warehouse_fk");
 
-                    b.ToTable("ProductInventoryWarehouses");
+                    b.ToTable("productinventorywarehouses");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductMaster", b =>
@@ -466,37 +466,37 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Color")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Cost")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("FobPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("GoodsReserved")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Income")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LastUpdateInventory")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MadeIn")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Margin")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Outcome")
                         .HasColumnType("int");
@@ -505,46 +505,46 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("RetailPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("SKU")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("SaleEndDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal?>("SalePrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("SaleStartDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Size")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StockOnHand")
                         .HasColumnType("int");
 
                     b.Property<string>("StyleNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UPC")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VendorCode")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("WholesalePrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductMasters");
+                    b.ToTable("productmasters");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.ProductType", b =>
@@ -556,16 +556,16 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategorysubcategoreisFK");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("producttypes");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Province", b =>
@@ -577,25 +577,25 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("GST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("HST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("QST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Provinces");
+                    b.ToTable("provinces");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.PurchaseOrder", b =>
@@ -604,7 +604,7 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Account")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ApproveAsnUser_fk")
                         .HasColumnType("int");
@@ -616,25 +616,25 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("AsnDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal?>("AsnSubtotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("AsnTotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Asnumber")
                         .HasColumnType("int");
 
                     b.Property<string>("Associate")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CancelDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("CreateOrder")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("CreatedAsn")
                         .HasColumnType("bit");
@@ -646,43 +646,43 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("CustomsDuty")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("DiscountDollers")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("DiscountPercent")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("FormSO")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Forwarding")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Freight")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("FromWarehouse_fk")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("GrnDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal?>("GrnSubtotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("GrnTotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Grnumber")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Handling")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Insurance")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ItemsAsnCount")
                         .HasColumnType("int");
@@ -694,48 +694,48 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("LandTransport")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("LastEditDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Others")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Percent")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PoNumber")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("PoSubtotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PoTerms")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PoTotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PoType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ToWarehouse_fk")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalCharges")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("Vendor_fk")
                         .HasColumnType("int");
@@ -754,37 +754,38 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("Vendor_fk");
 
-                    b.ToTable("PurchaseOrders");
+                    b.ToTable("purchaseorders");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Refund", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("RefundDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("RefundNumber")
                         .HasColumnType("int");
 
                     b.Property<decimal>("RefundTotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SaleOrder_fk")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SubtotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("WarehouseId")
                         .HasColumnType("int");
@@ -793,17 +794,18 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("SaleOrder_fk");
 
-                    b.ToTable("Refunds");
+                    b.ToTable("refunds");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.RefundItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductMaster_fk")
                         .HasColumnType("int");
@@ -817,10 +819,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -828,17 +830,18 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("Refund_fk");
 
-                    b.ToTable("RefundItems");
+                    b.ToTable("refunditems");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SaleOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("CancelDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("Cashier_fk")
                         .HasColumnType("int");
@@ -847,10 +850,10 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Freight")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Handling")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("InvoiceNumber")
                         .HasColumnType("int");
@@ -859,7 +862,7 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("OrderedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
@@ -867,46 +870,46 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<int?>("SalesOrderNumber")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ShipMethod_fk")
                         .HasColumnType("int");
 
                     b.Property<string>("ShipToAddressNam1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipToAddressNam2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipToAddressName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipToPostalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipToPostalPhone1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("SoTotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("TaxArea_fk")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalDiscount")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("Type")
                         .HasColumnType("bit");
@@ -924,20 +927,21 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("Warehouse_fk");
 
-                    b.ToTable("SaleOrders");
+                    b.ToTable("saleorders");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SoItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool?>("IsAbaleToRefund")
                         .ValueGeneratedOnAdd()
@@ -945,7 +949,7 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductMaster_fk")
                         .HasColumnType("int");
@@ -961,13 +965,13 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("So_fk")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -975,7 +979,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("So_fk");
 
-                    b.ToTable("SoItems");
+                    b.ToTable("soitems");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SubCategory", b =>
@@ -984,41 +988,42 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubCategories");
+                    b.ToTable("subcategories");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ActiveCode")
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<DateTime>("ExpireInvitationDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<DateTime>("SendInvitationDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("UserRegisterWithInvitation_fk")
                         .HasColumnType("int");
@@ -1029,42 +1034,45 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UserRegisterWithInvitation_fk")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserRegisterWithInvitation_fk] IS NOT NULL");
 
                     b.HasIndex("UserSendInvitation_fk");
 
-                    b.ToTable("Invitations");
+                    b.ToTable("invitations");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("RoleTitle")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ActiveCode")
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<bool>("IsActive")
@@ -1072,31 +1080,32 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserAvatar")
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.UserRole", b =>
                 {
                     b.Property<int>("UR_Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -1110,7 +1119,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("userroles");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Variant", b =>
@@ -1125,31 +1134,31 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Data1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data3")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data4")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data5")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data6")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float?>("FobPrice")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("LastDateEdited")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProductFK")
                         .HasColumnType("int");
@@ -1158,35 +1167,36 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<float?>("RetailPrice")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Size")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sku")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float?>("WholesaleA")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<float?>("WholesaleB")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<float?>("Width")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.Property<float?>("length")
-                        .HasColumnType("float");
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BarcodeFK")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[BarcodeFK] IS NOT NULL");
 
                     b.HasIndex("ColourFK");
 
@@ -1194,7 +1204,7 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.HasIndex("ProductTypeFK");
 
-                    b.ToTable("Variants");
+                    b.ToTable("variants");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Vendor", b =>
@@ -1204,74 +1214,74 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Acountsharp")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address3")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Currency")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Info1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Info2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LeadTime")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .HasColumnName("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentTerms")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone1")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone2")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Title")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TradeDiscountPercent")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vendors");
+                    b.ToTable("vendors");
 
                     b.HasData(
                         new
@@ -1297,25 +1307,25 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Tel")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses");
+                    b.ToTable("warehouses");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.CategoriesSubCategory", b =>
