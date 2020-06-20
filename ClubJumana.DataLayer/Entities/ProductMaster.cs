@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,8 @@ namespace ClubJumana.DataLayer.Entities
         public Nullable<bool> Active { get; set; }
 
         public string Note { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
         public ICollection<Item> Items { get; set; }
         public ICollection<SoItem> SoItems { get; set; }
         public ICollection<RefundItem> RefundItems { get; set; }

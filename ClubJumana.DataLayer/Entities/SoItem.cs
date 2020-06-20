@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -24,7 +25,8 @@ namespace ClubJumana.DataLayer.Entities
 
         public SaleOrder SaleOrder { get; set; }
         public ProductMaster ProductMaster { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
     }
 }

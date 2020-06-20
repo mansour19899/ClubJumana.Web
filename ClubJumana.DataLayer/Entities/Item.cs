@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -30,8 +31,8 @@ namespace ClubJumana.DataLayer.Entities
         public string Note { get; set; }
         public bool? Checked { get; set; }
         public bool IsDeleted { get; set; } = false;
-
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
         public ProductMaster ProductMaster { get; set; }
         public PurchaseOrder PurchaseOrder { get; set; }

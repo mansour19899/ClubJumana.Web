@@ -59,7 +59,7 @@ namespace ClubJumana.DataLayer.Context
         {
            // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-             optionsBuilder.UseMySQL("server=localhost;database=magiclocaldb;user=root;password=SmmRey2018");
+             optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
             //Update - Database - Context JummanaContext
@@ -77,9 +77,9 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<Item>().Property(b => b.PoQuantity).HasDefaultValue(0);
             modelBuilder.Entity<Item>().Property(b => b.Checked).HasDefaultValue(false);
             modelBuilder.Entity<Item>().Property(b => b.Alert).HasDefaultValue(false);
+            //modelBuilder.Entity<Item>().Property(e => e.AsnItemsPrice).HasColumnType("decimal(5, 2)");
             modelBuilder.Entity<Item>().Ignore(p => p.Price);
             modelBuilder.Entity<Item>().Ignore(p => p.TotalItemPrice);
-            modelBuilder.Entity<Item>().Property(a => a.RowVersion).IsRowVersion();
             //modelBuilder.Entity<Item>().HasData(new Item
             //{
             //    Id = 100, Po_fk = 1, ProductMaster_fk = 1, PoQuantity = 0, AsnQuantity = 0, GrnQuantity = 0,
@@ -107,7 +107,7 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(e => e.RowVersion).IsRowVersion();
+
 
             });
 
@@ -119,7 +119,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Note).HasColumnName("Note");
                 entity.Property(e => e.Id).HasColumnName("ID");
-                entity.Property(e => e.RowVersion).IsRowVersion();
                 entity.HasData(new Vendor { Id = 1, Name = "ClubJummana" });
                 entity.HasData(new Vendor { Id = 2, Name = "Anzir" });
                 entity.HasData(new Vendor { Id = 3, Name = "Noman" });
@@ -133,7 +132,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 //entity.Property(e => e.CreateOrder).HasDefaultValueSql("getdate()");
-                entity.Property(a => a.RowVersion).IsRowVersion();
                 //entity.HasData();
 
                 entity.HasOne<Vendor>(s => s.Vendor)
@@ -164,7 +162,6 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(e => e.RowVersion).IsRowVersion();
 
             });
 
@@ -176,7 +173,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(b => b.Inventory).HasDefaultValue(0);
                 entity.Property(b => b.OnTheWayInventory).HasDefaultValue(0);
-                entity.Property(b => b.RowVersion).IsRowVersion();
 
                 entity.HasOne<ProductMaster>(s => s.ProductMaster)
                     .WithMany(g => g.ProductInventoryWarehouses)
@@ -204,7 +200,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 //entity.Property(e => e.OrderedDate).HasColumnType("smalldatetime");
                 //entity.Property(e => e.CancelDate).HasColumnType("smalldatetime");
-                entity.Property(e => e.RowVersion).IsRowVersion();
 
                 entity.HasOne<User>(s => s.User)
                     .WithMany(g => g.SaleOrders)
@@ -228,7 +223,6 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(e => e.RowVersion).IsRowVersion();
                 //entity.Property(e => e.HST).HasColumnType("real");
                 //entity.Property(e => e.GST).HasColumnType("real");
                 //entity.Property(e => e.QST).HasColumnType("real");
@@ -239,7 +233,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Ignore(p => p.FullName);
-                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<User>(s => s.User)
                     .WithMany(g => g.Customers)
@@ -249,7 +242,6 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<SoItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.RowVersion).IsRowVersion();
                 entity.Property(e => e.QuantityRefunded).HasDefaultValue(0);
                 entity.Property(e => e.IsAbaleToRefund).HasDefaultValue(true);
 
@@ -281,7 +273,6 @@ namespace ClubJumana.DataLayer.Context
             {
 
                 entity.HasKey(e => e.Id);
-                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<SaleOrder>(s => s.SaleOrder)
                     .WithMany(g => g.Refunds)
@@ -295,7 +286,6 @@ namespace ClubJumana.DataLayer.Context
             {
 
                 entity.HasKey(e => e.Id);
-                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<Refund>(s => s.Refund)
                     .WithMany(g => g.RefundItems)
@@ -312,7 +302,6 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<Country>(s => s.CountryOfOrgin)
                     .WithMany(g => g.Products)
@@ -336,7 +325,6 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.Property(p => p.RowVersion).IsRowVersion();
 
                 entity.HasOne<ProductType>(s => s.ProductType)
                     .WithMany(g => g.Variants)
@@ -484,10 +472,10 @@ namespace ClubJumana.DataLayer.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
-            // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
+            //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
+            // optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-            //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
+            optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
 
             //Update-Database -Context JummanaContext

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,8 @@ namespace ClubJumana.DataLayer.Entities
         public int? ApprovePoUser_fk{ get; set; }
         public int? ApproveAsnUser_fk { get; set; }
         public int? ApproveGrnUser_fk { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
 
         public ICollection<Item> Items { get; set; }

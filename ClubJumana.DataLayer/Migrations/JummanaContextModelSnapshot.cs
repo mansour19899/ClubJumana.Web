@@ -27,8 +27,13 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("BarcodeNumber")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -43,6 +48,11 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
                     b.HasKey("Id");
 
                     b.ToTable("brands");
@@ -55,6 +65,11 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<int>("CategoryFK")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.Property<int>("SubCategoryFK")
                         .HasColumnType("int");
@@ -76,6 +91,11 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Sku_code")
                         .HasColumnType("text");
 
@@ -93,13 +113,21 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("PantoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -118,22 +146,32 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CompanyName")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("CountryFK")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("FAX")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Manufacture")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.Property<string>("StateProvinceRegion")
                         .HasColumnType("text");
@@ -142,10 +180,12 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Website")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ZipPostlCode")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -179,6 +219,11 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -244,10 +289,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("PostalCode")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -262,7 +307,13 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageName")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.Property<int>("VariantFK")
                         .HasColumnType("int");
@@ -336,10 +387,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int>("ProductMaster_fk")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -357,6 +408,11 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("MaterialName")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -384,15 +440,17 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ProductTittle")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("StyleNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -440,10 +498,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int?>("RefundQuantity")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("Warehouse_fk")
                         .HasColumnType("int");
@@ -507,10 +565,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<decimal?>("RetailPrice")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("SKU")
                         .HasColumnType("text");
@@ -561,6 +619,11 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategorysubcategoreisFK");
@@ -588,10 +651,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<decimal?>("QST")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -723,10 +786,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("PoType")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("datetime");
@@ -772,10 +835,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<decimal>("RefundTotalPrice")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("SaleOrder_fk")
                         .HasColumnType("int");
@@ -814,10 +877,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int>("Refund_fk")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -864,10 +927,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("SalesOrderNumber")
                         .HasColumnType("int");
@@ -879,19 +942,24 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShipToAddressNam1")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ShipToAddressNam2")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ShipToAddressName")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ShipToPostalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ShipToPostalPhone1")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<decimal>("SoTotalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -958,10 +1026,10 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("So_fk")
                         .HasColumnType("int");
@@ -988,6 +1056,11 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -1125,22 +1198,28 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Data1")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Data2")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Data3")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Data4")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Data5")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Data6")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<decimal?>("FobPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -1160,16 +1239,18 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<decimal?>("RetailPrice")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Size")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Sku")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<decimal?>("WholesaleA")
                         .HasColumnType("decimal(18, 2)");
@@ -1204,28 +1285,35 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Acountsharp")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Address1")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Address2")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Address3")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Country")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Currency")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Info1")
                         .HasColumnType("text");
@@ -1234,13 +1322,15 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("LeadTime")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Note")
                         .HasColumnName("Note")
@@ -1250,21 +1340,25 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone1")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Phone2")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("PostalCode")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Title")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("TradeDiscountPercent")
                         .HasColumnType("text");
@@ -1277,17 +1371,20 @@ namespace ClubJumana.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "ClubJummana"
+                            Name = "ClubJummana",
+                            RowVersion = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Anzir"
+                            Name = "Anzir",
+                            RowVersion = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Noman"
+                            Name = "Noman",
+                            RowVersion = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1305,10 +1402,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("varbinary(4000)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Tel")
                         .HasColumnType("text");

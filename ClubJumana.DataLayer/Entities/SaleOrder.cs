@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,19 +41,26 @@ namespace ClubJumana.DataLayer.Entities
 
         public decimal TotalDiscount { get; set; }
 
+        [StringLength(100)]
         public string ShipToAddressName { get; set; }
+        [StringLength(100)]
         public string ShipToAddressNam1 { get; set; }
+        [StringLength(100)]
         public string ShipToAddressNam2 { get; set; }
+        [StringLength(100)]
         public string ShipToPostalCode { get; set; }
+        [StringLength(100)]
         public string ShipToPostalPhone1 { get; set; }
         public int? Quantity { get; set; } = 0;
 
         public bool IsDeleted { get; set; } = false;
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
         public ICollection<SoItem> SoItems { get; set; }
         public ICollection<Refund> Refunds { get; set; }
         public Users.User User { get; set; }
+
 
         private Customer _customer;
         public Customer Customer { get; set; }

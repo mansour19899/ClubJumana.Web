@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ClubJumana.DataLayer.Entities
@@ -45,7 +46,8 @@ namespace ClubJumana.DataLayer.Entities
 
         public SaleOrder SaleOrder { get; set; }
         public ICollection<RefundItem> RefundItems { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
     }
 }

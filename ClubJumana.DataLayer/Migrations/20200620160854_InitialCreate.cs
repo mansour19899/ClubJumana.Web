@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ClubJumana.DataLayer.Migrations
 {
-    public partial class InitialCreate4 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,9 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(maxLength: 12, nullable: false),
-                    BarcodeNumber = table.Column<string>(maxLength: 12, nullable: true),
+                    BarcodeNumber = table.Column<string>(maxLength: 15, nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
                     Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -26,7 +28,9 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -40,7 +44,9 @@ namespace ClubJumana.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Sku_code = table.Column<string>(nullable: true),
-                    StyleNum_code = table.Column<string>(nullable: true)
+                    StyleNum_code = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -52,9 +58,11 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    PantoneNumber = table.Column<string>(nullable: true),
-                    Code = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    PantoneNumber = table.Column<string>(maxLength: 40, nullable: true),
+                    Code = table.Column<string>(maxLength: 5, nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -72,7 +80,9 @@ namespace ClubJumana.DataLayer.Migrations
                     ExChangeRate = table.Column<decimal>(type: "decimal(14,5)", nullable: true),
                     Currency = table.Column<string>(nullable: true),
                     CurrencyName = table.Column<string>(nullable: true),
-                    DigitalCode = table.Column<string>(nullable: true)
+                    DigitalCode = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -84,7 +94,9 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    MaterialName = table.Column<string>(nullable: true)
+                    MaterialName = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -121,7 +133,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Image = table.Column<string>(nullable: true),
                     Active = table.Column<bool>(nullable: true),
                     Note = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -139,7 +151,7 @@ namespace ClubJumana.DataLayer.Migrations
                     GST = table.Column<decimal>(nullable: true),
                     QST = table.Column<decimal>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -166,7 +178,9 @@ namespace ClubJumana.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Code = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -197,19 +211,19 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Address1 = table.Column<string>(nullable: true),
-                    Address2 = table.Column<string>(nullable: true),
-                    Address3 = table.Column<string>(nullable: true),
-                    PostalCode = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Phone1 = table.Column<string>(nullable: true),
-                    Phone2 = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Acountsharp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 40, nullable: true),
+                    Address1 = table.Column<string>(maxLength: 100, nullable: true),
+                    Address2 = table.Column<string>(maxLength: 100, nullable: true),
+                    Address3 = table.Column<string>(maxLength: 100, nullable: true),
+                    PostalCode = table.Column<string>(maxLength: 20, nullable: true),
+                    Country = table.Column<string>(maxLength: 20, nullable: true),
+                    Title = table.Column<string>(maxLength: 100, nullable: true),
+                    FirstName = table.Column<string>(maxLength: 40, nullable: true),
+                    LastName = table.Column<string>(maxLength: 40, nullable: true),
+                    Phone1 = table.Column<string>(maxLength: 20, nullable: true),
+                    Phone2 = table.Column<string>(maxLength: 20, nullable: true),
+                    Email = table.Column<string>(maxLength: 40, nullable: true),
+                    Acountsharp = table.Column<string>(maxLength: 20, nullable: true),
                     PaymentTerms = table.Column<string>(nullable: true),
                     TradeDiscountPercent = table.Column<string>(nullable: true),
                     Currency = table.Column<string>(nullable: true),
@@ -217,7 +231,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Info1 = table.Column<string>(nullable: true),
                     Info2 = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -234,7 +248,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Address = table.Column<string>(nullable: true),
                     Tel = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -247,18 +261,20 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    CompanyName = table.Column<string>(nullable: true),
-                    Manufacture = table.Column<string>(nullable: true),
-                    Website = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(maxLength: 20, nullable: true),
+                    Manufacture = table.Column<string>(maxLength: 100, nullable: true),
+                    Website = table.Column<string>(maxLength: 100, nullable: true),
+                    Email = table.Column<string>(maxLength: 40, nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
                     AddressLine2 = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     StateProvinceRegion = table.Column<string>(nullable: true),
-                    ZipPostlCode = table.Column<string>(nullable: true),
+                    ZipPostlCode = table.Column<string>(maxLength: 20, nullable: true),
                     CountryFK = table.Column<int>(nullable: false),
-                    Phone = table.Column<string>(nullable: true),
-                    FAX = table.Column<string>(nullable: true)
+                    Phone = table.Column<string>(maxLength: 40, nullable: true),
+                    FAX = table.Column<string>(maxLength: 40, nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -277,7 +293,9 @@ namespace ClubJumana.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false),
                     CategoryFK = table.Column<int>(nullable: false),
-                    SubCategoryFK = table.Column<int>(nullable: false)
+                    SubCategoryFK = table.Column<int>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -319,7 +337,7 @@ namespace ClubJumana.DataLayer.Migrations
                     EditedDate = table.Column<DateTime>(nullable: true),
                     LastSaleDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -404,7 +422,7 @@ namespace ClubJumana.DataLayer.Migrations
                     RefundQuantity = table.Column<int>(nullable: true),
                     Aile = table.Column<string>(nullable: true),
                     Bin = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -473,7 +491,7 @@ namespace ClubJumana.DataLayer.Migrations
                     ApprovePoUser_fk = table.Column<int>(nullable: true),
                     ApproveAsnUser_fk = table.Column<int>(nullable: true),
                     ApproveGrnUser_fk = table.Column<int>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -522,14 +540,14 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    StyleNumber = table.Column<string>(nullable: true),
-                    ProductTittle = table.Column<string>(nullable: true),
+                    StyleNumber = table.Column<string>(maxLength: 20, nullable: true),
+                    ProductTittle = table.Column<string>(maxLength: 100, nullable: true),
                     BrandFK = table.Column<int>(nullable: true),
                     MaterialFK = table.Column<int>(nullable: true),
                     CompanyFK = table.Column<int>(nullable: true),
                     CountryOfOrginFK = table.Column<int>(nullable: true),
                     DescribeMaterial = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -568,7 +586,9 @@ namespace ClubJumana.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: true),
-                    CategorysubcategoreisFK = table.Column<int>(nullable: false)
+                    CategorysubcategoreisFK = table.Column<int>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -604,14 +624,14 @@ namespace ClubJumana.DataLayer.Migrations
                     Handling = table.Column<decimal>(nullable: false),
                     Freight = table.Column<decimal>(nullable: false),
                     TotalDiscount = table.Column<decimal>(nullable: false),
-                    ShipToAddressName = table.Column<string>(nullable: true),
-                    ShipToAddressNam1 = table.Column<string>(nullable: true),
-                    ShipToAddressNam2 = table.Column<string>(nullable: true),
-                    ShipToPostalCode = table.Column<string>(nullable: true),
-                    ShipToPostalPhone1 = table.Column<string>(nullable: true),
+                    ShipToAddressName = table.Column<string>(maxLength: 100, nullable: true),
+                    ShipToAddressNam1 = table.Column<string>(maxLength: 100, nullable: true),
+                    ShipToAddressNam2 = table.Column<string>(maxLength: 100, nullable: true),
+                    ShipToPostalCode = table.Column<string>(maxLength: 100, nullable: true),
+                    ShipToPostalPhone1 = table.Column<string>(maxLength: 100, nullable: true),
                     Quantity = table.Column<int>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -663,7 +683,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Note = table.Column<string>(nullable: true),
                     Checked = table.Column<bool>(nullable: true, defaultValue: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -688,7 +708,7 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Sku = table.Column<string>(nullable: true),
+                    Sku = table.Column<string>(maxLength: 20, nullable: true),
                     ProductFK = table.Column<int>(nullable: true),
                     ColourFK = table.Column<int>(nullable: true),
                     BarcodeFK = table.Column<int>(nullable: true),
@@ -699,16 +719,16 @@ namespace ClubJumana.DataLayer.Migrations
                     RetailPrice = table.Column<decimal>(nullable: true),
                     Width = table.Column<decimal>(nullable: true),
                     length = table.Column<decimal>(nullable: true),
-                    Size = table.Column<string>(nullable: true),
+                    Size = table.Column<string>(maxLength: 20, nullable: true),
                     Note = table.Column<string>(nullable: true),
-                    Data1 = table.Column<string>(nullable: true),
-                    Data2 = table.Column<string>(nullable: true),
-                    Data3 = table.Column<string>(nullable: true),
-                    Data4 = table.Column<string>(nullable: true),
-                    Data5 = table.Column<string>(nullable: true),
-                    Data6 = table.Column<string>(nullable: true),
+                    Data1 = table.Column<string>(maxLength: 100, nullable: true),
+                    Data2 = table.Column<string>(maxLength: 100, nullable: true),
+                    Data3 = table.Column<string>(maxLength: 100, nullable: true),
+                    Data4 = table.Column<string>(maxLength: 100, nullable: true),
+                    Data5 = table.Column<string>(maxLength: 100, nullable: true),
+                    Data6 = table.Column<string>(maxLength: 100, nullable: true),
                     LastDateEdited = table.Column<DateTime>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -753,7 +773,7 @@ namespace ClubJumana.DataLayer.Migrations
                     RefundTotalPrice = table.Column<decimal>(nullable: false),
                     SubtotalPrice = table.Column<decimal>(nullable: false),
                     Tax = table.Column<decimal>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -782,7 +802,7 @@ namespace ClubJumana.DataLayer.Migrations
                     IsAbaleToRefund = table.Column<bool>(nullable: true, defaultValue: true),
                     Price = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
@@ -807,8 +827,10 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    ImageName = table.Column<string>(nullable: true),
-                    VariantFK = table.Column<int>(nullable: false)
+                    ImageName = table.Column<string>(maxLength: 20, nullable: true),
+                    VariantFK = table.Column<int>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
@@ -832,7 +854,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Quantity = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>

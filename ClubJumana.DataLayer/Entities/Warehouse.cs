@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace ClubJumana.DataLayer.Entities
         public ICollection<PurchaseOrder> POFromWarehouse { get; set; }
         public ICollection<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
         public ICollection<SaleOrder> SaleOrders { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
     }
 }

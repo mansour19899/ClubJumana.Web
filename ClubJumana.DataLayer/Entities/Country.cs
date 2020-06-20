@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ClubJumana.DataLayer.Entities
@@ -16,7 +17,8 @@ namespace ClubJumana.DataLayer.Entities
         public string Currency { get; set; }
         public string CurrencyName { get; set; }
         public string DigitalCode { get; set; }
-
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<Company> Companies { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ namespace ClubJumana.DataLayer.Entities
         public int? RefundQuantity { get; set; } = 0;
         public string Aile { get; set; }
         public string Bin { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
         public ProductMaster ProductMaster { get; set; }
         public Warehouse Warehouse { get; set; }
     }

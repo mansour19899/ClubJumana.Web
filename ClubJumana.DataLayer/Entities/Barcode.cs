@@ -9,8 +9,10 @@ namespace ClubJumana.DataLayer.Entities
     {
         public int Id { get; set; }
 
-        [MaxLength(12)]
+        [StringLength(15)]
         public string BarcodeNumber { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
         public bool Active { get; set; }
         public Variant Variant { get; set; }
 

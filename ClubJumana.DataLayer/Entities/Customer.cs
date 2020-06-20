@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,8 @@ namespace ClubJumana.DataLayer.Entities
 
         public ICollection<SaleOrder> SaleOrders { get; set; }
         public  Users.User User { get; set; }
-        public byte[] RowVersion { get; set; }
+        [Timestamp]
+        public DateTime RowVersion { get; set; }
 
         //--------------------------- Noy map --------------------------
 
