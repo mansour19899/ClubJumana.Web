@@ -57,10 +57,9 @@ namespace ClubJumana.DataLayer.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging()
-                .Options;
+           // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-            // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
+             optionsBuilder.UseMySQL("server=localhost;database=magiclocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
             //Update - Database - Context JummanaContext
@@ -350,6 +349,8 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<Product>(s => s.Product)
                     .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ProductFK);
+
+
             });
 
             //----------------------------------- Barcode ---------------------------------------
@@ -358,6 +359,8 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasMaxLength(12);
+                //entity.Property(e => e.BarcodeNumber).HasColumnType("smalldatetime");
 
                 entity.HasOne(e => e.Variant)
                     .WithOne(e => e.Barcode)
@@ -481,17 +484,16 @@ namespace ClubJumana.DataLayer.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm68;Trusted_Connection=True").EnableSensitiveDataLogging()
-                .Options; ;
+            var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTS;user=mansour1989;password=Man1989sour");
 
 
-            //Update -Database -Context JummanaContext
-            //Update -Database -Context OnlineContext
+            //Update-Database -Context JummanaContext
+            //Update-Database -Context OnlineContext
 
-            //Add-Migration InitialCreate -Context OnlineContext
+            //Add-Migration InitialCreate -Context JummanaContext
             //Add-Migration InitialCreate -Context OnlineContext
         }
     }

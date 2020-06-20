@@ -48,7 +48,9 @@ namespace ClubJumana.Core.Services
                 Id = _onlineContext.products.Max(x => x.Id) + 1;
             }
 
-            var NewProduct=new Product()
+
+
+            _onlineContext.products.Add(new Product()
             {
                 Id = Id,
                 StyleNumber = TowelInformation.Product.StyleNumber,
@@ -59,12 +61,19 @@ namespace ClubJumana.Core.Services
                 DescribeMaterial = TowelInformation.Product.DescribeMaterial,
                 ProductTittle = TowelInformation.Product.ProductTittle,
 
-            };
+            });
+            _context.products.Add(new Product()
+            {
+                Id = Id,
+                StyleNumber = TowelInformation.Product.StyleNumber,
+                BrandFK = TowelInformation.Product.BrandFK,
+                MaterialFK = TowelInformation.Product.MaterialFK,
+                CompanyFK = TowelInformation.company.Id,
+                CountryOfOrginFK = TowelInformation.Product.CountryOfOrginFK,
+                DescribeMaterial = TowelInformation.Product.DescribeMaterial,
+                ProductTittle = TowelInformation.Product.ProductTittle,
 
-
-
-            _onlineContext.products.Add(NewProduct);
-            _context.products.Add(NewProduct);
+            });
 
             int TowelId = 1;
             if (EnumerableExtensions.Any(_context.variants))
@@ -231,8 +240,8 @@ namespace ClubJumana.Core.Services
             {
                 Variant.Sku = Sku;
                 Variantt.Sku = Sku;
-                _onlineContext.variants.Update(Variant);
-                _context.variants.Update(Variant);
+                //_onlineContext.variants.Update(Variant);
+                //_context.variants.Update(Variant);
                 _onlineContext.SaveChanges();
                 _context.SaveChanges();
             }
@@ -263,20 +272,20 @@ namespace ClubJumana.Core.Services
 
         public int UpdateVariant(Variant variant)
         {
-          //  Variant variantdb = _onlineContext.variants.AsNoTracking().SingleOrDefault(p => p.Id == variant.Id);
-            Variant variantdbb = _context.variants.AsNoTracking().SingleOrDefault(p => p.Id == variant.Id);
-            if (variantdbb == null)
+            Variant variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
+            Variant variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
+            if (variantdb == null)
                 return -1;
             else
             {
-                //variantdb.WholesaleA = variant.WholesaleA;
-                //variantdb.WholesaleB = variant.WholesaleB;
-                //variantdb.RetailPrice = variant.RetailPrice;
-                //variantdb.FobPrice = variant.FobPrice;
-                //variantdb.ColourFK = variant.ColourFK;
-                //variantdb.length = variant.length;
-                //variantdb.Width = variant.Width;
-                //variantdb.Size = variant.Size;
+                variantdb.WholesaleA = variant.WholesaleA;
+                variantdb.WholesaleB = variant.WholesaleB;
+                variantdb.RetailPrice = variant.RetailPrice;
+                variantdb.FobPrice = variant.FobPrice;
+                variantdb.ColourFK = variant.ColourFK;
+                variantdb.length = variant.length;
+                variantdb.Width = variant.Width;
+                variantdb.Size = variant.Size;
 
                 variantdbb.WholesaleA = variant.WholesaleA;
                 variantdbb.WholesaleB = variant.WholesaleB;
@@ -288,8 +297,6 @@ namespace ClubJumana.Core.Services
                 variantdbb.Size = variant.Size;
 
 
-               // _onlineContext.variants.Update(variantdb);
-                _context.variants.Update(variantdbb);
                 _onlineContext.SaveChanges();
                 _context.SaveChanges();
                 return 1;
@@ -306,14 +313,21 @@ namespace ClubJumana.Core.Services
 
             var Newimage = new Image()
             {
-                Id = 100,
+                Id = NewId,
+                VariantFK = variantFK,
+                ImageName = imageName
+
+            };
+            var Newimagee = new Image()
+            {
+                Id = NewId,
                 VariantFK = variantFK,
                 ImageName = imageName
 
             };
 
             _onlineContext.images.Add(Newimage);
-            _context.images.Add(Newimage);
+            _context.images.Add(Newimagee);
 
             _context.SaveChanges();
             _onlineContext.SaveChanges();

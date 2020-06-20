@@ -12,12 +12,12 @@ namespace ClubJumana.DataLayer.Entities
         public int? ColourFK { get; set; }
         public int? BarcodeFK { get; set; }
         public int? ProductTypeFK { get; set; }
-        public float? FobPrice { get; set; }
-        public float? WholesaleA { get; set; }
-        public float? WholesaleB { get; set; }
-        public float? RetailPrice { get; set; }
-        public float? Width { get; set; }
-        public float? length { get; set; }
+        public decimal? FobPrice { get; set; }
+        public decimal? WholesaleA { get; set; }
+        public decimal? WholesaleB { get; set; }
+        public decimal? RetailPrice { get; set; }
+        public decimal? Width { get; set; }
+        public decimal? length { get; set; }
         public string Size { get; set; }
         public string Note { get; set; }
         public string Data1 { get; set; }

@@ -574,11 +574,35 @@ namespace ClubJumana.Core.Services
             foreach (var VARIABLE in DiffrentItems)
             {
                 w = onlineDb.variants.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
-                ww = _context.variants.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                ww = _context.variants.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
 
                 if (IdForAdd.Contains(VARIABLE.Id))
                 {
-                    _context.variants.Add(w);
+                    _context.variants.Add(new Variant()
+                    {
+                        Id = w.Id,
+                        Sku = w.Sku,
+                        ProductFK = w.ProductFK,
+                        ColourFK = w.ColourFK,
+
+                        ProductTypeFK = w.ProductTypeFK,
+                        FobPrice = w.FobPrice,
+                        WholesaleA = w.WholesaleA,
+                        WholesaleB = w.WholesaleB,
+                        RetailPrice = w.RetailPrice,
+                        Width = w.Width,
+                        length = w.length,
+                        Size = w.Size,
+                        Note = w.Note,
+                        Data1 = w.Data1,
+                        Data2 = w.Data2,
+                        Data3 = w.Data3,
+                        Data4 = w.Data4,
+                        Data5 = w.Data5,
+                        Data6 = w.Data6,
+                        LastDateEdited = w.LastDateEdited
+                    });
+
 
                 }
                 else
@@ -602,7 +626,7 @@ namespace ClubJumana.Core.Services
                     ww.Data4 = w.Data4;
                     ww.Data5 = w.Data5;
                     ww.Data6 = w.Data6;
-
+                    ww.LastDateEdited = w.LastDateEdited;
                     _context.variants.Update(ww);
                 }
             }
