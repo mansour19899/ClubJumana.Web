@@ -215,7 +215,7 @@ namespace ClubJumana.Core.Convertors
             set
             {
                 _wholeSaleA = value;
-                if (value != ""&value!="0")
+                if (value != ""&value!="0" & value != "0.00")
                     MarginWholeSaleA ="Margin : "+ Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value)*100, 2, MidpointRounding.AwayFromZero)+" %";
             }
         }
@@ -228,7 +228,7 @@ namespace ClubJumana.Core.Convertors
             set
             {
                 _wholeSaleB = value;
-                if (value != "" & value != "0")
+                if (value != "" & value != "0" & value != "0.00")
                     MarginWholeSaleB = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
             }
         }
@@ -239,7 +239,7 @@ namespace ClubJumana.Core.Convertors
             set
             {
                 _retailPrice = value;
-                if (value != "" & value != "0")
+                if (value != "" & value != "0"&value!="0.00")
                     MarginRetailPrice = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
             }
         }

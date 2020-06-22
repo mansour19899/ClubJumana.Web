@@ -147,6 +147,7 @@ namespace ClubJumana.Core.DTOs
         }
 
 
+
         
         private CostCenter _costCenter;
 

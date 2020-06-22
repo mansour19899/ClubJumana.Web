@@ -7,6 +7,8 @@ using System.Net;
 using System.Printing;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -37,6 +39,7 @@ namespace ClubJumana.Wpf2
         Product SelectedProduct;
         private ProductInformationViewModel InfoProduct;
         private List<Country> countriesList;
+        private List<ProductType> ProductTypeList;
         private CostCenter cost;
         private string Path;
         private int SelectedIndexVariant = 0;
@@ -46,6 +49,7 @@ namespace ClubJumana.Wpf2
         bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
         private bool IsConnectToServer = true;
+        private List<VariantViewModel> ListOfLvproducts;
         public SearchProduct()
         {
             InitializeComponent();
@@ -54,7 +58,7 @@ namespace ClubJumana.Wpf2
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
             Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
-
+            ListOfLvproducts = new List<VariantViewModel>();
             CheckConectionToServe();
 
         }
@@ -66,9 +70,8 @@ namespace ClubJumana.Wpf2
 
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
-            var ProductTypeList = _repositoryService.AllProductTypeList().ToList();
+            ProductTypeList = _repositoryService.AllProductTypeList().ToList();
             cmbProductType.ItemsSource = ProductTypeList;
-            cmbEditVariantProductType.ItemsSource = ProductTypeList;
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
             cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
             countriesList = _repositoryService.AllCountriesList().ToList();
@@ -89,13 +92,108 @@ namespace ClubJumana.Wpf2
             cmbCompany.SelectedIndex = 0;
             cmbProductType.SelectedIndex = 0;
             cmbSubCategory.SelectedIndex = 0;
+
+            UploadFile("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16", "Test3",
+                "mansour1989@new.clubjummana.com", "Xx123456");
         }
 
+        private string Test()
+        {
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16/test1.jpg");
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            request.Credentials = new NetworkCredential("mansour1989@new.clubjummana.com", "Xx123456");
+
+
+            //FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            // Stream responseStream = response.GetResponseStream();
+            // StreamReader reader = new StreamReader(responseStream);
+            string ResponseDescription = "";
+            try
+            {
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                byte[] buffer = new byte[2048];
+                FileStream fs = new FileStream(@"C:\test1.jpg", FileMode.Create);
+                int ReadCount = stream.Read(buffer, 0, buffer.Length);
+                while (ReadCount > 0)
+                {
+                    fs.Write(buffer, 0, ReadCount);
+                    ReadCount = stream.Read(buffer, 0, buffer.Length);
+                }
+                ResponseDescription = response.StatusDescription;
+                fs.Close();
+                stream.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return ResponseDescription;
+
+
+
+            //public static string DownloadFile(string FtpUrl, string FileNameToDownload,
+            //    string userName, string password, string tempDirPath)
+            //{
+            //    string ResponseDescription = "";
+            //    string PureFileName = new FileInfo(FileNameToDownload).Name;
+            //    string DownloadedFilePath = tempDirPath + "/" + PureFileName;
+            //    string downloadUrl = String.Format("{0}/{1}", FtpUrl, FileNameToDownload);
+            //    FtpWebRequest req = (FtpWebRequest)FtpWebRequest.Create(downloadUrl);
+            //    req.Method = WebRequestMethods.Ftp.DownloadFile;
+            //    req.Credentials = new NetworkCredential(userName, password);
+            //    req.UseBinary = true;
+            //    req.Proxy = null;
+            //    try
+            //    {
+            //        FtpWebResponse response = (FtpWebResponse)req.GetResponse();
+            //        Stream stream = response.GetResponseStream();
+            //        byte[] buffer = new byte[2048];
+            //        FileStream fs = new FileStream(DownloadedFilePath, FileMode.Create);
+            //        int ReadCount = stream.Read(buffer, 0, buffer.Length);
+            //        while (ReadCount > 0)
+            //        {
+            //            fs.Write(buffer, 0, ReadCount);
+            //            ReadCount = stream.Read(buffer, 0, buffer.Length);
+            //        }
+            //        ResponseDescription = response.StatusDescription;
+            //        fs.Close();
+            //        stream.Close();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e.Message);
+            //    }
+            //    return ResponseDescription;
+            //}
+
+        }
+
+        public static string UploadFile(string FtpUrl, string fileName, string userName, string password, string UploadDirectory = "")
+        {
+            string PureFileName = new FileInfo(fileName).Name;
+            String uploadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
+            FtpWebRequest req = (FtpWebRequest)FtpWebRequest.Create(uploadUrl);
+            req.Proxy = null;
+            req.Method = WebRequestMethods.Ftp.UploadFile;
+            req.Credentials = new NetworkCredential(userName, password);
+            req.UseBinary = true;
+            req.UsePassive = true;
+            byte[] data = File.ReadAllBytes(fileName);
+            req.ContentLength = data.Length;
+            Stream stream = req.GetRequestStream();
+            stream.Write(data, 0, data.Length);
+            stream.Close();
+            FtpWebResponse res = (FtpWebResponse)req.GetResponse();
+            return res.StatusDescription;
+        }
         private void CheckConectionToServe()
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
             {
-                 _repositoryService.UpdateLocalDb();
+                _repositoryService.UpdateLocalDb();
                 IsConnectToServer = true;
                 ErrorConection = "";
                 txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
@@ -329,6 +427,8 @@ namespace ClubJumana.Wpf2
 
             var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
 
+
+            lvProducts.SelectedIndex = 1;
             ShowProductInformation(wer.Product.Id);
         }
 
@@ -339,6 +439,7 @@ namespace ClubJumana.Wpf2
             //lvVariant.ItemsSource = InfoProduct.List;
             this.DataContext = InfoProduct;
             ShowImageVariant(0);
+            cmbEditVariantProductType.ItemsSource = ProductTypeList.Where(p => p.CategorysubcategoreisFK == InfoProduct.List.ElementAt(0).ProductType.CategorysubcategoreisFK);
             btnNextImageVariant.Visibility = Visibility.Hidden;
             btnPerviosImageVariant.Visibility = Visibility.Hidden;
             btnNextFullImage.Visibility = Visibility.Hidden;
@@ -437,7 +538,7 @@ namespace ClubJumana.Wpf2
                 Button b = sender as Button;
                 Variant variantSelected = b.CommandParameter as Variant;
                 ProductTypeForAddVariant.Visibility = Visibility.Collapsed;
-                 InfoProduct.VariantSelected = variantSelected;
+                InfoProduct.VariantSelected = variantSelected;
                 GrdEditProduct.Visibility = Visibility.Visible;
             }
             else
@@ -633,6 +734,7 @@ namespace ClubJumana.Wpf2
                     InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
                         cmbEditVariantColor.Text;
                     lvVariant.Items.Refresh();
+
                     VaraintList.Single(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name = cmbEditVariantColor.Text;
                 }
 
@@ -645,15 +747,17 @@ namespace ClubJumana.Wpf2
                     InfoProduct.List.Add(newVariant);
 
                 }
-                // lvVariant.ItemsSource = InfoProduct.List;
 
-
-
-                lvProducts.ItemsSource = VaraintList;
+                ListOfLvproducts.Clear();
+                ListOfLvproducts = lvProducts.ItemsSource as List<VariantViewModel>;
+                var step1 = ListOfLvproducts.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id);
+                step1.Colour.Name = cmbEditVariantColor.Text;
+                VaraintList = _productInformationService.AllVariantList();
+                lvProducts.ItemsSource = ListOfLvproducts;
                 lvProducts.Items.Refresh();
 
-                //lvVariant.ItemsSource = null;
-                //lvVariant.ItemsSource = InfoProduct.List;
+                // UpdateListviewVariants();
+
                 GrdEditProduct.Visibility = Visibility.Hidden;
             }
             catch (Exception exception)
@@ -670,6 +774,16 @@ namespace ClubJumana.Wpf2
 
 
         }
+
+        private async Task UpdateListviewVariants()
+        {
+            await Task.Run(() =>
+            {
+
+                MessageBox.Show("Variant List Update");
+            });
+        }
+
 
         private void BtnCloseGrdEditVariant_OnClick(object sender, RoutedEventArgs e)
         {
