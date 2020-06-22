@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
+using ClubJumana.Core.Enums;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
@@ -177,6 +178,11 @@ namespace ClubJumana.Core.Services
             return Sku;
         }
 
+        public Variant GiveMeVariantById(int Id)
+        {
+            return _context.variants.FirstOrDefault(p => p.Id == Id);
+        }
+
 
         public Company ExistCompany(string CompanyName)
         {
@@ -187,7 +193,7 @@ namespace ClubJumana.Core.Services
         {
             List<VariantViewModel> list = new List<VariantViewModel>();
 
-            var VariantslList = _context.variants.OrderBy(p=>p.Id).Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
+            var VariantslList = _context.variants.OrderBy(p=>p.ProductFK).Include(p => p.Product).Include(p=>p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
 
             foreach (var VARIABLE in VariantslList)
             {
@@ -275,6 +281,7 @@ namespace ClubJumana.Core.Services
             if (variant.Id == 0)
             {
                 int id = _onlineContext.variants.Max(p => p.Id);
+                variant.Data1 = _onlineContext.variants.FirstOrDefault(p => p.ProductFK == ProductId).Data1;
                 variant.Id = id + 1;
                 variant.ProductFK = ProductId;
                 _onlineContext.variants.Add(new Variant()
@@ -299,7 +306,7 @@ namespace ClubJumana.Core.Services
                     Data4 = variant.Data4,
                     Data5 = variant.Data5,
                     Data6 = variant.Data6,
-                    LastDateEdited = variant.LastDateEdited
+                    LastDateEdited = DateTime.Now,
                 });
                 _context.variants.Add(new Variant()
                 {
@@ -323,7 +330,7 @@ namespace ClubJumana.Core.Services
                     Data4 = variant.Data4,
                     Data5 = variant.Data5,
                     Data6 = variant.Data6,
-                    LastDateEdited = variant.LastDateEdited
+                    LastDateEdited = DateTime.Now
                 });
             }
             else
@@ -342,6 +349,7 @@ namespace ClubJumana.Core.Services
                     variantdb.length = variant.length;
                     variantdb.Width = variant.Width;
                     variantdb.Size = variant.Size;
+                    variantdb.LastDateEdited = DateTime.Now;
 
                     variantdbb.WholesaleA = variant.WholesaleA;
                     variantdbb.WholesaleB = variant.WholesaleB;
@@ -351,9 +359,13 @@ namespace ClubJumana.Core.Services
                     variantdbb.length = variant.length;
                     variantdbb.Width = variant.Width;
                     variantdbb.Size = variant.Size;
+                    variantdbb.LastDateEdited = DateTime.Now;
 
                 }
             }
+
+            _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int) TableName.Variants).RowVersion++;
+            _context.tablesversion.SingleOrDefault(p => p.Id == (int) TableName.Variants).RowVersion++;
             _onlineContext.SaveChanges();
             _context.SaveChanges();
             return 1;

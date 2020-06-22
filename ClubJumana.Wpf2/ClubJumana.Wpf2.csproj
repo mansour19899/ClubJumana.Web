@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="Content\Icon\BackIcon.png" />
     <None Remove="Content\Icon\NextIcon.png" />
+    <None Remove="Content\Icon\VanmeIcon.ico" />
     <None Remove="Content\Images\ClubJummanaLogo.jpg" />
     <None Remove="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
     <None Remove="Content\Images\Spalsh.jpg" />
@@ -43,6 +44,7 @@
   <ItemGroup>
     <Resource Include="Content\Icon\BackIcon.png" />
     <Resource Include="Content\Icon\NextIcon.png" />
+    <Resource Include="Content\Icon\VanmeIcon.ico" />
     <Resource Include="Content\Images\ClubJummanaLogo.jpg" />
     <Resource Include="Content\Images\LOGO-GOLD_WHITE_BLACK.jpg" />
     <Resource Include="Content\Images\Vanme Fashion - Logos 12.jpg" />

@@ -50,6 +50,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<CategoriesSubCategory> categoriessubcategories { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<SubCategory> subcategories { get; set; }
+        public DbSet<TablesVersion> tablesversion { get; set; }
 
 
         #endregion
@@ -59,13 +60,22 @@ namespace ClubJumana.DataLayer.Context
         {
            // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-             optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb212;user=root;password=SmmRey2018");
+             optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
 
             //Update - Database - Context JummanaContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //-------------------------------------TablesVersion------------------------------
+
+            modelBuilder.Entity<TablesVersion>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+
+            });
 
             //----------------------------------- Items---------------------------------------
 
@@ -474,9 +484,9 @@ namespace ClubJumana.DataLayer.Context
 
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
-             optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+             //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-            //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicLocaldb;user=mansour1989;password=Man1989sour");
+            optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
 
 
             //Update-Database -Context JummanaContext

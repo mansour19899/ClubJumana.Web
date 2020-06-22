@@ -93,6 +93,8 @@ namespace ClubJumana.Core.DTOs
 
     public class ProductInformationViewModel : INotifyPropertyChanged
     {
+        public ObservableCollection<Variant> List { get; set; }
+
         public ProductInformationViewModel(Product product)
         {
             Id = product.Id;
@@ -145,8 +147,7 @@ namespace ClubJumana.Core.DTOs
         }
 
 
-        public ObservableCollection<Variant> List { get; set; }
-
+        
         private CostCenter _costCenter;
 
         public CostCenter CostCenter

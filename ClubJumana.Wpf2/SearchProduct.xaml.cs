@@ -66,10 +66,11 @@ namespace ClubJumana.Wpf2
 
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
-            cmbProductType.ItemsSource = _repositoryService.AllProductTypeList().ToList();
+            var ProductTypeList = _repositoryService.AllProductTypeList().ToList();
+            cmbProductType.ItemsSource = ProductTypeList;
+            cmbEditVariantProductType.ItemsSource = ProductTypeList;
             cmbSubCategory.ItemsSource = _repositoryService.AllSubCategoriesList().ToList();
             cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
-
             countriesList = _repositoryService.AllCountriesList().ToList();
             cmbCountry.ItemsSource = countriesList;
 
@@ -94,7 +95,7 @@ namespace ClubJumana.Wpf2
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
             {
-                _repositoryService.UpdateLocalDb();
+                 _repositoryService.UpdateLocalDb();
                 IsConnectToServer = true;
                 ErrorConection = "";
                 txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
@@ -435,9 +436,8 @@ namespace ClubJumana.Wpf2
             {
                 Button b = sender as Button;
                 Variant variantSelected = b.CommandParameter as Variant;
-                InfoProduct.VariantSelected = variantSelected;
-               // InfoProduct.VariantSelected = new Variant();
-                var ttt = variantSelected;
+                ProductTypeForAddVariant.Visibility = Visibility.Collapsed;
+                 InfoProduct.VariantSelected = variantSelected;
                 GrdEditProduct.Visibility = Visibility.Visible;
             }
             else
@@ -454,6 +454,7 @@ namespace ClubJumana.Wpf2
 
 
             var country = _repositoryService.GiveMeCountryByID(38);
+            cost.Country = country;
             if (country.ExChangeRate == null)
                 cost.ExchangeRate = -1;
             else
@@ -625,9 +626,32 @@ namespace ClubJumana.Wpf2
         {
             try
             {
-                _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected,InfoProduct.Id);
-                InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
-                    cmbEditVariantColor.Text;
+                var x = InfoProduct.VariantSelected.Id;
+                _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
+                if (x == InfoProduct.VariantSelected.Id)
+                {
+                    InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
+                        cmbEditVariantColor.Text;
+                    lvVariant.Items.Refresh();
+                    VaraintList.Single(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name = cmbEditVariantColor.Text;
+                }
+
+                else
+                {
+                    var newVariant = _productInformationService.GiveMeVariantById(InfoProduct.VariantSelected.Id);
+                    newVariant.Sku = "Add SKU";
+                    newVariant.Barcode = new Barcode();
+                    newVariant.Barcode.BarcodeNumber = "Add Barcode";
+                    InfoProduct.List.Add(newVariant);
+
+                }
+                // lvVariant.ItemsSource = InfoProduct.List;
+
+
+
+                lvProducts.ItemsSource = VaraintList;
+                lvProducts.Items.Refresh();
+
                 //lvVariant.ItemsSource = null;
                 //lvVariant.ItemsSource = InfoProduct.List;
                 GrdEditProduct.Visibility = Visibility.Hidden;
@@ -808,6 +832,7 @@ namespace ClubJumana.Wpf2
 
         private void ImgVariant_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+
             GrdShowImage.Visibility = Visibility.Visible;
         }
 
@@ -823,5 +848,18 @@ namespace ClubJumana.Wpf2
             //MessageBox.Show(InfoProduct.VariantSelected.Size);
         }
 
+        private void BtnAddNewVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (IsConnectToServer)
+            {
+                ProductTypeForAddVariant.Visibility = Visibility.Visible;
+                InfoProduct.VariantSelected = new Variant();
+                GrdEditProduct.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("Mode Is Offline");
+            }
+        }
     }
 }

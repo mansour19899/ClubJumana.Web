@@ -4,6 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using ClubJumana.Core.Comparer;
+using ClubJumana.Core.Enums;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
@@ -11,40 +12,64 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubJumana.Core.Services
 {
-   public class RepositoryService: IRepositoryService
+    public class RepositoryService : IRepositoryService
     {
         private JummanaContext _context;
         private OnlineContext onlineDb;
         public RepositoryService()
         {
-            _context=new JummanaContext();
+            _context = new JummanaContext();
 
-            onlineDb=new OnlineContext();
+            onlineDb = new OnlineContext();
         }
 
         public void UpdateLocalDb()
         {
+            List<TablesVersion> TableOfOnline = onlineDb.tablesversion.ToList();
+            List<TablesVersion> TableOfLocaldb = _context.tablesversion.ToList();
 
-            BarcodeUpdate();
-            BrandUpdate();
-            ColourUpdate();
-            CountryUpdate();
-            MaterialUpdate();
-            CompanyUpdate();
-            ProductUpdate();
-            CategoryUpdate();
-            SubcategoryUpdate();
-            CategorySubcategoryUpdate();
-            ProductTypeUpdate();
-            VariantUpdate();
-            ImageUpdate();
-            ProvinceUpdate();
-            
+            foreach (var VARIABLE in TableOfLocaldb)
+            {
+                if (VARIABLE.RowVersion != TableOfOnline.ElementAt(VARIABLE.Id - 1).RowVersion)
+                    VARIABLE.NeedToUpdate = true;
+                else
+                    VARIABLE.NeedToUpdate = false;
+            }
+
+            if (TableOfLocaldb[(int)TableName.Barcodes - 1].NeedToUpdate)
+                BarcodeUpdate();
+            if (TableOfLocaldb[(int)TableName.Colours - 1].NeedToUpdate)
+                ColourUpdate();
+            if (TableOfLocaldb[(int)TableName.Brands - 1].NeedToUpdate)
+                BrandUpdate();
+            if (TableOfLocaldb[(int)TableName.Countries - 1].NeedToUpdate)
+                CountryUpdate();
+            if (TableOfLocaldb[(int)TableName.Materials - 1].NeedToUpdate)
+                MaterialUpdate();
+            if (TableOfLocaldb[(int)TableName.Companies - 1].NeedToUpdate)
+                CompanyUpdate();
+            if (TableOfLocaldb[(int)TableName.Products - 1].NeedToUpdate)
+                ProductUpdate();
+            if (TableOfLocaldb[(int)TableName.Categories - 1].NeedToUpdate)
+                CategoryUpdate();
+            if (TableOfLocaldb[(int)TableName.SubCategories - 1].NeedToUpdate)
+                SubcategoryUpdate();
+            if (TableOfLocaldb[(int)TableName.CategoriesSubCategories - 1].NeedToUpdate)
+                CategorySubcategoryUpdate();
+            if (TableOfLocaldb[(int)TableName.ProductTypes - 1].NeedToUpdate)
+                ProductTypeUpdate();
+            if (TableOfLocaldb[(int)TableName.Variants - 1].NeedToUpdate)
+                VariantUpdate();
+            if (TableOfLocaldb[(int)TableName.Images - 1].NeedToUpdate)
+                ImageUpdate();
+            //if (TableOfLocaldb[(int)TableName.Barcodes - 1].NeedToUpdate)
+            //    ProvinceUpdate();
+
         }
 
         #region Update Function
 
-        
+
         public void BarcodeUpdate()
         {
             //var list1 = _context.countries.OrderBy(p => p.Id).Select(p => new Country() { Id = p.Id, Code = p.Code,Name = p.Name}).ToList();
@@ -93,6 +118,9 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+
+            var version = onlineDb.tablesversion.FirstOrDefault(p=>p.Id==(int)TableName.Barcodes).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int) TableName.Barcodes).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -137,6 +165,9 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Brands).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Brands).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -183,6 +214,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Categories).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Categories).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -226,6 +259,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.SubCategories).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.SubCategories).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -271,6 +306,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.CategoriesSubCategories).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.CategoriesSubCategories).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -316,6 +353,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.ProductTypes).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.ProductTypes).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -362,6 +401,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Colours).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Colours).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -411,6 +452,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Countries).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Countries).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -455,6 +498,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Materials).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Materials).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -508,6 +553,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Companies).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Companies).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -557,6 +604,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Products).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Products).RowVersion = version;
             _context.SaveChanges();
         }
         public void VariantUpdate()
@@ -641,6 +690,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Variants).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Variants).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -687,7 +738,8 @@ namespace ClubJumana.Core.Services
                 }
 
             }
-
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Images).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Images).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -757,8 +809,8 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<SaleOrder> AllOrders()
         {
-            return _context.saleorders.Include(p => p.SoItems).ThenInclude(p=>p.ProductMaster).Include(p => p.TaxArea)
-                .Include(p=>p.Customer).AsNoTracking();
+            return _context.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+                .Include(p => p.Customer).AsNoTracking();
         }
 
         public IQueryable<Vendor> AllVendor()
@@ -778,7 +830,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
         {
-            return _context.purchaseorders.Where(p=>p.CreatedPO==true).AsNoTracking();
+            return _context.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
         }
 
         public IQueryable<PurchaseOrder> GrnPurchaseOrder()
@@ -833,7 +885,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Product> AllProductList()
         {
-            return _context.products.Include(p=>p.Variants).ThenInclude(p=>p.ProductType.CategoriesSubCategory);
+            return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
         }
 
         public Country GiveMeCountryByID(int Id)
