@@ -710,6 +710,7 @@ namespace ClubJumana.Core.Services
 
             Image w;
             Image ww;
+            List<string>  ImagesName=new List<string>();
             foreach (var VARIABLE in DiffrentItems)
             {
                 w = onlineDb.images.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
@@ -745,6 +746,8 @@ namespace ClubJumana.Core.Services
             _context.SaveChanges();
 
         }
+
+
         public void ProvinceUpdate()
         {
             var _contextList = _context.provinces.AsNoTracking().ToList();
@@ -951,7 +954,7 @@ namespace ClubJumana.Core.Services
             string filePhath = "";
             string userName = "mansour1989@new.clubjummana.com";
             string password = "Xx123456"; 
-            UploadDirectory = "/VariantsImage/";
+            UploadDirectory = "/VariantsImage";
 
             string PureFileName = new FileInfo(fileName).Name;
             String uploadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
@@ -969,5 +972,40 @@ namespace ClubJumana.Core.Services
             FtpWebResponse res = (FtpWebResponse)req.GetResponse();
             return res.StatusDescription;
         }
+
+        public string DownloadFileFromFTP(string fileName, string UploadDirectory)
+        {
+            string FtpUrl = "ftp://mansour1989%2540new.clubjummana.com@148.72.112.16";
+            string PureFileName = new FileInfo(fileName).Name;
+            String DownloadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(DownloadUrl);
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            request.Credentials = new NetworkCredential("mansour1989@new.clubjummana.com", "Xx123456");
+
+            string ResponseDescription = "";
+            try
+            {
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                byte[] buffer = new byte[2048];
+                FileStream fs = new FileStream(fileName, FileMode.Create);
+                int ReadCount = stream.Read(buffer, 0, buffer.Length);
+                while (ReadCount > 0)
+                {
+                    fs.Write(buffer, 0, ReadCount);
+                    ReadCount = stream.Read(buffer, 0, buffer.Length);
+                }
+                ResponseDescription = response.StatusDescription;
+                fs.Close();
+                stream.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return ResponseDescription;
+        }
+        
     }
 }

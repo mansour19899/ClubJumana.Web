@@ -402,5 +402,10 @@ namespace ClubJumana.Core.Services
 
             return 1;
         }
+
+        public int GiveCountOfImagesVariant()
+        {
+            return _onlineContext.images.Count();
+        }
     }
 }

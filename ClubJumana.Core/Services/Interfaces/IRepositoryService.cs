@@ -38,6 +38,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddAndUpdateItem(ProductMaster productMaster);
 
         public string UploadFileToFTP( string fileName, string UploadDirectory);
+        public string DownloadFileFromFTP( string fileName, string UploadDirectory);
 
     }
 }

@@ -94,104 +94,14 @@ namespace ClubJumana.Wpf2
             cmbCompany.SelectedIndex = 0;
             cmbProductType.SelectedIndex = 0;
             cmbSubCategory.SelectedIndex = 0;
-            Test();
-            _repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\VariantsImage\\"+"test10.jpg", "/VariantsImage/");
+            //Test(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\" + "Excel Formula.txt", "/VariantsImage");
+            //_repositoryService.DownloadFileFromFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\" + "Excel Formula.txt", "/VariantsImage");
+            //_repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\"+ "Excel Formula.txt", "/VariantsImage/");
+            CheckImageForDownload();
         }
 
-        private string Test()
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16/rob.jpg");
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            request.Credentials = new NetworkCredential("mansour1989@new.clubjummana.com", "Xx123456");
-
-
-            //FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            // Stream responseStream = response.GetResponseStream();
-            // StreamReader reader = new StreamReader(responseStream);
-            string ResponseDescription = "";
-            try
-            {
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-                Stream stream = response.GetResponseStream();
-                byte[] buffer = new byte[2048];
-                FileStream fs = new FileStream(@"C:\test1.jpg", FileMode.Create);
-                int ReadCount = stream.Read(buffer, 0, buffer.Length);
-                while (ReadCount > 0)
-                {
-                    fs.Write(buffer, 0, ReadCount);
-                    ReadCount = stream.Read(buffer, 0, buffer.Length);
-                }
-                ResponseDescription = response.StatusDescription;
-                fs.Close();
-                stream.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return ResponseDescription;
-
-
-
-            //public static string DownloadFile(string FtpUrl, string FileNameToDownload,
-            //    string userName, string password, string tempDirPath)
-            //{
-            //    string ResponseDescription = "";
-            //    string PureFileName = new FileInfo(FileNameToDownload).Name;
-            //    string DownloadedFilePath = tempDirPath + "/" + PureFileName;
-            //    string downloadUrl = String.Format("{0}/{1}", FtpUrl, FileNameToDownload);
-            //    FtpWebRequest req = (FtpWebRequest)FtpWebRequest.Create(downloadUrl);
-            //    req.Method = WebRequestMethods.Ftp.DownloadFile;
-            //    req.Credentials = new NetworkCredential(userName, password);
-            //    req.UseBinary = true;
-            //    req.Proxy = null;
-            //    try
-            //    {
-            //        FtpWebResponse response = (FtpWebResponse)req.GetResponse();
-            //        Stream stream = response.GetResponseStream();
-            //        byte[] buffer = new byte[2048];
-            //        FileStream fs = new FileStream(DownloadedFilePath, FileMode.Create);
-            //        int ReadCount = stream.Read(buffer, 0, buffer.Length);
-            //        while (ReadCount > 0)
-            //        {
-            //            fs.Write(buffer, 0, ReadCount);
-            //            ReadCount = stream.Read(buffer, 0, buffer.Length);
-            //        }
-            //        ResponseDescription = response.StatusDescription;
-            //        fs.Close();
-            //        stream.Close();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.Message);
-            //    }
-            //    return ResponseDescription;
-            //}
-
-        }
-
-
-
-        public static string UploadFile(string FtpUrl, string fileName, string userName, string password, string UploadDirectory = "")
-        {
-            string PureFileName = new FileInfo(fileName).Name;
-            String uploadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
-            FtpWebRequest req = (FtpWebRequest)FtpWebRequest.Create(uploadUrl);
-            req.Proxy = null;
-            req.Method = WebRequestMethods.Ftp.UploadFile;
-            req.Credentials = new NetworkCredential(userName, password);
-            req.UseBinary = true;
-            req.UsePassive = true;
-            byte[] data = File.ReadAllBytes(fileName);
-            req.ContentLength = data.Length;
-            Stream stream = req.GetRequestStream();
-            stream.Write(data, 0, data.Length);
-            stream.Close();
-            FtpWebResponse res = (FtpWebResponse)req.GetResponse();
-            return res.StatusDescription;
-        }
+  
+   
         private void CheckConectionToServe()
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
@@ -209,6 +119,22 @@ namespace ClubJumana.Wpf2
                 else
                     ErrorConection = "Mode is Offline.Check your internet connection";
             }
+        }
+
+        private async Task CheckImageForDownload()
+        {
+            await Task.Run(() =>
+            {
+                var CountImageOfFTP = _productInformationService.GiveCountOfImagesVariant();
+                string Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage";
+                DirectoryInfo dir = new DirectoryInfo(Path);
+                var ImageOfLocalList = dir.GetFiles();
+                var CountImageOfLocal =ImageOfLocalList.Count();
+                if (CountImageOfLocal != CountImageOfFTP+1)
+                {
+                    MessageBox.Show("Image Uploading");
+                }
+            });
         }
 
         private void ShowErrorMassegeToConectionInternet()
@@ -820,6 +746,8 @@ namespace ClubJumana.Wpf2
                     _productInformationService.AddImageVariant(tt.Id, FullNameImage);
                     imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(DestentionPath)));
 
+                    UploadImage(DestentionPath);
+
 
 
                     // Open document 
@@ -839,6 +767,23 @@ namespace ClubJumana.Wpf2
 
         }
 
+        private async Task UploadImage(string DestentionPath)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    Thread.Sleep(7000);
+                    _repositoryService.UploadFileToFTP(DestentionPath, "/VariantsImage/");
+                    MessageBox.Show("Image Uploaded");
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error In upload Image");
+            }
+
+        }
 
 
         private void LvVariant_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -869,7 +814,7 @@ namespace ClubJumana.Wpf2
             var images = InfoProduct.List[index].Images;
             if (images.Count == 0)
             {
-                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
+                imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.JPG")));
                 btnNextImageVariant.Visibility = Visibility.Hidden;
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
                 btnNextFullImage.Visibility = Visibility.Hidden;
