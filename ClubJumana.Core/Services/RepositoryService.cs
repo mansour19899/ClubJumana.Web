@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using ClubJumana.Core.Comparer;
 using ClubJumana.Core.Enums;
@@ -941,6 +943,31 @@ namespace ClubJumana.Core.Services
 
             _context.SaveChanges();
             return 1;
+        }
+
+        public string UploadFileToFTP( string fileName, string UploadDirectory)
+        {
+            string FtpUrl = "ftp://mansour1989%2540new.clubjummana.com@148.72.112.16";
+            string filePhath = "";
+            string userName = "mansour1989@new.clubjummana.com";
+            string password = "Xx123456"; 
+            UploadDirectory = "/VariantsImage/";
+
+            string PureFileName = new FileInfo(fileName).Name;
+            String uploadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
+            FtpWebRequest req = (FtpWebRequest)FtpWebRequest.Create(uploadUrl);
+            req.Proxy = null;
+            req.Method = WebRequestMethods.Ftp.UploadFile;
+            req.Credentials = new NetworkCredential(userName, password);
+            req.UseBinary = true;
+            req.UsePassive = true;
+            byte[] data = File.ReadAllBytes(fileName);
+            req.ContentLength = data.Length;
+            Stream stream = req.GetRequestStream();
+            stream.Write(data, 0, data.Length);
+            stream.Close();
+            FtpWebResponse res = (FtpWebResponse)req.GetResponse();
+            return res.StatusDescription;
         }
     }
 }

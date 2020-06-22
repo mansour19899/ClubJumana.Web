@@ -37,5 +37,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddAndUpdateVendor(Vendor vendor);
         public int AddAndUpdateItem(ProductMaster productMaster);
 
+        public string UploadFileToFTP( string fileName, string UploadDirectory);
+
     }
 }

@@ -66,7 +66,9 @@ namespace ClubJumana.Wpf2
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
 
-            ShowErrorMassegeToConectionInternet();
+           // ShowErrorMassegeToConectionInternet();
+           var y = File.Exists(@"C:\rob.jpg");
+           var yy = File.Exists(@"C:\robb.jpg");
 
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
@@ -92,14 +94,13 @@ namespace ClubJumana.Wpf2
             cmbCompany.SelectedIndex = 0;
             cmbProductType.SelectedIndex = 0;
             cmbSubCategory.SelectedIndex = 0;
-
-            UploadFile("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16", "Test3",
-                "mansour1989@new.clubjummana.com", "Xx123456");
+            Test();
+            _repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "\\Images\\VariantsImage\\"+"test10.jpg", "/VariantsImage/");
         }
 
         private string Test()
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16/test1.jpg");
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mansour1989%2540new.clubjummana.com@148.72.112.16/rob.jpg");
             request.Method = WebRequestMethods.Ftp.DownloadFile;
 
             request.Credentials = new NetworkCredential("mansour1989@new.clubjummana.com", "Xx123456");
@@ -170,6 +171,8 @@ namespace ClubJumana.Wpf2
             //}
 
         }
+
+
 
         public static string UploadFile(string FtpUrl, string fileName, string userName, string password, string UploadDirectory = "")
         {
