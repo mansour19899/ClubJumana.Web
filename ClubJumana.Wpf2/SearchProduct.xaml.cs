@@ -173,29 +173,39 @@ namespace ClubJumana.Wpf2
             var t = TempList;
             if (SwitchSelectedlist == false)
                 t = SelectedList;
+            lvProducts.ItemsSource = null;
             lvProducts.ItemsSource = t;
+            lvProducts.Items.Refresh();
             if (cmbCategory.SelectedIndex > 0)
             {
                 var x = Convert.ToInt16(cmbCategory.SelectedValue);
                 t = t.Where(p => p.ProductType.CategoriesSubCategory.CategoryFK == x).ToList();
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = t;
+                lvProducts.Items.Refresh();
             }
             if (cmbSubCategory.SelectedIndex > 0)
             {
                 var xx = Convert.ToInt16(cmbSubCategory.SelectedValue);
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = t.Where(p => p.ProductType.CategoriesSubCategory.SubCategoryFK == xx);
+                lvProducts.Items.Refresh();
             }
             if (cmbProductType.SelectedIndex > 0)
             {
                 var xxx = Convert.ToInt16(cmbProductType.SelectedValue);
                 t = t.Where(p => p.ProductType.Id == xxx).ToList();
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = t;
+                lvProducts.Items.Refresh();
             }
             if (cmbCompany.SelectedIndex > 0)
             {
                 var xxxx = Convert.ToInt16(cmbCompany.SelectedValue);
                 t = t.Where(p => p.Product.CompanyFK == xxxx).ToList();
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = t;
+                lvProducts.Items.Refresh();
             }
             if (t != null)
                 lblCountResult.Content = "Results :  " + t.Count();
@@ -218,10 +228,12 @@ namespace ClubJumana.Wpf2
                     case 0:
                         if (VaraintList.Count == 0)
                             VaraintList = _productInformationService.AllVariantList();
+                        lvProducts.ItemsSource = null;
                         lvProducts.ItemsSource = VaraintList;
                         lvProducts.Items.Refresh();
                         break;
                     case 1:
+                        lvProducts.ItemsSource = null;
                         lvProducts.ItemsSource = VaraintList
                             .Where(p => p.Product.StyleNumber.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         lvProducts.Items.Refresh();
@@ -235,6 +247,7 @@ namespace ClubJumana.Wpf2
                         txtSearch.Clear();
                         break;
                     case 3:
+                        lvProducts.ItemsSource = null;
                         lvProducts.ItemsSource = VaraintList
                             .Where(p => p.Sku.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         lvProducts.Items.Refresh();
@@ -283,6 +296,7 @@ namespace ClubJumana.Wpf2
                     if (VaraintList.Count == 0)
                         VaraintList = _productInformationService.AllVariantList();
                     TempList = VaraintList;
+                    lvProducts.ItemsSource = null;
                     lvProducts.ItemsSource = TempList;
                     lvProducts.Items.Refresh();
                     txtSearch.Text = "";
@@ -309,7 +323,9 @@ namespace ClubJumana.Wpf2
             if (SwitchSelectedlist)
             {
                 SwitchSelectedlist = false;
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = SelectedList.ToList();
+                lvProducts.Items.Refresh();
                 BtnShowSelectedlist.Content = "Show Main List";
                 btnAddToList.Content = "Remove to List";
                 SetFilter();
@@ -317,7 +333,9 @@ namespace ClubJumana.Wpf2
             else
             {
                 SwitchSelectedlist = true;
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = TempList.ToList();
+                lvProducts.Items.Refresh();
                 SetFilter();
                 BtnShowSelectedlist.Content = "Show Selected List";
                 btnAddToList.Content = "Add to List";
@@ -382,7 +400,9 @@ namespace ClubJumana.Wpf2
                 {
                     SelectedList.Remove(item as VariantViewModel);
                 }
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = SelectedList.ToList();
+                lvProducts.Items.Refresh();
             }
 
             lvProducts.SelectedIndex = -1;
@@ -449,7 +469,7 @@ namespace ClubJumana.Wpf2
                         case MessageBoxResult.Yes:
                             var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
                                 variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code);
-                           // _productInformationService.AddSku(variant.Id, tet);
+                            _productInformationService.AddSku(variant.Id, tet);
                             MessageBox.Show(tet);
                             break;
                         case MessageBoxResult.No:
@@ -731,6 +751,7 @@ namespace ClubJumana.Wpf2
                 var step1 = ListOfLvproducts.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id);
                 step1.Colour.Name = cmbEditVariantColor.Text;
                 VaraintList = _productInformationService.AllVariantList();
+                lvProducts.ItemsSource = null;
                 lvProducts.ItemsSource = ListOfLvproducts;
                 lvProducts.Items.Refresh();
 
