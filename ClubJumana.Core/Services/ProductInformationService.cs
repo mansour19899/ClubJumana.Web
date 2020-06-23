@@ -403,9 +403,9 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
-        public int GiveCountOfImagesVariant()
+        public List<string> GiveCountOfImagesVariant()
         {
-            return _onlineContext.images.Count();
+            return _onlineContext.images.Select(p=>new string(p.ImageName)).ToList();
         }
     }
 }

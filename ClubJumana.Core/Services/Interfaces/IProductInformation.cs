@@ -20,7 +20,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddBarcode(int Id);
         public int AddOrUpdateVariant(Variant variant, int ProductId);
         public int AddImageVariant(int variantFK, string imageName);
-        public int GiveCountOfImagesVariant();
+        public List<string> GiveCountOfImagesVariant();
     }
     
 }

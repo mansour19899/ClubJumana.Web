@@ -66,9 +66,9 @@ namespace ClubJumana.Wpf2
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
 
-           // ShowErrorMassegeToConectionInternet();
-           var y = File.Exists(@"C:\rob.jpg");
-           var yy = File.Exists(@"C:\robb.jpg");
+            // ShowErrorMassegeToConectionInternet();
+            var y = File.Exists(@"C:\rob.jpg");
+            var yy = File.Exists(@"C:\robb.jpg");
 
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
@@ -100,8 +100,8 @@ namespace ClubJumana.Wpf2
             CheckImageForDownload();
         }
 
-  
-   
+
+
         private void CheckConectionToServe()
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
@@ -125,14 +125,31 @@ namespace ClubJumana.Wpf2
         {
             await Task.Run(() =>
             {
-                var CountImageOfFTP = _productInformationService.GiveCountOfImagesVariant();
-                string Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage";
+                var ImageOfFTPList = _productInformationService.GiveCountOfImagesVariant();
+                string Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
                 DirectoryInfo dir = new DirectoryInfo(Path);
                 var ImageOfLocalList = dir.GetFiles();
-                var CountImageOfLocal =ImageOfLocalList.Count();
-                if (CountImageOfLocal != CountImageOfFTP+1)
+                List<string> ImageNameListOfLocal = new List<string>();
+                foreach (var VARIABLE in ImageOfLocalList)
                 {
-                    MessageBox.Show("Image Uploading");
+                    ImageNameListOfLocal.Add(VARIABLE.Name);
+                }
+
+                var ImagesNameForAdd = ImageOfFTPList.Except(ImageNameListOfLocal);
+                var ImagesNameForDelete = ImageNameListOfLocal.Except(ImageOfFTPList);
+                var CountImageOfLocal = ImageOfLocalList.Count();
+                if (CountImageOfLocal != ImageOfFTPList.Count + 1)
+                {
+                    foreach (var VARIABLE in ImagesNameForAdd)
+                    {
+                        _repositoryService.DownloadFileFromFTP(System.IO.Path.Combine(Path, VARIABLE), "/VariantsImage");
+                    }
+
+                    foreach (var VARIABLE in ImagesNameForDelete)
+                    {
+                        if (VARIABLE.CompareTo("not-found.JPG") != 0)
+                            File.Delete(System.IO.Path.Combine(Path, VARIABLE));
+                    }
                 }
             });
         }
@@ -685,7 +702,7 @@ namespace ClubJumana.Wpf2
                 lvProducts.ItemsSource = ListOfLvproducts;
                 lvProducts.Items.Refresh();
 
-                // UpdateListviewVariants();
+
 
                 GrdEditProduct.Visibility = Visibility.Hidden;
             }
@@ -704,14 +721,6 @@ namespace ClubJumana.Wpf2
 
         }
 
-        private async Task UpdateListviewVariants()
-        {
-            await Task.Run(() =>
-            {
-
-                MessageBox.Show("Variant List Update");
-            });
-        }
 
 
         private void BtnCloseGrdEditVariant_OnClick(object sender, RoutedEventArgs e)
@@ -775,7 +784,7 @@ namespace ClubJumana.Wpf2
                 {
                     Thread.Sleep(7000);
                     _repositoryService.UploadFileToFTP(DestentionPath, "/VariantsImage/");
-                    MessageBox.Show("Image Uploaded");
+                    //MessageBox.Show("Image Uploaded");
                 });
             }
             catch (Exception e)
