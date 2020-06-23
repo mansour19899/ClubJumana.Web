@@ -123,6 +123,12 @@ namespace ClubJumana.Core.Services
                 TowelId++;
             }
 
+            _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Companies).RowVersion++;
+            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Companies).RowVersion++;
+            _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Products).RowVersion++;
+            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Products).RowVersion++;
+            _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
             _onlineContext.SaveChanges();
             _context.SaveChanges();
             return 1;
@@ -151,31 +157,31 @@ namespace ClubJumana.Core.Services
             return CategoryStyleCode + "." + SubCategoryCode + "." + newStyleNumber.ToString().NumtoStr(6); ;
         }
 
-        public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode, string ColourCode)
+        public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode)
 
         {
-            var list = _context.variants.Where(p => p.Sku != null).ToList();
+            var list = _context.variants.Skip(90).Where(p => p.Sku != null&&p.Sku!= "0").ToList();
             string LastSkuNumber = "";
-            int SkuNumber = 0;
+            Int32 SkuNumber = 0;
             int MaxSku = 0;
             if (list.Count == 0)
             {
-                MaxSku= 6068;
+                MaxSku= 37121;
             }
             else
             {
                 foreach (var VARIABLE in list)
                 {
-                    SkuNumber = Convert.ToInt16(VARIABLE.Sku.Substring(10, 6));
+                    SkuNumber = Convert.ToInt32(VARIABLE.Sku.Substring(7, 7));
                     if (MaxSku < SkuNumber)
                         MaxSku = SkuNumber;
-
                 }
             }
 
+            if (MaxSku == 0)
+                MaxSku = 37121;
 
-
-            string Sku = CategoryCode + SubCategoryCode + ProductTypeCode + ColourCode + (MaxSku+1).ToString().NumtoStr(6);
+            string Sku = CategoryCode + SubCategoryCode + ProductTypeCode + (MaxSku+1).ToString().NumtoStr(7);
 
             return Sku;
         }
@@ -250,6 +256,8 @@ namespace ClubJumana.Core.Services
                 Variantt.Sku = Sku;
                 //_onlineContext.variants.Update(Variant);
                 //_context.variants.Update(Variant);
+                _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
                 _onlineContext.SaveChanges();
                 _context.SaveChanges();
             }
@@ -271,6 +279,10 @@ namespace ClubJumana.Core.Services
                 NewBarcode.Active = true;
                 Variantt.BarcodeFK = NewBarcode.Id;
                 NewBarcodee.Active = true;
+                _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+                _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion++;
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion++;
                 _onlineContext.SaveChanges();
                 _context.SaveChanges();
                 return 1;
@@ -398,7 +410,8 @@ namespace ClubJumana.Core.Services
 
             _onlineContext.images.Add(Newimage);
             _context.images.Add(Newimagee);
-
+            _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Images).RowVersion++;
+            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Images).RowVersion++;
             _context.SaveChanges();
             _onlineContext.SaveChanges();
 

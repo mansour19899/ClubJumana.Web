@@ -212,23 +212,16 @@ namespace ClubJumana.Wpf2
 
         private void txtLenght_KeyDown(object sender, KeyEventArgs e)
         {
-
+            e.Handled = SetNumeric(sender, e);
         }
 
-        private void txtGsm_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
 
         private void txtWidth_KeyUp(object sender, KeyEventArgs e)
         {
 
         }
 
-        private void txtWidth_KeyDown(object sender, KeyEventArgs e)
-        {
 
-        }
 
 
         #endregion
@@ -381,32 +374,15 @@ namespace ClubJumana.Wpf2
 
         private void TxtWidth_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            txtWidth.SelectAll();
+            var txt = sender as TextBox;
+            txt.SelectAll();
+
         }
 
         private void TxtWidth_OnGotMouseCapture(object sender, MouseEventArgs e)
         {
-            txtWidth.SelectAll();
-        }
-
-        private void TxtLenght_OnGotMouseCapture(object sender, MouseEventArgs e)
-        {
-            txtLenght.SelectAll();
-        }
-
-        private void TxtLenght_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            txtLenght.SelectAll();
-        }
-
-        private void TxtPrice_OnGotMouseCapture(object sender, MouseEventArgs e)
-        {
-            txtPrice.SelectAll();
-        }
-
-        private void TxtPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            txtPrice.SelectAll();
+            var txt = sender as TextBox;
+            txt.SelectAll();
         }
 
         private void TxtSize_OnKeyDown(object sender, KeyEventArgs e)
@@ -416,6 +392,39 @@ namespace ClubJumana.Wpf2
                 addVariant.Variant.Size = addVariant.Variant.Width.ToString() + "x" + addVariant.Variant.length.ToString();
                 txtSize.Text = addVariant.Variant.Size;
             }
+        }
+
+        public bool SetNumeric(object sender, KeyEventArgs e)
+        {
+            bool result = false;
+
+            if ((e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || (e.Key == Key.Back) || (e.Key == Key.Decimal) || (e.Key == Key.Tab))
+            { result = false; }
+            else if ((e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key == Key.OemPeriod))
+            { result = false; }
+            else
+            { result = true; }
+
+            if (e.Key == Key.OemPeriod && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                result = true;
+            }
+            if (e.Key == Key.Decimal && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                result = true;
+            }
+            var hi = sender as TextBox;
+            var hii = hi.Text;
+            var count = hi.Text.Split('.');
+
+            if (count.Count() > 1)
+            {
+                if (count[1].Count() > 3 && e.Key != Key.Tab)
+                {
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }

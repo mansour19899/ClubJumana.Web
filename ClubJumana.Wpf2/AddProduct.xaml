@@ -176,11 +176,11 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="0">
                         <Label Name="lblWidth" Content="Width (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtWidth" Text="{Binding Variant.Width,UpdateSourceTrigger=PropertyChanged}" GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp" KeyDown="txtWidth_KeyDown"  />
+                        <TextBox Name="txtWidth" Text="{Binding Variant.Width,UpdateSourceTrigger=PropertyChanged}" GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp"   />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="1">
                         <Label Name="lblLenght" Content="Lenght (in)" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtLenght" Text="{Binding Variant.length,UpdateSourceTrigger=PropertyChanged}" GotMouseCapture="TxtLenght_OnGotMouseCapture" GotKeyboardFocus="TxtLenght_OnGotKeyboardFocus" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" KeyDown="txtLenght_KeyDown" />
+                        <TextBox Name="txtLenght" Text="{Binding Variant.length,UpdateSourceTrigger=PropertyChanged}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" />
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="0">
                         <Label Name="lblSize" Content="Size (in)" Style="{StaticResource lblAddProduct}" MouseDown="LblSize_OnMouseDown" />
@@ -188,7 +188,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="1">
                         <Label Content="GSM " Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtGsm" Text="{Binding Variant.Data1}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtGsm_KeyDown" />
+                        <TextBox Name="txtGsm" Text="{Binding Variant.Data1}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
                     <StackPanel Grid.Row="3" Grid.Column="0" >
                         <Label Content="Note" Style="{StaticResource lblAddProduct}" />
@@ -206,7 +206,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2">
                         <Label Content="Price" Style="{StaticResource lblAddProduct}" Margin="0 0 0 20" />
-                        <TextBox Name="txtPrice" Text="{Binding Variant.FobPrice}" GotMouseCapture="TxtPrice_OnGotMouseCapture" GotKeyboardFocus="TxtPrice_OnGotKeyboardFocus" FontSize="25" Margin="{StaticResource LabelMargin}" Style="{StaticResource txtCostCentreStyle}" Height="60"  />
+                        <TextBox Name="txtPrice" Text="{Binding Variant.FobPrice}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="25" Margin="{StaticResource LabelMargin}" Style="{StaticResource txtCostCentreStyle}" Height="60" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
 
                 </Grid>

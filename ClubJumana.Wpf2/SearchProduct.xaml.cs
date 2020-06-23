@@ -448,8 +448,8 @@ namespace ClubJumana.Wpf2
                     {
                         case MessageBoxResult.Yes:
                             var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
-                                variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code, variant.Colour.Code);
-                            _productInformationService.AddSku(variant.Id, tet);
+                                variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code);
+                           // _productInformationService.AddSku(variant.Id, tet);
                             MessageBox.Show(tet);
                             break;
                         case MessageBoxResult.No:
