@@ -88,6 +88,7 @@ namespace ClubJumana.Core.Services
                 {
                     Id = TowelId,
                     ProductFK = Id,
+                    Sku =  "No SKU",
                     ColourFK = VARIABLE.ColourFK,
                     ProductTypeFK = VARIABLE.ProductTypeFK,
                     FobPrice = VARIABLE.FobPrice,
@@ -105,6 +106,7 @@ namespace ClubJumana.Core.Services
                 {
                     Id = TowelId,
                     ProductFK = Id,
+                    Sku = "No SKU",
                     ColourFK = VARIABLE.ColourFK,
                     ProductTypeFK = VARIABLE.ProductTypeFK,
                     FobPrice = VARIABLE.FobPrice,

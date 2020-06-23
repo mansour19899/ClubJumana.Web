@@ -17,7 +17,7 @@
                 <RowDefinition Height="0.85*"/>
             </Grid.RowDefinitions>
             <UniformGrid Columns="3">
-                <Border Width="200" Margin="0 10 0 0">
+                <Border Name="btnClubJummanaLogo" Width="200" Margin="0 10 0 0" MouseDown="BtnClubJummanaLogo_OnMouseDown">
                     <Border.Background>
                         <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
                     </Border.Background>
@@ -152,6 +152,7 @@
                         </UniformGrid.Resources>
                         <ScrollViewer Height="400" VerticalScrollBarVisibility="Auto">
                             <StackPanel >
+                                <TextBox Name="txtBarcodeMode" Height="0" KeyDown="TxtBarcodeMode_OnKeyDown" />
                                 <TextBlock Name="txtCategoryw" Style="{StaticResource Style1}" Text="{Binding StyleNumber, StringFormat= Style Nember : {0}}" />
                                 <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Category, StringFormat= Category : {0}}" />
                                 <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Subcategory, StringFormat= SubCategory : {0}}" />

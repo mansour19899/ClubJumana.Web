@@ -46,7 +46,6 @@ namespace ClubJumana.Wpf2
         private int ImageSelected = 0;
         private int countImageVariant = 0;
         private string ErrorConection = "";
-        bool AllowScanBarcodeCon = false;
         Boolean SwitchSelectedlist = true;
         private bool IsConnectToServer = true;
         private List<VariantViewModel> ListOfLvproducts;
@@ -211,25 +210,34 @@ namespace ClubJumana.Wpf2
         {
             if (e.Key == Key.Enter)
             {
-                string x = cmbType.SelectedValue.ToString();
-                if (x.CompareTo("1") == 0)
-                    lvProducts.ItemsSource = VaraintList;
+
+                int x = cmbType.SelectedIndex;
 
                 switch (x)
                 {
-                    case "1":
+                    case 0:
+                        if (VaraintList.Count == 0)
+                            VaraintList = _productInformationService.AllVariantList();
                         lvProducts.ItemsSource = VaraintList;
+                        lvProducts.Items.Refresh();
                         break;
-                    case "2":
+                    case 1:
                         lvProducts.ItemsSource = VaraintList
                             .Where(p => p.Product.StyleNumber.Trim().Contains(txtSearch.Text.Trim())).ToList();
+                        lvProducts.Items.Refresh();
                         break;
-                    case "3":
-                        lvProducts.ItemsSource = VaraintList.Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).ToList();
+                    case 2:
+                        var variant= VaraintList.Where(p=>p.Barcode!=null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
+                        if (variant == null)
+                            MessageBox.Show("Barcode Not Exist");
+                        else
+                            ShowProductInformation(variant.Id);
                         txtSearch.Clear();
                         break;
-                    case "4":
-                        //lvProducts.ItemsSource = VaraintList.Where(p => p.Sku.Trim().Contains(txtSearch.Text.Trim())).ToList();
+                    case 3:
+                        lvProducts.ItemsSource = VaraintList
+                            .Where(p => p.Sku.Trim().Contains(txtSearch.Text.Trim())).ToList();
+                        lvProducts.Items.Refresh();
                         break;
                     default:
                         MessageBox.Show("Hi");
@@ -245,31 +253,52 @@ namespace ClubJumana.Wpf2
             }
         }
 
+        private void TxtBarcodeMode_OnKeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Enter)
+            {
+                var variant = VaraintList.Where(p => p.Barcode != null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtBarcodeMode.Text.Trim()) == 0).FirstOrDefault();
+                if (variant == null)
+                    MessageBox.Show("Barcode Not Exist");
+                else
+                    ShowProductInformation(variant.Id);
+                txtBarcodeMode.Clear();
+            }
+        }
+
+        private void BtnClubJummanaLogo_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            txtBarcodeMode.Focus();
+            MessageBox.Show("Barcode Mode Activated.");
+        }
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var x = Convert.ToInt16(cmbType.SelectedValue);
-            AllowScanBarcodeCon = false;
+
             switch (x)
             {
                 case 1:
                     TempList.Clear();
+                    if (VaraintList.Count == 0)
+                        VaraintList = _productInformationService.AllVariantList();
                     TempList = VaraintList;
                     lvProducts.ItemsSource = TempList;
+                    lvProducts.Items.Refresh();
                     txtSearch.Text = "";
                     lblCountResult.Content = TempList.Count();
                     break;
                 case 2:
-                    //lvProducts.ItemsSource = connect.GiveListProductsWithSytyle(txtSearch.Text);
+                    txtSearch.Clear();
                     break;
                 case 3:
                     txtSearch.Clear();
-                    AllowScanBarcodeCon = true;
                     break;
                 case 4:
-                    MessageBox.Show("salam");
+                    txtSearch.Clear();
                     break;
                 default:
-                    MessageBox.Show("Hi");
+                    MessageBox.Show("Error 121");
                     break;
             }
             txtSearch.Focus();
@@ -658,8 +687,11 @@ namespace ClubJumana.Wpf2
         {
             if (GrdInformationProduct.Visibility == Visibility.Visible)
             {
+
                 GrdInformationProduct.Visibility = Visibility.Hidden;
                 GrSearch.Visibility = Visibility.Visible;
+                if (cmbType.SelectedIndex == 2)
+                    txtSearch.Focus();
             }
             else
             {
@@ -932,5 +964,8 @@ namespace ClubJumana.Wpf2
                 MessageBox.Show("Mode Is Offline");
             }
         }
+
+
+  
     }
 }
