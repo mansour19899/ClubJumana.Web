@@ -122,7 +122,7 @@
                     </StackPanel>
                 </Grid>
 
-                <ListView SelectionMode="Multiple" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20"  MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                <ListView SelectionMode="Multiple" ItemsSource="{Binding LvProductItemSource}" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20"  MouseDoubleClick="lvProducts_MouseDoubleClick" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
@@ -130,7 +130,7 @@
                             <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
                             <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
                             <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
-                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=Sku}" />
+                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=SKU}" />
                             <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode.BarcodeNumber}" />
                         </GridView>
                     </ListView.View>
@@ -153,15 +153,15 @@
                         <ScrollViewer Height="400" VerticalScrollBarVisibility="Auto">
                             <StackPanel >
                                 <TextBox Name="txtBarcodeMode" Height="0" KeyDown="TxtBarcodeMode_OnKeyDown" />
-                                <TextBlock Name="txtCategoryw" Style="{StaticResource Style1}" Text="{Binding StyleNumber, StringFormat= Style Nember : {0}}" />
-                                <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Category, StringFormat= Category : {0}}" />
-                                <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Subcategory, StringFormat= SubCategory : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding ProductTittle, StringFormat= Product Tittle :  {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Company, StringFormat= Company : {0}}"/>
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding GSM, StringFormat= GSM : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Material, StringFormat= Material : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding DescriabeMaterial, StringFormat=  Remarks :  {0}}" />
+                                <TextBlock Name="txtCategoryw" Style="{StaticResource Style1}" Text="{Binding Info.StyleNumber, StringFormat= Style Nember : {0}}" />
+                                <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Info.Category, StringFormat= Category : {0}}" />
+                                <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Info.Subcategory, StringFormat= SubCategory : {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle, StringFormat= Product Tittle :  {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Company, StringFormat= Company : {0}}"/>
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.GSM, StringFormat= GSM : {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Material, StringFormat= Material : {0}}" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.DescriabeMaterial, StringFormat=  Remarks :  {0}}" />
                                 <TextBlock ></TextBlock>
                                 <Button Name="btnAddNewVariant" Content="Add New Variant" Width="150" HorizontalAlignment="Left" Click="BtnAddNewVariant_OnClick"/>
                             </StackPanel>
@@ -210,7 +210,7 @@
 
                         </Grid>
                     </UniformGrid>
-                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding List}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="LvVariant_OnSelectionChanged"  >
+                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding Info.List}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="LvVariant_OnSelectionChanged"  >
                         <ListView.View>
                             <GridView >
                                 <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}"/>
@@ -284,7 +284,7 @@
                                         Width="200"
                                         Padding="8"
                                         Margin="0 20"
-                                        ToolTip="{Binding CostCenter.MarginWholeSaleA}">
+                                        ToolTip="{Binding Info.CostCenter.MarginWholeSaleA}">
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
@@ -293,7 +293,7 @@
                                             </TextBlock>
                                             <Separator
                                                 Style="{StaticResource MaterialDesignLightSeparator}" />
-                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"  Text="{Binding CostCenter.WholeSaleA}"/>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"  Text="{Binding Info.CostCenter.WholeSaleA}"/>
                                         </StackPanel>
                                     </materialDesign:Card>
                                     <materialDesign:Card
@@ -302,7 +302,7 @@
                                         Width="200"
                                         Padding="8"
                                         Margin="0 20"
-                                        ToolTip="{Binding CostCenter.MarginWholeSaleB}">
+                                        ToolTip="{Binding Info.CostCenter.MarginWholeSaleB}">
 
                                         <StackPanel>
                                             <TextBlock
@@ -312,7 +312,7 @@
                                             </TextBlock>
                                             <Separator
                                                 Style="{StaticResource MaterialDesignLightSeparator}" />
-                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding CostCenter.WholeSaleB}"/>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding Info.CostCenter.WholeSaleB}"/>
                                         </StackPanel>
                                     </materialDesign:Card>
                                     <materialDesign:Card
@@ -321,7 +321,7 @@
                                         Width="200"
                                         Padding="8"
                                         Margin="0 20"
-                                        ToolTip="{Binding CostCenter.MarginRetailPrice}">
+                                        ToolTip="{Binding Info.CostCenter.MarginRetailPrice}">
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
@@ -331,7 +331,7 @@
                                             </TextBlock>
                                             <Separator
                                                 Style="{StaticResource MaterialDesignLightSeparator}" />
-                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding Path= CostCenter.RetailPrice }"/>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding Path= Info.CostCenter.RetailPrice }"/>
                                         </StackPanel>
                                     </materialDesign:Card>
                                 </UniformGrid>
@@ -390,17 +390,17 @@
                                             <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="25"/>
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Duty    " FontSize="25"/>
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="ExChange Rate    " FontSize="25"/>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture"  Margin="10,10,10,-5" VerticalAlignment="Top" >
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding Info.CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture"  Margin="10,10,10,-5" VerticalAlignment="Top" >
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding CostCenter.Duty,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus"  Margin="10,0,10,-5">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding Info.CostCenter.Duty,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus"  Margin="10,0,10,-5">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding CostCenter.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus"  Margin="10,0,10,15">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding Info.CostCenter.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus"  Margin="10,0,10,15">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
@@ -408,7 +408,7 @@
 
                                             <StackPanel Margin="10" Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                                                 <Label Content="%" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
-                                                <Label Content="{Binding CostCenter.LandedCostRate}" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
+                                                <Label Content="{Binding Info.CostCenter.LandedCostRate}" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
                                             </StackPanel>
                                             <ComboBox Name="cmbCountry" Grid.Row="2" SelectedIndex="37" Grid.Column="2" FontSize="20" DisplayMemberPath="Name" SelectedValuePath="Id" MaxWidth="300" SelectionChanged="CmbCountry_OnSelectionChanged" />
 
@@ -436,7 +436,7 @@
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="USD" FontSize="25"/>
-                                            <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding CostCenter.Country.Currency}" FontSize="25"/>
+                                            <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Info.CostCenter.Country.Currency}" FontSize="25"/>
                                             <Label Grid.Row="1" Grid.Column="1" Content=" Landed Cost" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="2" Grid.Column="1" Content=" Wholesale Price" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="3" Grid.Column="1" Content=" Sales Com 5%" Style="{StaticResource lblCostCentreStyle}"  />
@@ -447,26 +447,26 @@
                                             <Label Grid.Row="8" Grid.Column="1" Content=" WL Margin" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="9" Grid.Column="1" Content=" Retail" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="10" Grid.Column="1" Content=" RTL Gross Margin" Style="{StaticResource lblCostCentreStyle}"  />
-                                            <TextBox Name="txtLandedCostUSD" Text="{Binding CostCenter.LandedCostUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200" />
-                                            <TextBox Name="txtWholesaleUSD" Text="{Binding CostCenter.WholesaleUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtSales5USD" Text="{Binding CostCenter.Sales5USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtCreditIN10USD" Text="{Binding CostCenter.CreditIN10USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCashUSD" Text="{Binding CostCenter.WholeCashUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCreditUSD" Text="{Binding CostCenter.WholeCreditUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLGrossUSD" Text="{Binding CostCenter.WLGrossUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLMarginUSD" Text="{Binding CostCenter.WLMarginUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtReatailUSD" Text="{Binding CostCenter.RetailUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtRTLGrossUSD" Text="{Binding CostCenter.RTLGrossUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtLandedCostCAD" Text="{Binding CostCenter.LandedCostD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200" />
-                                            <TextBox Name="txtWholesaleCAD" Text="{Binding CostCenter.WholesaleD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtSales5CAD" Text="{Binding CostCenter.Sales5D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtCreditIN10CAD" Text="{Binding CostCenter.CreditIN10D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCashCAD" Text="{Binding CostCenter.WholeCashD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCreditCAD" Text="{Binding CostCenter.WholeCreditD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLGrossCAD" Text="{Binding CostCenter.WLGrossD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLMarginCAD" Text="{Binding CostCenter.WLMarginD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtReatailCAD" Text="{Binding CostCenter.RetailD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtRTLGrossCAD" Text="{Binding CostCenter.RTLGrossD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtLandedCostUSD" Text="{Binding Info.CostCenter.LandedCostUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200" />
+                                            <TextBox Name="txtWholesaleUSD" Text="{Binding Info.CostCenter.WholesaleUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtSales5USD" Text="{Binding Info.CostCenter.Sales5USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtCreditIN10USD" Text="{Binding Info.CostCenter.CreditIN10USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWholeCashUSD" Text="{Binding Info.CostCenter.WholeCashUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWholeCreditUSD" Text="{Binding Info.CostCenter.WholeCreditUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWLGrossUSD" Text="{Binding Info.CostCenter.WLGrossUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWLMarginUSD" Text="{Binding Info.CostCenter.WLMarginUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtReatailUSD" Text="{Binding Info.CostCenter.RetailUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtRTLGrossUSD" Text="{Binding Info.CostCenter.RTLGrossUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtLandedCostCAD" Text="{Binding Info.CostCenter.LandedCostD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200" />
+                                            <TextBox Name="txtWholesaleCAD" Text="{Binding Info.CostCenter.WholesaleD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtSales5CAD" Text="{Binding Info.CostCenter.Sales5D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtCreditIN10CAD" Text="{Binding Info.CostCenter.CreditIN10D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWholeCashCAD" Text="{Binding Info.CostCenter.WholeCashD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWholeCreditCAD" Text="{Binding Info.CostCenter.WholeCreditD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWLGrossCAD" Text="{Binding Info.CostCenter.WLGrossD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtWLMarginCAD" Text="{Binding Info.CostCenter.WLMarginD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtReatailCAD" Text="{Binding Info.CostCenter.RetailD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <TextBox Name="txtRTLGrossCAD" Text="{Binding Info.CostCenter.RTLGrossD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
                                         </Grid>
 
                                     </StackPanel>
@@ -505,45 +505,45 @@
                                 <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             </Style>
                         </UniformGrid.Resources>
-                        <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Content="{Binding VariantSelected.Sku}" FontSize="17" FontWeight="Bold" Foreground="Navy"/>
+                        <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Content="{Binding Info.VariantSelected.Sku}" FontSize="17" FontWeight="Bold" Foreground="Navy"/>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Wholesale A"/>
-                            <TextBox Text="{Binding VariantSelected.WholesaleA}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.WholesaleA}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Wholesale B"/>
-                            <TextBox Text="{Binding VariantSelected.WholesaleB}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.WholesaleB}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Retail Price"/>
-                            <TextBox Text="{Binding VariantSelected.RetailPrice}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.RetailPrice}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" F.O.B Price"/>
-                            <TextBox Text="{Binding VariantSelected.FobPrice}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.FobPrice}"/>
                         </UniformGrid>
 
                         <UniformGrid Name="ProductTypeForAddVariant" Columns="3" Rows="1" Visibility="Visible">
                             <TextBlock Text="Product Type" />
-                            <ComboBox FontSize="15" Name="cmbEditVariantProductType" SelectedValue="{Binding VariantSelected.ProductTypeFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
+                            <ComboBox FontSize="15" Name="cmbEditVariantProductType" SelectedValue="{Binding Info.VariantSelected.ProductTypeFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
                             </ComboBox>
                         </UniformGrid>
                         <UniformGrid Columns="3" Rows="1">
                             <TextBlock Text="Color" />
-                            <ComboBox FontSize="15" Name="cmbEditVariantColor" SelectedValue="{Binding VariantSelected.ColourFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
+                            <ComboBox FontSize="15" Name="cmbEditVariantColor" SelectedValue="{Binding Info.VariantSelected.ColourFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
                             </ComboBox>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Width"/>
-                            <TextBox Text="{Binding VariantSelected.Width}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.Width}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Length"/>
-                            <TextBox Text="{Binding VariantSelected.length}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.length}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Name="btnSizeEditProduct" Text=" Size" MouseDown="BtnSizeEditProduct_OnMouseDown" />
-                            <TextBox Text="{Binding VariantSelected.Size}"/>
+                            <TextBox Text="{Binding Info.VariantSelected.Size}"/>
                         </UniformGrid>
                         <TextBlock></TextBlock>
                         <UniformGrid Rows="1" Columns="4" Margin="0 10 0 0">
@@ -594,6 +594,8 @@
 
 
             </Grid>
+
+            <materialDesign:Snackbar Grid.Row="2"  x:Name="SnackbarResult" Panel.ZIndex="99999"  />
 
         </Grid>
     </Grid>

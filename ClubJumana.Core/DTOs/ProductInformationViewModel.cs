@@ -71,10 +71,20 @@ namespace ClubJumana.Core.DTOs
         }
     }
 
-    public class VariantViewModel
+    public class VariantViewModel: INotifyPropertyChanged
     {
         public int Id { get; set; }
-        public string Sku { get; set; }
+        private string _sku;
+
+        public string SKU
+        {
+            get { return _sku; }
+            set
+            {
+                _sku = value; 
+                OnPropertyChanged();
+            }
+        }
         public int? ProductFK { get; set; }
         public int? ColourFK { get; set; }
         public int? BarcodeFK { get; set; }
@@ -83,12 +93,52 @@ namespace ClubJumana.Core.DTOs
         public decimal? WholesaleA { get; set; }
         public decimal? WholesaleB { get; set; }
         public decimal? RetailPrice { get; set; }
-        public string Size { get; set; }
+        private string _size;
+
+        public string Size
+        {
+            get { return _size; }
+            set
+            {
+                _size = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public Product Product { get; set; }
-        public Colour Colour { get; set; }
-        public Barcode Barcode { get; set; }
+        private Colour _colour;
+
+        public Colour Colour
+        {
+            get { return _colour; }
+            set
+            {
+                _colour = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        private Barcode _barcode;
+
+        public Barcode Barcode
+        {
+            get { return _barcode; }
+            set
+            {
+                _barcode = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ProductType ProductType { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class ProductInformationViewModel : INotifyPropertyChanged
@@ -106,14 +156,14 @@ namespace ClubJumana.Core.DTOs
                 CountryOfOrigin = product.CountryOfOrgin.Name;
             if (product.Brand != null)
                 Brand = product.Brand.Name;
-            if (product.Variants.ElementAt(0).Data1!=null)
+            if (product.Variants.ElementAt(0).Data1 != null)
                 GSM = product.Variants.ElementAt(0).Data1.ToString();
             if (product.Company != null)
                 Company = product.Company.CompanyName;
             if (product.Material != null)
                 Material = product.Material.MaterialName;
             DescriabeMaterial = product.DescribeMaterial;
-            List = new ObservableCollection<Variant>(product.Variants) ;
+            List = new ObservableCollection<Variant>(product.Variants);
             foreach (var VARIABLE in List)
             {
                 if (VARIABLE.Sku == null)
@@ -148,7 +198,7 @@ namespace ClubJumana.Core.DTOs
 
 
 
-        
+
         private CostCenter _costCenter;
 
         public CostCenter CostCenter
@@ -161,6 +211,44 @@ namespace ClubJumana.Core.DTOs
 
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+
+    public class SearchProductViewModel : INotifyPropertyChanged
+    {
+        private ObservableCollection<VariantViewModel> _variantViewModels;
+
+        public ObservableCollection<VariantViewModel> LvProductItemSource
+        {
+            get { return _variantViewModels; }
+            set
+            {
+                _variantViewModels = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        private ProductInformationViewModel _informationViewModel;
+
+        public ProductInformationViewModel Info
+        {
+            get { return _informationViewModel; }
+            set
+            {
+                _informationViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

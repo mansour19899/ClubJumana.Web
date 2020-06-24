@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Context;
 using ClubJumana.DataLayer.Entities;
+using MaterialDesignThemes.Wpf;
 using MySql.Data.MySqlClient;
 
 namespace ClubJumana.Wpf2
@@ -34,6 +36,7 @@ namespace ClubJumana.Wpf2
         private RepositoryService _repositoryService;
         private ProductInformationService _productInformationService;
         private List<VariantViewModel> VaraintList;
+        private ObservableCollection<VariantViewModel> ListForLvProduct;
         List<VariantViewModel> TempList;
         List<VariantViewModel> SelectedList;
         Product SelectedProduct;
@@ -48,7 +51,10 @@ namespace ClubJumana.Wpf2
         private string ErrorConection = "";
         Boolean SwitchSelectedlist = true;
         private bool IsConnectToServer = true;
-        private List<VariantViewModel> ListOfLvproducts;
+        private int IndexOfLvProduct = 0;
+        private SnackbarMessageQueue myMessageQueue;
+
+        private SearchProductViewModel viewModel;
         public SearchProduct()
         {
             InitializeComponent();
@@ -57,17 +63,14 @@ namespace ClubJumana.Wpf2
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
             Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
-            ListOfLvproducts = new List<VariantViewModel>();
             CheckConectionToServe();
-
+            viewModel = new SearchProductViewModel();
+            ListForLvProduct=new ObservableCollection<VariantViewModel>();
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
         {
-
             // ShowErrorMassegeToConectionInternet();
-            var y = File.Exists(@"C:\rob.jpg");
-            var yy = File.Exists(@"C:\robb.jpg");
 
             cmbCategory.ItemsSource = _repositoryService.AllCategoriesList().ToList();
             cmbCompany.ItemsSource = _repositoryService.AllCompaniesList().ToList();
@@ -97,6 +100,14 @@ namespace ClubJumana.Wpf2
             //_repositoryService.DownloadFileFromFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\" + "Excel Formula.txt", "/VariantsImage");
             //_repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\"+ "Excel Formula.txt", "/VariantsImage/");
             CheckImageForDownload();
+
+            viewModel.Info = InfoProduct;
+            ListForLvProduct=new ObservableCollection<VariantViewModel>(VaraintList);
+            viewModel.LvProductItemSource = ListForLvProduct;
+            this.DataContext = viewModel;
+
+            myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
+            SnackbarResult.MessageQueue = myMessageQueue;
         }
 
 
@@ -167,45 +178,41 @@ namespace ClubJumana.Wpf2
         {
             //CheckConectionToServe();
             //ShowErrorMassegeToConectionInternet();
+            myMessageQueue.Enqueue("Club Jummana");
         }
         void SetFilter()
         {
             var t = TempList;
             if (SwitchSelectedlist == false)
                 t = SelectedList;
-            lvProducts.ItemsSource = null;
-            lvProducts.ItemsSource = t;
-            lvProducts.Items.Refresh();
+            ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+            viewModel.LvProductItemSource = ListForLvProduct;
             if (cmbCategory.SelectedIndex > 0)
             {
                 var x = Convert.ToInt16(cmbCategory.SelectedValue);
                 t = t.Where(p => p.ProductType.CategoriesSubCategory.CategoryFK == x).ToList();
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = t;
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+                viewModel.LvProductItemSource = ListForLvProduct;
             }
             if (cmbSubCategory.SelectedIndex > 0)
             {
                 var xx = Convert.ToInt16(cmbSubCategory.SelectedValue);
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = t.Where(p => p.ProductType.CategoriesSubCategory.SubCategoryFK == xx);
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+                viewModel.LvProductItemSource = ListForLvProduct;
             }
             if (cmbProductType.SelectedIndex > 0)
             {
                 var xxx = Convert.ToInt16(cmbProductType.SelectedValue);
                 t = t.Where(p => p.ProductType.Id == xxx).ToList();
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = t;
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+                viewModel.LvProductItemSource = ListForLvProduct;
             }
             if (cmbCompany.SelectedIndex > 0)
             {
                 var xxxx = Convert.ToInt16(cmbCompany.SelectedValue);
                 t = t.Where(p => p.Product.CompanyFK == xxxx).ToList();
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = t;
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+                viewModel.LvProductItemSource = ListForLvProduct;
             }
             if (t != null)
                 lblCountResult.Content = "Results :  " + t.Count();
@@ -228,37 +235,39 @@ namespace ClubJumana.Wpf2
                     case 0:
                         if (VaraintList.Count == 0)
                             VaraintList = _productInformationService.AllVariantList();
-                        lvProducts.ItemsSource = null;
-                        lvProducts.ItemsSource = VaraintList;
-                        lvProducts.Items.Refresh();
+                        ListForLvProduct = new ObservableCollection<VariantViewModel>(VaraintList);
+                        viewModel.LvProductItemSource = ListForLvProduct;
                         break;
                     case 1:
-                        lvProducts.ItemsSource = null;
-                        lvProducts.ItemsSource = VaraintList
+
+                        var t= VaraintList
                             .Where(p => p.Product.StyleNumber.Trim().Contains(txtSearch.Text.Trim())).ToList();
-                        lvProducts.Items.Refresh();
+                        ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
+                        viewModel.LvProductItemSource = ListForLvProduct;
                         break;
                     case 2:
                         var variant= VaraintList.Where(p=>p.Barcode!=null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
                         if (variant == null)
-                            MessageBox.Show("Barcode Not Exist");
+                            myMessageQueue.Enqueue("Barcode Not Exist");
                         else
                             ShowProductInformation(variant.Id);
                         txtSearch.Clear();
                         break;
                     case 3:
-                        lvProducts.ItemsSource = null;
-                        lvProducts.ItemsSource = VaraintList
-                            .Where(p => p.Sku.Trim().Contains(txtSearch.Text.Trim())).ToList();
-                        lvProducts.Items.Refresh();
+
+                        var tt= VaraintList
+                            .Where(p => p.SKU.Trim().Contains(txtSearch.Text.Trim())).ToList();
+                        ListForLvProduct = new ObservableCollection<VariantViewModel>(tt);
+                        viewModel.LvProductItemSource = ListForLvProduct;
+
                         break;
                     default:
                         MessageBox.Show("Hi");
                         break;
                 }
 
-                TempList = lvProducts.ItemsSource as List<VariantViewModel>;
-                lblCountResult.Content = "Results :  " + TempList.Count();
+                TempList = ListForLvProduct.ToList();
+                lblCountResult.Content = "Results :  " + ListForLvProduct.Count();
                 SwitchSelectedlist = true;
                 SetFilter();
                 BtnShowSelectedlist.Content = "Show Selected List";
@@ -273,7 +282,7 @@ namespace ClubJumana.Wpf2
             {
                 var variant = VaraintList.Where(p => p.Barcode != null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtBarcodeMode.Text.Trim()) == 0).FirstOrDefault();
                 if (variant == null)
-                    MessageBox.Show("Barcode Not Exist");
+                    myMessageQueue.Enqueue("Barcode Not Exist");
                 else
                     ShowProductInformation(variant.Id);
                 txtBarcodeMode.Clear();
@@ -283,7 +292,7 @@ namespace ClubJumana.Wpf2
         private void BtnClubJummanaLogo_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             txtBarcodeMode.Focus();
-            MessageBox.Show("Barcode Mode Activated.");
+            myMessageQueue.Enqueue("Barcode Mode Activated"); ;
         }
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -293,12 +302,11 @@ namespace ClubJumana.Wpf2
             {
                 case 1:
                     TempList.Clear();
-                    if (VaraintList.Count == 0)
-                        VaraintList = _productInformationService.AllVariantList();
+                    //if (VaraintList.Count == 0)
+                       VaraintList = _productInformationService.AllVariantList();
                     TempList = VaraintList;
-                    lvProducts.ItemsSource = null;
-                    lvProducts.ItemsSource = TempList;
-                    lvProducts.Items.Refresh();
+                    ListForLvProduct = new ObservableCollection<VariantViewModel>(TempList);
+                    viewModel.LvProductItemSource = ListForLvProduct;
                     txtSearch.Text = "";
                     lblCountResult.Content = TempList.Count();
                     break;
@@ -323,9 +331,8 @@ namespace ClubJumana.Wpf2
             if (SwitchSelectedlist)
             {
                 SwitchSelectedlist = false;
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = SelectedList.ToList();
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(SelectedList.ToList());
+                viewModel.LvProductItemSource = ListForLvProduct;
                 BtnShowSelectedlist.Content = "Show Main List";
                 btnAddToList.Content = "Remove to List";
                 SetFilter();
@@ -333,9 +340,8 @@ namespace ClubJumana.Wpf2
             else
             {
                 SwitchSelectedlist = true;
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = TempList.ToList();
-                lvProducts.Items.Refresh();
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(TempList);
+                viewModel.LvProductItemSource = ListForLvProduct;
                 SetFilter();
                 BtnShowSelectedlist.Content = "Show Selected List";
                 btnAddToList.Content = "Add to List";
@@ -400,9 +406,9 @@ namespace ClubJumana.Wpf2
                 {
                     SelectedList.Remove(item as VariantViewModel);
                 }
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = SelectedList.ToList();
-                lvProducts.Items.Refresh();
+
+                ListForLvProduct = new ObservableCollection<VariantViewModel>(SelectedList.ToList());
+                viewModel.LvProductItemSource = ListForLvProduct;
             }
 
             lvProducts.SelectedIndex = -1;
@@ -422,19 +428,35 @@ namespace ClubJumana.Wpf2
 
             var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
 
-
-            lvProducts.SelectedIndex = 1;
+            SelecIndexOfClick(wer.Id);
             ShowProductInformation(wer.Product.Id);
         }
+
+        private async Task SelecIndexOfClick(int Id)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    IndexOfLvProduct  = ListForLvProduct.ToList().FindIndex(p => p.Id == Id);
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error In upload Image");
+            }
+
+        }
+
 
         private void ShowProductInformation(int Id)
         {
             SelectedProduct = _productInformationService.GiveMeProductWithId(Id);
             InfoProduct = new ProductInformationViewModel(SelectedProduct);
-            //lvVariant.ItemsSource = InfoProduct.List;
-            this.DataContext = InfoProduct;
+            viewModel.Info = InfoProduct;
             ShowImageVariant(0);
             cmbEditVariantProductType.ItemsSource = ProductTypeList.Where(p => p.CategorysubcategoreisFK == InfoProduct.List.ElementAt(0).ProductType.CategorysubcategoreisFK);
+
             btnNextImageVariant.Visibility = Visibility.Hidden;
             btnPerviosImageVariant.Visibility = Visibility.Hidden;
             btnNextFullImage.Visibility = Visibility.Hidden;
@@ -449,48 +471,35 @@ namespace ClubJumana.Wpf2
             Button b = sender as Button;
             Variant variant = b.CommandParameter as Variant;
 
-            if (variant.ColourFK == 0)
+            if (variant.Sku.CompareTo("Add SKU") == 0)
             {
-                MessageBox.Show("First assign Color for Variant");
+                string messageBoxText = "Do you want to add Sku Number?";
+                string caption = "Add Sku";
+                MessageBoxButton button = MessageBoxButton.YesNo;
+                MessageBoxImage icon = MessageBoxImage.Question;
+                MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
+                            variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code);
+                        _productInformationService.AddSku(variant.Id, tet);
+                        InfoProduct.List.FirstOrDefault(p => p.Id == variant.Id).Sku = tet;
+                        lvVariant.Items.Refresh();
+                        ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id).SKU = tet;
+                        break;
+                    case MessageBoxResult.No:
+
+                        break;
+
+                }
             }
             else
             {
-
-                if (variant.Sku.CompareTo("Add SKU") == 0)
-                {
-                    string messageBoxText = "Do you want to add Sku Number?";
-                    string caption = "Add Sku";
-                    MessageBoxButton button = MessageBoxButton.YesNo;
-                    MessageBoxImage icon = MessageBoxImage.Question;
-                    MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-
-                    switch (result)
-                    {
-                        case MessageBoxResult.Yes:
-                            var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
-                                variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code);
-                            _productInformationService.AddSku(variant.Id, tet);
-                            MessageBox.Show(tet);
-                            break;
-                        case MessageBoxResult.No:
-
-                            break;
-
-                    }
-                }
-                else
-                {
-                    Clipboard.SetText(variant.Sku);
-                    MessageBox.Show(variant.Sku + " Copied");
-                }
+                Clipboard.SetText(variant.Sku);
+                myMessageQueue.Enqueue("SKU Copied");
             }
-
-
-
-
-
-
-
         }
 
         private void AddBarcode(object sender, RoutedEventArgs e)
@@ -510,7 +519,13 @@ namespace ClubJumana.Wpf2
                 {
                     case MessageBoxResult.Yes:
                         _productInformationService.AddBarcode(variant.Id);
-                        MessageBox.Show("Barcode Added" + variant.Id);
+                        var varaintt = _productInformationService.GiveMeVariantById(variant.Id);
+                        if (varaintt.Barcode != null)
+                        {
+                            InfoProduct.List.FirstOrDefault(p => p.Id == variant.Id).Barcode = varaintt.Barcode;
+                            lvVariant.Items.Refresh();
+                            ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id).Barcode = varaintt.Barcode;
+                        }
                         break;
                     case MessageBoxResult.No:
 
@@ -521,7 +536,8 @@ namespace ClubJumana.Wpf2
             else
             {
                 Clipboard.SetText(variant.Barcode.BarcodeNumber);
-                MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
+                myMessageQueue.Enqueue("Barcode copied");
+               // MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
             }
 
         }
@@ -710,6 +726,7 @@ namespace ClubJumana.Wpf2
 
                 GrdInformationProduct.Visibility = Visibility.Hidden;
                 GrSearch.Visibility = Visibility.Visible;
+                lvProducts.SelectedIndex = IndexOfLvProduct;
                 if (cmbType.SelectedIndex == 2)
                     txtSearch.Focus();
             }
@@ -734,6 +751,7 @@ namespace ClubJumana.Wpf2
                     lvVariant.Items.Refresh();
 
                     VaraintList.Single(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name = cmbEditVariantColor.Text;
+                    ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = cmbEditVariantColor.Text };
                 }
 
                 else
@@ -743,18 +761,12 @@ namespace ClubJumana.Wpf2
                     newVariant.Barcode = new Barcode();
                     newVariant.Barcode.BarcodeNumber = "Add Barcode";
                     InfoProduct.List.Add(newVariant);
+                    ListForLvProduct.Add(new VariantViewModel(){Barcode = newVariant.Barcode,Colour = newVariant.Colour,SKU = newVariant.Sku,
+                        Size = newVariant.Size,ProductType = newVariant.ProductType,Product = newVariant.Product,Id = newVariant.Id});
 
                 }
 
-                ListOfLvproducts.Clear();
-                ListOfLvproducts = lvProducts.ItemsSource as List<VariantViewModel>;
-                var step1 = ListOfLvproducts.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id);
-                step1.Colour.Name = cmbEditVariantColor.Text;
-                VaraintList = _productInformationService.AllVariantList();
-                lvProducts.ItemsSource = null;
-                lvProducts.ItemsSource = ListOfLvproducts;
-                lvProducts.Items.Refresh();
-
+                
 
 
                 GrdEditProduct.Visibility = Visibility.Hidden;
@@ -807,7 +819,7 @@ namespace ClubJumana.Wpf2
                     var tt = lvVariant.SelectedItems[0] as Variant;
                     _productInformationService.AddImageVariant(tt.Id, FullNameImage);
                     imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(DestentionPath)));
-
+                    
                     UploadImage(DestentionPath);
 
 
@@ -835,7 +847,6 @@ namespace ClubJumana.Wpf2
             {
                 await Task.Run(() =>
                 {
-                    Thread.Sleep(7000);
                     _repositoryService.UploadFileToFTP(DestentionPath, "/VariantsImage/");
                     //MessageBox.Show("Image Uploaded");
                 });
@@ -909,7 +920,7 @@ namespace ClubJumana.Wpf2
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Could Not Find ImageFile.Please Update");
+                    myMessageQueue.Enqueue("Could Not Find ImageFile.Please Update");
                     imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
 
                 }
