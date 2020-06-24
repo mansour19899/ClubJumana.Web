@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Entities;
+using MaterialDesignThemes.Wpf;
 
 namespace ClubJumana.Wpf2
 {
@@ -33,6 +34,7 @@ namespace ClubJumana.Wpf2
         private List<Brand> brandslist;
         private List<Colour> coloursList;
         private List<Material> materialsList;
+        private SnackbarMessageQueue myMessageQueue;
         int step = 0;
 
         public AddProduct()
@@ -40,6 +42,9 @@ namespace ClubJumana.Wpf2
             InitializeComponent();
             _repositoryService = new RepositoryService();
             _productInformationService = new ProductInformationService();
+
+            myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
+            SnackbarResult.MessageQueue = myMessageQueue;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -53,7 +58,7 @@ namespace ClubJumana.Wpf2
             coloursList = _repositoryService.AllColourList().ToList();
             materialsList = _repositoryService.AllMaterialList().ToList();
 
-            panels = new List<ScrollViewer>() {Scr1, Scr2, Scr3 /*, Scr4, Scr5 */};
+            panels = new List<ScrollViewer>() { Scr1, Scr2, Scr3 /*, Scr4, Scr5 */};
             cmbCountry.ItemsSource = countriesList;
             cmbCountryOfOrgin.ItemsSource = countriesList;
             cmbCategory.ItemsSource = categoriesList;
@@ -66,7 +71,6 @@ namespace ClubJumana.Wpf2
             addVariant = new AddVariantInformationViewModel();
 
             this.DataContext = addVariant;
-            var tt = addVariant.Product.MaterialFK;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -146,9 +150,9 @@ namespace ClubJumana.Wpf2
                 addVariant.Variants.Add(new Variant()
                 {
                     ColourFK = addVariant.Variant.ColourFK,
-                    Colour = new Colour() {Name = cmbColors.Text},
+                    Colour = new Colour() { Name = cmbColors.Text },
                     ProductTypeFK = addVariant.Variant.ProductTypeFK,
-                    ProductType = new ProductType() {Name = cmbProductType.Text},
+                    ProductType = new ProductType() { Name = cmbProductType.Text },
                     FobPrice = addVariant.Variant.FobPrice,
                     WholesaleA = addVariant.Variant.WholesaleA,
                     WholesaleB = addVariant.Variant.WholesaleB,
@@ -312,7 +316,7 @@ namespace ClubJumana.Wpf2
                 cmbSubCategory.IsEnabled = false;
                 cmbProductType.IsEnabled = false;
                 cmbSubCategory.SelectedIndex = 0;
-                cmbProductType.SelectedIndex=0;
+                cmbProductType.SelectedIndex = 0;
             }
         }
 
@@ -425,6 +429,34 @@ namespace ClubJumana.Wpf2
                 }
             }
             return result;
+        }
+
+        private void BtnAddColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            txtColorNamdForAdd.Clear();
+            txtPantoneNumberForAdd.Clear();
+            GrdAddColor.Visibility = Visibility.Visible;
+
+        }
+
+        private void BtnCloseGrdAddColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdAddColor.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnOkAddColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            var t = _productInformationService.AddColour(txtColorNamdForAdd.Text, txtPantoneNumberForAdd.Text);
+            
+            GrdAddColor.Visibility = Visibility.Hidden;
+            myMessageQueue.Enqueue("Color Added.");
+            addVariant.Variant.ColourFK = t.Id;
+            coloursList = _repositoryService.AllColourList().ToList(); 
+            cmbColors.ItemsSource = coloursList;
+            cmbColors.Items.Refresh();
+            var index = coloursList.FindIndex(p => p.Id == t.Id );
+            cmbColors.SelectedIndex = index;
+
         }
     }
 }

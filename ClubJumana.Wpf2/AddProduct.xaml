@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClubJumana.Wpf2"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="AddProduct" Height="900" Width="1800" WindowState="Maximized" Loaded="Window_Loaded">
     <Window.Resources>
         <system:String x:Key="salam">0 0 0 40</system:String>
-        <Thickness x:Key="LabelMargin" Top="0" Left="0" Right="250" Bottom ="0" />
+        <Thickness x:Key="LabelMargin" Top="0" Left="0" Right="100" Bottom ="0" />
         <Thickness x:Key="GrMargin" Top="20" Left="60" Right="0" Bottom ="0" />
         <system:Double x:Key="myFont">20</system:Double>
 
@@ -157,8 +158,10 @@
             <ScrollViewer Name="Scr3"  Grid.Row="1" Visibility="Hidden">
                 <Grid  Margin="{StaticResource GrMargin}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="0.1*"/>
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="0.1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -166,7 +169,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.Column="2">
                         <Label Content="Color" Style="{StaticResource lblAddProduct}" />
                         <ComboBox Name="cmbColors" SelectedValue="{Binding Variant.ColourFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" />
                     </StackPanel>
@@ -178,7 +181,7 @@
                         <Label Name="lblWidth" Content="Width (in)" Style="{StaticResource lblAddProduct}" />
                         <TextBox Name="txtWidth" Text="{Binding Variant.Width,UpdateSourceTrigger=PropertyChanged}" GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtWidth_KeyUp"   />
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="1">
+                    <StackPanel Grid.Row="1" Grid.Column="2">
                         <Label Name="lblLenght" Content="Lenght (in)" Style="{StaticResource lblAddProduct}" />
                         <TextBox Name="txtLenght" Text="{Binding Variant.length,UpdateSourceTrigger=PropertyChanged}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyUp="txtLenght_KeyUp" />
                     </StackPanel>
@@ -186,7 +189,7 @@
                         <Label Name="lblSize" Content="Size (in)" Style="{StaticResource lblAddProduct}" MouseDown="LblSize_OnMouseDown" />
                         <TextBox Name="txtSize" Text="{Binding Variant.Size}" KeyDown="TxtSize_OnKeyDown" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" />
                     </StackPanel>
-                    <StackPanel Grid.Row="2" Grid.Column="1">
+                    <StackPanel Grid.Row="2" Grid.Column="2">
                         <Label Content="GSM " Style="{StaticResource lblAddProduct}" />
                         <TextBox Name="txtGsm" Text="{Binding Variant.Data1}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
@@ -204,13 +207,55 @@
                             </TextBox.RenderTransform>
                         </TextBox>
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2">
+                    <StackPanel Grid.Row="3" Grid.Column="2" Grid.RowSpan="2">
                         <Label Content="Price" Style="{StaticResource lblAddProduct}" Margin="0 0 0 20" />
                         <TextBox Name="txtPrice" Text="{Binding Variant.FobPrice}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="25" Margin="{StaticResource LabelMargin}" Style="{StaticResource txtCostCentreStyle}" Height="60" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
+                    <Button Name="btnAddColor" Content="Add Color" Grid.Column="4" Margin="0 0 30 0" Click="BtnAddColor_OnClick"/>
 
                 </Grid>
             </ScrollViewer>
+            <Grid   Name="GrdAddColor" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
+                <Border  Width="700" Height="400"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
+                    <UniformGrid Rows="4" Columns="1" Margin="0 0"  >
+                        <UniformGrid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="MaxHeight" Value="40"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            </Style>
+                        </UniformGrid.Resources>
+                        <Label VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Content="ADD COLOR" FontSize="17" FontWeight="Bold" Foreground="Navy"/>
+                        <UniformGrid Rows="1" Columns="3">
+                            <TextBlock Text=" Color Name"/>
+                            <TextBox Name="txtColorNamdForAdd"/>
+                        </UniformGrid>
+                        <UniformGrid Rows="1" Columns="3">
+                            <TextBlock Text=" Pantone Neumber"/>
+                            <TextBox Name="txtPantoneNumberForAdd"/>
+                        </UniformGrid>
+
+                        <TextBlock></TextBlock>
+                        <UniformGrid Rows="1" Columns="4" Margin="0 -50 0 0">
+                            <TextBlock/>
+                            <Button Name="btnCloseGrdAddColor" Content="Cancel"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#940000" Click="BtnCloseGrdAddColor_OnClick" />
+                            <Button Name="btnOkAddColor" Content="Add"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#0a5d00" Click="BtnOkAddColor_OnClick" />
+
+
+
+                        </UniformGrid>
+
+                    </UniformGrid >
+
+                </Border>
+
+
+            </Grid>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -220,7 +265,8 @@
                 <Button Name="btnBack" Margin="0 0 110 0" HorizontalAlignment="Right" FontSize="25" Height="60" MaxWidth="400" MinWidth="300" Content="Back" Grid.Column="0" Click="btnBack_Click" />
                 <Button Name="btnNext" Margin="110 0 0 0" HorizontalAlignment="Left" FontSize="25" Height="60" MaxWidth="400" MinWidth="300" Content="Next" Grid.Column="1" Click="btnNext_Click" />
             </Grid>
-           
+
+            <materialDesign:Snackbar Grid.Row="2"  x:Name="SnackbarResult" Panel.ZIndex="99999"  />
 
         </Grid>
         <Grid Name="GrReview" Visibility="Hidden" Margin="85,82,78,80">

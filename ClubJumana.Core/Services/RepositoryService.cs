@@ -880,7 +880,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Colour> AllColourList()
         {
-            return _context.colours;
+            return _context.colours.AsNoTracking();
         }
 
         public IQueryable<Material> AllMaterialList()
