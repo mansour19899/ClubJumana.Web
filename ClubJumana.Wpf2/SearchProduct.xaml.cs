@@ -550,6 +550,7 @@ namespace ClubJumana.Wpf2
                 Variant variantSelected = b.CommandParameter as Variant;
                 ProductTypeForAddVariant.Visibility = Visibility.Collapsed;
                 InfoProduct.VariantSelected = variantSelected;
+                HideAddColorPart();
                 GrdEditProduct.Visibility = Visibility.Visible;
             }
             else
@@ -564,23 +565,30 @@ namespace ClubJumana.Wpf2
             Variant variantSelected = b.CommandParameter as Variant;
             cost = new CostCenter();
 
+            if (variantSelected.Product.CountryOfOrginFK == null)
+            {
+                MessageBox.Show("Please Set Country Of Orgin");
+            }
+            else
+            {
+                var country = _repositoryService.GiveMeCountryByID(38);
+                cost.Country = country;
+                if (country.ExChangeRate == null)
+                    cost.ExchangeRate = -1;
+                else
+                    cost.ExchangeRate = country.ExChangeRate.Value;
+                if (variantSelected.Product.CountryOfOrgin.Duty != null)
+                    cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                else
+                    cost.Duty = -1;
+                cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
+                cost.WholeSaleA = variantSelected.WholesaleA.ToString();
+                cost.WholeSaleB = variantSelected.WholesaleB.ToString();
+                cost.RetailPrice = variantSelected.RetailPrice.ToString();
+                InfoProduct.CostCenter = cost;
+                GrdCostCenter.Visibility = Visibility.Visible;
+            }
 
-            var country = _repositoryService.GiveMeCountryByID(38);
-            cost.Country = country;
-            if (country.ExChangeRate == null)
-                cost.ExchangeRate = -1;
-            else
-                cost.ExchangeRate = country.ExChangeRate.Value;
-            if (variantSelected.Product.CountryOfOrgin.Duty != null)
-                cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
-            else
-                cost.Duty = -1;
-            cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
-            cost.WholeSaleA = variantSelected.WholesaleA.ToString();
-            cost.WholeSaleB = variantSelected.WholesaleB.ToString();
-            cost.RetailPrice = variantSelected.RetailPrice.ToString();
-            InfoProduct.CostCenter = cost;
-            GrdCostCenter.Visibility = Visibility.Visible;
         }
 
 
@@ -743,15 +751,21 @@ namespace ClubJumana.Wpf2
             try
             {
                 var x = InfoProduct.VariantSelected.Id;
+                bool IsAddColor = false;
+                if (!String.IsNullOrWhiteSpace(txtColorNameInEditVariant.Text))
+                {
+                    var t = _productInformationService.AddColour(txtColorNameInEditVariant.Text, txtPantonInEditVariant.Text);
+                    InfoProduct.VariantSelected.ColourFK = t.Id;
+                    IsAddColor = true; }
                 _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
                 if (x == InfoProduct.VariantSelected.Id)
                 {
                     InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
-                        cmbEditVariantColor.Text;
+                        (IsAddColor) ?  txtColorNameInEditVariant.Text:cmbEditVariantColor.Text;
                     lvVariant.Items.Refresh();
 
                     VaraintList.Single(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name = cmbEditVariantColor.Text;
-                    ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = cmbEditVariantColor.Text };
+                    ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() {Name = (IsAddColor) ?  txtColorNameInEditVariant.Text:cmbEditVariantColor.Text };
                 }
 
                 else
@@ -765,10 +779,9 @@ namespace ClubJumana.Wpf2
                         Size = newVariant.Size,ProductType = newVariant.ProductType,Product = newVariant.Product,Id = newVariant.Id});
 
                 }
-
                 
-
-
+                cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
+                cmbEditVariantColor.Items.Refresh();
                 GrdEditProduct.Visibility = Visibility.Hidden;
             }
             catch (Exception exception)
@@ -989,6 +1002,7 @@ namespace ClubJumana.Wpf2
             {
                 ProductTypeForAddVariant.Visibility = Visibility.Visible;
                 InfoProduct.VariantSelected = new Variant();
+                HideAddColorPart();
                 GrdEditProduct.Visibility = Visibility.Visible;
             }
             else
@@ -998,6 +1012,18 @@ namespace ClubJumana.Wpf2
         }
 
 
-  
+        private void BtnAddColorInEditVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            RowcmbColor.IsEnabled = false;
+            RowColorName.Visibility = Visibility.Visible;
+            RowPantone.Visibility = Visibility.Visible;
+        }
+
+        private void HideAddColorPart()
+        {
+            RowcmbColor.IsEnabled = true;
+            RowColorName.Visibility = Visibility.Collapsed;
+            RowPantone.Visibility = Visibility.Collapsed;
+        }
     }
 }

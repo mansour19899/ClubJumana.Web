@@ -27,18 +27,17 @@ namespace ClubJumana.Core.Services
         }
         public int AddTowel(AddVariantInformationViewModel TowelInformation)
         {
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+            foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
+            {
+                _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
+            }
 
 
-            //foreach (var entry in _context.ChangeTracker.Entries().ToList())
-            //{
-            //    _context.Entry(entry.Entity).State = EntityState.Detached;
-            //}
-            //foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
-            //{
-            //    _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
-            //}
 
-            TowelInformation.Variant=new Variant();
             if (TowelInformation.company.Id == 0)
             {
                 int CompanyId = 1;
@@ -55,7 +54,6 @@ namespace ClubJumana.Core.Services
 
 
             int Id = _onlineContext.products.Max(x => x.Id) + 1;
-
 
             _onlineContext.products.Add(new Product()
             {
@@ -81,9 +79,12 @@ namespace ClubJumana.Core.Services
                 ProductTittle = TowelInformation.Product.ProductTittle,
 
             });
-            var tttt = _onlineContext.ChangeTracker.Entries();
+
+
+
 
             int TowelId = _context.variants.Max(x => x.Id) + 1;
+
 
 
             foreach (var VARIABLE in TowelInformation.Variants)
@@ -136,9 +137,11 @@ namespace ClubJumana.Core.Services
             _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
 
 
-            tttt.Distinct();
-            _onlineContext.SaveChanges();
+
+
             _context.SaveChanges();
+            _onlineContext.SaveChanges();
+
             return 1;
         }
 
@@ -196,7 +199,7 @@ namespace ClubJumana.Core.Services
 
         public Variant GiveMeVariantById(int Id)
         {
-            return _context.variants.FirstOrDefault(p => p.Id == Id);
+            return _context.variants.Include(p=>p.Colour).Include(p=>p.Product).Include(p=>p.ProductType).Include(p=>p.Barcode).FirstOrDefault(p => p.Id == Id);
         }
 
 
@@ -300,6 +303,15 @@ namespace ClubJumana.Core.Services
 
         public int AddOrUpdateVariant(Variant variant, int ProductId)
         {
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+            foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
+            {
+                _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
+            }
+
             if (variant.Id == 0)
             {
                 int id = _onlineContext.variants.Max(p => p.Id);
@@ -433,12 +445,24 @@ namespace ClubJumana.Core.Services
 
         public Colour AddColour(string name, string pantoneNumber)
         {
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+            foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
+            {
+                _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
+            }
+
             int newId = _onlineContext.colours.Max(p => p.Id);
             Colour colour=new Colour();
             colour.Name = name;
             colour.PantoneNumber = pantoneNumber;
             colour.Code = (newId + 1).ToString().NumtoStr(3);
             colour.Id = newId + 1;
+
+
+
 
             _onlineContext.colours.Add(colour);
             _context.colours.Add(colour);

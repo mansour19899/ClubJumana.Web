@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    [Migration("20200620160854_InitialCreate")]
+    [Migration("20200625021803_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1067,6 +1067,119 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("subcategories");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.TablesVersion", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("NeedToUpdate")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("RowVersion")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tablesversion");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Barcodes",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Colours",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Brands",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Countries",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Materials",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Companies",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Products",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Categories",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "SubCategories",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "CategoriesSubCategories",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "ProductTypes",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Varaints",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Images",
+                            NeedToUpdate = false,
+                            RowVersion = 0L
+                        });
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>

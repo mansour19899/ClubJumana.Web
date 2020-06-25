@@ -491,8 +491,8 @@
 
             </Grid>
             <Grid   Name="GrdEditProduct" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
-                <Border  Width="600" Height="699"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60">
-                    <UniformGrid Rows="11" Columns="1"  >
+                <Border  Width="600" Height="800"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60 60 20 0">
+                    <UniformGrid Rows="15" Columns="1"  >
                         <UniformGrid.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="FontSize" Value="20"/>
@@ -528,10 +528,19 @@
                             <ComboBox FontSize="15" Name="cmbEditVariantProductType" SelectedValue="{Binding Info.VariantSelected.ProductTypeFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
                             </ComboBox>
                         </UniformGrid>
-                        <UniformGrid Columns="3" Rows="1">
+                        <UniformGrid Name="RowcmbColor" Columns="3" Rows="1" IsEnabled="True">
                             <TextBlock Text="Color" />
                             <ComboBox FontSize="15" Name="cmbEditVariantColor" SelectedValue="{Binding Info.VariantSelected.ColourFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
                             </ComboBox>
+                            <Button Name="btnAddColorInEditVariant"  Content="Add Color" HorizontalAlignment="Center" Click="BtnAddColorInEditVariant_OnClick"/>
+                        </UniformGrid>
+                        <UniformGrid Name="RowColorName" Rows="1" Columns="3" Visibility="Collapsed">
+                            <TextBlock Text=" Color Name"/>
+                            <TextBox Name="txtColorNameInEditVariant" />
+                        </UniformGrid>
+                        <UniformGrid Name="RowPantone" Rows="1" Columns="3" Visibility="Collapsed">
+                            <TextBlock Text=" Pantone Number"/>
+                            <TextBox Name="txtPantonInEditVariant" />
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Width"/>

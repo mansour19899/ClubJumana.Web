@@ -188,6 +188,20 @@ namespace ClubJumana.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tablesversion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    RowVersion = table.Column<long>(nullable: false),
+                    NeedToUpdate = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tablesversion", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -875,19 +889,34 @@ namespace ClubJumana.DataLayer.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "vendors",
-                columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
-                values: new object[] { 1, null, null, null, null, null, null, null, null, null, null, null, null, "ClubJummana", null, null, null, null, null, null, null });
+                table: "tablesversion",
+                columns: new[] { "Id", "Name", "NeedToUpdate", "RowVersion" },
+                values: new object[,]
+                {
+                    { 1, "Barcodes", false, 0L },
+                    { 2, "Colours", false, 0L },
+                    { 3, "Brands", false, 0L },
+                    { 4, "Countries", false, 0L },
+                    { 5, "Materials", false, 0L },
+                    { 6, "Companies", false, 0L },
+                    { 7, "Products", false, 0L },
+                    { 8, "Categories", false, 0L },
+                    { 9, "SubCategories", false, 0L },
+                    { 10, "CategoriesSubCategories", false, 0L },
+                    { 11, "ProductTypes", false, 0L },
+                    { 12, "Varaints", false, 0L },
+                    { 13, "Images", false, 0L }
+                });
 
             migrationBuilder.InsertData(
                 table: "vendors",
                 columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
-                values: new object[] { 2, null, null, null, null, null, null, null, null, null, null, null, null, "Anzir", null, null, null, null, null, null, null });
-
-            migrationBuilder.InsertData(
-                table: "vendors",
-                columns: new[] { "ID", "Acountsharp", "Address1", "Address2", "Address3", "Country", "Currency", "Email", "FirstName", "Info1", "Info2", "LastName", "LeadTime", "Name", "Note", "PaymentTerms", "Phone1", "Phone2", "PostalCode", "Title", "TradeDiscountPercent" },
-                values: new object[] { 3, null, null, null, null, null, null, null, null, null, null, null, null, "Noman", null, null, null, null, null, null, null });
+                values: new object[,]
+                {
+                    { 1, null, null, null, null, null, null, null, null, null, null, null, null, "ClubJummana", null, null, null, null, null, null, null },
+                    { 2, null, null, null, null, null, null, null, null, null, null, null, null, "Anzir", null, null, null, null, null, null, null },
+                    { 3, null, null, null, null, null, null, null, null, null, null, null, null, "Noman", null, null, null, null, null, null, null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_categoriessubcategories_CategoryFK",
@@ -1096,6 +1125,9 @@ namespace ClubJumana.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "soitems");
+
+            migrationBuilder.DropTable(
+                name: "tablesversion");
 
             migrationBuilder.DropTable(
                 name: "userroles");
