@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,11 +15,13 @@ using System.Windows.Shapes;
 using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Enums;
+using ClubJumana.Core.Generator;
 using ClubJumana.Core.Services;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Entities;
 using ClubJumana.DataLayer.Entities.Users;
 using ClubJumana.Wpf.UserControls;
+using MaterialDesignThemes.Wpf;
 
 namespace ClubJumana.Wpf
 {
@@ -39,6 +42,7 @@ namespace ClubJumana.Wpf
         public Mode Mode = Mode.Nothong;
         public static User user;
         private List<PurchaseOrder> PurchaseOrdersList;
+        private SnackbarMessageQueue myMessageQueue;
 
         public ucPurchasing Purchasing;
         private Test tt;
@@ -55,22 +59,24 @@ namespace ClubJumana.Wpf
             user = _userService.LoginUser();
             //TestBorder.Child=new ucTest();
 
-            tt =new Test();
+            tt = new Test();
             tt.Customer = _repositoryService.AllCustomers().FirstOrDefault();
             tt.Vendor = _repositoryService.AllVendor().FirstOrDefault();
             tt.ProductMaster = _repositoryService.AllProductMasterList().FirstOrDefault();
             tt.PurchaseOrder = _repositoryService.AllPurchaseOrder().FirstOrDefault();
 
-            var customerCard= new ucCustomerCard();
-            var vendorCard=new ucVendorCard();
-            var itemCard=new ucItemCard();
-
+            var customerCard = new ucCustomerCard();
+            var vendorCard = new ucVendorCard();
+            var itemCard = new ucItemCard();
+            Purchasing = new ucPurchasing();
 
             vendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             customerCard.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
-
-
+            Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
+            Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
+            Purchasing.BtnPostPurchasing += BtnSavePurchasing_OnBtnSaveOnClick;
+            Purchasing.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             DataContext = tt;
             customerCard.DataContext = tt.Customer;
             vendorCard.DataContext = tt.Vendor;
@@ -79,34 +85,36 @@ namespace ClubJumana.Wpf
 
             vendors = _repositoryService.AllVendor().ToList();
             warehouses = _repositoryService.AllWarehouse().ToList();
-          
-           
 
+
+            myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
+            SnackbarResult.MessageQueue = myMessageQueue;
         }
 
         private void Dashboard_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var convertor = new PurchaseOrderConvertor();
-            // SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
-            SelectedPurchaseOrder = new PurchaseOrder() { };
-            SelectedPurchaseOrder.Items = new List<Item>();
-            SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
-            SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
-            SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
+            //var convertor = new PurchaseOrderConvertor();
+            //// SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
+            //SelectedPurchaseOrder = new PurchaseOrder() { };
+            //SelectedPurchaseOrder.Items = new List<Item>();
+            //SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
+            //SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
+            //SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
 
-            Purchasing = new ucPurchasing();
-            Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
-            Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
-            //Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
-            Purchasing.PoViewModel = SelectedPo;
-            Purchasing.AsnViewModel = SelectedAsn;
-            Purchasing.GrnViewModel = SelectedGrn;
-            Purchasing.Mode = Mode.PO;
-            //Purchasing.DataContext = SelectedGrn;
-            Bordermanagement.Child = Purchasing;
+            //Purchasing = new ucPurchasing();
+            //Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
+            //Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
+            ////Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
+            //Purchasing.PoViewModel = SelectedPo;
+            //Purchasing.AsnViewModel = SelectedAsn;
+            //Purchasing.GrnViewModel = SelectedGrn;
+            //Purchasing.Mode = Mode.PO;
+            ////Purchasing.DataContext = SelectedGrn;
+            //Bordermanagement.Child = Purchasing;
 
 
         }
+    
 
         private void BtnSaveForCustomer_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
@@ -124,12 +132,21 @@ namespace ClubJumana.Wpf
             MessageBox.Show(tt.Customer.FirstName);
             _repositoryService.AddAndUpdateItem(tt.ProductMaster);
         }
+
         private void BtnSavePurchasing_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-           
+
             Purchasing.CalculateCost();
-            SaveAndUpdate();
-            
+
+            SaveAndUpdate(Purchasing.IsPosting);
+
+         
+        }
+
+        private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
+        {
+            SubPage.Visibility = Visibility.Hidden;
+
         }
 
         void SaveAndUpdate(bool done = false)
@@ -150,37 +167,66 @@ namespace ClubJumana.Wpf
                     SelectedGrn.ApproveUser_fk = user.Id;
                     IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn, SelectedGrn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
+                default:
+                    break;
             }
 
             if (IsSuccessSavedOrUpdated)
             {
-                if (done)
-                {
-                    message = "Purchase Order Done";
-                }
-                else if (SelectedAsn != null)
-                {
+                UpdatePurchaseList();
 
-                    if (SelectedAsn.Id == 0)
-                        message = "Goods Transit Saved";
+                switch (Purchasing.Mode)
+                {
+                    case Mode.PO:
+                        if (Purchasing.IsPosting)
+                            myMessageQueue.Enqueue("Purchase Order Posted.");
+                        else
+                            myMessageQueue.Enqueue("Purchase Order Saved.");
+                        break;
+                    case Mode.Asn:
+                        if (Purchasing.IsPosting)
+                            myMessageQueue.Enqueue("Goods In Transit Posted.");
+                        else
+                            myMessageQueue.Enqueue("Goods In Transit Saved.");
+
+                        break;
+                    case Mode.Grn:
+                        if (Purchasing.IsPosting)
+                            myMessageQueue.Enqueue("Goods Receive Note Posted.");
+                        else
+                            myMessageQueue.Enqueue("Goods Receive Note Saved");
+
+                        break;
+                    default:
+                        break;
+
 
                 }
-                else if (SelectedPo != null)
-                {
-                    if (SelectedPo.Id == 0)
-                        message = "Purchase Order Saved";
-                }
-                else
-                {
-                    message = "Purchase Order Updated";
-                }
-
-                //myMessageQueue.Enqueue(message);
             }
-
+            else
+            {
+                MessageBox.Show("Error In Data Entry");
+            }
 
         }
 
+        private async Task UpdatePurchaseList()
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    PurchaseOrdersList.Clear();
+                    PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
+
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error In upload Image");
+            }
+
+        }
         private void BtnAddItem_OnClick(object? sender, EventArgs e)
         {
             var ttttr = Purchasing.txtSearch.Text;
@@ -213,35 +259,116 @@ namespace ClubJumana.Wpf
                         break;
                     case Mode.Grn:
                         break;
+                    default:
+                        break;
                 }
 
             }
 
 
-            var ttt = SelectedAsn.ItemsOfPurchaseOrderViewModels;
-
         }
 
-    
+
 
         private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (PurchasingListview)lvPurchasing.ItemContainerGenerator.ItemFromContainer(dep);
+
+            PurachasingShow(wer.Alu);
+
         }
+
+        private void PurachasingShow(int Id = 0)
+        {
+            var convertor = new PurchaseOrderConvertor();
+            if (Id == 0)
+            {
+                SelectedPurchaseOrder = new PurchaseOrder() { };
+                SelectedPurchaseOrder.Items = new List<Item>();
+            }
+            else
+                SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(Id);
+
+            SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
+            SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
+            SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
+
+            //Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
+            Purchasing.PoViewModel = SelectedPo;
+            Purchasing.AsnViewModel = SelectedAsn;
+            Purchasing.GrnViewModel = SelectedGrn;
+            Purchasing.Mode = Mode;
+            Purchasing.ParaperForNewPurchasing();
+            //Purchasing.DataContext = SelectedGrn;
+            Bordermanagement.Child = Purchasing;
+
+            SubPage.Visibility = Visibility.Visible;
+        }
+
 
         private void BtnPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("salam");
+            PurchasingMenue.Visibility = Visibility.Visible;
         }
 
+        private void PurchasingMenue_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            PurchasingMenue.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnNewPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            PurachasingShow();
+        }
         private void BtnPurChaseorder_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {var t= PurchaseOrdersList.Where(p => p.CreatedPO = false).Select(p => new { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal });
-            lvPurchasing.ItemsSource = t;
+        {
+
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() });
+            Mode = Mode.PO;
+            txtMode.Text = "Purchase Order";
         }
 
         private void BtnPurchaseorderInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO = true).Select(p => new { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true & p.PoNumber != -1).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() });
+            Mode = Mode.POInvoice;
+            txtMode.Text = "Purchase Order Invoice";
+        }
+        private void BtnGit_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true && p.CreatedAsn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
+            Mode = Mode.Asn;
+            txtMode.Text = "Goods In Transit";
+        }
+
+        private void BtnGitInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
+            Mode = Mode.AsnInvoice;
+            txtMode.Text = "GIT Invoice";
+        }
+
+        private void BtnGrn_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true && p.CreatedGrn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() });
+            Mode = Mode.Grn;
+            txtMode.Text = "Goods Receive Note";
+        }
+
+        private void BtnGrnInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedGrn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() });
+            Mode = Mode.GrnInvoice;
+            txtMode.Text = "Grn Invoice";
         }
     }
 

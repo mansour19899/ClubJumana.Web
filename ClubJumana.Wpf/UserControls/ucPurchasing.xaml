@@ -36,14 +36,16 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
-                <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSaveVendor" Click="BtnSavePurchasing_OnClick">
+                <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSavePurchasing" Click="BtnSavePurchasing_OnClick">
                     <Button.Foreground>
                         <SolidColorBrush Color="White" Opacity="1"/>
                     </Button.Foreground>
                 </Button>
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
                 <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/compressIcon.png" />
+                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/compressIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
             </Grid>
         </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
@@ -63,13 +65,19 @@
                             <Setter Property="Foreground" Value="#FF505C6D"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Margin" Value="20 0 30 0"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
+
                     </StackPanel.Resources>
                     <TextBlock Text="Process" />
-                    <TextBlock Text="Item" />
-                    <TextBlock Text="History" />
-                    <TextBlock Text="Special Sales Prices &amp; Dicounts" />
+                    <TextBlock Name="btnPostPurchasing" Text="Posting" MouseDown="BtnPostPurchasing_OnMouseDown" />
                     <TextBlock Text="Request Approval" />
+                    <TextBlock Text="Print/Send" />
+                    <TextBlock Text="Navigate" />
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <TextBlock Text="More options" />
 

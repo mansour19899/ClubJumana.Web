@@ -28,9 +28,22 @@ namespace ClubJumana.Wpf.UserControls
         public ObservableCollection<ItemsOfPurchaseOrderViewModel> ItemsOfPurchaseOrderViewModels { get; set; }
         public PoViewModel PoViewModel { get; set; }
         public AsnViewModel AsnViewModel { get; set; }
-        public GrnViewModel GrnViewModel { get; set; }
-        public Mode Mode = Mode.Nothong;
+        private GrnViewModel _grnViewModel;
 
+        public GrnViewModel GrnViewModel
+        {
+            get
+            {
+                return _grnViewModel;
+            }
+            set
+            {
+                _grnViewModel = value;
+            }
+        }
+
+        public Mode Mode = Mode.Nothong;
+        public bool IsPosting = false;
         public List<ItemsOfPurchaseOrderViewModel> RemoveItemsOfPurchaseOrderViewModel;
 
 
@@ -42,20 +55,59 @@ namespace ClubJumana.Wpf.UserControls
         }
         private void UcPurchasing_OnLoaded(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        public void ParaperForNewPurchasing()
+        {
             RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
-           
+
             switch (Mode)
             {
                 case Mode.PO:
                     this.DataContext = PoViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Visible;
                     break;
                 case Mode.Asn:
                     this.DataContext = AsnViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Visible;
+
                     break;
                 case Mode.Grn:
                     this.DataContext = GrnViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Visible;
+                    break;
+                case Mode.POInvoice:
+                    this.DataContext = PoViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Hidden;
+                    break;
+                case Mode.AsnInvoice:
+                    this.DataContext = AsnViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Hidden;
+                    break;
+                case Mode.GrnInvoice:
+                    this.DataContext = GrnViewModel;
+                    btnSavePurchasing.Visibility = Visibility.Hidden;
                     break;
             }
+
+            switch (Mode)
+            {
+                case Mode.PO:
+                    dgItems.Columns[6].Header = "Quantity (PO)";
+                    dgItems.Columns[5].Header = "Previous Quantity";
+                    break;
+                case Mode.Asn:
+                    dgItems.Columns[6].Header = "Quantity (GIT)";
+                    dgItems.Columns[5].Header = "Quantity (PO)";
+                    break;
+                case Mode.Grn:
+                    dgItems.Columns[6].Header = "Quantity (GRN)";
+                    dgItems.Columns[5].Header = "Quantity (GIT)";
+                    break;
+            }
+
+
         }
 
         public event EventHandler<EventArgs> BtnAddItemOnClick;
@@ -69,9 +121,26 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnSaveOnClick;
         private void BtnSavePurchasing_OnClick(object sender, RoutedEventArgs e)
         {
+            IsPosting = false;
             e.Handled = true;
             if (BtnSaveOnClick != null)
                 BtnSaveOnClick(sender, e);
+        }
+        public event EventHandler<EventArgs> BtnPostPurchasing;
+        private void BtnPostPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IsPosting = true;
+            e.Handled = true;
+            if (BtnPostPurchasing != null)
+                BtnPostPurchasing(sender, e);
+        }
+
+        public event EventHandler<EventArgs> BtnCloseSubPage;
+        private void BtnCloseSubPage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnCloseSubPage != null)
+                BtnCloseSubPage(sender, e);
         }
 
         private void DgItems_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -197,5 +266,8 @@ namespace ClubJumana.Wpf.UserControls
             TextBox tb = (sender as TextBox);
             tb.SelectAll();
         }
+
+
+
     }
 }

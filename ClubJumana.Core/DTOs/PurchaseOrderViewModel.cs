@@ -377,4 +377,12 @@ namespace ClubJumana.Core.DTOs
             _isChanged = true;
         }
     }
+
+    public class PurchasingListview
+    {
+        public int Alu { get; set; }
+        public DateTime LastModified { get; set; }
+        public decimal? TotalPrice { get; set; }
+        public string InvoiceNumber { get; set; }
+    }
 }

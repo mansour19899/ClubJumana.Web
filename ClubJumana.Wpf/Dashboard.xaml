@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ClubJumana.Wpf"
         xmlns:uc="clr-namespace:ClubJumana.Wpf.UserControls"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
         mc:Ignorable="d"
         Title="Dashboard" Height="1000" Width="1920" Loaded="Dashboard_OnLoaded">
@@ -38,6 +39,15 @@
             <Image Grid.Column="6" Source="Content/Icon/questionIcon.png" Margin="11" />
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" Value="Underline"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
             <TextBlock Text="Dashboard" FontSize="28" Margin="110 5 0 0"/>
             <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
@@ -52,8 +62,8 @@
                 <TextBlock Text="Seles" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <StackPanel Name="btnPurchasing" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnPurchasing_OnMouseDown" >
-                <TextBlock Text="Purchasing" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+            <StackPanel Name="btnPurchasing" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnPurchasing_OnMouseDown">
+                <TextBlock  Text="Purchasing" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
@@ -72,39 +82,47 @@
                 <RowDefinition Height="0.08*"/>
                 <RowDefinition Height="0.92*"/>
             </Grid.RowDefinitions>
-            <Border  Padding="0 10"  BorderThickness="0,0,0,1" BorderBrush="Black" Margin="110 0">
+            <Border  Padding="0 0"  BorderThickness="0,0,0,1" BorderBrush="Black" Margin="110 0">
                 <StackPanel  Orientation="Horizontal" Height="40" Margin="0 0 0 0">
                     <StackPanel.Resources>
                         <system:Double x:Key="Font">16</system:Double>
+                        <system:Double x:Key="Height">50</system:Double>
+                        <Style TargetType="StackPanel" x:Key="MouseOver">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#92D0FF"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
                     </StackPanel.Resources>
                     <TextBlock Name="txtMode" Text="Purchase Order" FontWeight="Bold" FontSize="18" Margin="0 7 0 0"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Width="50" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="All" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                     </StackPanel>
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                         <TextBlock Text="Search" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Name="btnNewPurchasing" Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnNewPurchasing_OnMouseDown">
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                         <TextBlock Text="New" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                         <TextBlock Text="Delete" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="Print/Send" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="Posting" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                     </StackPanel>
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                    <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="More Options" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                         <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
                     </StackPanel>
@@ -113,12 +131,13 @@
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="400"/>
                 </Grid.ColumnDefinitions>
-                <ListView SelectionMode="Multiple"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" >
+                <ListView SelectionMode="Single"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Alu}" />
+                            <GridViewColumn Header="Invoice No." Width="120" DisplayMemberBinding="{Binding Path=InvoiceNumber}" />
                             <GridViewColumn Header="Buy For Vendor" Width="300" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
                             <GridViewColumn Header="Vendor Invoice NO." Width="320" DisplayMemberBinding="{Binding Path=TotalPricee}"/>
                             <GridViewColumn Header="Amount" Width="300" DisplayMemberBinding="{Binding Path=TotalPrice}" />
@@ -126,9 +145,46 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <Border Grid.Column="1" Margin="0 150 0 0" Background="White">
+                    <Grid Margin="20 50 50 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Vendor Details" FontSize="18" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Vendor No."/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Vendor No." HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Name"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Reyhaneh" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Phone No."/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="647332211" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Email"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="Rey@gmail.com" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Fax No."/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Contact"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="Rey McIntosh" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2"  Background="GhostWhite" Margin="0 0 0 0"  Height="100" VerticalAlignment="Top">
+        <Grid Grid.Row="2" Name="PurchasingMenue" Visibility="Hidden"  Background="GhostWhite" Margin="0 0 0 0"  Height="150" VerticalAlignment="Top" MouseLeave="PurchasingMenue_OnMouseLeave">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="20"/>
@@ -140,18 +196,18 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Resources>
-            <UniformGrid Rows="3" Columns="4" Margin="300 20 300 0">
+            <UniformGrid Rows="3" Columns="4" Margin="300 20 300 50">
                 <TextBlock  Text="Vendors" />
                 <TextBlock Name="btnPurChaseorder"  Text="Purchase order" MouseDown="BtnPurChaseorder_OnMouseDown"/>
                 <TextBlock Name="btnPurchaseorderInvoice" Text="Purchase Order Invoice" MouseDown="BtnPurchaseorderInvoice_OnMouseDown"/>
                 <TextBlock></TextBlock>
                 <TextBlock Text="Incoming Documents"/>
-                <TextBlock Name="btnGit" Text="Goods In Transit"/>
-                <TextBlock Name="btnGitInvoice" Text="GIT Invoice"/>
+                <TextBlock Name="btnGit" Text="Goods In Transit" MouseDown="BtnGit_OnMouseDown"/>
+                <TextBlock Name="btnGitInvoice" Text="GIT Invoice" MouseDown="BtnGitInvoice_OnMouseDown"/>
                 <TextBlock></TextBlock>
                 <TextBlock Text="Item Charge"/>
-                <TextBlock Name="btnGrn" Text="Goods Receive Note"/>
-                <TextBlock Name="BtnGrnInvoice" Text="GRN Invoive"/>
+                <TextBlock Name="btnGrn" Text="Goods Receive Note" MouseDown="BtnGrn_OnMouseDown"/>
+                <TextBlock Name="BtnGrnInvoice" Text="GRN Invoive" MouseDown="BtnGrnInvoice_OnMouseDown"/>
             </UniformGrid>
         </Grid>
 
@@ -166,5 +222,6 @@
             </Border>
         </Grid>
 
+        <materialDesign:Snackbar Grid.Row="2"  x:Name="SnackbarResult" Panel.ZIndex="99999"  />
     </Grid>
 </Window>

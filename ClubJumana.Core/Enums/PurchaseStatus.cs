@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 namespace ClubJumana.Core.Enums
 {
     public enum Mode
-        {
-            PO = 1,
-            Asn = 2,
-            Grn = 3,
-            Sale=4,
-            productInformation = 5,
-            Order = 6,
-            Nothong = 7
+    {
+        PO = 1,
+        Asn = 2,
+        Grn = 3,
+        POInvoice = 4,
+        AsnInvoice = 5,
+        GrnInvoice = 6,
+        Sale = 7,
+        productInformation = 8,
+        Order = 9,
+        Nothong = 10,
 
     }
 
