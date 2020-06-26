@@ -44,7 +44,18 @@ namespace ClubJumana.Wpf.UserControls
         {
             RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
            
-            this.DataContext = AsnViewModel ;
+            switch (Mode)
+            {
+                case Mode.PO:
+                    this.DataContext = PoViewModel;
+                    break;
+                case Mode.Asn:
+                    this.DataContext = AsnViewModel;
+                    break;
+                case Mode.Grn:
+                    this.DataContext = GrnViewModel;
+                    break;
+            }
         }
 
         public event EventHandler<EventArgs> BtnAddItemOnClick;
@@ -155,6 +166,11 @@ namespace ClubJumana.Wpf.UserControls
             switch (Mode)
             {
                 case Mode.PO:
+                    foreach (var VARIABLE in RemoveItemsOfPurchaseOrderViewModel)
+                    {
+                        VARIABLE.IsDeleted = true;
+                        PoViewModel.ItemsOfPurchaseOrderViewModels.Remove(VARIABLE);
+                    }
                     break;
                 case Mode.Asn:
                     foreach (var VARIABLE in RemoveItemsOfPurchaseOrderViewModel)

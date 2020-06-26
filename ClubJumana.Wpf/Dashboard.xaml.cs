@@ -38,6 +38,7 @@ namespace ClubJumana.Wpf
         private List<Warehouse> warehouses;
         public Mode Mode = Mode.Nothong;
         public static User user;
+        private List<PurchaseOrder> PurchaseOrdersList;
 
         public ucPurchasing Purchasing;
         private Test tt;
@@ -48,6 +49,8 @@ namespace ClubJumana.Wpf
             _repositoryService = new RepositoryService();
             _purchaseOrderService = new PerchaseOrderService();
             _userService = new UserService();
+            PurchaseOrdersList = new List<PurchaseOrder>();
+            PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
 
             user = _userService.LoginUser();
             //TestBorder.Child=new ucTest();
@@ -77,6 +80,30 @@ namespace ClubJumana.Wpf
             vendors = _repositoryService.AllVendor().ToList();
             warehouses = _repositoryService.AllWarehouse().ToList();
           
+           
+
+        }
+
+        private void Dashboard_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var convertor = new PurchaseOrderConvertor();
+            // SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
+            SelectedPurchaseOrder = new PurchaseOrder() { };
+            SelectedPurchaseOrder.Items = new List<Item>();
+            SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
+            SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
+            SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
+
+            Purchasing = new ucPurchasing();
+            Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
+            Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
+            //Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
+            Purchasing.PoViewModel = SelectedPo;
+            Purchasing.AsnViewModel = SelectedAsn;
+            Purchasing.GrnViewModel = SelectedGrn;
+            Purchasing.Mode = Mode.PO;
+            //Purchasing.DataContext = SelectedGrn;
+            Bordermanagement.Child = Purchasing;
 
 
         }
@@ -109,8 +136,7 @@ namespace ClubJumana.Wpf
         {
             string message = "";
             bool IsSuccessSavedOrUpdated = false;
-            Mode = Mode.Asn;
-            switch (Mode)
+            switch (Purchasing.Mode)
             {
                 case Mode.PO:
                     SelectedPo.ApproveUser_fk = user.Id;
@@ -165,12 +191,29 @@ namespace ClubJumana.Wpf
             }
             else
             {
-                SelectedAsn.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
+
+
+                switch (Purchasing.Mode)
                 {
-                    Price = SearchMasterProduct.FobPrice.Value,
-                    ProductMaster = SearchMasterProduct,
-                    ProductMaster_fk = SearchMasterProduct.Id
-                });
+                    case Mode.PO:
+                        SelectedPo.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
+                        {
+                            Price = SearchMasterProduct.FobPrice.Value,
+                            ProductMaster = SearchMasterProduct,
+                            ProductMaster_fk = SearchMasterProduct.Id
+                        });
+                        break;
+                    case Mode.Asn:
+                        SelectedAsn.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
+                        {
+                            Price = SearchMasterProduct.FobPrice.Value,
+                            ProductMaster = SearchMasterProduct,
+                            ProductMaster_fk = SearchMasterProduct.Id
+                        });
+                        break;
+                    case Mode.Grn:
+                        break;
+                }
 
             }
 
@@ -179,26 +222,26 @@ namespace ClubJumana.Wpf
 
         }
 
-        private void Dashboard_OnLoaded(object sender, RoutedEventArgs e)
-        {
-           var convertor = new PurchaseOrderConvertor();
-           // SelectedPurchaseOrder = _purchaseOrderService.GivePurchaseOrderById(9);
-            SelectedPurchaseOrder=new PurchaseOrder(){};
-            SelectedPurchaseOrder.Items=new List<Item>();
-            SelectedPo = convertor.ConvertToPO(SelectedPurchaseOrder, vendors, warehouses);
-            SelectedAsn = convertor.ConvertToAsn(SelectedPurchaseOrder, vendors, warehouses);
-            SelectedGrn = convertor.ConvertToGrn(SelectedPurchaseOrder, vendors, warehouses);
+    
 
-            Purchasing = new ucPurchasing();
-            Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
-            Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
-            //Purchasing.ItemsOfPurchaseOrderViewModels = SelectedGrn.ItemsOfPurchaseOrderViewModels;
-            Purchasing.PoViewModel = SelectedPo;
-            Purchasing.AsnViewModel = SelectedAsn;
-            Purchasing.GrnViewModel = SelectedGrn;
-            Purchasing.Mode = Mode.PO;
-            //Purchasing.DataContext = SelectedGrn;
-            Bordermanagement.Child = Purchasing;
+        private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void BtnPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("salam");
+        }
+
+        private void BtnPurChaseorder_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {var t= PurchaseOrdersList.Where(p => p.CreatedPO = false).Select(p => new { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal });
+            lvPurchasing.ItemsSource = t;
+        }
+
+        private void BtnPurchaseorderInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO = true).Select(p => new { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal });
         }
     }
 

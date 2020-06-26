@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClubJumana.Wpf"
         xmlns:uc="clr-namespace:ClubJumana.Wpf.UserControls"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
 
         mc:Ignorable="d"
         Title="Dashboard" Height="1000" Width="1920" Loaded="Dashboard_OnLoaded">
@@ -51,7 +52,7 @@
                 <TextBlock Text="Seles" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+            <StackPanel Name="btnPurchasing" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnPurchasing_OnMouseDown" >
                 <TextBlock Text="Purchasing" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
@@ -66,17 +67,104 @@
             <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
             <Image  Source="Content/Icon/Menu1Icon.png" Height="25" Margin="20 0 0 0"  />
         </StackPanel>
-        <Grid Grid.Row="1" RowSpan="2" Name="GrdTotalCharges" Background="#80B9ADAD"  ColumnSpan="2" >
+        <Grid Grid.Row="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.08*"/>
+                <RowDefinition Height="0.92*"/>
+            </Grid.RowDefinitions>
+            <Border  Padding="0 10"  BorderThickness="0,0,0,1" BorderBrush="Black" Margin="110 0">
+                <StackPanel  Orientation="Horizontal" Height="40" Margin="0 0 0 0">
+                    <StackPanel.Resources>
+                        <system:Double x:Key="Font">16</system:Double>
+                    </StackPanel.Resources>
+                    <TextBlock Name="txtMode" Text="Purchase Order" FontWeight="Bold" FontSize="18" Margin="0 7 0 0"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <TextBlock Text="All" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                    </StackPanel>
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <TextBlock Text="Search" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <TextBlock Text="New" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <TextBlock Text="Delete" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <TextBlock Text="Print/Send" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <TextBlock Text="Posting" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                    </StackPanel>
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+                        <TextBlock Text="More Options" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0"/>
+                </Grid.ColumnDefinitions>
+                <ListView SelectionMode="Multiple"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Alu}" />
+                            <GridViewColumn Header="Buy For Vendor" Width="300" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                            <GridViewColumn Header="Vendor Invoice NO." Width="320" DisplayMemberBinding="{Binding Path=TotalPricee}"/>
+                            <GridViewColumn Header="Amount" Width="300" DisplayMemberBinding="{Binding Path=TotalPrice}" />
+                            <GridViewColumn Header="Last Modified" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2"  Background="GhostWhite" Margin="0 0 0 0"  Height="100" VerticalAlignment="Top">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Foreground" Value="Navy"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" Value="Underline"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <UniformGrid Rows="3" Columns="4" Margin="300 20 300 0">
+                <TextBlock  Text="Vendors" />
+                <TextBlock Name="btnPurChaseorder"  Text="Purchase order" MouseDown="BtnPurChaseorder_OnMouseDown"/>
+                <TextBlock Name="btnPurchaseorderInvoice" Text="Purchase Order Invoice" MouseDown="BtnPurchaseorderInvoice_OnMouseDown"/>
+                <TextBlock></TextBlock>
+                <TextBlock Text="Incoming Documents"/>
+                <TextBlock Name="btnGit" Text="Goods In Transit"/>
+                <TextBlock Name="btnGitInvoice" Text="GIT Invoice"/>
+                <TextBlock></TextBlock>
+                <TextBlock Text="Item Charge"/>
+                <TextBlock Name="btnGrn" Text="Goods Receive Note"/>
+                <TextBlock Name="BtnGrnInvoice" Text="GRN Invoive"/>
+            </UniformGrid>
+        </Grid>
+
+        <Grid Grid.Row="1" RowSpan="2" Name="SubPage" Background="#80B9ADAD"  ColumnSpan="2" Visibility="Hidden" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="75"/>
             </Grid.ColumnDefinitions>
             <Border Name="Bordermanagement" Grid.Column="1"  MaxWidth="1800"  Background="White">
-               
+
             </Border>
         </Grid>
-
 
     </Grid>
 </Window>
