@@ -44,7 +44,7 @@ namespace ClubJumana.Wpf.UserControls
         {
             RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
            
-            this.DataContext = AsnViewModel;
+            this.DataContext = AsnViewModel ;
         }
 
         public event EventHandler<EventArgs> BtnAddItemOnClick;

@@ -196,7 +196,7 @@ namespace ClubJumana.Wpf
             Purchasing.PoViewModel = SelectedPo;
             Purchasing.AsnViewModel = SelectedAsn;
             Purchasing.GrnViewModel = SelectedGrn;
-            Purchasing.Mode = Mode.Asn;
+            Purchasing.Mode = Mode.PO;
             //Purchasing.DataContext = SelectedGrn;
             Bordermanagement.Child = Purchasing;
         }
