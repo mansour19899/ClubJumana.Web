@@ -473,5 +473,11 @@ namespace ClubJumana.Core.Services
             return new Colour{Id = colour.Id};
 
         }
+
+        public Colour IsExistColorByPantonNumber(string pantoneNumber)
+        {
+            return _context.colours.FirstOrDefault(p =>
+                p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+        }
     }
 }

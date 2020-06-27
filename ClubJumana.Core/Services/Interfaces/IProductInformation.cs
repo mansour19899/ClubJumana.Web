@@ -22,6 +22,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddImageVariant(int variantFK, string imageName);
         public List<string> GiveCountOfImagesVariant();
         public Colour AddColour(string name, string pantoneNumber);
+        public Colour IsExistColorByPantonNumber(string pantoneNumber);
     }
     
 }

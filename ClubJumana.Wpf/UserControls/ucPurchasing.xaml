@@ -45,7 +45,7 @@
                 </Button>
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
                 <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/compressIcon.png" />
-                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/compressIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
+                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
             </Grid>
         </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
@@ -68,6 +68,7 @@
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="TextDecorations" Value="Underline"></Setter>
+                                    <Setter Property="Cursor" Value="Hand"></Setter>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>

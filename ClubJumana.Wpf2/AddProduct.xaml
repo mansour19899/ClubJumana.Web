@@ -237,7 +237,7 @@
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Pantone Neumber"/>
-                            <TextBox Name="txtPantoneNumberForAdd"/>
+                            <TextBox Name="txtPantoneNumberForAdd" LostKeyboardFocus="TxtPantoneNumberForAdd_OnLostKeyboardFocus"/>
                         </UniformGrid>
 
                         <TextBlock></TextBlock>

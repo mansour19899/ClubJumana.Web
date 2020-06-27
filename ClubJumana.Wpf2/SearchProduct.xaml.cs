@@ -756,7 +756,10 @@ namespace ClubJumana.Wpf2
                 {
                     var t = _productInformationService.AddColour(txtColorNameInEditVariant.Text, txtPantonInEditVariant.Text);
                     InfoProduct.VariantSelected.ColourFK = t.Id;
-                    IsAddColor = true; }
+                    IsAddColor = true;
+                    txtColorNameInEditVariant.Clear();
+                    txtPantonInEditVariant.Clear();
+                }
                 _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
                 if (x == InfoProduct.VariantSelected.Id)
                 {
@@ -1024,6 +1027,27 @@ namespace ClubJumana.Wpf2
             RowcmbColor.IsEnabled = true;
             RowColorName.Visibility = Visibility.Collapsed;
             RowPantone.Visibility = Visibility.Collapsed;
+        }
+
+        private void TxtPantonInEditVariant_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(txtPantonInEditVariant.Text))
+            {
+                var color = _productInformationService.IsExistColorByPantonNumber(txtPantonInEditVariant.Text);
+                if (color!=null)
+                {
+                     MessageBox.Show("This Color Before Added");
+                     cmbEditVariantColor.SelectedValue = color.Id;
+                     RowcmbColor.IsEnabled = true;
+                     txtColorNameInEditVariant.Clear();
+                     txtPantonInEditVariant.Clear();
+                     RowColorName.Visibility = Visibility.Collapsed;
+                     RowPantone.Visibility = Visibility.Collapsed;
+                }
+                   
+
+
+            }
         }
     }
 }

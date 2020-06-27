@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\Icon\CloseIcon.png" />
     <None Remove="Content\Icon\compressIcon.png" />
     <None Remove="Content\Icon\CreateNewEntry.png" />
     <None Remove="Content\Icon\DeleteIcon.png" />
@@ -62,6 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Content\Icon\CloseIcon.png" />
     <Resource Include="Content\Icon\compressIcon.png" />
     <Resource Include="Content\Icon\CreateNewEntry.png" />
     <Resource Include="Content\Icon\DeleteIcon.png" />

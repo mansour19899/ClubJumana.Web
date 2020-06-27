@@ -458,5 +458,24 @@ namespace ClubJumana.Wpf2
             cmbColors.SelectedIndex = index;
 
         }
+
+        private void TxtPantoneNumberForAdd_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(txtPantoneNumberForAdd.Text))
+            {
+                var color = _productInformationService.IsExistColorByPantonNumber(txtPantoneNumberForAdd.Text);
+                if (color != null)
+                {
+                    MessageBox.Show("This Color Before Added");
+                    cmbColors.SelectedValue = color.Id;
+                    GrdAddColor.Visibility = Visibility.Hidden;
+                    txtColorNamdForAdd.Clear();
+                    txtPantoneNumberForAdd.Clear();
+                }
+
+
+
+            }
+        }
     }
 }

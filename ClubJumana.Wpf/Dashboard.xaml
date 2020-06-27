@@ -79,13 +79,14 @@
         </StackPanel>
         <Grid Grid.Row="3" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.08*"/>
-                <RowDefinition Height="0.92*"/>
+                <RowDefinition Height="0.06*"/>
+                <RowDefinition Height="0.94*"/>
             </Grid.RowDefinitions>
             <Border  Padding="0 0"  BorderThickness="0,0,0,1" BorderBrush="Black" Margin="110 0">
+
                 <StackPanel  Orientation="Horizontal" Height="40" Margin="0 0 0 0">
                     <StackPanel.Resources>
-                        <system:Double x:Key="Font">16</system:Double>
+                        <system:Double x:Key="Font">14</system:Double>
                         <system:Double x:Key="Height">50</system:Double>
                         <Style TargetType="StackPanel" x:Key="MouseOver">
                             <Style.Triggers>
@@ -94,37 +95,40 @@
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Height" Value="15"/>
+                        </Style>
                     </StackPanel.Resources>
                     <TextBlock Name="txtMode" Text="Purchase Order" FontWeight="Bold" FontSize="18" Margin="0 7 0 0"/>
                     <StackPanel Height="{StaticResource Height}" Width="50" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="All" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                     </StackPanel>
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                         <TextBlock Text="Search" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
                     <StackPanel Name="btnNewPurchasing" Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnNewPurchasing_OnMouseDown">
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                         <TextBlock Text="New" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
                     <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                         <TextBlock Text="Delete" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                     </StackPanel>
                     <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="Print/Send" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                     </StackPanel>
                     <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="Posting" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                     </StackPanel>
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <StackPanel Height="{StaticResource Height}" Style="{StaticResource MouseOver}" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
                         <TextBlock Text="More Options" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
-                        <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
+                        <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -145,7 +149,10 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Border Grid.Column="1" Margin="0 150 0 0" Background="White">
+                <Border Grid.Column="1" Margin="20 80 0 0" Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="-10" BlurRadius="10" Opacity="0.4"/>
+                    </Border.Effect>
                     <Grid Margin="20 50 50 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="130"/>
@@ -188,14 +195,19 @@
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
                     <Setter Property="Foreground" Value="Navy"></Setter>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="TextDecorations" Value="Underline"></Setter>
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                            <Setter Property="Cursor" Value="Hand"></Setter>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Resources>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
+            </Grid.Effect>
             <UniformGrid Rows="3" Columns="4" Margin="300 20 300 50">
                 <TextBlock  Text="Vendors" />
                 <TextBlock Name="btnPurChaseorder"  Text="Purchase order" MouseDown="BtnPurChaseorder_OnMouseDown"/>

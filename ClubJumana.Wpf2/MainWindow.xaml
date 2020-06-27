@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClubJumana.Wpf2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="Content/Icon/VanmeIcon.ico"
+        Title="Magic Style Ver 1.18" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized" ShowInTaskbar="True">
     <Grid>
-
+        <Image Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg" Margin="0 0 0 400"></Image>
+        <UniformGrid Columns="2" Rows="2">
+            <TextBlock></TextBlock>
+            <TextBlock></TextBlock>
+            <Button Name="btnShowSearchProduct" Width="250" Height="100" Content="Search Product" FontSize="25" Click="BtnShowSearchProduct_OnClick" />
+            <Button Name="btnSHowAddProduct" Width="250" Height="100" Content="Add Product" FontSize="25" Click="BtnSHowAddProduct_OnClick"/>
+        </UniformGrid>
+        
     </Grid>
 </Window>
