@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Loaded="SearchProduct_OnLoaded"
         Icon="Content/Icon/VanmeIcon.ico"
-        Title="Magic Style - Product Information" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized" ShowInTaskbar="False" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="Magic Style - Product Information" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized"  PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>

@@ -55,7 +55,7 @@ namespace ClubJumana.Wpf2
         private SnackbarMessageQueue myMessageQueue;
 
         private SearchProductViewModel viewModel;
-        public SearchProduct()
+        public SearchProduct( bool IsConnetedToServer=false)
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
@@ -63,7 +63,7 @@ namespace ClubJumana.Wpf2
             SelectedList = new List<VariantViewModel>();
             TempList = new List<VariantViewModel>();
             Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
-            CheckConectionToServe();
+
             viewModel = new SearchProductViewModel();
             ListForLvProduct=new ObservableCollection<VariantViewModel>();
         }
@@ -99,7 +99,6 @@ namespace ClubJumana.Wpf2
             //Test(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\" + "Excel Formula.txt", "/VariantsImage");
             //_repositoryService.DownloadFileFromFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\" + "Excel Formula.txt", "/VariantsImage");
             //_repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\"+ "Excel Formula.txt", "/VariantsImage/");
-            CheckImageForDownload();
 
             viewModel.Info = InfoProduct;
             ListForLvProduct=new ObservableCollection<VariantViewModel>(VaraintList);
@@ -110,8 +109,6 @@ namespace ClubJumana.Wpf2
             SnackbarResult.MessageQueue = myMessageQueue;
         }
 
-
-
         private void CheckConectionToServe()
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
@@ -119,7 +116,7 @@ namespace ClubJumana.Wpf2
                 _repositoryService.UpdateLocalDb();
                 IsConnectToServer = true;
                 ErrorConection = "";
-                txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
+                //txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
             }
             else
             {
@@ -129,39 +126,8 @@ namespace ClubJumana.Wpf2
                 else
                     ErrorConection = "Mode is Offline.Check your internet connection";
             }
-        }
 
-        private async Task CheckImageForDownload()
-        {
-            await Task.Run(() =>
-            {
-                var ImageOfFTPList = _productInformationService.GiveCountOfImagesVariant();
-                string Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
-                DirectoryInfo dir = new DirectoryInfo(Path);
-                var ImageOfLocalList = dir.GetFiles();
-                List<string> ImageNameListOfLocal = new List<string>();
-                foreach (var VARIABLE in ImageOfLocalList)
-                {
-                    ImageNameListOfLocal.Add(VARIABLE.Name);
-                }
-
-                var ImagesNameForAdd = ImageOfFTPList.Except(ImageNameListOfLocal);
-                var ImagesNameForDelete = ImageNameListOfLocal.Except(ImageOfFTPList);
-                var CountImageOfLocal = ImageOfLocalList.Count();
-                if (CountImageOfLocal != ImageOfFTPList.Count + 1)
-                {
-                    foreach (var VARIABLE in ImagesNameForAdd)
-                    {
-                        _repositoryService.DownloadFileFromFTP(System.IO.Path.Combine(Path, VARIABLE), "/VariantsImage");
-                    }
-
-                    foreach (var VARIABLE in ImagesNameForDelete)
-                    {
-                        if (VARIABLE.CompareTo("not-found.JPG") != 0)
-                            File.Delete(System.IO.Path.Combine(Path, VARIABLE));
-                    }
-                }
-            });
+            MessageBox.Show(ErrorConection);
         }
 
         private void ShowErrorMassegeToConectionInternet()

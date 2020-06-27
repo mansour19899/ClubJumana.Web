@@ -438,7 +438,7 @@ namespace ClubJumana.Core.Services
 
         public List<string> GiveCountOfImagesVariant()
         {
-            return _onlineContext.images.Select(p => new string(p.ImageName)).ToList();
+            return _context.images.Select(p => new string(p.ImageName)).ToList();
         }
 
         public Colour AddColour(string name, string pantoneNumber)

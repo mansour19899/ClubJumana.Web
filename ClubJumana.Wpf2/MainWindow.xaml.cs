@@ -33,12 +33,19 @@ namespace ClubJumana.Wpf2
             InitializeComponent();
             _repositoryService = new RepositoryService();
             _productInformationService = new ProductInformationService();
+            CheckConectionToServe();
+            if (IsConnectToServer)
+                btnSHowAddProduct.IsEnabled = true;
+            else
+                btnSHowAddProduct.IsEnabled = false;
         }
 
         private void BtnShowSearchProduct_OnClick(object sender, RoutedEventArgs e)
         {
-            SearchProduct frm=new SearchProduct();
+            SearchProduct frm=new SearchProduct(IsConnectToServer);
+            this.Hide();
             frm.ShowDialog();
+            this.Show();
         }
 
         private void BtnSHowAddProduct_OnClick(object sender, RoutedEventArgs e)
@@ -49,33 +56,33 @@ namespace ClubJumana.Wpf2
             this.Show();
         }
 
-        //private void CheckConectionToServe()
-        //{
-        //    if (CheckInternetConnection.IsConnectedToServer() == true)
-        //    {
-        //        _repositoryService.UpdateLocalDb();
-        //        IsConnectToServer = true;
-        //        ErrorConection = "";
-        //        txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
-        //    }
-        //    else
-        //    {
-        //        IsConnectToServer = false;
-        //        if (CheckInternetConnection.IsConnectedToInternet() == true)
-        //            ErrorConection = "Mode is Offline.Please Check Server";
-        //        else
-        //            ErrorConection = "Mode is Offline.Check your internet connection";
-        //    }
-        //}
-        //private void ShowErrorMassegeToConectionInternet()
-        //{
-        //    if (ErrorConection != "")
-        //    {
-        //        txtMagicStyle.Foreground = new SolidColorBrush(Color.FromRgb(191, 155, 48));
-        //        MessageBox.Show(ErrorConection);
-        //    }
+        private void CheckConectionToServe()
+        {
+            if (CheckInternetConnection.IsConnectedToServer() == true)
+            {
+                _repositoryService.UpdateLocalDb();
+                IsConnectToServer = true;
+                ErrorConection = "";
+                //txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
+            }
+            else
+            {
+                IsConnectToServer = false;
+                if (CheckInternetConnection.IsConnectedToInternet() == true)
+                    ErrorConection = "Mode is Offline.Please Check Server";
+                else
+                    ErrorConection = "Mode is Offline.Check your internet connection";
+            }
+        }
+        private void ShowErrorMassegeToConectionInternet()
+        {
+            if (ErrorConection != "")
+            {
+                //txtMagicStyle.Foreground = new SolidColorBrush(Color.FromRgb(191, 155, 48));
+                MessageBox.Show(ErrorConection);
+            }
 
-        //}
+        }
         private async Task CheckImageForDownload()
         {
             await Task.Run(() =>
@@ -107,6 +114,12 @@ namespace ClubJumana.Wpf2
                     }
                 }
             });
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ShowErrorMassegeToConectionInternet();
+            CheckImageForDownload();
         }
     }
 }
