@@ -27,16 +27,7 @@ namespace ClubJumana.Core.Services
         }
         public int AddTowel(AddVariantInformationViewModel TowelInformation)
         {
-            foreach (var entry in _context.ChangeTracker.Entries().ToList())
-            {
-                _context.Entry(entry.Entity).State = EntityState.Detached;
-            }
-            foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
-            {
-                _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
-            }
-
-
+            DetachedAllEntries();
 
             if (TowelInformation.company.Id == 0)
             {
@@ -253,6 +244,7 @@ namespace ClubJumana.Core.Services
 
         public int AddSku(int Id, string Sku)
         {
+            DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
             var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
             if (Variant == null)
@@ -275,7 +267,7 @@ namespace ClubJumana.Core.Services
 
         public int AddBarcode(int Id)
         {
-
+            DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
             var NewBarcode = _onlineContext.barcodes.FirstOrDefault(p => p.Active == false);
             var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
@@ -299,7 +291,7 @@ namespace ClubJumana.Core.Services
 
         }
 
-        public int AddOrUpdateVariant(Variant variant, int ProductId)
+        private void DetachedAllEntries()
         {
             foreach (var entry in _context.ChangeTracker.Entries().ToList())
             {
@@ -309,6 +301,10 @@ namespace ClubJumana.Core.Services
             {
                 _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
             }
+        }
+        public int AddOrUpdateVariant(Variant variant, int ProductId)
+        {
+            DetachedAllEntries();
 
             if (variant.Id == 0)
             {
@@ -478,6 +474,45 @@ namespace ClubJumana.Core.Services
         {
             return _context.colours.FirstOrDefault(p =>
                 p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+        }
+
+        public int UpdateVariantNote(int Id,string note)
+        {
+            DetachedAllEntries();
+            var t= _onlineContext.variants.FirstOrDefault(p => p.Id == Id);
+           var tt= _context.variants.FirstOrDefault(p => p.Id == Id);
+           if (t != null)
+           {
+               t.Note = note;
+               tt.Note = note;
+           }
+
+           _onlineContext.SaveChanges();
+           _context.SaveChanges();
+           return 1;
+        }
+
+        public int UpdateProduct(ProductInformationViewModel productInformationView)
+        {
+            DetachedAllEntries();
+            var product = _onlineContext.products.Include(p=>p.Variants).FirstOrDefault(p => p.Id == productInformationView.Id);
+            product.ProductTittle = productInformationView.ProductTittle;
+            product.DescribeMaterial = productInformationView.DescriabeMaterial;
+            foreach (var VARIABLE in product.Variants)
+            {
+                VARIABLE.Data1 = productInformationView.GSM;
+            }
+            var product2 = _context.products.Include(p => p.Variants).FirstOrDefault(p => p.Id == productInformationView.Id);
+            product2.ProductTittle = productInformationView.ProductTittle;
+            product2.DescribeMaterial = productInformationView.DescriabeMaterial;
+            foreach (var VARIABLE in product2.Variants)
+            {
+                VARIABLE.Data1 = productInformationView.GSM;
+            }
+
+            _onlineContext.SaveChanges();
+            _context.SaveChanges();
+            return 1;
         }
     }
 }

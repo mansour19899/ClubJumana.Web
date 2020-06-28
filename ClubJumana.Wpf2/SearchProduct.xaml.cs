@@ -54,6 +54,7 @@ namespace ClubJumana.Wpf2
         private int IndexOfLvProduct = 0;
         private SnackbarMessageQueue myMessageQueue;
 
+
         private SearchProductViewModel viewModel;
         public SearchProduct( bool IsConnetedToServer=false)
         {
@@ -422,7 +423,8 @@ namespace ClubJumana.Wpf2
             viewModel.Info = InfoProduct;
             ShowImageVariant(0);
             cmbEditVariantProductType.ItemsSource = ProductTypeList.Where(p => p.CategorysubcategoreisFK == InfoProduct.List.ElementAt(0).ProductType.CategorysubcategoreisFK);
-
+            txtRemarksVariant.Text="";
+            grdNoteVariant.Visibility = Visibility.Hidden;
             btnNextImageVariant.Visibility = Visibility.Hidden;
             btnPerviosImageVariant.Visibility = Visibility.Hidden;
             btnNextFullImage.Visibility = Visibility.Hidden;
@@ -517,7 +519,7 @@ namespace ClubJumana.Wpf2
                 ProductTypeForAddVariant.Visibility = Visibility.Collapsed;
                 InfoProduct.VariantSelected = variantSelected;
                 HideAddColorPart();
-                GrdEditProduct.Visibility = Visibility.Visible;
+                GrdEditVariant.Visibility = Visibility.Visible;
             }
             else
             {
@@ -751,7 +753,7 @@ namespace ClubJumana.Wpf2
                 
                 cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
                 cmbEditVariantColor.Items.Refresh();
-                GrdEditProduct.Visibility = Visibility.Hidden;
+                GrdEditVariant.Visibility = Visibility.Hidden;
             }
             catch (Exception exception)
             {
@@ -772,7 +774,7 @@ namespace ClubJumana.Wpf2
 
         private void BtnCloseGrdEditVariant_OnClick(object sender, RoutedEventArgs e)
         {
-            GrdEditProduct.Visibility = Visibility.Hidden;
+            GrdEditVariant.Visibility = Visibility.Hidden;
         }
 
         private void BtnAddPicture_OnClick(object sender, RoutedEventArgs e)
@@ -850,6 +852,8 @@ namespace ClubJumana.Wpf2
             {
                 countImageVariant = InfoProduct.List[SelectedIndexVariant].Images.Count;
                 ShowImageVariant(SelectedIndexVariant);
+                grdNoteVariant.Visibility = Visibility.Visible;
+                ShowNoteVariant();
                 ImageSelected = 0;
             }
 
@@ -863,6 +867,10 @@ namespace ClubJumana.Wpf2
 
         }
 
+        private void ShowNoteVariant()
+        {
+            txtRemarksVariant.Text = InfoProduct.List[SelectedIndexVariant].Note;
+        }
 
         private void ShowImageVariant(int index, int imgSelect = 0)
         {
@@ -972,7 +980,7 @@ namespace ClubJumana.Wpf2
                 ProductTypeForAddVariant.Visibility = Visibility.Visible;
                 InfoProduct.VariantSelected = new Variant();
                 HideAddColorPart();
-                GrdEditProduct.Visibility = Visibility.Visible;
+                GrdEditVariant.Visibility = Visibility.Visible;
             }
             else
             {
@@ -1014,6 +1022,50 @@ namespace ClubJumana.Wpf2
 
 
             }
+        }
+
+        private void BtnUpdateNoteVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            var id = InfoProduct.List[SelectedIndexVariant].Id;
+            _productInformationService.UpdateVariantNote(id, txtNoteVariant.Text);
+            txtRemarksVariant.Text = txtNoteVariant.Text;
+            GrdEditNoteVariant.Visibility = Visibility.Hidden;
+            myMessageQueue.Enqueue("Variant Updated.");
+            InfoProduct.List[SelectedIndexVariant].Note = txtNoteVariant.Text;
+
+
+
+
+        }
+
+        private void BtnCloseGrdEditNoteVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdEditNoteVariant.Visibility = Visibility.Hidden;
+        }
+
+
+        private void BtnEditNoteVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            txtNoteVariant.Text = txtRemarksVariant.Text;
+            GrdEditNoteVariant.Visibility = Visibility.Visible;
+        }
+
+        private void BtnCloseGrdEditProduct_OnClick(object sender, RoutedEventArgs e)
+        {
+            GrdEditProduct.Visibility = Visibility.Hidden;
+        }
+
+        private void LblStylenumber_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            GrdEditProduct.Visibility = Visibility.Visible;
+        }
+
+        private void BtnUpdateProduct_OnClick(object sender, RoutedEventArgs e)
+        {
+            _productInformationService.UpdateProduct(InfoProduct);
+            GrdEditProduct.Visibility = Visibility.Hidden;
+            myMessageQueue.Enqueue(InfoProduct.StyleNumber+" Updated.");
+
         }
     }
 }

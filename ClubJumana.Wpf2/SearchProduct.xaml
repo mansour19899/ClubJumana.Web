@@ -33,7 +33,7 @@
                         </Style>
                     </Border.Style>
                 </Border>
-               
+
                 <TextBlock Name="txtMagicStyle" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Foreground="Navy" FontWeight="Bold" Text="Magic Style" MouseDown="TxtMagicStyle_OnMouseDown"></TextBlock>
                 <Border  Name="btnLogo" Width="300" Margin="-10 -20 0 0" MouseDown="BtnLogo_OnMouseDown">
                     <Border.Background>
@@ -142,7 +142,7 @@
                         <RowDefinition Height="0.6*"/>
                         <RowDefinition Height="0.4*"/>
                     </Grid.RowDefinitions>
-                    <UniformGrid Grid.Row="0" Columns="2"  Margin="50 20 0 0">
+                    <UniformGrid Grid.Row="0" Columns="3"  Margin="50 20 0 0">
                         <UniformGrid.Resources>
                             <Style x:Key="Style1" TargetType="TextBlock" >
                                 <Setter Property="FontSize" Value="20" />
@@ -153,7 +153,15 @@
                         <ScrollViewer Height="400" VerticalScrollBarVisibility="Auto">
                             <StackPanel >
                                 <TextBox Name="txtBarcodeMode" Height="0" KeyDown="TxtBarcodeMode_OnKeyDown" />
-                                <TextBlock Name="txtCategoryw" Style="{StaticResource Style1}" Text="{Binding Info.StyleNumber, StringFormat= Style Nember : {0}}" />
+                                <Label Name="lblStylenumber"  Content="{Binding Info.StyleNumber}" MouseDoubleClick="LblStylenumber_OnMouseDoubleClick" Height="40"
+                                     FontWeight="Bold"  FontSize="18" VerticalContentAlignment="Center" Padding="20 0 0 0" Width="250" Margin="0 0 0 10" HorizontalAlignment="Left" Foreground="White">
+                                    <Label.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFCC201"/>
+                                            <GradientStop Color="#FFEEB609" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Label.Background>
+                                </Label>
                                 <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Info.Category, StringFormat= Category : {0}}" />
                                 <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Info.Subcategory, StringFormat= SubCategory : {0}}" />
                                 <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle, StringFormat= Product Tittle :  {0}}" />
@@ -165,18 +173,24 @@
                                 <TextBlock ></TextBlock>
                                 <Button Name="btnAddNewVariant" Content="Add New Variant" Width="150" HorizontalAlignment="Left" Click="BtnAddNewVariant_OnClick"/>
                             </StackPanel>
-                            
+
                         </ScrollViewer>
-                      
-                       <Grid Margin="0 0 0 40">
-                           <Grid.ColumnDefinitions>
-                               <ColumnDefinition Width="0.3*" />
-                               <ColumnDefinition Width="0.7*" />
-                           </Grid.ColumnDefinitions>
-                           <Grid.RowDefinitions>
-                               <RowDefinition Height="0.75*"/>
-                               <RowDefinition Height="0.25*"/>
-                           </Grid.RowDefinitions>
+                        <Grid Name="grdNoteVariant" Visibility="Hidden">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.15*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Button Name="btnEditNoteVariant" Content="Note" Width="100" HorizontalAlignment="Left" Click="BtnEditNoteVariant_OnClick" />
+                            <TextBlock Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource Style1}"  />
+                        </Grid>
+                        <Grid Margin="0 0 0 40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.75*"/>
+                                <RowDefinition Height="0.25*"/>
+                            </Grid.RowDefinitions>
                             <Border Name="imgVariant" Grid.Column="1" MouseDown="ImgVariant_OnMouseDown">
                                 <Border.Background>
                                     <ImageBrush ImageSource="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg"></ImageBrush>
@@ -194,18 +208,18 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                           <Button
+                            <Button
                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="70 0 0 0" Name="btnPerviosImageVariant" Click="BtnPreviousImageVariant_OnClick"
                                 Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                            >
-                               <TextBlock Text="&lt;" FontSize="25"/>
-                           </Button>
-                           <Button
+                                <TextBlock Text="&lt;" FontSize="25"/>
+                            </Button>
+                            <Button
                                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}" Margin="0 0 70 0" Name="btnNextImageVariant" Click="BtnNextImageVariant_OnClick"
                                Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                            >
-                               <TextBlock Text="&gt;" FontSize="25"/>
-                           </Button>
+                                <TextBlock Text="&gt;" FontSize="25"/>
+                            </Button>
                             <Button Name="btnAddPicture" Grid.Column="1" Grid.Row="1" MaxWidth="200" Height="60" Content="AddPicture" FontSize="20" Click="BtnAddPicture_OnClick"/>
 
                         </Grid>
@@ -490,7 +504,7 @@
 
 
             </Grid>
-            <Grid   Name="GrdEditProduct" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
+            <Grid   Name="GrdEditVariant" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
                 <Border  Width="600" Height="800"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60 60 20 0">
                     <UniformGrid Rows="15" Columns="1"  >
                         <UniformGrid.Resources>
@@ -559,7 +573,7 @@
                             <TextBlock/>
                             <Button Name="btnCloseGrdEditVariant" Content="Exit" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#940000" Click="BtnCloseGrdEditVariant_OnClick" />
                             <Button Name="btnUpdateVariant" Content="Update" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#0a5d00" Click="BtnUpdateVariant_OnClick" />
-                            
+
 
 
                         </UniformGrid>
@@ -602,6 +616,95 @@
                 </Border>
 
 
+            </Grid>
+            <Grid   Name="GrdEditNoteVariant" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
+                <Border  Width="600" Height="600"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60 60 20 0">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition Height="0.65*"/>
+                            <RowDefinition Height="0.3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="MaxHeight" Value="40"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Text=" Remarks :"/>
+                        <TextBox VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Grid.Row="1" Name="txtNoteVariant"  FontSize="18" Margin="10" MinHeight="300" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                 AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 0 0" >
+                            <TextBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="20"/>
+                                </TransformGroup>
+                            </TextBox.RenderTransform>
+                        </TextBox>
+                        <UniformGrid Grid.Row="2" Rows="1" Columns="4" Margin="0 10 0 0">
+                            <TextBlock Name="txtEditNoteVariant"/>
+                            <Button Name="btnCloseGrdEditNoteVariant" Content="Exit" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#940000" Click="BtnCloseGrdEditNoteVariant_OnClick" />
+                            <Button Name="btnUpdateNoteVariant" Content="Update" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#0a5d00" Click="BtnUpdateNoteVariant_OnClick" />
+                        </UniformGrid>
+                    </Grid >
+                </Border>
+            </Grid>
+
+            <Grid  Name="GrdEditProduct" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
+                <Border  Width="600" Height="800"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60 60 20 0">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.05*"/>
+                            <RowDefinition Height="0.35*"/>
+                            <RowDefinition Height="0.3*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="MaxHeight" Value="40"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            </Style>
+                        </Grid.Resources>
+                        <TextBlock Grid.Row="0" Text="Product Tittle :" VerticalAlignment="Bottom"/>
+                        <TextBox Grid.Row="1" Padding="10 0" HorizontalContentAlignment="Left" Text="{Binding Info.ProductTittle}" VerticalAlignment="Top" Height="40" Margin="0 10 0 0"/>
+                        <TextBlock Grid.Row="2"  Text="GSM :" VerticalAlignment="Bottom"/>
+                        <TextBox Grid.Row="3" Padding="10 0" HorizontalContentAlignment="Left"  Text="{Binding Info.GSM}" VerticalAlignment="Top" Height="40" Margin="0 10 0 0"/>
+                        <TextBlock Grid.Row="4" Text=" Remarks :" VerticalAlignment="Bottom"/>
+                        <TextBox VerticalAlignment="Top" Text="{Binding Info.DescriabeMaterial}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Grid.Row="5" Name="txtNotyeVariant"  FontSize="18" Margin="0 0 0 0" MinHeight="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                 AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 0 0" >
+                            <TextBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="20"/>
+                                </TransformGroup>
+                            </TextBox.RenderTransform>
+                        </TextBox>
+                        <UniformGrid Grid.Row="6" Rows="1" Columns="4" Margin="0 10 0 0">
+                            <TextBlock Name="txtEditProduct"/>
+                            <Button Name="btnCloseGrdEditProduct" Content="Exit" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Background="#940000" Click="BtnCloseGrdEditProduct_OnClick" />
+                            <Button Name="btnUpdateProduct" Content="Update"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#0a5d00" Click="BtnUpdateProduct_OnClick" />
+                            </UniformGrid>
+                    </Grid >
+                </Border>
             </Grid>
 
             <materialDesign:Snackbar Grid.Row="2"  x:Name="SnackbarResult" Panel.ZIndex="99999"  />

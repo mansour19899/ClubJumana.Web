@@ -255,8 +255,8 @@ namespace ClubJumana.Core.Convertors
             _wholesaleUSD = Math.Round(_landedCostUSD * 1.55m, 2, MidpointRounding.AwayFromZero);
             _sales5USD = Math.Round(_wholesaleUSD * 0.05m, 2, MidpointRounding.AwayFromZero);
             _creditIN10USD = Math.Round(_wholesaleUSD * 0.1m + _sales5USD, 2, MidpointRounding.AwayFromZero);
-            _wholeCashUSD = Math.Round(_sales5USD * 0.05m + _wholesaleUSD, 2, MidpointRounding.AwayFromZero);
-            _wholeCreditUSD = Math.Round(_wholeCashUSD * 1.1m, 2, MidpointRounding.AwayFromZero);
+            _wholeCashUSD = Math.Round(_sales5USD + _wholesaleUSD, 2, MidpointRounding.AwayFromZero);
+            _wholeCreditUSD = Math.Round(_wholesaleUSD + _creditIN10USD, 2, MidpointRounding.AwayFromZero);
             _wLGrossUSD = Math.Round(_wholeCashUSD - _landedCostUSD, 2, MidpointRounding.AwayFromZero);
             _wLMarginUSD = Math.Round(_wLGrossUSD / _wholeCashUSD * 100, 2, MidpointRounding.AwayFromZero);
             _retailUSD = Math.Round(_landedCostUSD * 4, 2, MidpointRounding.AwayFromZero);
@@ -265,7 +265,7 @@ namespace ClubJumana.Core.Convertors
 
             _landedCostD = Math.Round(_landedCostUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholesaleD = Math.Round(_wholesaleUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
-            _sales5D = Math.Round(_wholesaleD * 0.05m, 2, MidpointRounding.AwayFromZero);
+            _sales5D = Math.Round(_sales5USD*_exChangeRate, 2, MidpointRounding.AwayFromZero);
             _creditIN10D = Math.Round(_creditIN10USD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholeCashD = Math.Round(_wholeCashUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
             _wholeCreditD = Math.Round(_wholeCreditUSD * _exChangeRate, 2, MidpointRounding.AwayFromZero);
@@ -290,7 +290,7 @@ namespace ClubJumana.Core.Convertors
             OnPropertyChanged(nameof(WholeCreditUSD));
             OnPropertyChanged(nameof(WholeCreditD));
             OnPropertyChanged(nameof(WLGrossUSD));
-            OnPropertyChanged(nameof(WLGrossUSD));
+            OnPropertyChanged(nameof(WLGrossD));
             OnPropertyChanged(nameof(WLMarginUSD));
             OnPropertyChanged(nameof(WLMarginD));
             OnPropertyChanged(nameof(RetailUSD));
