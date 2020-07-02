@@ -25,9 +25,20 @@ namespace ClubJumana.Core.Services
             _context = new JummanaContext();
         }
 
-
+        private void DetachedAllEntries()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+            //foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
+            //{
+            //    _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
+            //}
+        }
         public bool AddOrUpdatePoViewModel(PoViewModel poViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
+            DetachedAllEntries();
             if (poViewModel.CreatedInvoice)
             {
                 return false;
@@ -175,6 +186,8 @@ namespace ClubJumana.Core.Services
 
         public bool AddOrUpdateAsnViewModel(AsnViewModel asnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
+            DetachedAllEntries();
+
             if (asnViewModel.CreatedInvoice)
             {
                 return false;
@@ -195,8 +208,6 @@ namespace ClubJumana.Core.Services
                         LastEditDate = DateTime.Now,
                         AsnTotal = asnViewModel.TotalPrice,
                         AsnSubtotal = asnViewModel.SubtotalPrice,
-                        GrnTotal = asnViewModel.TotalPrice,
-                        GrnSubtotal = asnViewModel.SubtotalPrice,
                         CreatedAsn = done,
                         CreatedPO = true,
                         PoNumber = -1,
@@ -204,18 +215,19 @@ namespace ClubJumana.Core.Services
                         FromWarehouse_fk = asnViewModel.FromWarehouse_fk,
                         ToWarehouse_fk = asnViewModel.ToWarehouse_fk,
                         ApproveAsnUser_fk = asnViewModel.ApproveUser_fk,
-                        Freight = 0,
-                        DiscountPercent = 0,
-                        Percent = "",
-                        DiscountDollers = 0,
-                        Insurance = 0,
-                        CustomsDuty = 0,
-                        Handling = 0,
-                        Forwarding = 0,
-                        LandTransport = 0,
-                        Others = 0,
-                        TotalCharges = 0
-
+                        Freight = asnViewModel.Freight,
+                        DiscountPercent = asnViewModel.DiscountPercent,
+                        Percent = asnViewModel.Percent,
+                        DiscountDollers = asnViewModel.DiscountDollers,
+                        Insurance = asnViewModel.Insurance,
+                        CustomsDuty = asnViewModel.CustomsDuty,
+                        Handling = asnViewModel.Handling,
+                        Forwarding = asnViewModel.Forwarding,
+                        LandTransport = asnViewModel.LandTransport,
+                        Others = asnViewModel.Others,
+                        TotalCharges = asnViewModel.TotalCharges,
+                        GrnSubtotal =0m,
+                        GrnTotal = asnViewModel.TotalCharges,
                     };
                     if (done)
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
@@ -231,8 +243,6 @@ namespace ClubJumana.Core.Services
                     PO.LastEditDate = DateTime.Now;
                     PO.AsnTotal = asnViewModel.TotalPrice;
                     PO.AsnSubtotal = asnViewModel.SubtotalPrice;
-                    PO.GrnTotal = asnViewModel.TotalPrice;
-                    PO.GrnSubtotal = asnViewModel.SubtotalPrice;
                     PO.CreatedAsn = done;
                     PO.ItemsPoCount = asnViewModel.ItemsCount;
                     PO.FromWarehouse_fk = asnViewModel.FromWarehouse_fk;
@@ -248,9 +258,9 @@ namespace ClubJumana.Core.Services
                     PO.Forwarding = asnViewModel.Forwarding;
                     PO.LandTransport = asnViewModel.LandTransport;
                     PO.Others = asnViewModel.Others;
-                    PO.GrnTotal = asnViewModel.TotalPrice;
                     PO.TotalCharges = asnViewModel.TotalCharges;
-
+                    PO.GrnSubtotal = 0m;
+                    PO.GrnTotal = asnViewModel.TotalCharges;
 
                     if (done)
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
@@ -276,9 +286,11 @@ namespace ClubJumana.Core.Services
                             Po_fk = PO.Id,
                             ProductMaster_fk = item.ProductMaster_fk,
                             AsnQuantity = item.Quantity,
+                            GrnQuantity = 0,
                             AsnPrice = item.Price,
+                            GrnPrice = item.Price,
                             Cost = item.Cost,
-                            PoItemsPrice = item.TotalItemPrice,
+                            AsnItemsPrice = item.TotalItemPrice,
                             Alert = item.Alert,
                             Note = item.Note,
                             Checked = item.Checked
@@ -292,6 +304,8 @@ namespace ClubJumana.Core.Services
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.AsnQuantity = item.Quantity;
                         itemm.AsnPrice = item.Price;
+                        itemm.GrnQuantity = 0;
+                        itemm.GrnPrice = item.Price;
                         itemm.Cost = item.Cost;
                         itemm.AsnItemsPrice = item.TotalItemPrice;
                         itemm.Alert = item.Alert;
@@ -304,6 +318,7 @@ namespace ClubJumana.Core.Services
                     {
                         itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.AsnQuantity = 0;
+                        itemm.GrnQuantity = 0;
                         item.Quantity = 0;
                         itemm.IsDeleted = true;
                     }
@@ -375,6 +390,7 @@ namespace ClubJumana.Core.Services
 
         public bool AddOrUpdateGrnViewModel(GrnViewModel grnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
+            DetachedAllEntries();
             if (grnViewModel.CreatedInvoice)
             {
                 return false;
@@ -408,8 +424,10 @@ namespace ClubJumana.Core.Services
                         Forwarding = grnViewModel.Forwarding,
                         LandTransport = grnViewModel.LandTransport,
                         Others = grnViewModel.Others,
+                        TotalCharges = grnViewModel.TotalCharges,
+                        GrnSubtotal = grnViewModel.SubtotalPrice,
                         GrnTotal = grnViewModel.TotalPrice,
-                        TotalCharges = grnViewModel.TotalCharges
+
                     };
                     if (done)
                         PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
@@ -438,13 +456,14 @@ namespace ClubJumana.Core.Services
                     PO.Forwarding = grnViewModel.Forwarding;
                     PO.LandTransport = grnViewModel.LandTransport;
                     PO.Others = grnViewModel.Others;
-                    PO.GrnTotal = grnViewModel.TotalPrice;
                     PO.TotalCharges = grnViewModel.TotalCharges;
+                    PO.GrnSubtotal = grnViewModel.SubtotalPrice;
+                    PO.GrnTotal = grnViewModel.TotalPrice;
                     if (done)
                         PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
 
                 }
-                _context.SaveChanges();
+                //_context.SaveChanges();
 
                 int IdOfItems = _context.items.Max(p => p.Id) + 1;
                 Item itemm = new Item();
@@ -458,6 +477,8 @@ namespace ClubJumana.Core.Services
                             Po_fk = PO.Id,
                             ProductMaster_fk = item.ProductMaster_fk,
                             GrnQuantity = item.Quantity,
+                            GrnPrice = item.Price,
+                            GrnItemsPrice = item.TotalItemPrice,
                             Diffrent = item.Diffrent,
                             Cost = item.Cost,
                             Alert = item.Alert,
@@ -472,6 +493,8 @@ namespace ClubJumana.Core.Services
                         itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.GrnQuantity = item.Quantity;
+                        itemm.GrnPrice = item.Price;
+                        itemm.GrnItemsPrice = item.TotalItemPrice;
                         itemm.Diffrent = item.Diffrent;
                         itemm.Cost = item.Cost;
                         itemm.Alert = item.Alert;
@@ -491,7 +514,7 @@ namespace ClubJumana.Core.Services
                     {
                         if (!VARIABLE.IsDeleted)
                         {
-                            productInventory = _context.productinventorywarehouses.SingleOrDefault(p =>
+                            productInventory = _context.productinventorywarehouses.Include(p=>p.ProductMaster).SingleOrDefault(p =>
                                 p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                 p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
                             if (productInventory != null)
@@ -499,11 +522,14 @@ namespace ClubJumana.Core.Services
                                 productInventory.Income += VARIABLE.Quantity;
                                 productInventory.Inventory += VARIABLE.Quantity;
                                 productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
-                                productInventory.ProductMaster.StockOnHand += VARIABLE.Diffrent;
                                 if (PO.FromWarehouse_fk == 1)
                                 {
-                                    VARIABLE.ProductMaster.Income += VARIABLE.Quantity;
-                                    VARIABLE.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                                    productInventory.ProductMaster.Income += VARIABLE.Quantity;
+                                    productInventory.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                                }
+                                else
+                                {
+                                    productInventory.ProductMaster.StockOnHand += VARIABLE.Diffrent;
                                 }
 
                             }

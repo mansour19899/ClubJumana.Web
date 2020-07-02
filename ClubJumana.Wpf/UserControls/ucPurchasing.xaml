@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClubJumana.Wpf.UserControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcPurchasing_OnLoaded">
     <Grid Margin="0 40 0 0">
@@ -19,6 +20,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <system:Double x:Key="Font1">15</system:Double>
+        </Grid.Resources>
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -77,7 +81,7 @@
                     <TextBlock Text="Process" />
                     <TextBlock Name="btnPostPurchasing" Text="Posting" MouseDown="BtnPostPurchasing_OnMouseDown" />
                     <TextBlock Text="Request Approval" />
-                    <TextBlock Text="Print/Send" />
+                    <TextBlock Name="btnPrintOrSend" Text="Print/Send" MouseDown="BtnPrintOrSend_OnMouseDown" />
                     <TextBlock Text="Navigate" />
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <TextBlock Text="More options" />
@@ -288,7 +292,7 @@
                             <Setter Property="Foreground" Value="LightGray"/>
                         </Style>
                         <Style x:Key="Style1" TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="FontSize" Value="15"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Foreground" Value="#505C6D"/>
                             <Setter Property="Margin" Value="30 0 0 0"/>
@@ -310,7 +314,7 @@
                                     <TextBlock Text="Vendor Name" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbVendor" FontSize="16"
+                                <ComboBox Name="cmbVendor" FontSize="{StaticResource Font1}"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -322,14 +326,14 @@
                                     <TextBlock Text="Contact" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox FontSize="16" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}" />
+                                <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Ship From" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbShipFrom" FontSize="16"
+                                <ComboBox Name="cmbShipFrom" FontSize="{StaticResource Font1}"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -342,7 +346,7 @@
                                     <TextBlock Text="Ship To " Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbShipToStore" FontSize="16"
+                                <ComboBox Name="cmbShipToStore" FontSize="{StaticResource Font1}"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -358,21 +362,21 @@
                                     <TextBlock Text="Doucment Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3" SelectedDate="{Binding  DateCompleted}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
+                                <DatePicker Margin="10 3" SelectedDate="{Binding  DateCompleted}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                     <TextBlock Text="Ship Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3"  SelectedDate="{Binding ShipDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
+                                <DatePicker Margin="10 3"  SelectedDate="{Binding ShipDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                     <TextBlock Text="Cancel Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" />
+                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
 
                             <UniformGrid Columns="2" Rows="1">
@@ -382,7 +386,7 @@
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='dd MMM yyyy , HH : mm  '}" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" FontSize="{StaticResource Font1}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='dd MMM yyyy , HH : mm  '}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                         </UniformGrid>
@@ -409,8 +413,8 @@
 
                     </Border>
                     <StackPanel Grid.Row="3" >
-                        <Border Height="350" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="20"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"   >
+                        <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
+                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"   >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
@@ -425,13 +429,13 @@
                             </DataGrid>
                         </Border>
                         <UniformGrid Rows="1" Columns="2" Height="360">
-                            <UniformGrid Rows="8" Columns="1">
+                            <UniformGrid Name="TotalChargePart1" Rows="9" Columns="1">
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Freight" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Freight}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
+                                    <TextBox Text="{Binding Freight}"  GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
@@ -469,29 +473,30 @@
                                     <TextBox Text="{Binding Handling}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
                             </UniformGrid>
-                            <UniformGrid Rows="8" Columns="1">
-                                <UniformGrid Columns="2" Rows="1">
+                            <TextBlock Name="TotalChargePart0" Visibility="Collapsed" ></TextBlock>
+                            <UniformGrid Rows="9" Columns="1">
+                                <UniformGrid Name="TotalChargePart2" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Forwarding" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
                                     <TextBox Text="{Binding Forwarding}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
+                                <UniformGrid Name="TotalChargePart3" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Land Transport" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
                                     <TextBox Text="{Binding LandTransport}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
+                                <UniformGrid Name="TotalChargePart4" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Others" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
                                     <TextBox Text="{Binding Others}" GotKeyboardFocus="UIElement_OnGotKeyboardFocus" GotMouseCapture="UIElement_OnGotMouseCapture" />
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
+                                <UniformGrid Name="TotalChargePart5" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                         <TextBlock Text="Subtotal " Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -501,7 +506,7 @@
                                         <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalPrice}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
+                                <UniformGrid Name="TotalChargePart6" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                         <TextBlock Text="Total Charge " Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />

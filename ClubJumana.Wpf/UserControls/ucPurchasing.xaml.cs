@@ -58,6 +58,29 @@ namespace ClubJumana.Wpf.UserControls
 
         }
 
+        public void HideOrShowChargesInPurchasing()
+        {
+            if (Mode == Mode.PO || Mode == Mode.POInvoice)
+            {
+                TotalChargePart0.Visibility = Visibility.Visible;
+                TotalChargePart1.Visibility = Visibility.Collapsed;
+                TotalChargePart2.Visibility = Visibility.Collapsed;
+                TotalChargePart3.Visibility = Visibility.Collapsed;
+                TotalChargePart4.Visibility = Visibility.Collapsed;
+                TotalChargePart5.Visibility = Visibility.Collapsed;
+                TotalChargePart6.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TotalChargePart0.Visibility = Visibility.Collapsed;
+                TotalChargePart1.Visibility = Visibility.Visible;
+                TotalChargePart2.Visibility = Visibility.Visible;
+                TotalChargePart3.Visibility = Visibility.Visible;
+                TotalChargePart4.Visibility = Visibility.Visible;
+                TotalChargePart5.Visibility = Visibility.Visible;
+                TotalChargePart6.Visibility = Visibility.Visible;
+            }
+        }
         public void ParaperForNewPurchasing()
         {
             RemoveItemsOfPurchaseOrderViewModel = new List<ItemsOfPurchaseOrderViewModel>();
@@ -225,7 +248,18 @@ namespace ClubJumana.Wpf.UserControls
 
         public void CalculateCost()
         {
-            AsnViewModel.CalculateCost();
+            switch (Mode)
+            {
+                case Mode.PO:
+                    AsnViewModel.CalculateCost();
+                    break;
+                case Mode.Grn:
+                    GrnViewModel.CalculateCost();
+                    break;
+                default:
+                    break;
+            }
+
         }
 
         private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
@@ -267,7 +301,12 @@ namespace ClubJumana.Wpf.UserControls
             tb.SelectAll();
         }
 
-
-
+        public event EventHandler<EventArgs> BtnPrintOrSend;
+        private void BtnPrintOrSend_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnPrintOrSend != null)
+                BtnPrintOrSend(sender, e);
+        }
     }
 }

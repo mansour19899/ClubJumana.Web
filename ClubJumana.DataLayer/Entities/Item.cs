@@ -21,15 +21,15 @@ namespace ClubJumana.DataLayer.Entities
         public int GrnQuantity { get; set; }
         public decimal PoPrice { get; set; }
         public decimal AsnPrice { get; set; }
-        public decimal Price { get; set; }
+        public decimal GrnPrice { get; set; }
         public decimal Cost { get; set; }
-        public decimal TotalItemPrice { get; set; }
         public decimal PoItemsPrice { get; set; }
         public decimal AsnItemsPrice { get; set; }
+        public decimal GrnItemsPrice { get; set; }
         public int Diffrent { get; set; }
         public bool? Alert { get; set; }
         public string Note { get; set; }
-        public bool? Checked { get; set; }
+        public bool? Checked { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
         [Timestamp]
         public DateTime RowVersion { get; set; }

@@ -61,9 +61,9 @@ namespace ClubJumana.DataLayer.Context
             // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
              //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-           //  optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
-              optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
+             optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
+            //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+           // optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
 
             //Update-Database -Context JummanaContext
         }
@@ -102,8 +102,6 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<Item>().Property(b => b.Checked).HasDefaultValue(false);
             modelBuilder.Entity<Item>().Property(b => b.Alert).HasDefaultValue(false);
             //modelBuilder.Entity<Item>().Property(e => e.AsnItemsPrice).HasColumnType("decimal(5, 2)");
-            modelBuilder.Entity<Item>().Ignore(p => p.Price);
-            modelBuilder.Entity<Item>().Ignore(p => p.TotalItemPrice);
             //modelBuilder.Entity<Item>().HasData(new Item
             //{
             //    Id = 100, Po_fk = 1, ProductMaster_fk = 1, PoQuantity = 0, AsnQuantity = 0, GrnQuantity = 0,
@@ -498,10 +496,10 @@ namespace ClubJumana.DataLayer.Context
 
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-           // optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
+           // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-             optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
+           //  optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
 
 
             //Update-Database -Context JummanaContext

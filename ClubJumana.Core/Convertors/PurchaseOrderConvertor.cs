@@ -159,7 +159,8 @@ namespace ClubJumana.Core.Convertors
                                 Cost = item.Cost,
                                 TotalItemPrice = item.PoItemsPrice,
                                 IsChanged = false,
-                                IsDeleted = item.IsDeleted
+                                IsDeleted = item.IsDeleted,
+                                 Checked= item.Checked
                             });
                         }
 
@@ -181,7 +182,8 @@ namespace ClubJumana.Core.Convertors
                                 Cost = item.Cost,
                                 TotalItemPrice = item.AsnItemsPrice,
                                 IsChanged = false,
-                                IsDeleted = item.IsDeleted
+                                IsDeleted = item.IsDeleted,
+                                Checked = item.Checked
                             });
                         }
                        
@@ -198,12 +200,13 @@ namespace ClubJumana.Core.Convertors
                                 ProductMaster_fk = item.ProductMaster_fk,
                                 ProductMaster = item.ProductMaster,
                                 PreviousQuantity = item.AsnQuantity,
-                                Price = item.AsnPrice,
+                                Price = item.GrnPrice,
                                 Quantity = item.GrnQuantity,
                                 Cost = item.Cost,
-                                TotalItemPrice = item.AsnItemsPrice,
+                                TotalItemPrice = item.GrnItemsPrice,
                                 IsChanged = false,
-                                IsDeleted = item.IsDeleted
+                                IsDeleted = item.IsDeleted,
+                                Checked = item.Checked
                             });
                         }
                        

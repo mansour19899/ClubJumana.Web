@@ -35,6 +35,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
                 <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSaveVendor" Click="BtnSaveItem_OnClick">
                     <Button.Foreground>
@@ -43,6 +44,7 @@
                 </Button>
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
                 <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/compressIcon.png" />
+                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
             </Grid>
         </Grid>
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="40" Text="2000-S ∙ SYDNEY Swivel Chair, green" FontWeight="ExtraLight"/>
@@ -264,20 +266,20 @@
                 <Grid Margin="0 0 30 100">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
-                        <RowDefinition Height="329"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="282"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="405"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="429"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="235"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="329"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="611"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="97"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="75"/>
                         <RowDefinition Height="235"/>
                     </Grid.RowDefinitions>
                     <Grid.Resources>
@@ -286,7 +288,7 @@
                             <Setter Property="Foreground" Value="LightGray"/>
                         </Style>
                         <Style x:Key="Style1" TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="FontSize" Value="15"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Foreground" Value="#505C6D"/>
                             <Setter Property="Margin" Value="30 0 0 0"/>
@@ -301,7 +303,7 @@
                         </UniformGrid>
 
                     </Border>
-                    <UniformGrid Grid.Row="1" Columns="2" Rows="7"  Margin="0 20 0 0">
+                    <UniformGrid Grid.Row="1" Columns="2" Rows="6"  Margin="0 20 0 0">
                         <UniformGrid Columns="2" Rows="1">
                             <StackPanel Orientation="Horizontal" >
                                 <TextBlock Text="No" Style="{StaticResource Style1}"/>
@@ -464,7 +466,7 @@
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Qty. on Purch. Orde" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Goods Reserved" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <Grid>
@@ -474,32 +476,32 @@
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Qty. on Sales Order" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Refund Quntity" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding RefundQuantity}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Qty. on Job Order" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Income" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Income}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Qty. on Assembly" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="OutCome" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="0" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Outcome}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
 

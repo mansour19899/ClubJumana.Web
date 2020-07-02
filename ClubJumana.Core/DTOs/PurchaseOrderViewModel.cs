@@ -250,9 +250,6 @@ namespace ClubJumana.Core.DTOs
         public void CalculateCost()
         {
             decimal x = 0;
-            var tte = TotalCharges;
-            var rfd = _totalCharge;
-            var oi = SubtotalPrice;
 
             foreach (var VARIABLE in ItemsOfPurchaseOrderViewModels)
             {

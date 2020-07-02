@@ -59,7 +59,7 @@
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
-                <TextBlock Text="Seles" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
+                <TextBlock Name="btnSales" Text="Seles" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D" MouseDown="BtnSales_OnMouseDown"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
             <StackPanel Name="btnPurchasing" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" MouseDown="BtnPurchasing_OnMouseDown">
@@ -137,7 +137,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="400"/>
                 </Grid.ColumnDefinitions>
-                <ListView SelectionMode="Single"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" >
+                <ListView SelectionMode="Single"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Alu}" />
@@ -146,6 +146,20 @@
                             <GridViewColumn Header="Vendor Invoice NO." Width="320" DisplayMemberBinding="{Binding Path=TotalPricee}"/>
                             <GridViewColumn Header="Amount" Width="300" DisplayMemberBinding="{Binding Path=TotalPrice}" />
                             <GridViewColumn Header="Last Modified" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListView SelectionMode="Single"  Name="lvProductMaster" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvProductMaster_OnMouseDoubleClick" Visibility="Visible" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Style Number" Width="170" DisplayMemberBinding="{Binding Path=StyleNumber}" />
+                            <GridViewColumn Header="Description" Width="300" DisplayMemberBinding="{Binding Path=Name}" />
+                            <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
+                            <GridViewColumn Header="Inventory" Width="150" DisplayMemberBinding="{Binding Path=StockOnHand}"/>
+                            <GridViewColumn Header="Unit Cost" Width="150" DisplayMemberBinding="{Binding Path=Cost}" />
+                            <GridViewColumn Header="Unit Price" Width="150" DisplayMemberBinding="{Binding Path=WholesalePrice}" />
+                            <GridViewColumn Header="Vendor No." Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -194,7 +208,7 @@
         <Grid Grid.Row="2" Name="PurchasingMenue" Visibility="Hidden"  Background="GhostWhite" Margin="0 0 0 0"  Height="150" VerticalAlignment="Top" MouseLeave="PurchasingMenue_OnMouseLeave">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontSize" Value="17"/>
                     <Setter Property="HorizontalAlignment" Value="Left"></Setter>
                     <Setter Property="Foreground" Value="Navy"></Setter>
                     <Style.Triggers>
@@ -220,6 +234,42 @@
                 <TextBlock Text="Item Charge"/>
                 <TextBlock Name="btnGrn" Text="Goods Receive Note" MouseDown="BtnGrn_OnMouseDown"/>
                 <TextBlock Name="BtnGrnInvoice" Text="GRN Invoive" MouseDown="BtnGrnInvoice_OnMouseDown"/>
+            </UniformGrid>
+        </Grid>
+        <Grid Grid.Row="2" Name="SalesMenue" Visibility="Visible"  Background="GhostWhite" Margin="0 0 0 0"  Height="120" VerticalAlignment="Top" MouseLeave="SalesMenue_OnMouseLeave">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="17"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                    <Setter Property="Foreground" Value="Navy"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextDecorations" Value="Underline"/>
+                            <Setter Property="Cursor" Value="Hand"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
+            </Grid.Effect>
+            <UniformGrid Rows="2" Columns="8" Margin="150 20 20 50">
+                <TextBlock  Text="Customers" />
+                <TextBlock  Text="Item Charge" />
+                <TextBlock  Text="Sales Order" />
+                <TextBlock  Text="Sales Invoice" />
+                <TextBlock  Text="Sales Return Orders" />
+                <TextBlock  Text="Finance Charge Memos" />
+                <TextBlock  Text="Posted Sales Credit Memos" />
+                <TextBlock  Text="Issued Reminders" />
+                <TextBlock Name="btnItem" MouseDown="BtnItem_OnMouseDown"  Text="Item" />
+                <TextBlock  Text="Sales Qoutes" />
+                <TextBlock  Text="Blancket  Sales Orders" />
+                <TextBlock  Text="Sales Credit Memos" />
+                <TextBlock  Text="Reminders" />
+                <TextBlock  Text="Posted Sales Invoices" />
+                <!--<TextBlock  Text="Posted Sales Return Receipts" />
+                <TextBlock  Text="Issued Finance Charge Memos" />-->
             </UniformGrid>
         </Grid>
 
