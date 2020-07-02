@@ -41,6 +41,7 @@ namespace ClubJumana.DataLayer.Entities
         public Product Product { get; set; }
         public  Colour Colour { get; set; }
         public Barcode Barcode { get; set; }
+        public ProductMaster ProductMaster { get; set; }
         public ProductType ProductType { get; set; }
         public virtual ICollection<Image> Images { get; set; }
 

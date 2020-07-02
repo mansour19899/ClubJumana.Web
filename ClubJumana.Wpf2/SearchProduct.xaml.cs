@@ -1067,5 +1067,10 @@ namespace ClubJumana.Wpf2
             myMessageQueue.Enqueue(InfoProduct.StyleNumber+" Updated.");
 
         }
+
+        private void BtnAddProductToProductMaster_OnClick(object sender, RoutedEventArgs e)
+        {
+            _productInformationService.TransferProductsToProductMaster(SelectedList);
+        }
     }
 }

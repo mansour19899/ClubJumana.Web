@@ -201,7 +201,9 @@ namespace ClubJumana.Core.Services
         {
             List<VariantViewModel> list = new List<VariantViewModel>();
 
-            var VariantslList = _context.variants.OrderBy(p => p.ProductFK).Include(p => p.Product).Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory).Include(p => p.Colour).ToList();
+            var VariantslList = _context.variants.OrderBy(p => p.ProductFK).Include(p => p.Product)
+                .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
+                .Include(p=>p.Product).ThenInclude(p=>p.CountryOfOrgin).Include(p => p.Colour).ToList();
 
             foreach (var VARIABLE in VariantslList)
             {
@@ -511,6 +513,40 @@ namespace ClubJumana.Core.Services
             }
 
             _onlineContext.SaveChanges();
+            _context.SaveChanges();
+            return 1;
+        }
+
+        public int TransferProductsToProductMaster(List<VariantViewModel> list)
+        {
+            DetachedAllEntries();
+            int Id = _context.productmasters.Max(p=>p.Id);
+            foreach (var item in list)
+            {
+                Id++;
+                _context.productmasters.Add(new ProductMaster()
+                {
+                    Id = Id,
+                    Name = "Set Description",
+                    StyleNumber = item.Product.StyleNumber,
+                    SKU = item.SKU,
+                    UPC = item.Barcode.BarcodeNumber,
+                    Size = item.Size,
+                    Color = item.Colour.Name,
+                    MadeIn = item.Product.CountryOfOrgin.Name,
+                    VariantFK = item.Id,
+                    FobPrice = item.FobPrice,
+                    WholesalePrice = item.WholesaleB,
+                    RetailPrice = item.RetailPrice,
+                    StockOnHand = 0,
+                    GoodsReserved = 0,
+                    LastUpdateInventory = DateTime.Now,
+                    Income = 0,
+                    Outcome = 0
+                });
+
+            }
+
             _context.SaveChanges();
             return 1;
         }

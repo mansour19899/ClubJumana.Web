@@ -174,7 +174,7 @@ namespace ClubJumana.Wpf
         {
 
             var Path = AppDomain.CurrentDomain.BaseDirectory;
-            FileInfo newFile = new FileInfo(Path + "PurchaseOrderSample.xlsx");
+            FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "PurchaseOrderSample.xlsx");
             //FileInfo newFile = new FileInfo(System.IO.Path.Combine(Path, @"\PurchaseOrderSample.xlsx"));
             string filee = Path + "Purchasing" + @"\" + DateTime.Today.ToShortDateString().Replace("/", "") + ".xlsx";
             FileInfo newFilee = new FileInfo(filee);
@@ -186,17 +186,31 @@ namespace ClubJumana.Wpf
 
             var ws = excel.Workbook.Worksheets.ElementAt(0);
             // var wss = excel.Workbook.Worksheets("");
-            var workSheet = excel.Workbook.Worksheets.Add("Sheet11");
-            var workSheet2 = excel.Workbook.Worksheets.Add("Sheet12");
+            //var workSheet = excel.Workbook.Worksheets.Add("Sheet11");
+            //var workSheet2 = excel.Workbook.Worksheets.Add("Sheet12");
 
-            workSheet.Row(1).Height = 90;
-            workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            workSheet.Row(1).Style.Font.Bold = true;
+            //workSheet.Row(1).Height = 90;
+            //workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            //workSheet.Row(1).Style.Font.Bold = true;
 
             // Header of the Excel sheet 
-            workSheet.Cells[1, 1].Value = "Mansour";
-            workSheet.Cells[1, 2].Value = "Id";
-            workSheet.Cells[1, 3].Value = "Name";
+            //workSheet.Cells[1, 1].Value = "Mansour";
+            //workSheet.Cells[1, 2].Value = "Id";
+            //workSheet.Cells[1, 3].Value = "Name";
+
+
+            var trr = _purchaseOrderService.GivePurchaseOrderById(SelectedPo.Id);
+            int row = 13;
+            foreach (var VARIABLE in trr.Items)
+            {
+                ws.Cells[row, 5, row, 9].Merge = true;
+                ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
+                ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name;
+                ws.Cells[row, 9].Value = VARIABLE.PoQuantity;
+                ws.Cells[row, 10].Value = VARIABLE.PoPrice;
+                ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice;
+                row++;
+            }
 
             //workSheet.Column(1).AutoFit();
             //workSheet.Column(2).AutoFit();
@@ -326,7 +340,7 @@ namespace ClubJumana.Wpf
 
             }
 
-
+            Purchasing.txtSearch.Clear();
         }
         private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

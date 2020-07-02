@@ -93,6 +93,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    <Button Name="btnAddProductToProductMaster" Grid.Column="0" Margin="25,23,10,7" FontSize="20" Click="BtnAddProductToProductMaster_OnClick" Height="Auto">Add To Inventory</Button>
                     <StackPanel  Grid.Column="1">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
                         <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >

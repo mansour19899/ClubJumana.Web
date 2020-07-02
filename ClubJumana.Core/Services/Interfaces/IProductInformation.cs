@@ -25,6 +25,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public Colour IsExistColorByPantonNumber(string pantoneNumber);
         public int UpdateVariantNote(int Id,string note);
         public int UpdateProduct(ProductInformationViewModel productInformationView);
+        public int TransferProductsToProductMaster(List<VariantViewModel> list);
     }
     
 }

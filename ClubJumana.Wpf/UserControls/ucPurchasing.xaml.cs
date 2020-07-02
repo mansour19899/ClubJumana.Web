@@ -308,5 +308,13 @@ namespace ClubJumana.Wpf.UserControls
             if (BtnPrintOrSend != null)
                 BtnPrintOrSend(sender, e);
         }
+
+        private void TxtSearch_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BtnAddItemOnClick(sender, e);
+            }
+        }
     }
 }
