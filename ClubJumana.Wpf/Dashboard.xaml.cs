@@ -201,9 +201,11 @@ namespace ClubJumana.Wpf
 
             var trr = _purchaseOrderService.GivePurchaseOrderById(SelectedPo.Id);
             int row = 13;
+
             foreach (var VARIABLE in trr.Items)
             {
                 ws.Cells[row, 5, row, 9].Merge = true;
+                ws.Cells[row, 5].Style.WrapText = true;
                 ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
                 ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name;
                 ws.Cells[row, 9].Value = VARIABLE.PoQuantity;
