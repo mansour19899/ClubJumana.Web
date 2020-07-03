@@ -236,7 +236,7 @@
                 <TextBlock Name="BtnGrnInvoice" Text="GRN Invoive" MouseDown="BtnGrnInvoice_OnMouseDown"/>
             </UniformGrid>
         </Grid>
-        <Grid Grid.Row="2" Name="SalesMenue" Visibility="Visible"  Background="GhostWhite" Margin="0 0 0 0"  Height="120" VerticalAlignment="Top" MouseLeave="SalesMenue_OnMouseLeave">
+        <Grid Grid.Row="2" Name="SalesMenue" Visibility="Hidden"  Background="GhostWhite" Margin="0 0 0 0"  Height="120" VerticalAlignment="Top" MouseLeave="SalesMenue_OnMouseLeave">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="17"/>

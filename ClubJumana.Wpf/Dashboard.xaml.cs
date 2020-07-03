@@ -24,6 +24,7 @@ using ClubJumana.Wpf.UserControls;
 using MaterialDesignThemes.Wpf;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Color = System.Drawing.Color;
 using Path = System.Windows.Shapes.Path;
 
 namespace ClubJumana.Wpf
@@ -75,7 +76,7 @@ namespace ClubJumana.Wpf
             Purchasing = new ucPurchasing();
 
             vendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
-            itemCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
+            itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
             customerCard.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
             Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
@@ -145,8 +146,9 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveForItem_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            MessageBox.Show(tt.Customer.FirstName);
             _repositoryService.AddAndUpdateItem(tt.ProductMaster);
+            myMessageQueue.Enqueue("Product Updated");
+
         }
 
         private void BtnSavePurchasing_OnBtnSaveOnClick(object? sender, EventArgs e)
@@ -200,27 +202,65 @@ namespace ClubJumana.Wpf
             //workSheet.Cells[1, 2].Value = "Id";
             //workSheet.Cells[1, 3].Value = "Name";
 
-
-            var trr = _purchaseOrderService.GivePurchaseOrderById(SelectedPo.Id);
+            var PurchasingPrint = _purchaseOrderService.GivePurchaseOrderById(SelectedPo.Id);
             int row = 13;
+            switch (Purchasing.Mode)
+            {
+                case Mode.PO:
+                case Mode.POInvoice:
+                    ws.Cells[8, 2].Value = "Purchase Order";
+                    ws.Cells[10, 10].Value = "PO.NO.";
+                    break;
+                case Mode.Asn:
+                case Mode.AsnInvoice:
+                    ws.Cells[8, 2].Value = "Advanced Shipment Notice";
+                    ws.Cells[10, 10].Value = "ASN.NO.";
+                    break;
+                case Mode.Grn:
+                case Mode.GrnInvoice:
+                    ws.Cells[8, 2].Value = "Goods Receive Note";
+                    ws.Cells[10, 10].Value = "GRN.NO.";
+                    break;
+            }
+            
 
-            foreach (var VARIABLE in trr.Items)
+            foreach (var VARIABLE in PurchasingPrint.Items)
             {
                 
-                ws.Cells[row, 5, row, 9].Merge = true;
+                ws.Cells[row, 5, row, 8].Merge = true;
                 ws.Cells[row, 5].Style.WrapText = true;
                 ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
-                ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name.Replace("@", "\n");
-                //ws.Cells[row, 5].Value = String.Format("Hello\nworld");
-                ws.Cells[row, 9].Value = VARIABLE.PoQuantity;
-                ws.Cells[row, 10].Value = VARIABLE.PoPrice;
-                ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice;
+                ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name;
+                ws.Cells[row, 9].Value = VARIABLE.PoQuantity.ToString();
+                ws.Cells[row, 10].Value = VARIABLE.PoPrice.ToString();
+                ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice.ToString();
+                var CountLine = VARIABLE.ProductMaster.Name.Replace("\r\n", "@").Count(x=>x=='@');
+                ws.Row(row).Height = 20 * (CountLine + 1);
                 row++;
             }
+            using (ExcelRange Rng = ws.Cells[row, 1, row, 11])
+            {
+                //Rng.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                //Rng.Style.Border.Top.Color.SetColor(Color.Red);
+                //Rng.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                //Rng.Style.Border.Left.Color.SetColor(Color.Green);
+                //Rng.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                //Rng.Style.Border.Right.Color.SetColor(Color.Green);
+                Rng.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                Rng.Style.Border.Bottom.Color.SetColor(Color.DarkGray);
+            }
+
+            int TotalRow = row + 2;
+            ws.Row(TotalRow).Style.Font.Bold = true;
+            ws.Row(TotalRow).Style.Font.Size = 12;
+            ws.Cells[TotalRow, 8].Value = "Total CAD ";
+            ws.Cells[TotalRow, 9].Value = PurchasingPrint.PoTotal.ToString();
+            ws.Cells[TotalRow, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
             //workSheet.Column(1).AutoFit();
             //workSheet.Column(2).AutoFit();
             //workSheet.Column(3).AutoFit();
+
 
             FileStream objFileStrm = File.Create(filee);
             objFileStrm.Close();
@@ -266,9 +306,9 @@ namespace ClubJumana.Wpf
                         break;
                     case Mode.Asn:
                         if (Purchasing.IsPosting)
-                            myMessageQueue.Enqueue("Goods In Transit Posted.");
+                            myMessageQueue.Enqueue("Advanced Shipment Notice Posted.");
                         else
-                            myMessageQueue.Enqueue("Goods In Transit Saved.");
+                            myMessageQueue.Enqueue("Advanced Shipment Notice Saved.");
 
                         break;
                     case Mode.Grn:
@@ -430,7 +470,7 @@ namespace ClubJumana.Wpf
         {
             lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true && p.CreatedAsn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
             Mode = Mode.Asn;
-            txtMode.Text = "Goods In Transit";
+            txtMode.Text = "Advanced Shipment Notice";
             HideListview();
             lvPurchasing.Visibility = Visibility.Visible;
         }
@@ -439,7 +479,7 @@ namespace ClubJumana.Wpf
         {
             lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
             Mode = Mode.AsnInvoice;
-            txtMode.Text = "GIT Invoice";
+            txtMode.Text = "ASN Invoice";
             HideListview();
             lvPurchasing.Visibility = Visibility.Visible;
         }

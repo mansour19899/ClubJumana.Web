@@ -48,5 +48,10 @@ namespace ClubJumana.Wpf.UserControls
             if (BtnCloseSubPage != null)
                 BtnCloseSubPage(sender, e);
         }
+
+        private void TxtDescription_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(txtDescription.Text);
+        }
     }
 }
