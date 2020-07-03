@@ -178,6 +178,8 @@ namespace ClubJumana.Wpf
             //FileInfo newFile = new FileInfo(System.IO.Path.Combine(Path, @"\PurchaseOrderSample.xlsx"));
             string filee = Path + "Purchasing" + @"\" + DateTime.Today.ToShortDateString().Replace("/", "") + ".xlsx";
             FileInfo newFilee = new FileInfo(filee);
+            if(newFilee.Exists)
+                newFilee.Delete();
 
             ExcelPackage excel = new ExcelPackage(newFilee, newFile);
 
@@ -204,10 +206,12 @@ namespace ClubJumana.Wpf
 
             foreach (var VARIABLE in trr.Items)
             {
+                
                 ws.Cells[row, 5, row, 9].Merge = true;
                 ws.Cells[row, 5].Style.WrapText = true;
                 ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
-                ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name;
+                ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name.Replace("@", "\n");
+                //ws.Cells[row, 5].Value = String.Format("Hello\nworld");
                 ws.Cells[row, 9].Value = VARIABLE.PoQuantity;
                 ws.Cells[row, 10].Value = VARIABLE.PoPrice;
                 ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice;
