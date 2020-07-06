@@ -8,6 +8,7 @@ namespace ClubJumana.Core.Enums
 {
     public enum Mode
     {
+        Nothong = 0,
         PO = 1,
         Asn = 2,
         Grn = 3,
@@ -17,7 +18,8 @@ namespace ClubJumana.Core.Enums
         Sale = 7,
         productInformation = 8,
         Order = 9,
-        Nothong = 10,
+        Customer = 10,
+        Vendor = 11,
 
     }
 

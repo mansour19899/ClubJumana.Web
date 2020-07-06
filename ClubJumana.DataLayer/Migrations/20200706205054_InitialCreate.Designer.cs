@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    [Migration("20200702191842_InitialCreate30")]
-    partial class InitialCreate30
+    [Migration("20200706205054_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -246,25 +246,43 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Address2")
                         .HasColumnType("text");
 
-                    b.Property<string>("Address3")
-                        .HasColumnType("text");
+                    b.Property<decimal>("BalanceDueLCY")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("BalanceLCY")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Company")
+                    b.Property<string>("City")
                         .HasColumnType("text");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContactLastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContactName")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("CostsLCY")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("CountryFK")
+                        .HasColumnType("int");
 
                     b.Property<int>("CreatedBy_fk")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EditedDate")
-                        .HasColumnType("datetime");
+                    b.Property<decimal>("CreditLimitLCY")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FaxNo")
                         .HasColumnType("text");
 
                     b.Property<bool?>("Gender")
@@ -273,11 +291,11 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("LastSaleDate")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("text");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -285,20 +303,30 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("Phone1")
                         .HasColumnType("text");
 
-                    b.Property<string>("Phone2")
-                        .HasColumnType("text");
-
                     b.Property<string>("PostalCode")
                         .HasColumnType("text");
+
+                    b.Property<int?>("ProvinceFK")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
 
+                    b.Property<decimal>("TotalSales")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CountryFK");
+
                     b.HasIndex("CreatedBy_fk");
+
+                    b.HasIndex("ProvinceFK");
 
                     b.ToTable("customers");
                 });
@@ -654,16 +682,16 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("GST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(7,4)");
 
                     b.Property<decimal?>("HST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(7,4)");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<decimal?>("QST")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(7,4)");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
@@ -996,6 +1024,9 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int?>("Warehouse_fk")
                         .HasColumnType("int");
 
+                    b.Property<int?>("term_fk")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Cashier_fk");
@@ -1005,6 +1036,8 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasIndex("TaxArea_fk");
 
                     b.HasIndex("Warehouse_fk");
+
+                    b.HasIndex("term_fk");
 
                     b.ToTable("saleorders");
                 });
@@ -1192,6 +1225,27 @@ namespace ClubJumana.DataLayer.Migrations
                             NeedToUpdate = false,
                             RowVersion = 0L
                         });
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Term", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("DueDateCalculation")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("terms");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
@@ -1568,11 +1622,19 @@ namespace ClubJumana.DataLayer.Migrations
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Customer", b =>
                 {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Country", "Country")
+                        .WithMany("Customers")
+                        .HasForeignKey("CountryFK");
+
                     b.HasOne("ClubJumana.DataLayer.Entities.Users.User", "User")
                         .WithMany("Customers")
                         .HasForeignKey("CreatedBy_fk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Province", "Province")
+                        .WithMany("Customers")
+                        .HasForeignKey("ProvinceFK");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Image", b =>
@@ -1719,6 +1781,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.Warehouse", "Warehouse")
                         .WithMany("SaleOrders")
                         .HasForeignKey("Warehouse_fk");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Term", "Term")
+                        .WithMany("SaleOrders")
+                        .HasForeignKey("term_fk");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SoItem", b =>

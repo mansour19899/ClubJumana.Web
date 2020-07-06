@@ -104,52 +104,14 @@ namespace ClubJumana.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "productmasters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    VendorCode = table.Column<int>(nullable: false),
-                    StyleNumber = table.Column<string>(nullable: true),
-                    SKU = table.Column<string>(nullable: true),
-                    UPC = table.Column<string>(nullable: true),
-                    Size = table.Column<string>(nullable: true),
-                    Color = table.Column<string>(nullable: true),
-                    MadeIn = table.Column<string>(nullable: true),
-                    Cost = table.Column<decimal>(nullable: true),
-                    FobPrice = table.Column<decimal>(nullable: true),
-                    RetailPrice = table.Column<decimal>(nullable: true),
-                    WholesalePrice = table.Column<decimal>(nullable: true),
-                    SalePrice = table.Column<decimal>(nullable: true),
-                    SaleStartDate = table.Column<DateTime>(nullable: true),
-                    SaleEndDate = table.Column<DateTime>(nullable: true),
-                    Margin = table.Column<string>(nullable: true),
-                    StockOnHand = table.Column<int>(nullable: false),
-                    GoodsReserved = table.Column<int>(nullable: false),
-                    RefundQuantity = table.Column<int>(nullable: true),
-                    LastUpdateInventory = table.Column<DateTime>(nullable: false),
-                    Income = table.Column<int>(nullable: false),
-                    Outcome = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(nullable: true),
-                    Active = table.Column<bool>(nullable: true),
-                    Note = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_productmasters", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "provinces",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    HST = table.Column<decimal>(nullable: true),
-                    GST = table.Column<decimal>(nullable: true),
-                    QST = table.Column<decimal>(nullable: true),
+                    HST = table.Column<decimal>(type: "decimal(7,4)", nullable: true),
+                    GST = table.Column<decimal>(type: "decimal(7,4)", nullable: true),
+                    QST = table.Column<decimal>(type: "decimal(7,4)", nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
@@ -199,6 +161,20 @@ namespace ClubJumana.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tablesversion", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "terms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Code = table.Column<string>(maxLength: 15, nullable: true),
+                    Description = table.Column<string>(maxLength: 100, nullable: true),
+                    DueDateCalculation = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_terms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -333,22 +309,30 @@ namespace ClubJumana.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Company = table.Column<string>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
                     Gender = table.Column<bool>(nullable: true),
                     BirthDate = table.Column<DateTime>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    ContactName = table.Column<string>(nullable: true),
+                    ContactLastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Website = table.Column<string>(nullable: true),
+                    Phone1 = table.Column<string>(nullable: true),
+                    Mobile = table.Column<string>(nullable: true),
+                    FaxNo = table.Column<string>(nullable: true),
                     Address1 = table.Column<string>(nullable: true),
                     Address2 = table.Column<string>(nullable: true),
-                    Address3 = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true),
-                    Phone1 = table.Column<string>(nullable: true),
-                    Phone2 = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    BalanceLCY = table.Column<decimal>(nullable: false),
+                    BalanceDueLCY = table.Column<decimal>(nullable: false),
+                    CreditLimitLCY = table.Column<decimal>(nullable: false),
+                    TotalSales = table.Column<decimal>(nullable: false),
+                    CostsLCY = table.Column<decimal>(nullable: false),
                     ImageName = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
                     CreatedBy_fk = table.Column<int>(nullable: false),
-                    EditedDate = table.Column<DateTime>(nullable: true),
+                    ProvinceFK = table.Column<int>(nullable: true),
+                    CountryFK = table.Column<int>(nullable: true),
                     LastSaleDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     RowVersion = table.Column<DateTime>(nullable: false)
@@ -358,11 +342,23 @@ namespace ClubJumana.DataLayer.Migrations
                 {
                     table.PrimaryKey("PK_customers", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_customers_countries_CountryFK",
+                        column: x => x.CountryFK,
+                        principalTable: "countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_customers_users_CreatedBy_fk",
                         column: x => x.CreatedBy_fk,
                         principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_customers_provinces_ProvinceFK",
+                        column: x => x.ProvinceFK,
+                        principalTable: "provinces",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -418,40 +414,6 @@ namespace ClubJumana.DataLayer.Migrations
                         name: "FK_userroles_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "productinventorywarehouses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    ProductMaster_fk = table.Column<int>(nullable: false),
-                    Warehouse_fk = table.Column<int>(nullable: false),
-                    Inventory = table.Column<int>(nullable: true, defaultValue: 0),
-                    Income = table.Column<int>(nullable: true),
-                    OutCome = table.Column<int>(nullable: true),
-                    OnTheWayInventory = table.Column<int>(nullable: true, defaultValue: 0),
-                    RefundQuantity = table.Column<int>(nullable: true),
-                    Aile = table.Column<string>(nullable: true),
-                    Bin = table.Column<string>(nullable: true),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_productinventorywarehouses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_productinventorywarehouses_productmasters_ProductMaster_fk",
-                        column: x => x.ProductMaster_fk,
-                        principalTable: "productmasters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_productinventorywarehouses_warehouses_Warehouse_fk",
-                        column: x => x.Warehouse_fk,
-                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -630,6 +592,7 @@ namespace ClubJumana.DataLayer.Migrations
                     Cashier_fk = table.Column<int>(nullable: true),
                     Customer_fk = table.Column<int>(nullable: true),
                     Warehouse_fk = table.Column<int>(nullable: true),
+                    term_fk = table.Column<int>(nullable: true),
                     ShipMethod_fk = table.Column<int>(nullable: true),
                     Subtotal = table.Column<decimal>(nullable: false),
                     SoTotalPrice = table.Column<decimal>(nullable: false),
@@ -675,46 +638,12 @@ namespace ClubJumana.DataLayer.Migrations
                         principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "items",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Po_fk = table.Column<int>(nullable: false),
-                    ProductMaster_fk = table.Column<int>(nullable: false),
-                    PoQuantity = table.Column<int>(nullable: false, defaultValue: 0),
-                    AsnQuantity = table.Column<int>(nullable: false, defaultValue: 0),
-                    GrnQuantity = table.Column<int>(nullable: false, defaultValue: 0),
-                    PoPrice = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    AsnPrice = table.Column<decimal>(nullable: false),
-                    Cost = table.Column<decimal>(nullable: false),
-                    PoItemsPrice = table.Column<decimal>(nullable: false),
-                    AsnItemsPrice = table.Column<decimal>(nullable: false),
-                    Diffrent = table.Column<int>(nullable: false),
-                    Alert = table.Column<bool>(nullable: true, defaultValue: false),
-                    Note = table.Column<string>(nullable: true),
-                    Checked = table.Column<bool>(nullable: true, defaultValue: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_items_purchaseorders_Po_fk",
-                        column: x => x.Po_fk,
-                        principalTable: "purchaseorders",
+                        name: "FK_saleorders_terms_term_fk",
+                        column: x => x.term_fk,
+                        principalTable: "terms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_items_productmasters_ProductMaster_fk",
-                        column: x => x.ProductMaster_fk,
-                        principalTable: "productmasters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -802,41 +731,6 @@ namespace ClubJumana.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "soitems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    So_fk = table.Column<int>(nullable: false),
-                    ProductMaster_fk = table.Column<int>(nullable: false),
-                    Cost = table.Column<decimal>(nullable: false),
-                    Discount = table.Column<decimal>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    QuantityRefunded = table.Column<int>(nullable: true, defaultValue: 0),
-                    IsAbaleToRefund = table.Column<bool>(nullable: true, defaultValue: true),
-                    Price = table.Column<decimal>(nullable: false),
-                    TotalPrice = table.Column<decimal>(nullable: false),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_soitems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_soitems_productmasters_ProductMaster_fk",
-                        column: x => x.ProductMaster_fk,
-                        principalTable: "productmasters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_soitems_saleorders_So_fk",
-                        column: x => x.So_fk,
-                        principalTable: "saleorders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "images",
                 columns: table => new
                 {
@@ -853,6 +747,127 @@ namespace ClubJumana.DataLayer.Migrations
                         name: "FK_images_variants_VariantFK",
                         column: x => x.VariantFK,
                         principalTable: "variants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productmasters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    VendorCode = table.Column<int>(nullable: false),
+                    StyleNumber = table.Column<string>(nullable: true),
+                    VariantFK = table.Column<int>(nullable: false),
+                    SKU = table.Column<string>(nullable: true),
+                    UPC = table.Column<string>(nullable: true),
+                    Size = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    MadeIn = table.Column<string>(nullable: true),
+                    Cost = table.Column<decimal>(nullable: true),
+                    FobPrice = table.Column<decimal>(nullable: true),
+                    RetailPrice = table.Column<decimal>(nullable: true),
+                    WholesalePrice = table.Column<decimal>(nullable: true),
+                    SalePrice = table.Column<decimal>(nullable: true),
+                    SaleStartDate = table.Column<DateTime>(nullable: true),
+                    SaleEndDate = table.Column<DateTime>(nullable: true),
+                    Margin = table.Column<string>(nullable: true),
+                    StockOnHand = table.Column<int>(nullable: false),
+                    GoodsReserved = table.Column<int>(nullable: false),
+                    RefundQuantity = table.Column<int>(nullable: true),
+                    LastUpdateInventory = table.Column<DateTime>(nullable: false),
+                    Income = table.Column<int>(nullable: false),
+                    Outcome = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
+                    Active = table.Column<bool>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productmasters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_productmasters_variants_VariantFK",
+                        column: x => x.VariantFK,
+                        principalTable: "variants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Po_fk = table.Column<int>(nullable: false),
+                    ProductMaster_fk = table.Column<int>(nullable: false),
+                    PoQuantity = table.Column<int>(nullable: false, defaultValue: 0),
+                    AsnQuantity = table.Column<int>(nullable: false, defaultValue: 0),
+                    GrnQuantity = table.Column<int>(nullable: false, defaultValue: 0),
+                    PoPrice = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    AsnPrice = table.Column<decimal>(nullable: false),
+                    GrnPrice = table.Column<decimal>(nullable: false),
+                    Cost = table.Column<decimal>(nullable: false),
+                    PoItemsPrice = table.Column<decimal>(nullable: false),
+                    AsnItemsPrice = table.Column<decimal>(nullable: false),
+                    GrnItemsPrice = table.Column<decimal>(nullable: false),
+                    Diffrent = table.Column<int>(nullable: false),
+                    Alert = table.Column<bool>(nullable: true, defaultValue: false),
+                    Note = table.Column<string>(nullable: true),
+                    Checked = table.Column<bool>(nullable: true, defaultValue: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_items_purchaseorders_Po_fk",
+                        column: x => x.Po_fk,
+                        principalTable: "purchaseorders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_items_productmasters_ProductMaster_fk",
+                        column: x => x.ProductMaster_fk,
+                        principalTable: "productmasters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productinventorywarehouses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    ProductMaster_fk = table.Column<int>(nullable: false),
+                    Warehouse_fk = table.Column<int>(nullable: false),
+                    Inventory = table.Column<int>(nullable: true, defaultValue: 0),
+                    Income = table.Column<int>(nullable: true),
+                    OutCome = table.Column<int>(nullable: true),
+                    OnTheWayInventory = table.Column<int>(nullable: true, defaultValue: 0),
+                    RefundQuantity = table.Column<int>(nullable: true),
+                    Aile = table.Column<string>(nullable: true),
+                    Bin = table.Column<string>(nullable: true),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productinventorywarehouses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_productinventorywarehouses_productmasters_ProductMaster_fk",
+                        column: x => x.ProductMaster_fk,
+                        principalTable: "productmasters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_productinventorywarehouses_warehouses_Warehouse_fk",
+                        column: x => x.Warehouse_fk,
+                        principalTable: "warehouses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -884,6 +899,41 @@ namespace ClubJumana.DataLayer.Migrations
                         name: "FK_refunditems_refunds_Refund_fk",
                         column: x => x.Refund_fk,
                         principalTable: "refunds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "soitems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    So_fk = table.Column<int>(nullable: false),
+                    ProductMaster_fk = table.Column<int>(nullable: false),
+                    Cost = table.Column<decimal>(nullable: false),
+                    Discount = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    QuantityRefunded = table.Column<int>(nullable: true, defaultValue: 0),
+                    IsAbaleToRefund = table.Column<bool>(nullable: true, defaultValue: true),
+                    Price = table.Column<decimal>(nullable: false),
+                    TotalPrice = table.Column<decimal>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_soitems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_soitems_productmasters_ProductMaster_fk",
+                        column: x => x.ProductMaster_fk,
+                        principalTable: "productmasters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_soitems_saleorders_So_fk",
+                        column: x => x.So_fk,
+                        principalTable: "saleorders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -934,9 +984,19 @@ namespace ClubJumana.DataLayer.Migrations
                 column: "CountryFK");
 
             migrationBuilder.CreateIndex(
+                name: "IX_customers_CountryFK",
+                table: "customers",
+                column: "CountryFK");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_customers_CreatedBy_fk",
                 table: "customers",
                 column: "CreatedBy_fk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_customers_ProvinceFK",
+                table: "customers",
+                column: "ProvinceFK");
 
             migrationBuilder.CreateIndex(
                 name: "IX_images_VariantFK",
@@ -973,6 +1033,12 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "IX_productinventorywarehouses_Warehouse_fk",
                 table: "productinventorywarehouses",
                 column: "Warehouse_fk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_productmasters_VariantFK",
+                table: "productmasters",
+                column: "VariantFK",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_BrandFK",
@@ -1065,6 +1131,11 @@ namespace ClubJumana.DataLayer.Migrations
                 column: "Warehouse_fk");
 
             migrationBuilder.CreateIndex(
+                name: "IX_saleorders_term_fk",
+                table: "saleorders",
+                column: "term_fk");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_soitems_ProductMaster_fk",
                 table: "soitems",
                 column: "ProductMaster_fk");
@@ -1133,9 +1204,6 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "userroles");
 
             migrationBuilder.DropTable(
-                name: "variants");
-
-            migrationBuilder.DropTable(
                 name: "purchaseorders");
 
             migrationBuilder.DropTable(
@@ -1146,6 +1214,24 @@ namespace ClubJumana.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "roles");
+
+            migrationBuilder.DropTable(
+                name: "vendors");
+
+            migrationBuilder.DropTable(
+                name: "saleorders");
+
+            migrationBuilder.DropTable(
+                name: "variants");
+
+            migrationBuilder.DropTable(
+                name: "customers");
+
+            migrationBuilder.DropTable(
+                name: "warehouses");
+
+            migrationBuilder.DropTable(
+                name: "terms");
 
             migrationBuilder.DropTable(
                 name: "barcodes");
@@ -1160,10 +1246,10 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "producttypes");
 
             migrationBuilder.DropTable(
-                name: "vendors");
+                name: "users");
 
             migrationBuilder.DropTable(
-                name: "saleorders");
+                name: "provinces");
 
             migrationBuilder.DropTable(
                 name: "brands");
@@ -1178,15 +1264,6 @@ namespace ClubJumana.DataLayer.Migrations
                 name: "categoriessubcategories");
 
             migrationBuilder.DropTable(
-                name: "customers");
-
-            migrationBuilder.DropTable(
-                name: "provinces");
-
-            migrationBuilder.DropTable(
-                name: "warehouses");
-
-            migrationBuilder.DropTable(
                 name: "countries");
 
             migrationBuilder.DropTable(
@@ -1194,9 +1271,6 @@ namespace ClubJumana.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "subcategories");
-
-            migrationBuilder.DropTable(
-                name: "users");
         }
     }
 }

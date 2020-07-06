@@ -35,6 +35,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
                 <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSaveVendor" Click="BtnSaveVendor_OnClick">
                     <Button.Foreground>
@@ -43,6 +44,7 @@
                 </Button>
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
                 <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/compressIcon.png" />
+                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
             </Grid>
         </Grid>
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="40" Text="30000 ∙ Graphic Design Institute" FontWeight="ExtraLight"/>

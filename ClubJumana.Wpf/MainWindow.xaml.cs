@@ -1235,11 +1235,11 @@ namespace ClubJumana.Wpf
 
         private void TxtCustomerLookup_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var resalt = CustomersList.Where(p => p.FirstName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
-                                                  || p.LastName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
+            var resalt = CustomersList.Where(p => p.CompanyName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
+                                                  || p.ContactName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
                                                   || p.Phone1.ToLower().Contains(txtCustomerLookup.Text.ToLower()));
             if (resalt.Count() == 0)
-                lvCustomerLookup.ItemsSource = new List<Customer>() { new Customer() { FirstName = "Not Find Any Customer" } };
+                lvCustomerLookup.ItemsSource = new List<Customer>() { new Customer() { CompanyName = "Not Find Any Customer" } };
             else
                 lvCustomerLookup.ItemsSource = resalt;
 

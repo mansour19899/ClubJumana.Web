@@ -22,11 +22,11 @@ namespace ClubJumana.Core.Comparer
             }
 
 
-            return x.Id == y.Id && x.Company == y.Company && x.Gender == y.Gender && x.BirthDate == y.BirthDate &&
-                   x.FirstName == y.FirstName && x.LastName == y.LastName && x.Address1 == y.Address1 &&
-                   x.Address2 == y.Address2 && x.Address3 == y.Address3 && x.PostalCode == y.PostalCode &&
+            return x.Id == y.Id && x.CompanyName == y.CompanyName && x.Gender == y.Gender && x.BirthDate == y.BirthDate &&
+                   x.ContactName == y.ContactName && x.ContactLastName == y.ContactName && x.Address1 == y.Address1 &&
+                   x.Address2 == y.Address2 && x.Website == y.Website && x.PostalCode == y.PostalCode &&
                    x.Phone1 == y.Phone1 && x.Email == y.Email && x.ImageName == y.ImageName && x.Note == y.Note &&
-                   x.CreatedBy_fk == y.CreatedBy_fk && x.EditedDate == y.EditedDate &&
+                   x.CreatedBy_fk == y.CreatedBy_fk && x.City == y.City &&
                    x.LastSaleDate == y.LastSaleDate && x.Active == y.Active && x.RowVersion == y.RowVersion;
         }
 

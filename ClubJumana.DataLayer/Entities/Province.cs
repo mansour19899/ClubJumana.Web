@@ -18,5 +18,6 @@ namespace ClubJumana.DataLayer.Entities
         [Timestamp]
         public DateTime RowVersion { get; set; }
         public ICollection<SaleOrder> SaleOrders { get; set; }
+        public ICollection<Customer> Customers { get; set; }
     }
 }

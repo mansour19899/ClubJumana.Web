@@ -149,7 +149,34 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <ListView SelectionMode="Single"  Name="lvProductMaster" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvProductMaster_OnMouseDoubleClick" Visibility="Visible" >
+                <ListView SelectionMode="Single"  Name="lvVendors" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvVendors_OnMouseDoubleClick" Visibility="Visible" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
+                            <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Path=Name}" />
+                            <GridViewColumn Header="Location Code" Width="200" DisplayMemberBinding="{Binding Path=LocationCode}" />
+                            <GridViewColumn Header="Phone No." Width="200" DisplayMemberBinding="{Binding Path=PhoneNo}" />
+                            <GridViewColumn Header="Contact" Width="200" DisplayMemberBinding="{Binding Path=Contact}"/>
+                            <GridViewColumn Header="Balance(LCY)" Width="150" DisplayMemberBinding="{Binding Path=TotalPrice}" />
+                            <GridViewColumn Header="Balance Due(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                            <GridViewColumn Header="Payments(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListView SelectionMode="Single"  Name="lvCustomers" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvCustomers_OnMouseDoubleClick" Visibility="Hidden" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
+                            <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Path=Name}" />
+                            <GridViewColumn Header="Location Code" Width="200" DisplayMemberBinding="{Binding Path=LocationCode}" />
+                            <GridViewColumn Header="Phone No." Width="200" DisplayMemberBinding="{Binding Path=PhoneNo}" />
+                            <GridViewColumn Header="Contact" Width="200" DisplayMemberBinding="{Binding Path=Contact}"/>
+                            <GridViewColumn Header="Balance(LCY)" Width="150" DisplayMemberBinding="{Binding Path=TotalPrice}" />
+                            <GridViewColumn Header="Balance Due(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListView SelectionMode="Single"  Name="lvProductMaster" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvProductMaster_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Id}" />
@@ -223,7 +250,7 @@
                 <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
             </Grid.Effect>
             <UniformGrid Rows="3" Columns="4" Margin="300 20 300 50">
-                <TextBlock  Text="Vendors" />
+                <TextBlock Name="BtnVendor" Text="Vendors" MouseDown="BtnVendor_OnMouseDown" />
                 <TextBlock Name="btnPurChaseorder"  Text="Purchase order" MouseDown="BtnPurChaseorder_OnMouseDown"/>
                 <TextBlock Name="btnPurchaseorderInvoice" Text="Purchase Order Invoice" MouseDown="BtnPurchaseorderInvoice_OnMouseDown"/>
                 <TextBlock></TextBlock>
@@ -254,7 +281,7 @@
                 <DropShadowEffect BlurRadius="5" Opacity="0.4"/>
             </Grid.Effect>
             <UniformGrid Rows="2" Columns="8" Margin="150 20 20 50">
-                <TextBlock  Text="Customers" />
+                <TextBlock Name="BtnCustomer" Text="Customers" MouseDown="BtnCustomer_OnMouseDown" />
                 <TextBlock  Text="Item Charge" />
                 <TextBlock Name="btnSalesOrder" Text="Sales Order" MouseDown="BtnSalesOrder_OnMouseDown" />
                 <TextBlock  Text="Sales Invoice" />

@@ -382,4 +382,16 @@ namespace ClubJumana.Core.DTOs
         public decimal? TotalPrice { get; set; }
         public string InvoiceNumber { get; set; }
     }
+
+    public class VendorListview
+    {
+        public int No { get; set; }
+        public string Name { get; set; }
+        public string LocationCode { get; set; }
+        public string PhoneNo { get; set; }
+        public string Contact { get; set; }
+        public string BalanceLCY { get; set; }
+        public string BalanceDueLCY { get; set; }
+        public string PaymentsLCY { get; set; }
+    }
 }

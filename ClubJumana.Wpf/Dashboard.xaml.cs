@@ -53,9 +53,13 @@ namespace ClubJumana.Wpf
         private ucItemCard itemCard;
         private ucPurchasing Purchasing;
         private ucSaleOrder UCSaleOrder;
+        private ucCustomerCard UCCustomer;
+        private ucVendorCard UCVendorCard;
 
         private SaleOrderViewModel saleOrderViewModel;
-        private Test tt;
+        private Customer customer;
+        private Vendor vendor;
+        private DataContextViewModel _dataContextVM;
         public Dashboard()
         {
             InitializeComponent();
@@ -69,22 +73,19 @@ namespace ClubJumana.Wpf
             user = _userService.LoginUser();
             //TestBorder.Child=new ucTest();
 
-            tt = new Test();
-            tt.Customer = _repositoryService.AllCustomers().FirstOrDefault();
-            tt.Vendor = _repositoryService.AllVendor().FirstOrDefault();
-            tt.ProductMaster = _repositoryService.AllProductMasterList().FirstOrDefault();
-            tt.PurchaseOrder = _repositoryService.AllPurchaseOrder().FirstOrDefault();
+            _dataContextVM = new DataContextViewModel();
+            _dataContextVM.PurchaseOrder = _repositoryService.AllPurchaseOrder().FirstOrDefault();
 
 
-            var customerCard = new ucCustomerCard();
-            var vendorCard = new ucVendorCard();
+            UCCustomer = new ucCustomerCard();
+            UCVendorCard = new ucVendorCard();
             itemCard = new ucItemCard();
             Purchasing = new ucPurchasing();
             UCSaleOrder = new ucSaleOrder();
 
-            vendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
+            UCVendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
-            customerCard.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
+            UCCustomer.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
             Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
             Purchasing.BtnPostPurchasing += BtnSavePurchasing_OnBtnSaveOnClick;
@@ -93,15 +94,10 @@ namespace ClubJumana.Wpf
             UCSaleOrder.BtnAddItemOnClick += BtnAddItem_OnClick;
             itemCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
-            DataContext = tt;
+            UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
+            UCVendorCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
 
-            customerCard.DataContext = tt.Customer;
-            vendorCard.DataContext = tt.Vendor;
-
-
-
-
-
+            DataContext = _dataContextVM;
 
 
             vendors = _repositoryService.AllVendor().ToList();
@@ -142,6 +138,8 @@ namespace ClubJumana.Wpf
         {
             lvProductMaster.Visibility = Visibility.Hidden;
             lvPurchasing.Visibility = Visibility.Hidden;
+            lvCustomers.Visibility = Visibility.Hidden;
+            lvVendors.Visibility = Visibility.Hidden;
         }
         private void HideMenuTop()
         {
@@ -150,30 +148,36 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveForCustomer_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            MessageBox.Show(tt.Customer.FirstName);
-            _repositoryService.AddAndUpdateCustomer(tt.Customer);
+            int x = _dataContextVM.Customer.Id;
+            string mes = "";
+            _repositoryService.AddAndUpdateCustomer(_dataContextVM.Customer);
+            mes = (x == 0) ? "Customer Created" : "Customer Updated";
+            myMessageQueue.Enqueue(mes);
         }
 
         private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            MessageBox.Show(tt.Customer.FirstName);
-            _repositoryService.AddAndUpdateVendor(tt.Vendor);
+            int x = _dataContextVM.Vendor.Id;
+            string mes = "";
+            _repositoryService.AddAndUpdateVendor(_dataContextVM.Vendor);
+            mes = (x == 0) ?  "Vendor Created" : "Vendor Updated";
+            myMessageQueue.Enqueue(mes);
+
         }
         private void BtnSaveForItem_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            _repositoryService.AddAndUpdateItem(tt.ProductMaster);
+            _repositoryService.AddAndUpdateItem(_dataContextVM.ProductMaster);
             myMessageQueue.Enqueue("Product Updated");
-
         }
 
         private void BtnSavePurchasing_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            if(Mode==Mode.Asn||Mode==Mode.Grn)
-            Purchasing.CalculateCost();
+            if (Mode == Mode.Asn || Mode == Mode.Grn)
+                Purchasing.CalculateCost();
 
             SaveAndUpdate(Purchasing.IsPosting);
 
-         
+
         }
 
         private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
@@ -195,7 +199,7 @@ namespace ClubJumana.Wpf
             //FileInfo newFile = new FileInfo(System.IO.Path.Combine(Path, @"\PurchaseOrderSample.xlsx"));
             string filee = Path + "Purchasing" + @"\" + DateTime.Today.ToShortDateString().Replace("/", "") + ".xlsx";
             FileInfo newFilee = new FileInfo(filee);
-            if(newFilee.Exists)
+            if (newFilee.Exists)
                 newFilee.Delete();
 
             ExcelPackage excel = new ExcelPackage(newFilee, newFile);
@@ -237,11 +241,11 @@ namespace ClubJumana.Wpf
                     ws.Cells[10, 10].Value = "GRN.NO.";
                     break;
             }
-            
+
 
             foreach (var VARIABLE in PurchasingPrint.Items)
             {
-                
+
                 ws.Cells[row, 5, row, 8].Merge = true;
                 ws.Cells[row, 5].Style.WrapText = true;
                 ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
@@ -249,7 +253,7 @@ namespace ClubJumana.Wpf
                 ws.Cells[row, 9].Value = VARIABLE.PoQuantity.ToString();
                 ws.Cells[row, 10].Value = VARIABLE.PoPrice.ToString();
                 ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice.ToString();
-                var CountLine = VARIABLE.ProductMaster.Name.Replace("\r\n", "@").Count(x=>x=='@');
+                var CountLine = VARIABLE.ProductMaster.Name.Replace("\r\n", "@").Count(x => x == '@');
                 ws.Row(row).Height = 20 * (CountLine + 1);
                 row++;
             }
@@ -369,7 +373,7 @@ namespace ClubJumana.Wpf
 
             if (Mode == Mode.Sale)
             {
-                UPCForSearch= UCSaleOrder.txtSearch.Text;
+                UPCForSearch = UCSaleOrder.txtSearch.Text;
             }
             else
             {
@@ -605,13 +609,102 @@ namespace ClubJumana.Wpf
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
         }
+
+        private void LvCustomers_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (CustomerListview)lvCustomers.ItemContainerGenerator.ItemFromContainer(dep);
+            _dataContextVM.Customer = _repositoryService.GiveMeCustomerById(wer.No);
+            UCCustomer.DataContext = _dataContextVM.Customer;
+            Bordermanagement.Child = UCCustomer;
+            SubPage.Visibility = Visibility.Visible;
+        }
+
+        private void BtnCustomer_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvCustomers.ItemsSource = _repositoryService.AllCustomers().Select(p => new CustomerListview() { No = p.Id, Name = p.FullName, PhoneNo = p.Phone1, Contact = p.ContactName }).ToList();
+            Mode = Mode.Customer;
+            txtMode.Text = "Customers";
+            HideListview();
+            lvCustomers.Visibility = Visibility.Visible;
+        }
+
+        private void LvVendors_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (VendorListview)lvVendors.ItemContainerGenerator.ItemFromContainer(dep);
+            _dataContextVM.Vendor = _repositoryService.GiveMeVendorById(wer.No);
+            UCVendorCard.DataContext = _dataContextVM.Vendor;
+            Bordermanagement.Child = UCVendorCard;
+            SubPage.Visibility = Visibility.Visible;
+        }
+
+        private void BtnVendor_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            lvVendors.ItemsSource = _repositoryService.AllVendor().Select(p => new VendorListview() { No = p.Id, Name = p.Name, PhoneNo = p.Phone1, Contact = p.LastName }).ToList();
+            Mode = Mode.Customer;
+            txtMode.Text = "Vendors";
+            HideListview();
+            lvVendors.Visibility = Visibility.Visible;
+        }
     }
 
-    public class Test
+    public class DataContextViewModel : DependencyObject
     {
-        public Customer Customer { get; set; }
-        public Vendor Vendor { get; set; }
-        public ProductMaster ProductMaster { get; set; }
+
+
+        public Customer Customer
+        {
+            get { return (Customer)GetValue(CustomerProperty); }
+            set { SetValue(CustomerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Customer.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomerProperty =
+            DependencyProperty.Register("Customer", typeof(Customer), typeof(DataContextViewModel), new PropertyMetadata(new Customer() { CompanyName = "Mohammadi" }));
+
+
+
+        public Vendor Vendor
+        {
+            get { return (Vendor)GetValue(VendorProperty); }
+            set { SetValue(VendorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Vendor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VendorProperty =
+            DependencyProperty.Register("Vendor", typeof(Vendor), typeof(DataContextViewModel), new PropertyMetadata(null));
+
+
+
+        public ProductMaster ProductMaster
+        {
+            get { return (ProductMaster)GetValue(ProductMasterProperty); }
+            set { SetValue(ProductMasterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ProductMaster.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ProductMasterProperty =
+            DependencyProperty.Register("ProductMaster", typeof(ProductMaster), typeof(DataContextViewModel), new PropertyMetadata(null));
+
+
+
         public PurchaseOrder PurchaseOrder { get; set; }
         public PoViewModel PoViewModel { get; set; }
     }

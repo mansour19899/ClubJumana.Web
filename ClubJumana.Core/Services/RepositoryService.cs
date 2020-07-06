@@ -903,6 +903,16 @@ namespace ClubJumana.Core.Services
             return _context.productmasters.FirstOrDefault(p => p.UPC.Trim().CompareTo(UPC.Trim()) == 0);
         }
 
+        public Customer GiveMeCustomerById(int Id)
+        {
+            return _context.customers.FirstOrDefault(p => p.Id == Id);
+        }
+
+        public Vendor GiveMeVendorById(int Id)
+        {
+            return _context.vendors.FirstOrDefault(p => p.Id == Id);
+        }
+
 
         public IQueryable<Warehouse> AllWarehouse()
         {
@@ -1006,6 +1016,7 @@ namespace ClubJumana.Core.Services
             }
             return ResponseDescription;
         }
-        
+
+
     }
 }

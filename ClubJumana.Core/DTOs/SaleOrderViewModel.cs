@@ -361,4 +361,15 @@ namespace ClubJumana.Core.DTOs
         }
 
     }
+
+    public class CustomerListview
+    {
+        public int No { get; set; }
+        public string Name { get; set; }
+        public string LocationCode { get; set; }
+        public string PhoneNo { get; set; }
+        public string Contact { get; set; }
+        public string BalanceLCY { get; set; }
+        public string BalanceDueLCY { get; set; }
+    }
 }

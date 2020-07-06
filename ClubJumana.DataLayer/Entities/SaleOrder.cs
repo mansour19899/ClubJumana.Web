@@ -23,6 +23,7 @@ namespace ClubJumana.DataLayer.Entities
         public int? Cashier_fk { get; set; }
         public int? Customer_fk { get; set; }
         public int? Warehouse_fk { get; set; }
+        public int? term_fk { get; set; }
         public int? ShipMethod_fk { get; set; }
 
         public decimal Subtotal { get; set; }
@@ -67,6 +68,7 @@ namespace ClubJumana.DataLayer.Entities
 
         public Province TaxArea { get; set; }
         public Warehouse Warehouse { get; set; }
+        public Term Term { get; set; }
 
     }
 }

@@ -40,5 +40,12 @@ namespace ClubJumana.Wpf.UserControls
             if (BtnSaveOnClick != null)
                 BtnSaveOnClick(sender, e);
         }
+        public event EventHandler<EventArgs> BtnCloseSubPage;
+        private void BtnCloseSubPage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnCloseSubPage != null)
+                BtnCloseSubPage(sender, e);
+        }
     }
 }

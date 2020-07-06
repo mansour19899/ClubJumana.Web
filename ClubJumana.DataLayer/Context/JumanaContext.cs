@@ -51,6 +51,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Category> categories { get; set; }
         public DbSet<SubCategory> subcategories { get; set; }
         public DbSet<TablesVersion> tablesversion { get; set; }
+        public DbSet<Term> terms { get; set; }
 
 
         #endregion
@@ -61,7 +62,7 @@ namespace ClubJumana.DataLayer.Context
             // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
              //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-             optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
+             optionsBuilder.UseMySQL("server=localhost;database=Test70;user=root;password=SmmRey2018");
             //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
            // optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
 
@@ -238,6 +239,10 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<Warehouse>(s => s.Warehouse)
                     .WithMany(g => g.SaleOrders)
                     .HasForeignKey(s => s.Warehouse_fk);
+
+                entity.HasOne<Term>(s => s.Term)
+                    .WithMany(g => g.SaleOrders)
+                    .HasForeignKey(s => s.term_fk);
             });
 
             //----------------------------------- Province ---------------------------------------
@@ -262,6 +267,14 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<User>(s => s.User)
                     .WithMany(g => g.Customers)
                     .HasForeignKey(s => s.CreatedBy_fk);
+
+                entity.HasOne<Country>(s => s.Country)
+                    .WithMany(g => g.Customers)
+                    .HasForeignKey(s => s.CountryFK);
+
+                entity.HasOne<Province>(s => s.Province)
+                    .WithMany(g => g.Customers)
+                    .HasForeignKey(s => s.ProvinceFK);
             });
             //----------------------------------- SoItem ---------------------------------------
             modelBuilder.Entity<SoItem>(entity =>
@@ -483,6 +496,15 @@ namespace ClubJumana.DataLayer.Context
             });
             //----------------------------------- Colour ---------------------------------------
             modelBuilder.Entity<Colour>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+
+            //----------------------------------- Term ---------------------------------------
+            modelBuilder.Entity<Term>(entity =>
             {
 
                 entity.HasKey(e => e.Id);

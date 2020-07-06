@@ -21,5 +21,6 @@ namespace ClubJumana.DataLayer.Entities
         public DateTime RowVersion { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<Company> Companies { get; set; }
+        public ICollection<Customer> Customers { get; set; }
     }
 }

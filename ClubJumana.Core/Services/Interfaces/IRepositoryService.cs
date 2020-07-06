@@ -32,6 +32,8 @@ namespace ClubJumana.Core.Services.Interfaces
 
         Country GiveMeCountryByID(int Id);
         ProductMaster GiveMeProductMasterByUPC(string UPC);
+        Customer GiveMeCustomerById(int Id);
+        Vendor GiveMeVendorById(int Id);
 
         public int AddAndUpdateCustomer(Customer customer);
         public int AddAndUpdateVendor(Vendor vendor);
