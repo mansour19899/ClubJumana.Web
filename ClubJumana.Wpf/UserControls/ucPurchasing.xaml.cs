@@ -215,28 +215,35 @@ namespace ClubJumana.Wpf.UserControls
         public void SumItemsprice()
         {
             decimal sum = 0;
+            int TotalQuntity = 0;
             switch (Mode)
             {
                 case Mode.PO:
                     foreach (var VARIABLE in PoViewModel.ItemsOfPurchaseOrderViewModels)
                     {
                         sum = VARIABLE.TotalItemPrice + sum;
+                        TotalQuntity = VARIABLE.Quantity + TotalQuntity;
                     }
                     PoViewModel.SubtotalPrice = sum;
+                    PoViewModel.ItemsCount = TotalQuntity;
                     break;
                 case Mode.Asn:
                     foreach (var VARIABLE in AsnViewModel.ItemsOfPurchaseOrderViewModels)
                     {
                         sum = VARIABLE.TotalItemPrice + sum;
+                        TotalQuntity = VARIABLE.Quantity + TotalQuntity;
                     }
                     AsnViewModel.SubtotalPrice = sum;
+                    AsnViewModel.ItemsCount = TotalQuntity;
                     break;
                 case Mode.Grn:
                     foreach (var VARIABLE in GrnViewModel.ItemsOfPurchaseOrderViewModels)
                     {
                         sum = VARIABLE.TotalItemPrice + sum;
+                        TotalQuntity = VARIABLE.Quantity + TotalQuntity;
                     }
                     GrnViewModel.SubtotalPrice = sum;
+                    GrnViewModel.ItemsCount = TotalQuntity;
                     break;
             }
         }

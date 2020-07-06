@@ -564,7 +564,7 @@ namespace ClubJumana.Wpf
                     btnRemove.Visibility = Visibility.Collapsed;
                     dgSoItems.IsReadOnly = true;
                     lblSave.Content = "Edit";
-                    saleOrder.SoItems = listSoItems.Concat(RemoveSoItemVeiwModels).ToList();
+                    saleOrder.SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItems.Concat(RemoveSoItemVeiwModels).ToList());
                     _saleOrderService.SaveAndUpdateSaleOrder(saleOrder);
                 }
                 else
@@ -759,8 +759,7 @@ namespace ClubJumana.Wpf
                             ProductMaster = wer,
                             ProductMaster_fk = wer.Id,
                             Quantity = 0,
-                            TotalPrice = 0m
-                            ,
+                            TotalPrice = 0m,
                             Price = price,
                             Cost = wer.Cost.Value
                         });

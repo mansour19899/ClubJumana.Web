@@ -43,13 +43,18 @@ namespace ClubJumana.Wpf
         private GrnViewModel SelectedGrn;
         private List<Vendor> vendors;
         private List<Warehouse> warehouses;
+        private List<Customer> customers;
+        private List<Province> provinces;
+
         public Mode Mode = Mode.Nothong;
         public static User user;
         private List<PurchaseOrder> PurchaseOrdersList;
         private SnackbarMessageQueue myMessageQueue;
         private ucItemCard itemCard;
+        private ucPurchasing Purchasing;
+        private ucSaleOrder UCSaleOrder;
 
-        public ucPurchasing Purchasing;
+        private SaleOrderViewModel saleOrderViewModel;
         private Test tt;
         public Dashboard()
         {
@@ -70,10 +75,12 @@ namespace ClubJumana.Wpf
             tt.ProductMaster = _repositoryService.AllProductMasterList().FirstOrDefault();
             tt.PurchaseOrder = _repositoryService.AllPurchaseOrder().FirstOrDefault();
 
+
             var customerCard = new ucCustomerCard();
             var vendorCard = new ucVendorCard();
             itemCard = new ucItemCard();
             Purchasing = new ucPurchasing();
+            UCSaleOrder = new ucSaleOrder();
 
             vendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
@@ -83,16 +90,24 @@ namespace ClubJumana.Wpf
             Purchasing.BtnPostPurchasing += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             Purchasing.BtnPrintOrSend += BtnPrintOrSend_OnBtnPrintOrSendOnClick;
+            UCSaleOrder.BtnAddItemOnClick += BtnAddItem_OnClick;
             itemCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
+            UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             DataContext = tt;
 
             customerCard.DataContext = tt.Customer;
             vendorCard.DataContext = tt.Vendor;
-            
+
+
+
+
+
 
 
             vendors = _repositoryService.AllVendor().ToList();
             warehouses = _repositoryService.AllWarehouse().ToList();
+            customers = _repositoryService.AllCustomers().ToList();
+            provinces = _repositoryService.AllProvinces().ToList();
 
 
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
@@ -350,18 +365,41 @@ namespace ClubJumana.Wpf
         }
         private void BtnAddItem_OnClick(object? sender, EventArgs e)
         {
-            var ttttr = Purchasing.txtSearch.Text;
-            var SearchMasterProduct = _repositoryService.GiveMeProductMasterByUPC(ttttr);
+            string UPCForSearch = "";
+
+            if (Mode == Mode.Sale)
+            {
+                UPCForSearch= UCSaleOrder.txtSearch.Text;
+            }
+            else
+            {
+                UPCForSearch = Purchasing.txtSearch.Text;
+            }
+
+            var SearchMasterProduct = _repositoryService.GiveMeProductMasterByUPC(UPCForSearch);
             if (SearchMasterProduct == null)
             {
                 MessageBox.Show("Item Not Found");
             }
             else
             {
-
-
-                switch (Purchasing.Mode)
+                switch (Mode)
                 {
+
+                    case Mode.Sale:
+                        saleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
+                        {
+                            ProductMaster = SearchMasterProduct,
+                            ProductMaster_fk = SearchMasterProduct.Id,
+                            Discount = 0,
+                            Quantity = 0,
+                            TotalPrice = 0m,
+                            Price = SearchMasterProduct.WholesalePrice.Value,
+                            Cost = SearchMasterProduct.Cost.Value
+                        });
+
+                        UCSaleOrder.txtSearch.Clear();
+                        break;
                     case Mode.PO:
                         SelectedPo.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
                         {
@@ -369,6 +407,7 @@ namespace ClubJumana.Wpf
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id
                         });
+                        Purchasing.txtSearch.Clear();
                         break;
                     case Mode.Asn:
                         SelectedAsn.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
@@ -377,8 +416,12 @@ namespace ClubJumana.Wpf
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id
                         });
+                        Purchasing.txtSearch.Clear();
                         break;
                     case Mode.Grn:
+                    case Mode.POInvoice:
+                    case Mode.AsnInvoice:
+                    case Mode.GrnInvoice:
                         break;
                     default:
                         break;
@@ -386,7 +429,7 @@ namespace ClubJumana.Wpf
 
             }
 
-            Purchasing.txtSearch.Clear();
+
         }
         private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -548,6 +591,20 @@ namespace ClubJumana.Wpf
         #endregion
 
 
+        private void BtnSalesOrder_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Mode = Mode.Sale;
+
+            saleOrderViewModel = new SaleOrderViewModel();
+            saleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
+            saleOrderViewModel.Id = 1358;
+            saleOrderViewModel.TaxArea_fk = 2;
+            saleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
+            UCSaleOrder.SaleOrderViewModel = saleOrderViewModel;
+            UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
+            Bordermanagement.Child = UCSaleOrder;
+            SubPage.Visibility = Visibility.Visible;
+        }
     }
 
     public class Test

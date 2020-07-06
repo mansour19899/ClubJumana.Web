@@ -245,6 +245,9 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.HST).HasColumnType("decimal(7,4)");
+                entity.Property(e => e.GST).HasColumnType("decimal(7,4)");
+                entity.Property(e => e.QST).HasColumnType("decimal(7,4)");
                 //entity.Property(e => e.HST).HasColumnType("real");
                 //entity.Property(e => e.GST).HasColumnType("real");
                 //entity.Property(e => e.QST).HasColumnType("real");

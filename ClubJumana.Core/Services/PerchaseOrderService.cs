@@ -211,7 +211,7 @@ namespace ClubJumana.Core.Services
                         CreatedAsn = done,
                         CreatedPO = true,
                         PoNumber = -1,
-                        ItemsPoCount = asnViewModel.ItemsCount,
+                        ItemsAsnCount = asnViewModel.ItemsCount,
                         FromWarehouse_fk = asnViewModel.FromWarehouse_fk,
                         ToWarehouse_fk = asnViewModel.ToWarehouse_fk,
                         ApproveAsnUser_fk = asnViewModel.ApproveUser_fk,
@@ -244,7 +244,7 @@ namespace ClubJumana.Core.Services
                     PO.AsnTotal = asnViewModel.TotalPrice;
                     PO.AsnSubtotal = asnViewModel.SubtotalPrice;
                     PO.CreatedAsn = done;
-                    PO.ItemsPoCount = asnViewModel.ItemsCount;
+                    PO.ItemsAsnCount = asnViewModel.ItemsCount;
                     PO.FromWarehouse_fk = asnViewModel.FromWarehouse_fk;
                     PO.ToWarehouse_fk = asnViewModel.ToWarehouse_fk;
                     PO.ApproveAsnUser_fk = asnViewModel.ApproveUser_fk;
@@ -410,7 +410,7 @@ namespace ClubJumana.Core.Services
                         CreateOrder = DateTime.Now,
                         LastEditDate = DateTime.Now,
                         CreatedGrn = done,
-                        ItemsPoCount = grnViewModel.ItemsCount,
+                        ItemsGrnCount = grnViewModel.ItemsCount,
                         FromWarehouse_fk = grnViewModel.FromWarehouse_fk,
                         ToWarehouse_fk = grnViewModel.ToWarehouse_fk,
                         ApproveAsnUser_fk = grnViewModel.ApproveUser_fk,
@@ -443,6 +443,7 @@ namespace ClubJumana.Core.Services
                     PO.CancelDate = grnViewModel.CancelDate;
                     PO.LastEditDate = DateTime.Now;
                     PO.CreatedGrn = done;
+                    PO.ItemsGrnCount = grnViewModel.ItemsCount;
                     PO.FromWarehouse_fk = grnViewModel.FromWarehouse_fk;
                     PO.ToWarehouse_fk = grnViewModel.ToWarehouse_fk;
                     PO.ApproveAsnUser_fk = grnViewModel.ApproveUser_fk;

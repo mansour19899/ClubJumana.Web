@@ -256,7 +256,7 @@
             <UniformGrid Rows="2" Columns="8" Margin="150 20 20 50">
                 <TextBlock  Text="Customers" />
                 <TextBlock  Text="Item Charge" />
-                <TextBlock  Text="Sales Order" />
+                <TextBlock Name="btnSalesOrder" Text="Sales Order" MouseDown="BtnSalesOrder_OnMouseDown" />
                 <TextBlock  Text="Sales Invoice" />
                 <TextBlock  Text="Sales Return Orders" />
                 <TextBlock  Text="Finance Charge Memos" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -161,7 +162,8 @@ namespace ClubJumana.Core.DTOs
         public bool IsDeleted { get; set; } = false;
 
 
-        public ICollection<SoItemVeiwModel> SoItems { get; set; }
+        public ObservableCollection<SoItemVeiwModel> SoItems { get; set; }
+
         public User User { get; set; }
 
         private Customer _customer;

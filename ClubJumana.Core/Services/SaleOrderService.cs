@@ -191,7 +191,7 @@ namespace ClubJumana.Core.Services
                 ShipToPostalPhone1 = saleOrder.ShipToPostalPhone1,
                 Quantity = saleOrder.Quantity,
                 IsDeleted = saleOrder.IsDeleted,
-                SoItems = listSoItem,
+                SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User
             };
         }
