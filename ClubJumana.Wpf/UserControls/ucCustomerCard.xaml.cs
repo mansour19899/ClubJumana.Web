@@ -52,5 +52,6 @@ namespace ClubJumana.Wpf.UserControls
             if (BtnCloseSubPage != null)
                 BtnCloseSubPage(sender, e);
         }
+
     }
 }

@@ -635,7 +635,7 @@ namespace ClubJumana.Core.Services
                         Sku = w.Sku,
                         ProductFK = w.ProductFK,
                         ColourFK = w.ColourFK,
-
+                        BarcodeFK = w.BarcodeFK,
                         ProductTypeFK = w.ProductTypeFK,
                         FobPrice = w.FobPrice,
                         WholesaleA = w.WholesaleA,
@@ -830,7 +830,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Customer> AllCustomers()
         {
-            return _context.customers;
+            return _context.customers.Include(p=>p.Country).Include(p=>p.Province);
         }
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
@@ -922,7 +922,11 @@ namespace ClubJumana.Core.Services
         public int AddAndUpdateCustomer(Customer customer)
         {
             if (customer.Id == 0)
+            {
+                customer.Id = _context.customers.Max(p => p.Id) + 1;
                 _context.customers.Add(customer);
+            }
+                
             else
             {
                 _context.Update(customer);
@@ -935,7 +939,11 @@ namespace ClubJumana.Core.Services
         public int AddAndUpdateVendor(Vendor vendor)
         {
             if (vendor.Id == 0)
+            {
+                vendor.Id = _context.vendors.Max(p => p.Id) + 1;
                 _context.vendors.Add(vendor);
+            }
+                
             else
             {
                 _context.Update(vendor);

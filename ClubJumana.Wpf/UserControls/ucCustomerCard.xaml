@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClubJumana.Wpf.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White">
     <Grid Margin="0 40 0 0">
@@ -427,7 +428,14 @@
                             <TextBlock Text="Country/Region Code" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox  Grid.Row="3" Grid.Column="1"/>
+                        <ComboBox Name="cmbCountries"  Grid.Row="3" Grid.Column="1"
+                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                  IsEditable="True"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  materialDesign:TextFieldAssist.SuffixText="sw"
+                                  Margin="10 0"
+                                  SelectedValue="{Binding CountryFK}"
+                                  DisplayMemberPath="Name" SelectedValuePath="Id"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0">
                             <TextBlock Text="City" Style="{StaticResource Style1}"/>
@@ -440,7 +448,14 @@
                             <TextBlock Text="Province" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . .. . . . . . " />
                         </StackPanel>
-                        <TextBox Text="{Binding PostalCode}" Grid.Row="5" Grid.Column="1"/>
+                        <ComboBox Name="cmbProvinces"  Grid.Row="5" Grid.Column="1"
+                                  materialDesign:TextFieldAssist.HasClearButton="True"
+                                  IsEditable="True"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  materialDesign:TextFieldAssist.SuffixText="sw"
+                                  Margin="10 0"
+                                  SelectedValue="{Binding ProvinceFK}"
+                                  DisplayMemberPath="Name" SelectedValuePath="Id"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0">
                             <TextBlock Text="Post Code" Style="{StaticResource Style1}"/>
@@ -458,13 +473,13 @@
                             <TextBlock Text="Contact Name" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding PostalCode}"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding ContactName}"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
                             <TextBlock Text="Phone No" Style="{StaticResource Style1}"/>
                             <TextBlock Style="{StaticResource Styledot}" Text="   . . . . . . . . . . . . . . . . . . . . . . " />
                         </StackPanel>
-                        <TextBox Grid.Row="2" Grid.Column="4"/>
+                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Phone1}"/>
 
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3">
                             <TextBlock Text="Mobile No." Style="{StaticResource Style1}"/>

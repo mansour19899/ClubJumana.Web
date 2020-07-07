@@ -45,6 +45,7 @@ namespace ClubJumana.Wpf
         private List<Warehouse> warehouses;
         private List<Customer> customers;
         private List<Province> provinces;
+        private List<Country> countries;
 
         public Mode Mode = Mode.Nothong;
         public static User user;
@@ -56,7 +57,6 @@ namespace ClubJumana.Wpf
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
 
-        private SaleOrderViewModel saleOrderViewModel;
         private Customer customer;
         private Vendor vendor;
         private DataContextViewModel _dataContextVM;
@@ -86,6 +86,7 @@ namespace ClubJumana.Wpf
             UCVendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
             UCCustomer.BtnSaveOnClick += BtnSaveForCustomer_OnBtnSaveOnClick;
+            UCSaleOrder.BtnSaveOnClick += BtnSaveSalesOrder_OnBtnSaveOnClick;
             Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
             Purchasing.BtnPostPurchasing += BtnSavePurchasing_OnBtnSaveOnClick;
@@ -104,7 +105,10 @@ namespace ClubJumana.Wpf
             warehouses = _repositoryService.AllWarehouse().ToList();
             customers = _repositoryService.AllCustomers().ToList();
             provinces = _repositoryService.AllProvinces().ToList();
+            countries = _repositoryService.AllCountriesList().ToList();
 
+            UCCustomer.cmbCountries.ItemsSource = countries;
+            UCCustomer.cmbProvinces.ItemsSource = provinces;
 
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
@@ -149,6 +153,14 @@ namespace ClubJumana.Wpf
         private void BtnSaveForCustomer_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
             int x = _dataContextVM.Customer.Id;
+            string mes = "";
+            _repositoryService.AddAndUpdateCustomer(_dataContextVM.Customer);
+            mes = (x == 0) ? "Customer Created" : "Customer Updated";
+            myMessageQueue.Enqueue(mes);
+        }
+        private void BtnSaveSalesOrder_OnBtnSaveOnClick(object? sender, EventArgs e)
+        {
+            int x = _dataContextVM.SaleOrderViewModel.Id;
             string mes = "";
             _repositoryService.AddAndUpdateCustomer(_dataContextVM.Customer);
             mes = (x == 0) ? "Customer Created" : "Customer Updated";
@@ -391,7 +403,7 @@ namespace ClubJumana.Wpf
                 {
 
                     case Mode.Sale:
-                        saleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
+                        _dataContextVM.SaleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
                         {
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id,
@@ -479,6 +491,52 @@ namespace ClubJumana.Wpf
             SubPage.Visibility = Visibility.Visible;
         }
 
+        private void CustomerShow(int Id=0)
+        {
+            if (Id == 0)
+            {
+                _dataContextVM.Customer=new Customer()
+                {
+                    Id  =0,
+                    BalanceDueLCY = 0,
+                    BalanceLCY = 0,
+                    CostsLCY = 0,
+                    CreatedBy_fk = 3,
+                    CreditLimitLCY = 0,
+                    TotalSales = 0,
+                    CountryFK = 48,
+                    ProvinceFK = 2,
+                };
+            }
+            else
+                _dataContextVM.Customer = _repositoryService.GiveMeCustomerById(Id);
+
+            UCCustomer.DataContext = _dataContextVM.Customer;
+            Bordermanagement.Child = UCCustomer;
+            SubPage.Visibility = Visibility.Visible;
+        }
+        private void VendorShow(int Id = 0)
+        {
+            if (Id == 0)
+            {
+                _dataContextVM.Vendor=new Vendor()
+                {
+                    Id = 0,
+                };
+            }
+            else
+                _dataContextVM.Vendor = _repositoryService.GiveMeVendorById(Id);
+
+            UCVendorCard.DataContext = _dataContextVM.Vendor;
+            Bordermanagement.Child = UCVendorCard;
+            SubPage.Visibility = Visibility.Visible;
+        }
+        private void SalesOrderShow(int Id = 0)
+        {
+
+        }
+
+
 
         private void BtnPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -493,7 +551,28 @@ namespace ClubJumana.Wpf
 
         private void BtnNewPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            PurachasingShow();
+            switch (Mode)
+            {
+                case Mode.PO:
+                case Mode.POInvoice:
+                case Mode.Asn:
+                case Mode.AsnInvoice:
+                case Mode.Grn:
+                case Mode.GrnInvoice:
+                    PurachasingShow();
+                    break;
+                case Mode.Customer:
+                    CustomerShow();
+                    break;
+                case Mode.Vendor:
+                    VendorShow();
+                    break;
+                case Mode.Sale:
+                    SalesOrderShow();
+                    break;
+            }
+
+
         }
         private void BtnPurChaseorder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -599,12 +678,14 @@ namespace ClubJumana.Wpf
         {
             Mode = Mode.Sale;
 
-            saleOrderViewModel = new SaleOrderViewModel();
-            saleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
-            saleOrderViewModel.Id = 1358;
-            saleOrderViewModel.TaxArea_fk = 2;
-            saleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
-            UCSaleOrder.SaleOrderViewModel = saleOrderViewModel;
+
+
+            _dataContextVM.SaleOrderViewModel = new SaleOrderViewModel();
+            _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
+            _dataContextVM.SaleOrderViewModel.Id = 1358;
+            _dataContextVM.SaleOrderViewModel.TaxArea_fk = 2;
+            _dataContextVM.SaleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
+            UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
             UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
@@ -622,15 +703,12 @@ namespace ClubJumana.Wpf
                 return;
 
             var wer = (CustomerListview)lvCustomers.ItemContainerGenerator.ItemFromContainer(dep);
-            _dataContextVM.Customer = _repositoryService.GiveMeCustomerById(wer.No);
-            UCCustomer.DataContext = _dataContextVM.Customer;
-            Bordermanagement.Child = UCCustomer;
-            SubPage.Visibility = Visibility.Visible;
+            CustomerShow(wer.No);
         }
 
         private void BtnCustomer_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvCustomers.ItemsSource = _repositoryService.AllCustomers().Select(p => new CustomerListview() { No = p.Id, Name = p.FullName, PhoneNo = p.Phone1, Contact = p.ContactName }).ToList();
+            lvCustomers.ItemsSource = _repositoryService.AllCustomers().Select(p => new CustomerListview() { No = p.Id, Name = p.CompanyName,LocationCode = p.Province.Name, PhoneNo = p.Phone1, Contact = p.ContactName }).ToList();
             Mode = Mode.Customer;
             txtMode.Text = "Customers";
             HideListview();
@@ -649,10 +727,7 @@ namespace ClubJumana.Wpf
                 return;
 
             var wer = (VendorListview)lvVendors.ItemContainerGenerator.ItemFromContainer(dep);
-            _dataContextVM.Vendor = _repositoryService.GiveMeVendorById(wer.No);
-            UCVendorCard.DataContext = _dataContextVM.Vendor;
-            Bordermanagement.Child = UCVendorCard;
-            SubPage.Visibility = Visibility.Visible;
+            VendorShow(wer.No);
         }
 
         private void BtnVendor_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -702,6 +777,18 @@ namespace ClubJumana.Wpf
         // Using a DependencyProperty as the backing store for ProductMaster.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ProductMasterProperty =
             DependencyProperty.Register("ProductMaster", typeof(ProductMaster), typeof(DataContextViewModel), new PropertyMetadata(null));
+
+
+
+        public SaleOrderViewModel SaleOrderViewModel
+        {
+            get { return (SaleOrderViewModel)GetValue(SaleOrderProperty); }
+            set { SetValue(SaleOrderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SaleOrder.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SaleOrderProperty =
+            DependencyProperty.Register("SaleOrder", typeof(SaleOrderViewModel), typeof(DataContextViewModel), new PropertyMetadata(0));
 
 
 

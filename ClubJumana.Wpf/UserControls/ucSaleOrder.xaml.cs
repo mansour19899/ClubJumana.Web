@@ -43,11 +43,14 @@ namespace ClubJumana.Wpf.UserControls
         {
             
         }
-
+        public event EventHandler<EventArgs> BtnSaveOnClick;
         private void BtnSaveSalesOrder_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Handled = true;
+            if (BtnSaveOnClick != null)
+                BtnSaveOnClick(sender, e);
         }
+
         public event EventHandler<EventArgs> BtnCloseSubPage;
         private void BtnCloseSubPage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
