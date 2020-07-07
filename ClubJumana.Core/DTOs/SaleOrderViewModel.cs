@@ -16,10 +16,11 @@ namespace ClubJumana.Core.DTOs
 
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
-        public DateTime? OrderedDate { get; set; }
+        public DateTime? SoDate { get; set; }
+        public DateTime? ExpriationDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public DateTime? ShipDate { get; set; }
-        public DateTime? CancelDate { get; set; }
-        public int? SalesOrderNumber { get; set; }
+        public DateTime? InvoiceDate { get; set; }
         public int? InvoiceNumber { get; set; }
         public int? Cashier_fk { get; set; }
         public int? Customer_fk { get; set; }
@@ -68,7 +69,7 @@ namespace ClubJumana.Core.DTOs
         }
 
         public int? TaxArea_fk { get; set; }
-
+        public int? term_fk { get; set; }
 
         private decimal _tax;
 
@@ -151,12 +152,14 @@ namespace ClubJumana.Core.DTOs
                 OnPropertyChanged();
             }
         }
-
-        public string ShipToAddressName { get; set; }
-        public string ShipToAddressNam1 { get; set; }
-        public string ShipToAddressNam2 { get; set; }
-        public string ShipToPostalCode { get; set; }
-        public string ShipToPostalPhone1 { get; set; }
+        public string PoNumber { get; set; }
+        public string ShipVia { get; set; }
+        public string TrackingNo { get; set; }
+        public string BillingAddress { get; set; }
+        public string ShippingAddress { get; set; }
+        public string MessageOnInvoice { get; set; }
+        public string MessageOnStatment { get; set; }
+        public string Note { get; set; }
         public int? Quantity { get; set; } = 0;
 
         public bool IsDeleted { get; set; } = false;

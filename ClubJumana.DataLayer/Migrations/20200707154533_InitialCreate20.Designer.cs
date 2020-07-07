@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200707154533_InitialCreate20")]
+    partial class InitialCreate20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -954,8 +956,8 @@ namespace ClubJumana.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("BillingAddress")
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("CancelDate")
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("Cashier_fk")
                         .HasColumnType("int");
@@ -963,20 +965,11 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int?>("Customer_fk")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("ExpriationDate")
-                        .HasColumnType("datetime");
-
                     b.Property<decimal>("Freight")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("Handling")
                         .HasColumnType("decimal(18, 2)");
-
-                    b.Property<DateTime?>("InvoiceDate")
-                        .HasColumnType("datetime");
 
                     b.Property<int?>("InvoiceNumber")
                         .HasColumnType("int");
@@ -984,18 +977,8 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MessageOnInvoice")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MessageOnStatment")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PoNumber")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<DateTime?>("OrderedDate")
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
@@ -1005,20 +988,34 @@ namespace ClubJumana.DataLayer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("SalesOrderNumber")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("datetime");
 
                     b.Property<int?>("ShipMethod_fk")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShipVia")
-                        .HasColumnType("text");
+                    b.Property<string>("ShipToAddressNam1")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("ShippingAddress")
-                        .HasColumnType("text");
+                    b.Property<string>("ShipToAddressNam2")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<DateTime?>("SoDate")
-                        .HasColumnType("datetime");
+                    b.Property<string>("ShipToAddressName")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ShipToPostalCode")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ShipToPostalPhone1")
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<decimal>("SoTotalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -1034,9 +1031,6 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<decimal>("TotalDiscount")
                         .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("TrackingNo")
-                        .HasColumnType("text");
 
                     b.Property<bool>("Type")
                         .HasColumnType("bit");

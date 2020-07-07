@@ -26,10 +26,12 @@ namespace ClubJumana.Core.Services
                 So = new SaleOrder()
                 {
                     Type = saleOrder.Type,
-                    OrderedDate = saleOrder.OrderedDate,
+                    SoDate = saleOrder.SoDate,
                     ShipDate = saleOrder.ShipDate,
-                    CancelDate = saleOrder.CancelDate,
-                    SalesOrderNumber = saleOrder.SalesOrderNumber,
+                    ExpriationDate = saleOrder.ExpriationDate,
+                    DueDate = saleOrder.DueDate,
+                    InvoiceDate = saleOrder.InvoiceDate,
+                    term_fk = saleOrder.term_fk,
                     InvoiceNumber = saleOrder.InvoiceNumber,
                     Cashier_fk = saleOrder.User.Id,
                     Customer_fk = saleOrder.Customer.Id,
@@ -42,11 +44,13 @@ namespace ClubJumana.Core.Services
                     Handling = saleOrder.Handling,
                     Freight = saleOrder.Freight,
                     TotalDiscount = saleOrder.TotalDiscount,
-                    ShipToAddressName = saleOrder.ShipToAddressName,
-                    ShipToAddressNam1 = saleOrder.ShipToAddressNam1,
-                    ShipToAddressNam2 = saleOrder.ShipToAddressNam2,
-                    ShipToPostalCode = saleOrder.ShipToPostalCode,
-                    ShipToPostalPhone1 = saleOrder.ShipToPostalPhone1,
+                    TrackingNo = saleOrder.TrackingNo,
+                    BillingAddress = saleOrder.BillingAddress,
+                    ShippingAddress = saleOrder.ShippingAddress,
+                    ShipVia = saleOrder.ShipVia,
+                    MessageOnInvoice = saleOrder.MessageOnInvoice,
+                    MessageOnStatment = saleOrder.MessageOnStatment,
+                    Note = saleOrder.Note,
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
 
@@ -60,10 +64,12 @@ namespace ClubJumana.Core.Services
             {
                 So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
-                So.OrderedDate = saleOrder.OrderedDate;
+                So.SoDate = saleOrder.SoDate;
                 So.ShipDate = saleOrder.ShipDate;
-                So.CancelDate = saleOrder.CancelDate;
-                So.SalesOrderNumber = saleOrder.SalesOrderNumber;
+                So.ExpriationDate = saleOrder.ExpriationDate;
+                So.DueDate = saleOrder.DueDate;
+                So.InvoiceDate = saleOrder.InvoiceDate;
+                So.term_fk = saleOrder.term_fk;
                 So.InvoiceNumber = saleOrder.InvoiceNumber;
                 So.Cashier_fk = saleOrder.User.Id;
                 So.Customer_fk = saleOrder.Customer.Id;
@@ -76,13 +82,15 @@ namespace ClubJumana.Core.Services
                 So.Handling = saleOrder.Handling;
                 So.Freight = saleOrder.Freight;
                 So.TotalDiscount = saleOrder.TotalDiscount;
-                So.ShipToAddressName = saleOrder.ShipToAddressName;
-                So.ShipToAddressNam1 = saleOrder.ShipToAddressNam1;
-                So.ShipToAddressNam2 = saleOrder.ShipToAddressNam2;
-                So.ShipToPostalCode = saleOrder.ShipToPostalCode;
-                So.ShipToPostalPhone1 = saleOrder.ShipToPostalPhone1;
+                So.TrackingNo = saleOrder.TrackingNo;
+                So.BillingAddress = saleOrder.BillingAddress;
+                So.ShippingAddress = saleOrder.ShippingAddress;
+                So.ShipVia = saleOrder.ShipVia;
+                So.MessageOnInvoice = saleOrder.MessageOnInvoice;
+                So.MessageOnStatment = saleOrder.MessageOnStatment;
+                So.Note = saleOrder.Note;
                 So.Quantity = saleOrder.Quantity;
-                So.IsDeleted = saleOrder.IsDeleted;
+                So.IsDeleted = false;
 
             }
 
@@ -165,32 +173,33 @@ namespace ClubJumana.Core.Services
                 Id = saleOrder.Id,
                 TaxRate = TaxRate2,
                 Type = saleOrder.Type,
-                OrderedDate = saleOrder.OrderedDate,
+                SoDate = saleOrder.SoDate,
                 ShipDate = saleOrder.ShipDate,
-                CancelDate = saleOrder.CancelDate,
-                SalesOrderNumber = saleOrder.SalesOrderNumber,
+                ExpriationDate = saleOrder.ExpriationDate,
+                DueDate = saleOrder.DueDate,
+                InvoiceDate = saleOrder.InvoiceDate,
+                term_fk = saleOrder.term_fk,
                 InvoiceNumber = saleOrder.InvoiceNumber,
                 Cashier_fk = saleOrder.User.Id,
                 Customer_fk = saleOrder.Customer.Id,
-                Customer = saleOrder.Customer,
                 Warehouse_fk = saleOrder.Warehouse.Id,
-                Warehouse = saleOrder.Warehouse,
                 ShipMethod_fk = saleOrder.ShipMethod_fk,
                 Subtotal = saleOrder.Subtotal,
                 SoTotalPrice = saleOrder.SoTotalPrice,
                 TaxArea_fk = saleOrder.TaxArea_fk,
-                TaxArea = saleOrder.TaxArea,
                 Tax = saleOrder.Tax,
                 Handling = saleOrder.Handling,
                 Freight = saleOrder.Freight,
                 TotalDiscount = saleOrder.TotalDiscount,
-                ShipToAddressName = saleOrder.ShipToAddressName,
-                ShipToAddressNam1 = saleOrder.ShipToAddressNam1,
-                ShipToAddressNam2 = saleOrder.ShipToAddressNam2,
-                ShipToPostalCode = saleOrder.ShipToPostalCode,
-                ShipToPostalPhone1 = saleOrder.ShipToPostalPhone1,
+                TrackingNo = saleOrder.TrackingNo,
+                BillingAddress = saleOrder.BillingAddress,
+                ShippingAddress = saleOrder.ShippingAddress,
+                ShipVia = saleOrder.ShipVia,
+                MessageOnInvoice = saleOrder.MessageOnInvoice,
+                MessageOnStatment = saleOrder.MessageOnStatment,
+                Note = saleOrder.Note,
                 Quantity = saleOrder.Quantity,
-                IsDeleted = saleOrder.IsDeleted,
+                IsDeleted = false,
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User
             };
@@ -198,9 +207,9 @@ namespace ClubJumana.Core.Services
 
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder, bool IsPrint = false)
         {
-            saleOrder.SalesOrderNumber = _context.saleorders.Max(p => p.SalesOrderNumber) + 1;
-            if (saleOrder.SalesOrderNumber == null)
-                saleOrder.SalesOrderNumber = 345;
+            saleOrder.Id = _context.saleorders.Max(p => p.Id) + 1;
+            if (saleOrder.Id == null)
+                saleOrder.Id = 345;
             ResrevdItemsOfSaleOrder(saleOrder.Id);
             SaveAndUpdateSaleOrder(saleOrder);
 
@@ -217,7 +226,7 @@ namespace ClubJumana.Core.Services
             ProductInventoryWarehouse inventoryWarehouse;
             foreach (SoItem item in soItem)
             {
-                if (saleOrder.SalesOrderNumber != null)
+                if (saleOrder.Id != null)
                     item.ProductMaster.GoodsReserved -= item.Quantity;
                 item.ProductMaster.StockOnHand -= item.Quantity;
                 item.ProductMaster.Outcome += item.Quantity;

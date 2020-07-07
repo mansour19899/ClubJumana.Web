@@ -662,9 +662,8 @@ namespace ClubJumana.Wpf
             if (dep == null)
                 return;
 
-            var wer = (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
-
-            itemCard.DataContext = wer;
+            _dataContextVM.ProductMaster= (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
+            itemCard.DataContext = _dataContextVM.ProductMaster;
 
             Bordermanagement.Child = itemCard;
             SubPage.Visibility = Visibility.Visible;
@@ -678,14 +677,13 @@ namespace ClubJumana.Wpf
         {
             Mode = Mode.Sale;
 
-
-
             _dataContextVM.SaleOrderViewModel = new SaleOrderViewModel();
             _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
-            _dataContextVM.SaleOrderViewModel.Id = 1358;
+            _dataContextVM.SaleOrderViewModel.Id = 0;
             _dataContextVM.SaleOrderViewModel.TaxArea_fk = 2;
             _dataContextVM.SaleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
-            UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
+            _dataContextVM.SaleOrderViewModel.BillingAddress = "salam";
+           UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
             UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
@@ -742,55 +740,12 @@ namespace ClubJumana.Wpf
 
     public class DataContextViewModel : DependencyObject
     {
+        public Customer Customer { get; set; }
 
+        public Vendor Vendor { get; set; }
+        public ProductMaster ProductMaster { get; set; }
 
-        public Customer Customer
-        {
-            get { return (Customer)GetValue(CustomerProperty); }
-            set { SetValue(CustomerProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Customer.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty CustomerProperty =
-            DependencyProperty.Register("Customer", typeof(Customer), typeof(DataContextViewModel), new PropertyMetadata(new Customer() { CompanyName = "Mohammadi" }));
-
-
-
-        public Vendor Vendor
-        {
-            get { return (Vendor)GetValue(VendorProperty); }
-            set { SetValue(VendorProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Vendor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty VendorProperty =
-            DependencyProperty.Register("Vendor", typeof(Vendor), typeof(DataContextViewModel), new PropertyMetadata(null));
-
-
-
-        public ProductMaster ProductMaster
-        {
-            get { return (ProductMaster)GetValue(ProductMasterProperty); }
-            set { SetValue(ProductMasterProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ProductMaster.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ProductMasterProperty =
-            DependencyProperty.Register("ProductMaster", typeof(ProductMaster), typeof(DataContextViewModel), new PropertyMetadata(null));
-
-
-
-        public SaleOrderViewModel SaleOrderViewModel
-        {
-            get { return (SaleOrderViewModel)GetValue(SaleOrderProperty); }
-            set { SetValue(SaleOrderProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SaleOrder.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SaleOrderProperty =
-            DependencyProperty.Register("SaleOrder", typeof(SaleOrderViewModel), typeof(DataContextViewModel), new PropertyMetadata(0));
-
-
+        public SaleOrderViewModel SaleOrderViewModel { get; set; }
 
         public PurchaseOrder PurchaseOrder { get; set; }
         public PoViewModel PoViewModel { get; set; }

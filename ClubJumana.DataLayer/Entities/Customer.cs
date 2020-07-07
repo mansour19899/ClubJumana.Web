@@ -17,16 +17,25 @@ namespace ClubJumana.DataLayer.Entities
         public bool? Gender { get; set; }
         public DateTime? BirthDate { get; set; }
         public string ContactName { get; set; }
+        [StringLength(30)]
         public string ContactLastName { get; set; }
+        [StringLength(30)]
         public string Email { get; set; }
         public string Website { get; set; }
+        [StringLength(30)]
         public string Phone1 { get; set; }
+        [StringLength(30)]
         public string Mobile { get; set; }
         public string FaxNo { get; set; }
+        [StringLength(30)]
         public string Address1 { get; set; }
+        [StringLength(30)]
         public string Address2 { get; set; }
+        [StringLength(50)]
         public string City { get; set; }
-
+        public string DisplayBillAddress { get; set; }
+        public string DisplayShipAddress { get; set; }
+        [StringLength(15)]
         public string PostalCode { get; set; }
 
         public decimal BalanceLCY { get; set; }

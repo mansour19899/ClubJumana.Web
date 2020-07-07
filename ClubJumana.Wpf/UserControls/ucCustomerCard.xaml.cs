@@ -53,5 +53,9 @@ namespace ClubJumana.Wpf.UserControls
                 BtnCloseSubPage(sender, e);
         }
 
+        private void BtnCreateDisplayAddress_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+          
+        }
     }
 }

@@ -205,11 +205,15 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="400"/>
                         <RowDefinition Height="100"/>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="100"/>
                         <RowDefinition Height="400"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="130"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="250"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="230"/>
                     </Grid.RowDefinitions>
                     <Grid.Resources>
                         <Style x:Key="Styledot" TargetType="TextBlock">
@@ -509,13 +513,53 @@
 
                     <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="4" >
                         <UniformGrid Columns="2">
+                            <TextBlock  Text="Display Address Shipping" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Border>
+                    <UniformGrid Rows="1" Columns="2" Grid.Row="5">
+                        <StackPanel Margin="0 30 0 0">
+                            <TextBlock Name="btnCreateDisplayAddress" Text="Display Address" Style="{StaticResource Style1}" MouseDown="BtnCreateDisplayAddress_OnMouseDown"/>
+                            <TextBox Text="{Binding DisplayBillAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                     AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                <TextBox.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform Y="20"/>
+                                    </TransformGroup>
+                                </TextBox.RenderTransform>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="0 30 0 0">
+                            <TextBlock Text="Display Shipping Address" Style="{StaticResource Style1}"/>
+                            <TextBox Text="{Binding DisplayShipAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                     AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                <TextBox.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform Y="20"/>
+                                    </TransformGroup>
+                                </TextBox.RenderTransform>
+                            </TextBox>
+                        </StackPanel>
+                    </UniformGrid>
+
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="6" >
+                        <UniformGrid Columns="2">
                             <TextBlock  Text=" Invoicing" FontSize="25" Margin="0 0 0 10"/>
                             <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
                             </Grid>
                         </UniformGrid>
                     </Border>
-                    <Grid Grid.Row="5" Margin="10 30 10 10">
+                    <Grid Grid.Row="7" Margin="10 30 10 10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -689,7 +733,7 @@
 
                     </Grid>
 
-                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="6" >
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="8" >
                         <UniformGrid Columns="2">
                             <TextBlock  Text=" Payment" FontSize="25" Margin="0 0 0 10"/>
                             <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
@@ -697,7 +741,7 @@
                             </Grid>
                         </UniformGrid>
                     </Border>
-                    <Grid Grid.Row="7" Margin="10 30 10 10">
+                    <Grid Grid.Row="9" Margin="10 30 10 10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -739,7 +783,7 @@
 
                     </Grid>
 
-                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="8" >
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="10" >
                         <UniformGrid Columns="2">
                             <TextBlock  Text=" Shipping" FontSize="25" Margin="0 0 0 10"/>
                             <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
@@ -747,7 +791,7 @@
                             </Grid>
                         </UniformGrid>
                     </Border>
-                    <Grid Grid.Row="9" Margin="10 30 10 10">
+                    <Grid Grid.Row="11" Margin="10 30 10 10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -820,6 +864,29 @@
 
 
                     </Grid>
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="12" >
+                        <UniformGrid Columns="2">
+                            <TextBlock  Text=" Note" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+                    </Border>
+                    <Grid Grid.Row="13" Margin="10 30 10 10">
+                        <TextBox Text="{Binding Note}"  Height="180"  VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="16" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                 AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                            <TextBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform Y="20"/>
+                                </TransformGroup>
+                            </TextBox.RenderTransform>
+                        </TextBox>
+
+</Grid>
 
                 </Grid>
             </ScrollViewer>

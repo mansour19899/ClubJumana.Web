@@ -509,7 +509,7 @@ namespace ClubJumana.Wpf
             saleOrder.User = _userService.LoginUser();
             saleOrder.IsSaveDatabase = false;
             saleOrder.Warehouse = _repositoryService.AllWarehouse().ToList().Skip(1).FirstOrDefault();
-            saleOrder.OrderedDate = DateTime.Today;
+            saleOrder.SoDate = DateTime.Today;
             this.DataContext = saleOrder;
             lblSave.Content = "Save";
             lblDone.Content = "Create Invoice";

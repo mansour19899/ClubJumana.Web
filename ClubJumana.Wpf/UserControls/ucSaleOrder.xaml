@@ -283,7 +283,9 @@
                         <RowDefinition Height="75"/>
                         <RowDefinition Height="188"/>
                         <RowDefinition Height="100"/>
-                        <RowDefinition Height="755"/>
+                        <RowDefinition Height="500"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="588"/>
 
                     </Grid.RowDefinitions>
                     <Grid.Resources>
@@ -314,7 +316,8 @@
                                     <TextBlock Text="Customer Name" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbVendor" FontSize="{StaticResource Font1}"
+                                <ComboBox Name="cmbCustomer" FontSize="{StaticResource Font1}"
+                                          Margin="10 0"
                                           materialDesign:TextFieldAssist.HasClearButton="True"
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -326,32 +329,21 @@
                                     <TextBlock Text="Contact" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}" />
+                                <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}"   Margin="10 0"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="Ship From" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Sales Order Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbShipFrom" FontSize="{StaticResource Font1}"
-                                          materialDesign:TextFieldAssist.HasClearButton="True"
-                                          IsEditable="True"
-                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          materialDesign:TextFieldAssist.SuffixText="sw"
-                                          ItemsSource="{Binding WarehousesList}"
-                                          DisplayMemberPath="Name" SelectedValuePath="Id"  SelectedValue="{Binding FromWarehouse_fk}"/>
+                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="Ship To " Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Expiration Date " Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <ComboBox Name="cmbShipToStore" FontSize="{StaticResource Font1}"
-                                          materialDesign:TextFieldAssist.HasClearButton="True"
-                                          IsEditable="True"
-                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          materialDesign:TextFieldAssist.SuffixText="sw"
-                                          DisplayMemberPath="Name" SelectedValuePath="Id"  ItemsSource="{Binding WarehousesList}" SelectedValue="{Binding ToWarehouse_fk}" />
+                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
 
 
@@ -359,42 +351,44 @@
                         <UniformGrid Columns="1" Rows="4" >
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Doucment Date" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Due Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <DatePicker Margin="10 3" SelectedDate="{Binding  DateCompleted}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Ship Date" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Invoice Date" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <DatePicker Margin="10 3"  SelectedDate="{Binding ShipDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Cancel Date" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="P.O Number" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker Margin="10 3" SelectedDate="{Binding CancelDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
+                                <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}"   Margin="10 0"/>
                             </UniformGrid>
 
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Last Edit Date" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Sales Person" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <Grid>
-                                    <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" FontSize="{StaticResource Font1}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='dd MMM yyyy , HH : mm  '}" Grid.Row="0" Grid.Column="1"  />
-                                </Grid>
+                                <ComboBox Name="cmbSalesPerson" FontSize="{StaticResource Font1}"
+                                          Margin="10 0"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="True"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id" ItemsSource="{Binding VendorsList}"  SelectedValue="{Binding Vendor_fk}"/>
                             </UniformGrid>
                         </UniformGrid>
 
 
 
                     </UniformGrid>
-
 
 
                     <Border BorderThickness="0 0 0 2" Margin="10 0" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="2" >
@@ -457,51 +451,9 @@
                                     </StackPanel>
                                     <TextBox Text="{Binding Handling}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Insurance" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding Insurance}"  />
-                                </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="CustomsDuty" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding CustomsDuty}"  />
-                                </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Handling" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding Handling}"  />
-                                </UniformGrid>
                             </UniformGrid>
                             <TextBlock Name="TotalChargePart0" Visibility="Collapsed" ></TextBlock>
                             <UniformGrid Rows="9" Columns="1">
-                                <UniformGrid Name="TotalChargePart2" Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Forwarding" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding Forwarding}"  />
-                                </UniformGrid>
-                                <UniformGrid Name="TotalChargePart3" Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Land Transport" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding LandTransport}" />
-                                </UniformGrid>
-                                <UniformGrid Name="TotalChargePart4" Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Others" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox Text="{Binding Others}"  />
-                                </UniformGrid>
                                 <UniformGrid Name="TotalChargePart5" Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                                         <TextBlock Text="Subtotal " Style="{StaticResource Style1}"/>
@@ -537,6 +489,109 @@
 
                         </UniformGrid>
                     </StackPanel>
+
+                    <Border BorderThickness="0 0 0 3" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="4" >
+                        <UniformGrid Columns="2">
+                            <TextBlock Text=" Information" FontSize="25" Margin="0 0 0 10"/>
+                            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBlock Text=" Show More" Style="{StaticResource ShowMoreStyle}"/>
+                            </Grid>
+                        </UniformGrid>
+
+                    </Border>
+                    <StackPanel Grid.Row="5"  Margin="0 20 0 0">
+                        <UniformGrid Height="92" Columns="2" Rows="1"  Margin="0 20 0 0">
+                            <UniformGrid Columns="1" Rows="2" >
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Ship Via" Style="{StaticResource Style1}"/>
+                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                    </StackPanel>
+                                    <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}"   Margin="10 0"/>
+                                </UniformGrid>
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Tracking No" Style="{StaticResource Style1}"/>
+                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                    </StackPanel>
+                                    <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Number}"   Margin="10 0"/>
+                                </UniformGrid>
+                            </UniformGrid>
+                            <UniformGrid Columns="1" Rows="2" >
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                        <TextBlock Text="Ship Date" Style="{StaticResource Style1}"/>
+                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                    </StackPanel>
+                                    <DatePicker Margin="10 3" SelectedDate="{Binding  DateCompleted}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
+                                </UniformGrid>
+                            </UniformGrid>
+
+
+
+                        </UniformGrid>
+                        <UniformGrid Columns="2" Rows="1">
+                            <StackPanel Margin="0 30 0 0">
+                                <TextBlock Name="btnCreateDisplayAddress" Text="Billing address" Style="{StaticResource Style1}" />
+                                <TextBox Text="{Binding DisplayBillAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                         AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                    <TextBox.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="20"/>
+                                        </TransformGroup>
+                                    </TextBox.RenderTransform>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="0 30 0 0">
+                                <TextBlock  Text="Shipping to" Style="{StaticResource Style1}" />
+                                <TextBox Text="{Binding DisplayBillAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                         AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                    <TextBox.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="20"/>
+                                        </TransformGroup>
+                                    </TextBox.RenderTransform>
+                                </TextBox>
+                            </StackPanel>
+                        </UniformGrid>
+                        <UniformGrid Columns="2" Rows="1">
+                            <StackPanel Margin="0 30 0 0">
+                                <TextBlock Text="Message on invoice" Style="{StaticResource Style1}" />
+                                <TextBox Text="{Binding DisplayBillAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                         AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                    <TextBox.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="20"/>
+                                        </TransformGroup>
+                                    </TextBox.RenderTransform>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="0 30 0 0">
+                                <TextBlock  Text="Message on statement" Style="{StaticResource Style1}" />
+                                <TextBox Text="{Binding DisplayBillAddress}" Width="400" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"   FontSize="14" Margin="30 0"  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                                         AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 40 0" >
+                                    <TextBox.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="20"/>
+                                        </TransformGroup>
+                                    </TextBox.RenderTransform>
+                                </TextBox>
+                            </StackPanel>
+                        </UniformGrid>
+                    </StackPanel>
+                   
 
                 </Grid>
             </ScrollViewer>
