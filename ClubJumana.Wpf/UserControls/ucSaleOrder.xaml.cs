@@ -56,6 +56,7 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnCloseSubPage;
         private void BtnCloseSubPage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            AllowSearch = false;
             e.Handled = true;
             if (BtnCloseSubPage != null)
                 BtnCloseSubPage(sender, e);
@@ -214,7 +215,7 @@ namespace ClubJumana.Wpf.UserControls
             if (e.Key == Key.Escape)
             {
                 lvCustomerLookupBorder.Visibility = Visibility.Hidden;
-                txtContactName.Focus();
+                dpiSoDate.Focus();
             }
         }
 
@@ -223,13 +224,15 @@ namespace ClubJumana.Wpf.UserControls
             if (lvCustomerLookup.SelectedIndex != -1)
             {
                 SaleOrderViewModel.Customer = lvCustomerLookup.SelectedItem as Customer;
+                SetBillingShippingAddress();
             }
             else
             {
                 SaleOrderViewModel.Customer = lvCustomerLookup.ItemsSource.Cast<Customer>().FirstOrDefault();
+                SetBillingShippingAddress();
             }
             lvCustomerLookupBorder.Visibility = Visibility.Hidden;
-            txtContactName.Focus();
+            dpiSoDate.Focus();
         }
 
         private void LvCustomerLookup_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -246,8 +249,17 @@ namespace ClubJumana.Wpf.UserControls
             var wer = (Customer)lvCustomerLookup.ItemContainerGenerator.ItemFromContainer(dep);
             SaleOrderViewModel.Customer_fk = wer.Id;
             SaleOrderViewModel.Customer = wer;
+            SetBillingShippingAddress();
             lvCustomerLookupBorder.Visibility = Visibility.Hidden;
-            txtContactName.Focus();
+            dpiSoDate.Focus();
+        }
+
+        private void SetBillingShippingAddress()
+        {
+            SaleOrderViewModel.BillingAddress = SaleOrderViewModel.Customer.DisplayBillAddress;
+            SaleOrderViewModel.ShippingAddress = SaleOrderViewModel.Customer.DisplayShipAddress;
+            txtShppingAddress.Text = SaleOrderViewModel.Customer.DisplayShipAddress;
+            txtbillingAddress.Text = SaleOrderViewModel.Customer.DisplayBillAddress;
         }
 
         private void TxtCustomerLookup_OnGotMouseCapture(object sender, MouseEventArgs e)
@@ -259,6 +271,18 @@ namespace ClubJumana.Wpf.UserControls
         private void TxtCustomerLookup_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
            TxtCustomerLookup_OnGotMouseCapture(null,null);
+        }
+
+        private void DpiSoDate_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A)
+            {
+                dpiSoDate.SelectedDate = DateTime.Now;
+                dpiExpiration.Focus();
+                e.Handled = true;
+            }
+
+            
         }
     }
 }

@@ -58,6 +58,7 @@ namespace ClubJumana.Wpf
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
 
+        private List<SalesOrderListview> salesOrderListview;
         private Customer customer;
         private Vendor vendor;
         private DataContextViewModel _dataContextVM;
@@ -148,6 +149,7 @@ namespace ClubJumana.Wpf
             lvPurchasing.Visibility = Visibility.Hidden;
             lvCustomers.Visibility = Visibility.Hidden;
             lvVendors.Visibility = Visibility.Hidden;
+            lvSalesOrder.Visibility = Visibility.Hidden;
         }
         private void HideMenuTop()
         {
@@ -166,9 +168,24 @@ namespace ClubJumana.Wpf
         {
             int x = UCSaleOrder.SaleOrderViewModel.Id;
             string mes = "";
-            _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+           int ID= _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
             mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
             myMessageQueue.Enqueue(mes);
+
+            if (ID == 0)
+            {
+                salesOrderListview.Add(new SalesOrderListview()
+                {
+                    No = ID,
+                    CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
+                    DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
+                    Balance = 0,
+                    TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
+                    Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
+                });
+                lvSalesOrder.ItemsSource = salesOrderListview;
+                lvSalesOrder.Items.Refresh();
+            }
         }
 
         private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
@@ -538,6 +555,24 @@ namespace ClubJumana.Wpf
         private void SalesOrderShow(int Id = 0)
         {
 
+            if (Id == 0)
+            {
+                _dataContextVM.SaleOrderViewModel = new SaleOrderViewModel()
+                {
+                    Id = 0,
+                    TaxArea_fk = 2,
+                    TaxArea = provinces.SingleOrDefault(p => p.Id == 2),
+                    Warehouse_fk = 2,
+                };
+                _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
+            }
+            else
+                _dataContextVM.SaleOrderViewModel = _saleOrderService.GiveSaleOrderById(Id);
+
+            UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
+            UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
+            Bordermanagement.Child = UCSaleOrder;
+            SubPage.Visibility = Visibility.Visible;
         }
 
 
@@ -679,19 +714,12 @@ namespace ClubJumana.Wpf
 
         private void BtnSalesOrder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            salesOrderListview= _saleOrderService.SalesOrdersListView();
+            lvSalesOrder.ItemsSource = salesOrderListview;
             Mode = Mode.Sale;
-
-            _dataContextVM.SaleOrderViewModel = new SaleOrderViewModel();
-            _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
-            _dataContextVM.SaleOrderViewModel.Id = 0;
-            _dataContextVM.SaleOrderViewModel.TaxArea_fk = 2;
-            _dataContextVM.SaleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
-            _dataContextVM.SaleOrderViewModel.Warehouse_fk = 2; 
-            UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
-            UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
-            
-            Bordermanagement.Child = UCSaleOrder;
-            SubPage.Visibility = Visibility.Visible;
+            txtMode.Text = "Sales Orders";
+            HideListview();
+            lvSalesOrder.Visibility = Visibility.Visible;
         }
 
         private void LvCustomers_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -740,6 +768,21 @@ namespace ClubJumana.Wpf
             txtMode.Text = "Vendors";
             HideListview();
             lvVendors.Visibility = Visibility.Visible;
+        }
+
+        private void LvSalesOrder_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (SalesOrderListview)lvSalesOrder.ItemContainerGenerator.ItemFromContainer(dep);
+            SalesOrderShow(wer.No);
         }
     }
 

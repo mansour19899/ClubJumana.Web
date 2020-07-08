@@ -70,7 +70,7 @@ namespace ClubJumana.Core.DTOs
 
         public int? TaxArea_fk { get; set; }
         public int? term_fk { get; set; }
-
+        public Term Term { get; set; }
         private decimal _tax;
 
         public decimal Tax
@@ -374,5 +374,16 @@ namespace ClubJumana.Core.DTOs
         public string Contact { get; set; }
         public string BalanceLCY { get; set; }
         public string BalanceDueLCY { get; set; }
+    }
+
+    public class SalesOrderListview
+    {
+        public int No { get; set; }
+        public string CustomerName { get; set; }
+        public DateTime? DueDate { get; set; }
+        public decimal Balance { get; set; }
+        public decimal TotalBeforeTax { get; set; }
+        public decimal SalesTax { get; set; }
+        public decimal Total { get; set; }
     }
 }

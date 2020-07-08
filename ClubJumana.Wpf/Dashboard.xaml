@@ -137,7 +137,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="400"/>
                 </Grid.ColumnDefinitions>
-                <ListView SelectionMode="Single"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" Visibility="Hidden" >
+                <ListView SelectionMode="Single"  Name="lvPurchasing" Grid.Row="3" Margin="70 70 70 20" FontSize="15"  MouseDoubleClick="LvPurchasing_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Alu}" />
@@ -149,7 +149,7 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <ListView SelectionMode="Single"  Name="lvVendors" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvVendors_OnMouseDoubleClick" Visibility="Hidden" >
+                <ListView SelectionMode="Single"  Name="lvVendors" Grid.Row="3" Margin="70 70 70 20" FontSize="15"  MouseDoubleClick="LvVendors_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
@@ -163,7 +163,21 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <ListView SelectionMode="Single"  Name="lvSalesOrder" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvVendors_OnMouseDoubleClick" Visibility="Visible" >
+                <ListView SelectionMode="Single"  Name="lvSalesOrder" Grid.Row="3" Margin="70 70 70 20" FontSize="15"  MouseDoubleClick="LvSalesOrder_OnMouseDoubleClick" Visibility="Hidden" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
+                            <GridViewColumn Header="Customer" Width="250" DisplayMemberBinding="{Binding Path=CustomerName}" />
+                            <GridViewColumn Header="Due Date" Width="150" DisplayMemberBinding="{Binding Path=DueDate}" />
+                            <GridViewColumn Header="Balance" Width="150" DisplayMemberBinding="{Binding Path=Balance}" />
+                            <GridViewColumn Header="Total Before Sales Tax" Width="250" DisplayMemberBinding="{Binding Path=TotalBeforeTax}"/>
+                            <GridViewColumn Header="Sales Tax" Width="150" DisplayMemberBinding="{Binding Path=SalesTax}" />
+                            <GridViewColumn Header="Total" Width="200" DisplayMemberBinding="{Binding Path=Total}" />
+                            <GridViewColumn Header="" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListView SelectionMode="Single"  Name="lvCustomers" Grid.Row="3" Margin="70 70 70 20" FontSize="15"  MouseDoubleClick="LvCustomers_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
@@ -173,24 +187,10 @@
                             <GridViewColumn Header="Contact" Width="200" DisplayMemberBinding="{Binding Path=Contact}"/>
                             <GridViewColumn Header="Balance(LCY)" Width="150" DisplayMemberBinding="{Binding Path=TotalPrice}" />
                             <GridViewColumn Header="Balance Due(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
-                            <GridViewColumn Header="Payments(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <ListView SelectionMode="Single"  Name="lvCustomers" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvCustomers_OnMouseDoubleClick" Visibility="Hidden" >
-                    <ListView.View>
-                        <GridView >
-                            <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=No}" />
-                            <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="Location Code" Width="200" DisplayMemberBinding="{Binding Path=LocationCode}" />
-                            <GridViewColumn Header="Phone No." Width="200" DisplayMemberBinding="{Binding Path=PhoneNo}" />
-                            <GridViewColumn Header="Contact" Width="200" DisplayMemberBinding="{Binding Path=Contact}"/>
-                            <GridViewColumn Header="Balance(LCY)" Width="150" DisplayMemberBinding="{Binding Path=TotalPrice}" />
-                            <GridViewColumn Header="Balance Due(LCY)" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <ListView SelectionMode="Single"  Name="lvProductMaster" Grid.Row="3" Margin="70 70 70 20" FontSize="18"  MouseDoubleClick="LvProductMaster_OnMouseDoubleClick" Visibility="Hidden" >
+                <ListView SelectionMode="Single"  Name="lvProductMaster" Grid.Row="3" Margin="70 70 70 20" FontSize="15"  MouseDoubleClick="LvProductMaster_OnMouseDoubleClick" Visibility="Hidden" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="No." Width="120" DisplayMemberBinding="{Binding Path=Id}" />

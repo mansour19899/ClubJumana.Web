@@ -18,8 +18,20 @@ namespace ClubJumana.Core.Services
         {
             _context = new JummanaContext();
         }
+        private void DetachedAllEntries()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+            //foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
+            //{
+            //    _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
+            //}
+        }
         public int SaveAndUpdateSaleOrder(SaleOrderViewModel saleOrder)
         {
+            DetachedAllEntries();
             SaleOrder So = new SaleOrder();
             if (saleOrder.Id == 0)
             {
@@ -71,9 +83,9 @@ namespace ClubJumana.Core.Services
                 So.InvoiceDate = saleOrder.InvoiceDate;
                 So.term_fk = saleOrder.term_fk;
                 So.InvoiceNumber = saleOrder.InvoiceNumber;
-                So.Cashier_fk = saleOrder.User.Id;
-                So.Customer_fk = saleOrder.Customer.Id;
-                So.Warehouse_fk = saleOrder.Warehouse.Id;
+                So.Cashier_fk = saleOrder.Cashier_fk;
+                So.Customer_fk = saleOrder.Customer_fk;
+                So.Warehouse_fk = saleOrder.Warehouse_fk;
                 So.ShipMethod_fk = saleOrder.ShipMethod_fk;
                 So.Subtotal = saleOrder.Subtotal;
                 So.SoTotalPrice = saleOrder.SoTotalPrice;
@@ -133,13 +145,13 @@ namespace ClubJumana.Core.Services
 
             _context.SaveChanges();
 
-            return 1;
+            return saleOrder.Id;
         }
 
         public SaleOrderViewModel GiveSaleOrderById(int id)
         {
 
-            var saleOrder = _context.saleorders.Where(p => p.Id == id).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+            var saleOrder = _context.saleorders.Where(p => p.Id == id).Include(p=>p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
@@ -179,9 +191,11 @@ namespace ClubJumana.Core.Services
                 DueDate = saleOrder.DueDate,
                 InvoiceDate = saleOrder.InvoiceDate,
                 term_fk = saleOrder.term_fk,
+                Term = saleOrder.Term,
                 InvoiceNumber = saleOrder.InvoiceNumber,
-                Cashier_fk = saleOrder.User.Id,
-                Customer_fk = saleOrder.Customer.Id,
+                Cashier_fk = saleOrder.Cashier_fk,
+                Customer_fk = saleOrder.Customer_fk,
+                Customer = saleOrder.Customer,
                 Warehouse_fk = saleOrder.Warehouse.Id,
                 ShipMethod_fk = saleOrder.ShipMethod_fk,
                 Subtotal = saleOrder.Subtotal,
@@ -203,6 +217,12 @@ namespace ClubJumana.Core.Services
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User
             };
+        }
+
+        public List<SalesOrderListview> SalesOrdersListView()
+        {
+            return _context.saleorders.Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance =0, TotalBeforeTax = p.Subtotal,Total = p.SoTotalPrice}).ToList();
+
         }
 
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder, bool IsPrint = false)
@@ -242,6 +262,7 @@ namespace ClubJumana.Core.Services
 
         public bool AddRefund(Refund refund)
         {
+            DetachedAllEntries();
             refund.RefundDate = DateTime.Now;
             refund.RefundNumber = 1368;
             _context.refunds.Add(refund);

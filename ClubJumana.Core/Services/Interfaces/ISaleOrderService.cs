@@ -11,7 +11,7 @@ namespace ClubJumana.Core.Services.Interfaces
     {
         public int SaveAndUpdateSaleOrder(SaleOrderViewModel saleOrder);
        public SaleOrderViewModel GiveSaleOrderById(int id);
-
+       public List<SalesOrderListview> SalesOrdersListView();
        public bool SendEmailOrPrint(SaleOrderViewModel saleOrder,bool IsPrint);
        public bool CreateInvoice(SaleOrderViewModel saleOrder);
 
