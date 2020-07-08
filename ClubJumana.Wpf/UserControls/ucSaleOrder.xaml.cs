@@ -21,8 +21,10 @@ namespace ClubJumana.Wpf.UserControls
     /// </summary>
     public partial class ucSaleOrder : UserControl
     {
+        public List<Customer> CustomersList;
         private SaleOrderViewModel _saleOrderViewModel;
 
+        private bool AllowSearch = false;
         public SaleOrderViewModel SaleOrderViewModel
         {
             get { return _saleOrderViewModel; }
@@ -188,6 +190,75 @@ namespace ClubJumana.Wpf.UserControls
             }
 
 
+        }
+
+        private void TxtCustomerLookup_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (AllowSearch)
+            {
+                var resalt = CustomersList.Where(p => p.CompanyName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
+                                                      || p.ContactName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
+                                                      || p.Phone1.ToLower().Contains(txtCustomerLookup.Text.ToLower()));
+                if (resalt.Count() == 0)
+                    lvCustomerLookup.ItemsSource = new List<Customer>() { new Customer() { CompanyName = "Not Find Any Customer" } };
+                else
+                    lvCustomerLookup.ItemsSource = resalt;
+
+                lvCustomerLookupBorder.Visibility = Visibility.Visible;
+            }
+            
+        }
+
+        private void TxtCustomerLookup_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                lvCustomerLookupBorder.Visibility = Visibility.Hidden;
+                txtContactName.Focus();
+            }
+        }
+
+        private void LvCustomerLookupBorder_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (lvCustomerLookup.SelectedIndex != -1)
+            {
+                SaleOrderViewModel.Customer = lvCustomerLookup.SelectedItem as Customer;
+            }
+            else
+            {
+                SaleOrderViewModel.Customer = lvCustomerLookup.ItemsSource.Cast<Customer>().FirstOrDefault();
+            }
+            lvCustomerLookupBorder.Visibility = Visibility.Hidden;
+            txtContactName.Focus();
+        }
+
+        private void LvCustomerLookup_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (Customer)lvCustomerLookup.ItemContainerGenerator.ItemFromContainer(dep);
+            SaleOrderViewModel.Customer_fk = wer.Id;
+            SaleOrderViewModel.Customer = wer;
+            lvCustomerLookupBorder.Visibility = Visibility.Hidden;
+            txtContactName.Focus();
+        }
+
+        private void TxtCustomerLookup_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            AllowSearch = true;
+            
+        }
+
+        private void TxtCustomerLookup_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+           TxtCustomerLookup_OnGotMouseCapture(null,null);
         }
     }
 }

@@ -26,6 +26,11 @@ namespace ClubJumana.Core.Services.Interfaces
             return invitation ?? new Invitation(){Id = 0};
         }
 
+        public List<User> AllSalesPeople()
+        {
+            return _context.users.ToList();
+        }
+
         public int AddInvitation(Invitation invitation)
         {
             _context.invitations.Add(invitation);

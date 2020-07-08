@@ -37,6 +37,7 @@ namespace ClubJumana.Wpf
         private RepositoryService _repositoryService;
         private PerchaseOrderService _purchaseOrderService;
         private UserService _userService;
+        private SaleOrderService _saleOrderService;
         private PurchaseOrder SelectedPurchaseOrder;
         private PoViewModel SelectedPo;
         private AsnViewModel SelectedAsn;
@@ -67,6 +68,7 @@ namespace ClubJumana.Wpf
             _repositoryService = new RepositoryService();
             _purchaseOrderService = new PerchaseOrderService();
             _userService = new UserService();
+            _saleOrderService=new SaleOrderService();
             PurchaseOrdersList = new List<PurchaseOrder>();
             PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
 
@@ -110,6 +112,8 @@ namespace ClubJumana.Wpf
             UCCustomer.cmbCountries.ItemsSource = countries;
             UCCustomer.cmbProvinces.ItemsSource = provinces;
 
+            UCSaleOrder.CustomersList = customers;
+            UCSaleOrder.cmbSalesPerson.ItemsSource = _userService.AllSalesPeople();
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
         }
@@ -160,10 +164,10 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveSalesOrder_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            int x = _dataContextVM.SaleOrderViewModel.Id;
+            int x = UCSaleOrder.SaleOrderViewModel.Id;
             string mes = "";
-            _repositoryService.AddAndUpdateCustomer(_dataContextVM.Customer);
-            mes = (x == 0) ? "Customer Created" : "Customer Updated";
+            _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+            mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
             myMessageQueue.Enqueue(mes);
         }
 
@@ -403,7 +407,7 @@ namespace ClubJumana.Wpf
                 {
 
                     case Mode.Sale:
-                        _dataContextVM.SaleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
+                        UCSaleOrder.SaleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
                         {
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id,
@@ -682,9 +686,10 @@ namespace ClubJumana.Wpf
             _dataContextVM.SaleOrderViewModel.Id = 0;
             _dataContextVM.SaleOrderViewModel.TaxArea_fk = 2;
             _dataContextVM.SaleOrderViewModel.TaxArea = provinces.SingleOrDefault(p => p.Id == 2);
-            _dataContextVM.SaleOrderViewModel.BillingAddress = "salam";
-           UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
+            _dataContextVM.SaleOrderViewModel.Warehouse_fk = 2; 
+            UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
             UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
+            
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
         }

@@ -18,6 +18,8 @@ namespace ClubJumana.Core.Services.Interfaces
         void UpdateUser(User user);
         Invitation AllowRegister(string activeCode);
 
+        List<User> AllSalesPeople();
+
         int AddInvitation(Invitation invitation);
 
         User LoginUser();
