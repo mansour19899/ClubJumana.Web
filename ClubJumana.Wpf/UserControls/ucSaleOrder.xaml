@@ -326,7 +326,7 @@
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
                             <StackPanel  ZIndex="2214200" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" >
-                                <TextBox x:Name="txtCustomerLookup" Text="{Binding Customer.CompanyName, Mode=OneWay}" Margin="10 0" Style="{StaticResource MaterialDesignTextBox}" IsReadOnly="False" TextChanged="TxtCustomerLookup_OnTextChanged" KeyDown="TxtCustomerLookup_OnKeyDown" GotMouseCapture="TxtCustomerLookup_OnGotMouseCapture" GotKeyboardFocus="TxtCustomerLookup_OnGotKeyboardFocus"/>
+                                <TextBox x:Name="txtCustomerLookup" Text="{Binding Customer.CompanyName, Mode=OneWay}" FontSize="{StaticResource Font1}" Margin="10 0" Style="{StaticResource MaterialDesignTextBox}" IsReadOnly="False" TextChanged="TxtCustomerLookup_OnTextChanged" KeyDown="TxtCustomerLookup_OnKeyDown" GotMouseCapture="TxtCustomerLookup_OnGotMouseCapture" GotKeyboardFocus="TxtCustomerLookup_OnGotKeyboardFocus"/>
                                 <Border x:Name="lvCustomerLookupBorder" Panel.ZIndex="300" Background="White" BorderBrush="Blue" BorderThickness="1" Margin="10 -1 10 50"  KeyDown="LvCustomerLookupBorder_OnKeyDown">
                                     <Border.Style>
                                         <Style TargetType="{x:Type Border}">
