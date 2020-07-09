@@ -482,6 +482,7 @@
                                               materialDesign:TextFieldAssist.SuffixText="sw"
                                               Margin="10 0"
                                               SelectedValue="{Binding TaxArea_fk}"
+                                              FontSize="15"
                                               DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">

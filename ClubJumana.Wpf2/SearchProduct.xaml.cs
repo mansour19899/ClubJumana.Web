@@ -537,6 +537,10 @@ namespace ClubJumana.Wpf2
             {
                 MessageBox.Show("Please Set Country Of Orgin");
             }
+            else if(variantSelected.FobPrice==null)
+            {
+                MessageBox.Show("Please Set F.O.B Price");
+            }
             else
             {
                 var country = _repositoryService.GiveMeCountryByID(38);
