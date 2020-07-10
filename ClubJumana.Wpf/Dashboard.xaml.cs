@@ -115,6 +115,7 @@ namespace ClubJumana.Wpf
 
             UCSaleOrder.CustomersList = customers;
             UCSaleOrder.cmbSalesPerson.ItemsSource = _userService.AllSalesPeople();
+            UCSaleOrder.cmbTerms.ItemsSource = _repositoryService.AllTerms().ToList();
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
         }
@@ -563,6 +564,8 @@ namespace ClubJumana.Wpf
                     TaxArea_fk = 2,
                     TaxArea = provinces.SingleOrDefault(p => p.Id == 2),
                     Warehouse_fk = 2,
+                    term_fk = 3,
+
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
             }

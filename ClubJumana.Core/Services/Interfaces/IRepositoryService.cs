@@ -29,6 +29,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Colour> AllColourList();
         IQueryable<Material> AllMaterialList();
         IQueryable<Product> AllProductList();
+        IQueryable<Term> AllTerms();
 
         Country GiveMeCountryByID(int Id);
         ProductMaster GiveMeProductMasterByUPC(string UPC);

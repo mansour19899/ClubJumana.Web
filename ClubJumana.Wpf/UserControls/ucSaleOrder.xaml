@@ -281,7 +281,7 @@
                 <Grid Margin="0 0 30 100">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75"/>
-                        <RowDefinition Height="188"/>
+                        <RowDefinition Height="235"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="500"/>
                         <RowDefinition Height="100"/>
@@ -312,6 +312,7 @@
                     <UniformGrid Grid.Row="1" Columns="2" Rows="1"  Margin="0 20 0 0">
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -388,9 +389,24 @@
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
                             <DatePicker Margin="10 3" SelectedDate="{Binding ExpriationDate}" Name="dpiExpiration" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="4">
+                                    <TextBlock Text="Terms" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <ComboBox Name="cmbTerms" FontSize="{StaticResource Font1}"
+                                          Margin="10 0"
+                                          Grid.Row="4"
+                                          Grid.Column="1"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="True"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          DisplayMemberPath="Code" SelectedValuePath="Id"   SelectedValue="{Binding term_fk}"/>
+
                         </Grid>
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -430,6 +446,13 @@
                                           materialDesign:TextFieldAssist.SuffixText="sw"
                                           DisplayMemberPath="UserName" SelectedValuePath="Id"   SelectedValue="{Binding Cashier_fk}"/>
                             </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1" Grid.Row="4">
+                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                    <TextBlock Text="Terms Percent" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding TermPercent}"   Margin="10 0"/>
+                            </UniformGrid>
                         </Grid>
 
 
@@ -461,7 +484,7 @@
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
                                     <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                                    <DataGridTextColumn Header="Price" Binding="{Binding PriceTerm,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                                     <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" IsReadOnly="False"/>
                                     <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>

@@ -170,7 +170,9 @@ namespace ClubJumana.Core.Services
                     Price = VARIABLE.Price,
                     QuantityRefunded = VARIABLE.QuantityRefunded,
                     IsAbaleToRefund = VARIABLE.IsAbaleToRefund,
-                    TotalPrice = VARIABLE.TotalPrice
+                    TotalPrice = VARIABLE.TotalPrice,
+                    PriceTerm = VARIABLE.PriceTerm,
+                    TermPercent = saleOrder.TermPercent
                 });
             }
 
@@ -213,6 +215,7 @@ namespace ClubJumana.Core.Services
                 MessageOnStatment = saleOrder.MessageOnStatment,
                 Note = saleOrder.Note,
                 Quantity = saleOrder.Quantity,
+                TermPercent = saleOrder.TermPercent,
                 IsDeleted = false,
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User

@@ -893,6 +893,11 @@ namespace ClubJumana.Core.Services
             return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
         }
 
+        public IQueryable<Term> AllTerms()
+        {
+            return _context.terms;
+        }
+
         public Country GiveMeCountryByID(int Id)
         {
             return _context.countries.FirstOrDefault(p => p.Id == Id);

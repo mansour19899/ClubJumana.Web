@@ -36,7 +36,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _subtotal;
                 else
-                    return Math.Round(_subtotal, 2, MidpointRounding.ToEven);
+                    return Math.Round(_subtotal, 2, MidpointRounding.AwayFromZero);
 
             }
             set
@@ -58,7 +58,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _soTotalPrice;
                 else
-                    return Math.Round(_soTotalPrice, 2, MidpointRounding.ToEven);
+                    return Math.Round(_soTotalPrice, 2, MidpointRounding.AwayFromZero);
 
             }
             set
@@ -71,6 +71,7 @@ namespace ClubJumana.Core.DTOs
         public int? TaxArea_fk { get; set; }
         public int? term_fk { get; set; }
         public Term Term { get; set; }
+        public decimal TermPercent { get; set; } = 0;
         private decimal _tax;
 
         public decimal Tax
@@ -80,7 +81,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _tax;
                 else
-                    return Math.Round(_tax, 2, MidpointRounding.ToEven);
+                    return Math.Round(_tax, 2, MidpointRounding.AwayFromZero);
             }
             set { _tax = value; }
         }
@@ -95,7 +96,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _handling;
                 else
-                    return Math.Round(_handling, 2, MidpointRounding.ToEven);
+                    return Math.Round(_handling, 2, MidpointRounding.AwayFromZero);
 
             }
             set
@@ -119,7 +120,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _freight;
                 else
-                    return Math.Round(_freight, 2, MidpointRounding.ToEven);
+                    return Math.Round(_freight, 2, MidpointRounding.AwayFromZero);
 
 
             }
@@ -143,7 +144,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _totalDiscount;
                 else
-                    return Math.Round(_totalDiscount, 2, MidpointRounding.ToEven);
+                    return Math.Round(_totalDiscount, 2, MidpointRounding.AwayFromZero);
 
             }
             set
@@ -194,7 +195,7 @@ namespace ClubJumana.Core.DTOs
                 if (IsSaveDatabase)
                     return _subtotalwithServices;
                 else
-                    return Math.Round(_subtotalwithServices, 2, MidpointRounding.ToEven);
+                    return Math.Round(_subtotalwithServices, 2, MidpointRounding.AwayFromZero);
 
             }
             set
@@ -249,6 +250,44 @@ namespace ClubJumana.Core.DTOs
         public decimal Cost { get; set; }
 
         private decimal _discount = 0;
+        public decimal TermPercent
+        {
+            get { return _termPercent; }
+            set
+            {
+                _termPercent = value;
+                _priceTerm = Math.Round(_price * _termPercent + _price, MidpointRounding.AwayFromZero);
+                if (_discount != 0)
+                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
+                else
+                    _totalPrice = _quantity * _priceTerm;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PriceTerm));
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+
+        }
+        private decimal _priceTerm = 0;
+        public decimal PriceTerm
+        {
+            get { return _priceTerm; }
+            set
+            {
+                _price = value;
+                _priceTerm = Math.Round(_price * _termPercent + _price,2,MidpointRounding.AwayFromZero);
+                if (_discount != 0)
+                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
+                else
+                    _totalPrice = _quantity * _priceTerm;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalPrice));
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+        private decimal _termPercent=0;
+
+
 
         public decimal Discount
         {
@@ -257,14 +296,12 @@ namespace ClubJumana.Core.DTOs
             {
                 _discount = value;
                 if (_discount == 0)
-                    _totalPrice = _quantity * _price;
+                    _totalPrice = _quantity * _priceTerm;
                 else
-                    _totalPrice = _quantity * _price - (_quantity * _price * _discount / 100);
+                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalPrice));
-
-
             }
         }
 
@@ -277,9 +314,9 @@ namespace ClubJumana.Core.DTOs
             {
                 _quantity = value;
                 if (_discount != 0)
-                    _totalPrice = _quantity * _price - (_quantity * _price * _discount / 100);
+                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
                 else
-                    _totalPrice = _quantity * _price;
+                    _totalPrice = _quantity * _priceTerm;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TotalPrice));
 
@@ -292,15 +329,7 @@ namespace ClubJumana.Core.DTOs
         {
             get { return _price; }
             set
-            {
-                _price = value;
-                if (_discount != 0)
-                    _totalPrice = _quantity * _price - (_quantity * _price * _discount / 100);
-                else
-                    _totalPrice = _quantity * _price;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(TotalPrice));
-            }
+            { _price = value; }
         }
 
         private decimal _totalPrice;

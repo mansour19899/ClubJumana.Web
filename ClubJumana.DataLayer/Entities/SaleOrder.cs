@@ -26,7 +26,7 @@ namespace ClubJumana.DataLayer.Entities
         public int? Warehouse_fk { get; set; }
         public int? term_fk { get; set; }
         public int? ShipMethod_fk { get; set; }
-
+        public decimal TermPercent { get; set; } = 0;
         public decimal Subtotal { get; set; }
 
         public decimal SoTotalPrice { get; set; }
