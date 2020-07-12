@@ -284,5 +284,46 @@ namespace ClubJumana.Wpf.UserControls
 
             
         }
+
+
+        private void TxtTermPercent_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                TxtTermPercent_OnLostFocus(null,null);
+            }
+
+        }
+
+        private void TxtTermPercent_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            foreach (var VARIABLE in SaleOrderViewModel.SoItems)
+            {
+                VARIABLE.TermPercent = SaleOrderViewModel.TermPercent;
+            }
+        }
+
+        private void dgSoItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowInventory();
+        }
+
+        private void dgSoItems_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtShowInventory.Text = "Lines";
+            txtShowInventory.FontSize = 25;
+        }
+
+
+        private void ShowInventory()
+        {
+            if (dgSoItems.SelectedIndex != -1)
+            {
+                txtShowInventory.Text = "Stock On Hand: " + SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster
+                    .StockOnHand + "   Reserved: " + SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster
+                    .GoodsReserved;
+                txtShowInventory.FontSize = 20;
+            }
+        }
     }
 }

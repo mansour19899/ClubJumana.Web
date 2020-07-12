@@ -151,7 +151,7 @@ namespace ClubJumana.Core.Services
         public SaleOrderViewModel GiveSaleOrderById(int id)
         {
 
-            var saleOrder = _context.saleorders.Where(p => p.Id == id).Include(p=>p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+            var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p=>p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();

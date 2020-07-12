@@ -250,13 +250,37 @@ namespace ClubJumana.Core.DTOs
         public decimal Cost { get; set; }
 
         private decimal _discount = 0;
+
+
+        private decimal _price;
+
+        public decimal Price
+        {
+            get { return _price; }
+            set
+            {
+                _price = value;
+                _priceTerm = Math.Round(_price * _termPercent + _price, 2, MidpointRounding.AwayFromZero);
+                if (_discount != 0)
+                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
+                else
+                    _totalPrice = _quantity * _priceTerm;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PriceTerm));
+                OnPropertyChanged(nameof(TotalPrice));
+
+
+            }
+        }
+
+        private decimal _termPercent = 0;
         public decimal TermPercent
         {
             get { return _termPercent; }
             set
             {
-                _termPercent = value;
-                _priceTerm = Math.Round(_price * _termPercent + _price, MidpointRounding.AwayFromZero);
+                _termPercent = value/100;
+                _priceTerm = Math.Round(_price * _termPercent + _price,2, MidpointRounding.AwayFromZero);
                 if (_discount != 0)
                     _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
                 else
@@ -272,20 +296,9 @@ namespace ClubJumana.Core.DTOs
         public decimal PriceTerm
         {
             get { return _priceTerm; }
-            set
-            {
-                _price = value;
-                _priceTerm = Math.Round(_price * _termPercent + _price,2,MidpointRounding.AwayFromZero);
-                if (_discount != 0)
-                    _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
-                else
-                    _totalPrice = _quantity * _priceTerm;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(TotalPrice));
-                OnPropertyChanged(nameof(Price));
-            }
+            set { _priceTerm = value; }
         }
-        private decimal _termPercent=0;
+
 
 
 
@@ -323,14 +336,6 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
-        private decimal _price;
-
-        public decimal Price
-        {
-            get { return _price; }
-            set
-            { _price = value; }
-        }
 
         private decimal _totalPrice;
 
