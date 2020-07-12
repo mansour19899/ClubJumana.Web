@@ -63,8 +63,8 @@ namespace ClubJumana.DataLayer.Context
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
              //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
             // optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
-             // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-            optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+              optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+            //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 
             //Update-Database -Context JummanaContext
         }
@@ -523,10 +523,10 @@ namespace ClubJumana.DataLayer.Context
 
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
-             optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+           //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=Test40;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-          //   optionsBuilder.UseMySQL("server=148.72.112.16;database=MagicDTSMain;user=mansour1989;password=Man1989sour");
+            optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 
 
             //Update-Database -Context JummanaContext

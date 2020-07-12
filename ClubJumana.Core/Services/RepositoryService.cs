@@ -973,9 +973,9 @@ namespace ClubJumana.Core.Services
 
         public string UploadFileToFTP( string fileName, string UploadDirectory)
         {
-            string FtpUrl = "ftp://mansour1989%2540new.clubjummana.com@148.72.112.16";
+            string FtpUrl = "ftp://mansour1989%2540clubjummana.com@132.148.182.213";
             string filePhath = "";
-            string userName = "mansour1989@new.clubjummana.com";
+            string userName = "mansour1989@clubjummana.com";
             string password = "Xx123456"; 
             UploadDirectory = "/VariantsImage";
 
@@ -998,13 +998,13 @@ namespace ClubJumana.Core.Services
 
         public string DownloadFileFromFTP(string fileName, string UploadDirectory)
         {
-            string FtpUrl = "ftp://mansour1989%2540new.clubjummana.com@148.72.112.16";
+            string FtpUrl = "ftp://mansour1989%2540clubjummana.com@132.148.182.213";
             string PureFileName = new FileInfo(fileName).Name;
             String DownloadUrl = String.Format("{0}{1}/{2}", FtpUrl, UploadDirectory, PureFileName);
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(DownloadUrl);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
 
-            request.Credentials = new NetworkCredential("mansour1989@new.clubjummana.com", "Xx123456");
+            request.Credentials = new NetworkCredential("mansour1989@clubjummana.com", "Xx123456");
 
             string ResponseDescription = "";
             try

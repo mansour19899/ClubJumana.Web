@@ -915,7 +915,7 @@ namespace ClubJumana.Wpf2
                 catch (Exception e)
                 {
                     myMessageQueue.Enqueue("Could Not Find ImageFile.Please Update");
-                    imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.png")));
+                    imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(Path + "not-found.JPG")));
 
                 }
 

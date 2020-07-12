@@ -119,7 +119,7 @@ namespace ClubJumana.Wpf2
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             ShowErrorMassegeToConectionInternet();
-           // CheckImageForDownload();
+            CheckImageForDownload();
         }
     }
 }

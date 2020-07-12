@@ -24,7 +24,7 @@ namespace ClubJumana.Core.Services
 
         public static bool IsConnectedToInternet()
         {
-            string host = "148.72.112.16";
+            string host = "132.148.182.213";
             bool result = false;
             Ping p = new Ping();
             try
