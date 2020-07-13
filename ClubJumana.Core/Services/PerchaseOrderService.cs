@@ -48,9 +48,13 @@ namespace ClubJumana.Core.Services
                 PurchaseOrder PO = new PurchaseOrder();
                 if (poViewModel.Id == 0)
                 {
+                    int NewId = 1;
+                    if (_context.purchaseorders.FirstOrDefault()!=null)
+                       NewId=_context.purchaseorders.Max(p => p.Id) + 1;
+
                     PO = new PurchaseOrder()
                     {
-                        Id = _context.purchaseorders.Max(p => p.Id) + 1,
+                        Id = NewId,
                         Vendor_fk = poViewModel.Vendor_fk,
                         OrderDate = poViewModel.DateCompleted,
                         ShipDate = poViewModel.ShipDate,

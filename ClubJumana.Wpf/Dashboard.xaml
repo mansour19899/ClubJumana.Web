@@ -298,7 +298,7 @@
                 <TextBlock Name="BtnCustomer" Text="Customers" MouseDown="BtnCustomer_OnMouseDown" />
                 <TextBlock  Text="Item Charge" />
                 <TextBlock Name="btnSalesOrder" Text="Sales Order" MouseDown="BtnSalesOrder_OnMouseDown" />
-                <TextBlock  Text="Sales Invoice" />
+                <TextBlock Name="btnSalesInvoice"  Text="Sales Invoice" MouseDown="BtnSalesInvoice_OnMouseDown" />
                 <TextBlock  Text="Sales Return Orders" />
                 <TextBlock  Text="Finance Charge Memos" />
                 <TextBlock  Text="Posted Sales Credit Memos" />

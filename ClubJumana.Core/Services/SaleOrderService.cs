@@ -224,7 +224,12 @@ namespace ClubJumana.Core.Services
 
         public List<SalesOrderListview> SalesOrdersListView()
         {
-            return _context.saleorders.Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance =0, TotalBeforeTax = p.Subtotal,Total = p.SoTotalPrice}).ToList();
+            return _context.saleorders.Where(p=>p.InvoiceNumber==null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance =0, TotalBeforeTax = p.Subtotal,Total = p.SoTotalPrice}).ToList();
+
+        }
+        public List<SalesOrderListview> SalesInvoceListView()
+        {
+            return _context.saleorders.Where(p=>p.InvoiceNumber!=null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
 
         }
 
@@ -239,27 +244,29 @@ namespace ClubJumana.Core.Services
             return true;
         }
 
-        public bool CreateInvoice(SaleOrderViewModel saleOrder)
+        public bool CreateInvoice(int Id)
         {
-            saleOrder.InvoiceNumber = _context.saleorders.Max(p => p.InvoiceNumber) + 1;
-            if (saleOrder.InvoiceNumber == null)
-                saleOrder.InvoiceNumber = 890;
+            DetachedAllEntries();
+            var SalesOrder = _context.saleorders.FirstOrDefault(p => p.Id == Id);
+            SalesOrder.InvoiceNumber = _context.saleorders.Max(p => p.InvoiceNumber) + 1;
+            if (SalesOrder.InvoiceNumber == null)
+                SalesOrder.InvoiceNumber = 890;
             //Edit Code Later
-            var soItem = _context.soitems.Where(p => p.So_fk == saleOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
+            var soItem = _context.soitems.Where(p => p.So_fk == SalesOrder.Id).Include(p => p.ProductMaster).ThenInclude(e => e.ProductInventoryWarehouses).ToList();
             ProductInventoryWarehouse inventoryWarehouse;
             foreach (SoItem item in soItem)
             {
-                if (saleOrder.Id != null)
+                if (SalesOrder.Id != null)
                     item.ProductMaster.GoodsReserved -= item.Quantity;
                 item.ProductMaster.StockOnHand -= item.Quantity;
                 item.ProductMaster.Outcome += item.Quantity;
-                inventoryWarehouse = item.ProductMaster.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                inventoryWarehouse = item.ProductMaster.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == SalesOrder.Warehouse_fk);
                 inventoryWarehouse.Inventory -= item.Quantity;
                 inventoryWarehouse.OutCome += item.Quantity;
 
             }
 
-            SaveAndUpdateSaleOrder(saleOrder);
+            _context.SaveChanges();
             return true;
         }
 

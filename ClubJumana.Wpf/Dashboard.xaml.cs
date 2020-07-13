@@ -98,6 +98,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.BtnAddItemOnClick += BtnAddItem_OnClick;
             itemCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
+            UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCVendorCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
 
@@ -214,6 +215,12 @@ namespace ClubJumana.Wpf
 
         }
 
+        private void BtnPostSalesOrder_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
+        {
+            _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
+            myMessageQueue.Enqueue("Invoice Created.");
+
+        }
         private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
         {
             SubPage.Visibility = Visibility.Hidden;
@@ -221,11 +228,103 @@ namespace ClubJumana.Wpf
         }
         private void BtnPrintOrSend_OnBtnPrintOrSendOnClick(object? sender, EventArgs e)
         {
-            PrintOrSend();
-
+            PrintOrSendPurchasing();
+            PrintOrSendSalesOrder();
         }
 
-        void PrintOrSend()
+        void PrintOrSendSalesOrder()
+        {
+
+            var Path = AppDomain.CurrentDomain.BaseDirectory;
+            FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "SalesOrderSample.xlsx");
+            //FileInfo newFile = new FileInfo(System.IO.Path.Combine(Path, @"\PurchaseOrderSample.xlsx"));
+            string filee = Path + "SalesOrders" + @"\" + DateTime.Today.ToShortDateString().Replace("/", "") + ".xlsx";
+            FileInfo newFilee = new FileInfo(filee);
+            if (newFilee.Exists)
+                newFilee.Delete();
+
+            ExcelPackage excel = new ExcelPackage(newFilee, newFile);
+
+            //Add the Content sheet
+            //  var ws = pck.Workbook.Worksheets.Add("Content");
+
+            var ws = excel.Workbook.Worksheets.ElementAt(0);
+            // var wss = excel.Workbook.Worksheets("");
+            //var workSheet = excel.Workbook.Worksheets.Add("Sheet11");
+            //var workSheet2 = excel.Workbook.Worksheets.Add("Sheet12");
+
+            //workSheet.Row(1).Height = 90;
+            //workSheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            //workSheet.Row(1).Style.Font.Bold = true;
+
+            // Header of the Excel sheet 
+            //workSheet.Cells[1, 1].Value = "Mansour";
+            //workSheet.Cells[1, 2].Value = "Id";
+            //workSheet.Cells[1, 3].Value = "Name";
+
+            //var SalesOrderPrint = _saleOrderService.GiveSaleOrderById(UCSaleOrder.SaleOrderViewModel.Id);
+            //int row = 13;
+            //switch (UCSaleOrder.Mode)
+            //{
+            //    case Mode.Sale:
+            //    case Mode.SaleOrderPosted:
+            //        ws.Cells[8, 2].Value = "Sales Order";
+            //        ws.Cells[10, 10].Value = "SO.NO.";
+            //        break;
+            //    case Mode.Invoice:
+            //    case Mode.AsnInvoice:
+            //        ws.Cells[8, 2].Value = "Invoice";
+            //        ws.Cells[10, 10].Value = "Invoice.NO.";
+            //        break;
+            //}
+
+
+            //foreach (var VARIABLE in SalesOrderPrint.SoItems)
+            //{
+
+            //    ws.Cells[row, 5, row, 8].Merge = true;
+            //    ws.Cells[row, 5].Style.WrapText = true;
+            //    ws.Cells[row, 2].Value = VARIABLE.ProductMaster.UPC;
+            //    ws.Cells[row, 5].Value = VARIABLE.ProductMaster.Name;
+            //    ws.Cells[row, 9].Value = VARIABLE.PoQuantity.ToString();
+            //    ws.Cells[row, 10].Value = VARIABLE.PoPrice.ToString();
+            //    ws.Cells[row, 11].Value = VARIABLE.PoItemsPrice.ToString();
+            //    var CountLine = VARIABLE.ProductMaster.Name.Replace("\r\n", "@").Count(x => x == '@');
+            //    ws.Row(row).Height = 20 * (CountLine + 1);
+            //    row++;
+            //}
+            //using (ExcelRange Rng = ws.Cells[row, 1, row, 11])
+            //{
+            //    //Rng.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            //    //Rng.Style.Border.Top.Color.SetColor(Color.Red);
+            //    //Rng.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            //    //Rng.Style.Border.Left.Color.SetColor(Color.Green);
+            //    //Rng.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+            //    //Rng.Style.Border.Right.Color.SetColor(Color.Green);
+            //    Rng.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+            //    Rng.Style.Border.Bottom.Color.SetColor(Color.DarkGray);
+            //}
+
+            //int TotalRow = row + 2;
+            //ws.Row(TotalRow).Style.Font.Bold = true;
+            //ws.Row(TotalRow).Style.Font.Size = 12;
+            //ws.Cells[TotalRow, 8].Value = "Total CAD ";
+            //ws.Cells[TotalRow, 9].Value = salesOrderListview..ToString();
+            //ws.Cells[TotalRow, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+            ////workSheet.Column(1).AutoFit();
+            ////workSheet.Column(2).AutoFit();
+            ////workSheet.Column(3).AutoFit();
+
+
+            //FileStream objFileStrm = File.Create(filee);
+            //objFileStrm.Close();
+
+            //// Write content to excel file  
+            //File.WriteAllBytes(filee, excel.GetAsByteArray());
+        }
+
+        void PrintOrSendPurchasing()
         {
 
             var Path = AppDomain.CurrentDomain.BaseDirectory;
@@ -786,6 +885,16 @@ namespace ClubJumana.Wpf
 
             var wer = (SalesOrderListview)lvSalesOrder.ItemContainerGenerator.ItemFromContainer(dep);
             SalesOrderShow(wer.No);
+        }
+
+        private void BtnSalesInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            salesOrderListview = _saleOrderService.SalesInvoceListView();
+            lvSalesOrder.ItemsSource = salesOrderListview;
+            Mode = Mode.Invoice;
+            txtMode.Text = "Sales Invoice";
+            HideListview();
+            lvSalesOrder.Visibility = Visibility.Visible;
         }
     }
 

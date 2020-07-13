@@ -628,7 +628,7 @@ namespace ClubJumana.Wpf
             {
                 case Mode.Sale:
                 case Mode.Order:
-                    _saleOrderService.CreateInvoice(saleOrder);
+                    _saleOrderService.CreateInvoice(saleOrder.Id);
                     lblPrint.Content = "Print Invoice";
                     lblSendEmail.Content = "Send Invoice";
                     MessageBox.Show("Invoice Created");

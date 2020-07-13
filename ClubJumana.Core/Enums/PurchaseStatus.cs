@@ -20,6 +20,9 @@ namespace ClubJumana.Core.Enums
         Order = 9,
         Customer = 10,
         Vendor = 11,
+        Invoice=12,
+        InvoicedPosted=13,
+        SaleOrderPosted=14
 
     }
 

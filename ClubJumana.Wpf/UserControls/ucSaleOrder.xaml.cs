@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClubJumana.Core.DTOs;
+using ClubJumana.Core.Enums;
 using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf.UserControls
@@ -23,7 +24,7 @@ namespace ClubJumana.Wpf.UserControls
     {
         public List<Customer> CustomersList;
         private SaleOrderViewModel _saleOrderViewModel;
-
+        public Mode Mode = Mode.Nothong;
         private bool AllowSearch = false;
         public SaleOrderViewModel SaleOrderViewModel
         {
@@ -62,14 +63,19 @@ namespace ClubJumana.Wpf.UserControls
                 BtnCloseSubPage(sender, e);
         }
 
+        public event EventHandler<EventArgs> BtnPostSalesOrder;
         private void BtnPostSalesOrder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Handled = true;
+            if (BtnPostSalesOrder != null)
+                BtnPostSalesOrder(sender, e);
         }
-
+        public event EventHandler<EventArgs> BtnPrintOrSend;
         private void BtnPrintOrSend_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Handled = true;
+            if (BtnPrintOrSend != null)
+                BtnPrintOrSend(sender, e);
         }
 
         private void TxtSearch_OnKeyDown(object sender, KeyEventArgs e)

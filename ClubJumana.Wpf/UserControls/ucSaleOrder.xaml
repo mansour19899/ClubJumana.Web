@@ -79,7 +79,7 @@
 
                     </StackPanel.Resources>
                     <TextBlock Text="Process" />
-                    <TextBlock Name="btnPostSalesOrder" Text="Posting" MouseDown="BtnPostSalesOrder_OnMouseDown" />
+                    <TextBlock Name="btnPostSalesOrder" Text="Create Invoice" MouseDown="BtnPostSalesOrder_OnMouseDown" />
                     <TextBlock Text="Request Approval" />
                     <TextBlock Name="btnPrintOrSend" Text="Print/Send" MouseDown="BtnPrintOrSend_OnMouseDown" />
                     <TextBlock Text="Navigate" />
