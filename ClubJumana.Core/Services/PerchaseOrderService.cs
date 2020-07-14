@@ -49,8 +49,8 @@ namespace ClubJumana.Core.Services
                 if (poViewModel.Id == 0)
                 {
                     int NewId = 1;
-                    if (_context.purchaseorders.FirstOrDefault()!=null)
-                       NewId=_context.purchaseorders.Max(p => p.Id) + 1;
+                    if (_context.purchaseorders.FirstOrDefault() != null)
+                        NewId = _context.purchaseorders.Max(p => p.Id) + 1;
 
                     PO = new PurchaseOrder()
                     {
@@ -84,7 +84,7 @@ namespace ClubJumana.Core.Services
                         Forwarding = 0,
                         LandTransport = 0,
                         Others = 0,
-                        TotalCharges = 0
+                        TotalCharges = 0,
                     };
                     if (done)
                         PO.PoNumber = _context.purchaseorders.Max(p => p.PoNumber) + 1;
@@ -94,7 +94,10 @@ namespace ClubJumana.Core.Services
                 {
                     PO = _context.purchaseorders.SingleOrDefault(p => p.Id == poViewModel.Id);
                     PO.Vendor_fk = poViewModel.Vendor_fk;
-                    PO.OrderDate = poViewModel.DateCompleted;
+                    if (poViewModel.DateCompleted.Value.Date == DateTime.Now.Date)
+                        PO.OrderDate = DateTime.Now;
+                    else
+                        PO.OrderDate = poViewModel.DateCompleted;
                     PO.ShipDate = poViewModel.ShipDate;
                     PO.CancelDate = poViewModel.CancelDate;
                     PO.LastEditDate = DateTime.Now;
@@ -136,14 +139,16 @@ namespace ClubJumana.Core.Services
                             ProductMaster_fk = item.ProductMaster_fk,
                             PoQuantity = item.Quantity,
                             AsnQuantity = item.Quantity,
+                            GrnQuantity = 0,
                             PoPrice = item.Price,
                             AsnPrice = item.Price,
+                            GrnPrice = item.Price,
                             Cost = item.Cost,
                             PoItemsPrice = item.TotalItemPrice,
                             AsnItemsPrice = item.TotalItemPrice,
-                            Alert = item.Alert,
+                            Alert = false,
                             Note = item.Note,
-                            Checked = item.Checked
+                            Checked = false
                         });
 
                     }
@@ -154,14 +159,14 @@ namespace ClubJumana.Core.Services
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.PoQuantity = item.Quantity;
                         itemm.AsnQuantity = item.Quantity;
+                        itemm.GrnQuantity = 0;
                         itemm.PoPrice = item.Price;
                         itemm.AsnPrice = item.Price;
+                        itemm.GrnPrice = item.Price;
                         itemm.Cost = item.Cost;
                         itemm.PoItemsPrice = item.TotalItemPrice;
                         itemm.AsnItemsPrice = item.TotalItemPrice;
-                        itemm.Alert = item.Alert;
                         itemm.Note = item.Note;
-                        itemm.Checked = item.Checked;
 
 
                     }
@@ -230,7 +235,7 @@ namespace ClubJumana.Core.Services
                         LandTransport = asnViewModel.LandTransport,
                         Others = asnViewModel.Others,
                         TotalCharges = asnViewModel.TotalCharges,
-                        GrnSubtotal =0m,
+                        GrnSubtotal = 0m,
                         GrnTotal = asnViewModel.TotalCharges,
                     };
                     if (done)
@@ -241,7 +246,10 @@ namespace ClubJumana.Core.Services
                 {
                     PO = _context.purchaseorders.SingleOrDefault(p => p.Id == asnViewModel.Id);
                     PO.Vendor_fk = asnViewModel.Vendor_fk;
-                    PO.AsnDate = asnViewModel.DateCompleted;
+                    if (asnViewModel.DateCompleted.Value.Date == DateTime.Now.Date)
+                        PO.AsnDate = DateTime.Now;
+                    else
+                        PO.AsnDate = asnViewModel.DateCompleted;
                     PO.ShipDate = asnViewModel.ShipDate;
                     PO.CancelDate = asnViewModel.CancelDate;
                     PO.LastEditDate = DateTime.Now;
@@ -295,9 +303,9 @@ namespace ClubJumana.Core.Services
                             GrnPrice = item.Price,
                             Cost = item.Cost,
                             AsnItemsPrice = item.TotalItemPrice,
-                            Alert = item.Alert,
+                            Alert = false,
                             Note = item.Note,
-                            Checked = item.Checked
+                            Checked = false
                         });
 
                     }
@@ -312,10 +320,10 @@ namespace ClubJumana.Core.Services
                         itemm.GrnPrice = item.Price;
                         itemm.Cost = item.Cost;
                         itemm.AsnItemsPrice = item.TotalItemPrice;
-                        itemm.Alert = item.Alert;
                         itemm.Note = item.Note;
-                        itemm.Checked = item.Checked;
                         itemm.IsDeleted = item.IsDeleted;
+                        itemm.Alert = false;
+                        itemm.Checked = false;
 
                     }
                     else if (item.Id != 0 && item.IsDeleted)
@@ -442,7 +450,11 @@ namespace ClubJumana.Core.Services
                     PO = _context.purchaseorders.SingleOrDefault(p => p.Id == grnViewModel.Id);
                     PO.Vendor_fk = grnViewModel.Vendor_fk;
                     PO.Vendor_fk = grnViewModel.Vendor_fk;
-                    PO.GrnDate = grnViewModel.DateCompleted;
+                    if (grnViewModel.DateCompleted.Value.Date == DateTime.Now.Date)
+                        PO.GrnDate = DateTime.Now;
+                    else
+                        PO.GrnDate = grnViewModel.DateCompleted;
+
                     PO.ShipDate = grnViewModel.ShipDate;
                     PO.CancelDate = grnViewModel.CancelDate;
                     PO.LastEditDate = DateTime.Now;
@@ -470,28 +482,9 @@ namespace ClubJumana.Core.Services
                 }
                 //_context.SaveChanges();
 
-                int IdOfItems = _context.items.Max(p => p.Id) + 1;
                 Item itemm = new Item();
                 foreach (var item in items)
                 {
-                    if (item.Id == 0 && !item.IsDeleted)
-                    {
-                        _context.items.Add(new Item()
-                        {
-                            Id = IdOfItems,
-                            Po_fk = PO.Id,
-                            ProductMaster_fk = item.ProductMaster_fk,
-                            GrnQuantity = item.Quantity,
-                            GrnPrice = item.Price,
-                            GrnItemsPrice = item.TotalItemPrice,
-                            Diffrent = item.Diffrent,
-                            Cost = item.Cost,
-                            Alert = item.Alert,
-                            Note = item.Note,
-                            Checked = item.Checked
-                        });
-                        IdOfItems++;
-                    }
 
                     if (item.IsChanged && item.Id != 0)
                     {
@@ -502,13 +495,20 @@ namespace ClubJumana.Core.Services
                         itemm.GrnItemsPrice = item.TotalItemPrice;
                         itemm.Diffrent = item.Diffrent;
                         itemm.Cost = item.Cost;
-                        itemm.Alert = item.Alert;
                         itemm.Note = item.Note;
-                        itemm.Checked = item.Checked;
 
+                        if (itemm.Diffrent != 0)
+                        {
+                            itemm.Alert = true;
+                            itemm.Checked = false;
+                        }
+                        else
+                        {
+                            itemm.Alert = false;
+                            itemm.Checked = false;
+                        }
 
                     }
-
 
                 }
 
@@ -519,9 +519,9 @@ namespace ClubJumana.Core.Services
                     {
                         if (!VARIABLE.IsDeleted)
                         {
-                            productInventory = _context.productinventorywarehouses.Include(p=>p.ProductMaster).SingleOrDefault(p =>
-                                p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                                p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
+                            productInventory = _context.productinventorywarehouses.Include(p => p.ProductMaster).SingleOrDefault(p =>
+                                  p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
+                                  p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
                             if (productInventory != null)
                             {
                                 productInventory.Income += VARIABLE.Quantity;

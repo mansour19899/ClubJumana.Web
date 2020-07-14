@@ -452,20 +452,29 @@ namespace ClubJumana.Wpf
                 {
                     case Mode.PO:
                         if (Purchasing.IsPosting)
+                        {
+                            Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Purchase Order Posted.");
+                        }
                         else
                             myMessageQueue.Enqueue("Purchase Order Saved.");
                         break;
                     case Mode.Asn:
                         if (Purchasing.IsPosting)
+                        {
+                            Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Advanced Shipment Notice Posted.");
+                        }
                         else
                             myMessageQueue.Enqueue("Advanced Shipment Notice Saved.");
 
                         break;
                     case Mode.Grn:
                         if (Purchasing.IsPosting)
+                        {
+                            Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Goods Receive Note Posted.");
+                        }
                         else
                             myMessageQueue.Enqueue("Goods Receive Note Saved");
 
@@ -676,8 +685,6 @@ namespace ClubJumana.Wpf
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
         }
-
-
 
         private void BtnPurchasing_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
