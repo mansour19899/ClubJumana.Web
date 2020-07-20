@@ -81,6 +81,8 @@ namespace ClubJumana.Wpf.UserControls
         private void BtnPostSalesOrder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+            if (BtnSaveOnClick != null)
+                BtnSaveOnClick(sender, e);
             if (BtnPostSalesOrder != null)
                 BtnPostSalesOrder(sender, e);
         }
@@ -96,7 +98,7 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (e.Key == Key.Enter)
             {
-                BtnAddItemOnClick(sender, e);
+               BtnAddItem_OnClick(sender,e);
             }
         }
 
@@ -108,6 +110,8 @@ namespace ClubJumana.Wpf.UserControls
             if (IsExist)
             {
                 MessageBox.Show("Product is Exist ");
+                txtSearch.Clear();
+                txtSearch.Focus();
             }
             else
             {
@@ -125,6 +129,9 @@ namespace ClubJumana.Wpf.UserControls
             {
                 VARIABLE.IsDeleted = true;
                 SaleOrderViewModel.SoItems.Remove(VARIABLE);
+                if (VARIABLE.Id == 0)
+                    RemoveSoItemViewModel.Remove(VARIABLE);
+                inventoryProducts.Remove(inventoryProducts.First(p=>p.IdProduct==VARIABLE.ProductMaster_fk));
             }
             SumSoItemPrice();
         }

@@ -513,14 +513,14 @@
                                         <TextBlock Text="Freight" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Freight}" HorizontalContentAlignment="Right" />
+                                    <TextBox Text="{Binding Freight,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Handling" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Handling}" HorizontalContentAlignment="Right" />
+                                    <TextBox Text="{Binding Handling,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                             </UniformGrid>
                             <TextBlock Name="TotalChargePart0" Visibility="Collapsed" ></TextBlock>
@@ -532,7 +532,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalwithServices}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalwithServices,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Name="TotalChargePart6" Columns="2" Rows="1">
@@ -542,7 +542,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Tax}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Tax,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
@@ -552,7 +552,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice}" FontSize="28" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="28" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
 

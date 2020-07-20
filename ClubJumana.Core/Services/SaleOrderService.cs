@@ -124,7 +124,6 @@ namespace ClubJumana.Core.Services
                     });
 
                     model.ProductMaster.GoodsReserved += model.Quantity;
-                    _context.productmasters.Update(model.ProductMaster);
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {

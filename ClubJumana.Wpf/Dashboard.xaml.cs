@@ -224,6 +224,8 @@ namespace ClubJumana.Wpf
         {
             _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
             myMessageQueue.Enqueue("Invoice Created.");
+            UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
+            UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
 
         }
         private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
