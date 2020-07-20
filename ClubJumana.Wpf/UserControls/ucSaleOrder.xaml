@@ -383,7 +383,7 @@
                                 <TextBlock Text="Sales Order Date" Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
-                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10 3" SelectedDate="{Binding SoDate}" Name="dpiSoDate" KeyDown="DpiSoDate_OnKeyDown"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
+                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10 3" SelectedDate="{Binding SoDate}"  Name="dpiSoDate" KeyDown="DpiSoDate_OnKeyDown"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                             <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" >
                                 <TextBlock Text="Expiration Date " Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />

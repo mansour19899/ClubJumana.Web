@@ -15,9 +15,23 @@ namespace ClubJumana.Web.Controllers
             return View();
         }
         [Authorize]
+        [HttpGet]
         public IActionResult hi()
         {
-            return View("Index");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult hi(ICollection<Book> books)
+        {
+            var rrr = books.ToList();
+            return View();
+        }
+
+        public class Book
+        {
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public DateTime DatePublished { get; set; }
         }
     }
 }

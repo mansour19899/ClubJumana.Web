@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "hi";
+}
+
+<h1>hi Mansour</h1>
+<h1>hi Mohammadi</h1>
+
+<form method="post" action="/Home/hi">
+
+    <input type="text" name="[0].Title" value="Curious George" />
+    <input type="text" name="[0].Author" value="H.A. Rey" />
+    <input type="text" name="[0].DatePublished" value="2/23/1973" />
+
+    <input type="text" name="[1].Title" value="Code Complete" />
+    <input type="text" name="[1].Author" value="Steve McConnell" />
+    <input type="text" name="[1].DatePublished" value="6/9/2004" />
+
+    <input type="text" name="[2].Title" value="The Two Towers" />
+    <input type="text" name="[2].Author" value="JRR Tolkien" />
+    <input type="text" name="[2].DatePublished" value="6/1/2005" />
+
+    <input type="submit" />
+</form>
+

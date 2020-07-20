@@ -69,7 +69,7 @@ namespace ClubJumana.Wpf
             _repositoryService = new RepositoryService();
             _purchaseOrderService = new PerchaseOrderService();
             _userService = new UserService();
-            _saleOrderService=new SaleOrderService();
+            _saleOrderService = new SaleOrderService();
             PurchaseOrdersList = new List<PurchaseOrder>();
             PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
 
@@ -170,7 +170,12 @@ namespace ClubJumana.Wpf
         {
             int x = UCSaleOrder.SaleOrderViewModel.Id;
             string mes = "";
-           int ID= _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+            foreach (var VARIABLE in UCSaleOrder.RemoveSoItemViewModel)
+            {
+                UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
+            }
+            int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+
             mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
             myMessageQueue.Enqueue(mes);
 
@@ -195,7 +200,7 @@ namespace ClubJumana.Wpf
             int x = _dataContextVM.Vendor.Id;
             string mes = "";
             _repositoryService.AddAndUpdateVendor(_dataContextVM.Vendor);
-            mes = (x == 0) ?  "Vendor Created" : "Vendor Updated";
+            mes = (x == 0) ? "Vendor Created" : "Vendor Updated";
             myMessageQueue.Enqueue(mes);
 
         }
@@ -229,7 +234,7 @@ namespace ClubJumana.Wpf
         private void BtnPrintOrSend_OnBtnPrintOrSendOnClick(object? sender, EventArgs e)
         {
             PrintOrSendPurchasing();
-            PrintOrSendSalesOrder();
+            //   PrintOrSendSalesOrder();
         }
 
         void PrintOrSendSalesOrder()
@@ -533,7 +538,7 @@ namespace ClubJumana.Wpf
                 {
 
                     case Mode.Sale:
-                        UCSaleOrder.SaleOrderViewModel.SoItems.Add(new SoItemVeiwModel()
+                        SoItemVeiwModel Newitem = new SoItemVeiwModel()
                         {
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id,
@@ -542,8 +547,10 @@ namespace ClubJumana.Wpf
                             TotalPrice = 0m,
                             Price = SearchMasterProduct.WholesalePrice.Value,
                             Cost = SearchMasterProduct.Cost.Value
-                        });
+                        };
 
+                        UCSaleOrder.SaleOrderViewModel.SoItems.Add(Newitem);
+                        UCSaleOrder.AddInventoryInformation(Newitem);
                         UCSaleOrder.txtSearch.Clear();
                         break;
                     case Mode.PO:
@@ -621,13 +628,13 @@ namespace ClubJumana.Wpf
             SubPage.Visibility = Visibility.Visible;
         }
 
-        private void CustomerShow(int Id=0)
+        private void CustomerShow(int Id = 0)
         {
             if (Id == 0)
             {
-                _dataContextVM.Customer=new Customer()
+                _dataContextVM.Customer = new Customer()
                 {
-                    Id  =0,
+                    Id = 0,
                     BalanceDueLCY = 0,
                     BalanceLCY = 0,
                     CostsLCY = 0,
@@ -649,7 +656,7 @@ namespace ClubJumana.Wpf
         {
             if (Id == 0)
             {
-                _dataContextVM.Vendor=new Vendor()
+                _dataContextVM.Vendor = new Vendor()
                 {
                     Id = 0,
                 };
@@ -810,7 +817,7 @@ namespace ClubJumana.Wpf
             if (dep == null)
                 return;
 
-            _dataContextVM.ProductMaster= (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
+            _dataContextVM.ProductMaster = (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
             itemCard.DataContext = _dataContextVM.ProductMaster;
 
             Bordermanagement.Child = itemCard;
@@ -823,7 +830,7 @@ namespace ClubJumana.Wpf
 
         private void BtnSalesOrder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            salesOrderListview= _saleOrderService.SalesOrdersListView();
+            salesOrderListview = _saleOrderService.SalesOrdersListView();
             lvSalesOrder.ItemsSource = salesOrderListview;
             Mode = Mode.Sale;
             txtMode.Text = "Sales Orders";
@@ -848,7 +855,7 @@ namespace ClubJumana.Wpf
 
         private void BtnCustomer_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvCustomers.ItemsSource = _repositoryService.AllCustomers().Select(p => new CustomerListview() { No = p.Id, Name = p.CompanyName,LocationCode = p.Province.Name, PhoneNo = p.Phone1, Contact = p.ContactName }).ToList();
+            lvCustomers.ItemsSource = _repositoryService.AllCustomers().Select(p => new CustomerListview() { No = p.Id, Name = p.CompanyName, LocationCode = p.Province.Name, PhoneNo = p.Phone1, Contact = p.ContactName }).ToList();
             Mode = Mode.Customer;
             txtMode.Text = "Customers";
             HideListview();

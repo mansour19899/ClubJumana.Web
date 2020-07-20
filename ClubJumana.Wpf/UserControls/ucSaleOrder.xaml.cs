@@ -26,6 +26,8 @@ namespace ClubJumana.Wpf.UserControls
         private SaleOrderViewModel _saleOrderViewModel;
         public Mode Mode = Mode.Nothong;
         private bool AllowSearch = false;
+        private List<InventoryProduct> inventoryProducts;
+        public List<SoItemVeiwModel> RemoveSoItemViewModel;
         public SaleOrderViewModel SaleOrderViewModel
         {
             get { return _saleOrderViewModel; }
@@ -33,6 +35,16 @@ namespace ClubJumana.Wpf.UserControls
             {
                 _saleOrderViewModel = value;
                 DataContext = SaleOrderViewModel;
+                if (_saleOrderViewModel.SoItems != null)
+                {
+                    inventoryProducts.Clear();
+                    RemoveSoItemViewModel.Clear();
+                    foreach (var item in _saleOrderViewModel.SoItems)
+                    {
+                      AddInventoryInformation(item);
+                    }
+                }
+
             }
         }
 
@@ -40,6 +52,8 @@ namespace ClubJumana.Wpf.UserControls
         {
             InitializeComponent();
             SaleOrderViewModel=new SaleOrderViewModel();
+            inventoryProducts=new List<InventoryProduct>();
+            RemoveSoItemViewModel=new List<SoItemVeiwModel>();
         }
 
         private void UcSaleOrder_OnLoaded(object sender, RoutedEventArgs e)
@@ -89,14 +103,30 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnAddItemOnClick;
         private void BtnAddItem_OnClick(object sender, RoutedEventArgs e)
         {
-            e.Handled = true;
-            if (btnAddItem != null)
-                BtnAddItemOnClick(sender, e);
+            var IsExist =
+                SaleOrderViewModel.SoItems.Any(p => p.ProductMaster.UPC.Trim().CompareTo(txtSearch.Text) == 0);
+            if (IsExist)
+            {
+                MessageBox.Show("Product is Exist ");
+            }
+            else
+            {
+                e.Handled = true;
+                if (btnAddItem != null)
+                    BtnAddItemOnClick(sender, e);
+            }
+
         }
 
         private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
         {
-
+            RemoveSoItemViewModel.AddRange(dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList());
+            foreach (var VARIABLE in RemoveSoItemViewModel)
+            {
+                VARIABLE.IsDeleted = true;
+                SaleOrderViewModel.SoItems.Remove(VARIABLE);
+            }
+            SumSoItemPrice();
         }
 
         private void DgSoItems_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -125,7 +155,10 @@ namespace ClubJumana.Wpf.UserControls
                     if (Qyt < 0)
                         Qyt = Qyt * -1;
                     SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity = Qyt;
-                    break;
+                    inventoryProducts.ElementAt(row_index).Reserved-= inventoryProducts.ElementAt(row_index).Quantity;
+                    inventoryProducts.ElementAt(row_index).Reserved+= Qyt;
+                    inventoryProducts.ElementAt(row_index).Quantity= Qyt;
+                 break;
                 case "Discount":
                     if (SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity == 0)
                     {
@@ -152,6 +185,11 @@ namespace ClubJumana.Wpf.UserControls
 
             }
 
+            SumSoItemPrice();
+        }
+
+        private void SumSoItemPrice()
+        {
             SaleOrderViewModel.Subtotal = 0;
             SaleOrderViewModel.SoTotalPrice = 0;
             SaleOrderViewModel.TotalDiscount = 0;
@@ -161,7 +199,6 @@ namespace ClubJumana.Wpf.UserControls
                 SaleOrderViewModel.TotalDiscount = (item.Quantity * item.Price - item.TotalPrice) + SaleOrderViewModel.TotalDiscount;
             }
         }
-
         private void CmbTaxAreaSo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PrepareTaxitem(cmbTaxAreaSo.SelectedItem as Province);
@@ -325,11 +362,32 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (dgSoItems.SelectedIndex != -1)
             {
-                txtShowInventory.Text = "Stock On Hand: " + SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster
-                    .StockOnHand + "   Reserved: " + SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster
-                    .GoodsReserved;
+                var inventory = inventoryProducts.SingleOrDefault(i =>
+                    i.IdProduct == SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster_fk);
+                txtShowInventory.Text = "Stock On Hand: " +inventory.StockOnHand + "   Reserved: " +inventory.Reserved;
                 txtShowInventory.FontSize = 20;
             }
+        }
+
+        public void AddInventoryInformation(SoItemVeiwModel soItem)
+        {
+            inventoryProducts.Add(new InventoryProduct()
+            {
+                IdProduct = soItem.ProductMaster_fk,
+                Reserved = soItem.ProductMaster.GoodsReserved,
+                StockOnHand = soItem.ProductMaster.StockOnHand,
+                Transit = soItem.ProductMaster.StockOnHand,
+                Quantity = soItem.Quantity
+            });
+        }
+
+        private class InventoryProduct
+        {
+            public int IdProduct { get; set; }
+            public int StockOnHand { get; set; }
+            public int Reserved { get; set; }
+            public int Transit { get; set; }
+            public int Quantity { get; set; }
         }
     }
 }

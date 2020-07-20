@@ -122,20 +122,32 @@ namespace ClubJumana.Core.Services
                         Price = model.Price,
                         TotalPrice = model.TotalPrice
                     });
+
+                    model.ProductMaster.GoodsReserved += model.Quantity;
+                    _context.productmasters.Update(model.ProductMaster);
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {
-                    soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.Include(p=>p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
+                    soItem.ProductMaster.GoodsReserved -= model.Quantity;
                     _context.Remove(soItem);
                 }
                 else if (model.Id != 0)
                 {
-                    soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.Include(p=>p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
+
                     soItem.Cost = model.Cost;
                     soItem.Discount = model.Discount;
-                    soItem.Quantity = model.Quantity;
                     soItem.Price = model.Price;
                     soItem.TotalPrice = model.TotalPrice;
+                    if (soItem.Quantity != model.Quantity)
+                    {
+                        soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
+                        _context.productmasters.Update(soItem.ProductMaster);
+                        soItem.Quantity = model.Quantity;
+                        soItem.ProductMaster.GoodsReserved += model.Quantity;
+                    }
+
                 }
                 else
                 {
