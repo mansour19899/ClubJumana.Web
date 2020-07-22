@@ -371,7 +371,7 @@ namespace ClubJumana.Wpf.UserControls
             {
                 var inventory = inventoryProducts.SingleOrDefault(i =>
                     i.IdProduct == SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster_fk);
-                txtShowInventory.Text = "Stock On Hand: " +inventory.StockOnHand + "   Reserved: " +inventory.Reserved;
+                txtShowInventory.Text = "Stock On Hand: " +inventory.StockOnHand + "   Reserved: " +inventory.Reserved + "   Transit: " + inventory.Transit;
                 txtShowInventory.FontSize = 20;
             }
         }

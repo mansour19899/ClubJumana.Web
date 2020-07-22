@@ -15,10 +15,18 @@ namespace ClubJumana.DataLayer.Entities
 
         public string Name { get; set; }
         public int VendorCode { get; set; }
+        [StringLength(16)]
         public string StyleNumber { get; set; }
         public int VariantFK { get; set; }
+        [StringLength(16)]
         public string SKU { get; set; }
+        [StringLength(12)]
         public string UPC { get; set; }
+        [StringLength(14)]
+        public string ITF14Inner { get; set; }
+        [StringLength(14)]
+        public string ITF14Master { get; set; }
+        [StringLength(15)]
         public string Size { get; set; }
         public string Color { get; set; }
         public string MadeIn { get; set; }
@@ -30,8 +38,12 @@ namespace ClubJumana.DataLayer.Entities
         public DateTime? SaleStartDate{ get; set; }
         public DateTime? SaleEndDate { get; set; }
         public string Margin { get; set; }
+        public int PackCount { get; set; }
         public int StockOnHand { get; set; }
         public int GoodsReserved { get; set; }
+        public int Transit { get; set; }
+        public int InnersCount { get; set; }
+        public int CartonsCount { get; set; }
         public int? RefundQuantity { get; set; } = 0;
         public int TempBalance => StockOnHand - GoodsReserved;
         public DateTime LastUpdateInventory { get; set; }

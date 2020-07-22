@@ -116,7 +116,7 @@ namespace ClubJumana.Core.Services
                         PO.PoNumber = _context.purchaseorders.Max(p => p.PoNumber) + 1;
 
                 }
-                _context.SaveChanges();
+
 
                 // Edit Code Later
                 int IdOfItems = 0;
@@ -278,7 +278,6 @@ namespace ClubJumana.Core.Services
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
 
                 }
-                _context.SaveChanges();
 
                 int IdOfItems = 0;
                 if (_context.items.Any())
@@ -357,7 +356,7 @@ namespace ClubJumana.Core.Services
                         {
                             ID++;
                             ProductInventoryWarehouse productInventoryWarehouse =
-                                _context.productinventorywarehouses.SingleOrDefault(p =>
+                                _context.productinventorywarehouses.Include(p=>p.ProductMaster).SingleOrDefault(p =>
                                     p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
                                     p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
                             if (productInventoryWarehouse != null)
@@ -387,6 +386,10 @@ namespace ClubJumana.Core.Services
                                     productInventoryWarehouseFrom.OutCome += VARIABLE.Quantity;
                                 }
 
+                            }
+                            else
+                            {
+                                productInventoryWarehouse.ProductMaster.Transit += VARIABLE.Quantity;
                             }
                         }
 
@@ -531,6 +534,7 @@ namespace ClubJumana.Core.Services
                                 {
                                     productInventory.ProductMaster.Income += VARIABLE.Quantity;
                                     productInventory.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                                    productInventory.ProductMaster.Transit -= VARIABLE.Quantity;
                                 }
                                 else
                                 {

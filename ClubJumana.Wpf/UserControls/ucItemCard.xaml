@@ -307,7 +307,7 @@
                         <UniformGrid  Columns="2" Rows="6"  Margin="0 20 0 0" Height="272">
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="No" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Style Number" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
                                 <Grid>
@@ -317,12 +317,39 @@
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="GITN" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="ITF 14 Master" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox />
+                                <TextBox  Text="{Binding ITF14Master}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="UPC" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <Grid>
+                                    <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding UPC}" Grid.Row="0" Grid.Column="1"  />
+                                </Grid>
+                            </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="ITF 14 Inner" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <TextBox Text="{Binding ITF14Inner}" />
+                            </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="SKU" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <Grid>
+                                    <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SKU}" Grid.Row="0" Grid.Column="1"  />
+                                </Grid>
+                            </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Item Category Code" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -345,7 +372,7 @@
                                     </ToggleButton>
                                 </Viewbox>
                             </UniformGrid>
-                            <UniformGrid Columns="2" Rows="1">
+                            <UniformGrid Columns="2" Rows="1" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Automatic Ext. Texts" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -373,7 +400,7 @@
                                     <ComboBoxItem Content="Non-Inventory"></ComboBoxItem>
                                 </ComboBox>
                             </UniformGrid>
-                            <UniformGrid Columns="2" Rows="1">
+                            <UniformGrid Columns="2" Rows="1" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Common Item No." Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -381,6 +408,13 @@
                                 <TextBox />
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="Pack" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <TextBox Text="{Binding PackCount}" />
+                            </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal" >
                                     <TextBlock Text="Base Unit of Measure" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -477,6 +511,16 @@
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
                                     <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding StockOnHand}" Grid.Row="0" Grid.Column="1"  />
+                                </Grid>
+                            </UniformGrid>
+                            <UniformGrid Columns="2" Rows="1">
+                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                    <TextBlock Text="Transit" Style="{StaticResource Style1}"/>
+                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                </StackPanel>
+                                <Grid>
+                                    <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Transit}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">

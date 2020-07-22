@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20200722165410_UpdateMasterProduct")]
+    partial class UpdateMasterProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -586,11 +588,7 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<int>("GoodsReserved")
                         .HasColumnType("int");
 
-                    b.Property<string>("ITF14Inner")
-                        .HasColumnType("varchar(14)")
-                        .HasMaxLength(14);
-
-                    b.Property<string>("ITF14Master")
+                    b.Property<string>("ITF14")
                         .HasColumnType("varchar(14)")
                         .HasMaxLength(14);
 
@@ -619,9 +617,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Outcome")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PackCount")
                         .HasColumnType("int");
 
                     b.Property<int?>("RefundQuantity")
