@@ -383,7 +383,7 @@ namespace ClubJumana.Wpf.UserControls
                 IdProduct = soItem.ProductMaster_fk,
                 Reserved = soItem.ProductMaster.GoodsReserved,
                 StockOnHand = soItem.ProductMaster.StockOnHand,
-                Transit = soItem.ProductMaster.StockOnHand,
+                Transit = soItem.ProductMaster.Transit,
                 Quantity = soItem.Quantity
             });
         }

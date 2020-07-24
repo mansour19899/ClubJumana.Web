@@ -271,9 +271,9 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
-            var NewBarcode = _onlineContext.barcodes.FirstOrDefault(p => p.Active == false);
+            var NewBarcode = _onlineContext.barcodes.OrderBy(p=>p.Id).FirstOrDefault(p => p.Active == false);
             var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
-            var NewBarcodee = _context.barcodes.FirstOrDefault(p => p.Active == false);
+            var NewBarcodee = _context.barcodes.FirstOrDefault(p => p.Id == NewBarcode.Id);
             if (NewBarcode == null)
                 return -1;
             else
