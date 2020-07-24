@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClubJumana.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace ClubJumana.Web.Controllers
         {
             return View();
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult hi()
         {
@@ -25,6 +26,13 @@ namespace ClubJumana.Web.Controllers
         {
             var rrr = books.ToList();
             return View();
+        }
+
+        public IActionResult salam()
+        {
+            RepositoryService _repositoryService=new RepositoryService();
+            var t = _repositoryService.AllProductMasterList().ToList();
+            return View(t);
         }
 
         public class Book
