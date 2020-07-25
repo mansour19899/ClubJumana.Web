@@ -217,7 +217,7 @@ namespace ClubJumana.Wpf2
                         if (variant == null)
                             myMessageQueue.Enqueue("Barcode Not Exist");
                         else
-                            ShowProductInformation(variant.Id);
+                            ShowProductInformation(variant.ProductFK.Value);
                         txtSearch.Clear();
                         break;
                     case 3:
