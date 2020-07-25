@@ -4,8 +4,51 @@
     ViewData["Title"] = "salam";
 }
 
-<h1>salam</h1>
 
+
+<p id="result">salam</p>
+<input type="text" id="fname" onfocusout="myFunctionn()">
+<input type="button" value="Click Here" name="no" onclick="ButtonClick_Test()">
+<script type="text/javascript">
+    @{
+        var listt = Model.ToList();
+        string[] IdList= Model.Select(p=>p.Id.ToString()).ToArray();
+        string[] UPCList= Model.Select(p=>p.UPC.ToString()).ToArray();
+        string[] NameList= Model.Select(p=>p.Name.ToString().Replace("\r\n", string.Empty + " ")).ToArray();
+        int count = Model.Count();
+
+    }
+    var Id_list = @Html.Raw(Json.Serialize(@IdList)); 
+    var UPC_list = @Html.Raw(Json.Serialize(@UPCList)); 
+    var Name_list = @Html.Raw(Json.Serialize(@NameList)); 
+    
+    function checkAdult(upc) {
+        return upc == 713091730960;
+    }
+
+    function ButtonClick_Test() {
+        @{
+            string xx = Model.ElementAt(0).Name.Replace("\r\n", string.Empty + " ");
+        }
+        document.getElementById("result").innerText = fields_list[0];
+    }
+    function myFunctionn() {
+        var index = UPC_list.findIndex(checkAdult);
+        document.getElementById("result").innerText = Name_list[index] ;
+    }
+
+    function myFunction() {
+
+        var x = document.getElementById("fname");
+        x.value = x.value.toUpperCase();
+        @{
+            string tt = Model.FirstOrDefault().Name;
+        }
+
+
+        document.getElementById("result").innerText = "@tt";
+    }
+</script>
 <p>
     <a asp-action="">Create New</a>
 </p>
@@ -121,119 +164,120 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VendorCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StyleNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VariantFK)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SKU)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UPC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ITF14Inner)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ITF14Master)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MadeIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FobPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RetailPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WholesalePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SalePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaleStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaleEndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Margin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StockOnHand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GoodsReserved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Transit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InnersCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CartonsCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RefundQuantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TempBalance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastUpdateInventory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Income)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Outcome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VendorCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StyleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VariantFK)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SKU)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UPC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITF14Inner)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ITF14Master)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MadeIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FobPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetailPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WholesalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleStartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleEndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Margin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockOnHand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GoodsReserved)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Transit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InnersCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CartonsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefundQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TempBalance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdateInventory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Income)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Outcome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RowVersion)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
