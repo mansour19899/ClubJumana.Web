@@ -8,18 +8,40 @@
 
 <form method="post" action="/Home/hi">
 
-    <input type="text" name="[0].Title" value="Curious George" />
-    <input type="text" name="[0].Author" value="H.A. Rey" />
-    <input type="text" name="[0].DatePublished" value="2/23/1973" />
+    <table id="myTable" class="table table-bordered">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>DatePublished</th>
+        </tr>
+        <tr>
+            <td>
+                <textarea name="[0].Title" placeholder="Question" id="question"  style="resize: none; width: 100%;"></textarea>
+            </td>
+            <td>
+                <textarea name="[0].Author" placeholder="Answer" id="answer"  style="resize: none; width: 100%;"></textarea>
+            </td>
+            <td>
+                <textarea name="[0].DatePublished" placeholder="Answer" id="answer"  style="resize: none; width: 100%;"></textarea>
+            </td>
 
-    <input type="text" name="[1].Title" value="Code Complete" />
-    <input type="text" name="[1].Author" value="Steve McConnell" />
-    <input type="text" name="[1].DatePublished" value="6/9/2004" />
 
-    <input type="text" name="[2].Title" value="The Two Towers" />
-    <input type="text" name="[2].Author" value="JRR Tolkien" />
-    <input type="text" name="[2].DatePublished" value="6/1/2005" />
+           
+        </tr>
+    </table>
 
+    <div >
+        <input type="button" id="more_fields" onclick="add_fields();" value="Add More" class="btn btn-info" />
+    </div>
     <input type="submit" />
+    <script type="text/javascript">
+        var ID = 1;
+        function add_fields() {
+            var tt = "salam";
+            var table = document.getElementById("myTable");
+            var row = table.insertRow(ID).innerHTML = '<tr><td><textarea name ="['+ ID +'].Title"' + ' placeholder="Question"  id=' + tt + ID + ' style = "resize: none; width:100%;"></textarea></td><td><textarea name ="['+ ID+'].Author"' + ' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ><td><textarea name ="['+ ID +'].DatePublished"' +' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ></tr>';
+            ID = ID + 1;
+        }
+    </script>
 </form>
 

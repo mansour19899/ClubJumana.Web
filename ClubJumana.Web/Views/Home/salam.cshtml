@@ -36,6 +36,9 @@
     }
     function myFunctionn() {
         var index = UPC_list.findIndex(checkAdult);
+        var car = Productmater.find(car => car.upc === "713091731097");
+        alert(car.styleNumber);
+        console.log(car);
         if (index == -1) {
             document.getElementById("result").innerText = "Not Found";
         } else {
