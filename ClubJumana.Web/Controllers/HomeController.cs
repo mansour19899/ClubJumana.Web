@@ -32,6 +32,10 @@ namespace ClubJumana.Web.Controllers
         {
             RepositoryService _repositoryService=new RepositoryService();
             var t = _repositoryService.AllProductMasterList().ToList();
+            foreach (var VARIABLE in t)
+            {
+                VARIABLE.Name=VARIABLE.Name.Replace("\r\n", string.Empty + " ");
+            }
             return View(t);
         }
 

@@ -15,15 +15,17 @@
         string[] IdList= Model.Select(p=>p.Id.ToString()).ToArray();
         string[] UPCList= Model.Select(p=>p.UPC.ToString()).ToArray();
         string[] NameList= Model.Select(p=>p.Name.ToString().Replace("\r\n", string.Empty + " ")).ToArray();
+        var products= Model.ToArray();
         int count = Model.Count();
 
     }
-    var Id_list = @Html.Raw(Json.Serialize(@IdList)); 
-    var UPC_list = @Html.Raw(Json.Serialize(@UPCList)); 
-    var Name_list = @Html.Raw(Json.Serialize(@NameList)); 
-    
+    var Id_list = @Html.Raw(Json.Serialize(@IdList));
+    var UPC_list = @Html.Raw(Json.Serialize(@UPCList));
+    var Name_list = @Html.Raw(Json.Serialize(@NameList));
+    var Productmater = @Html.Raw(Json.Serialize(@products));
+
     function checkAdult(upc) {
-        return upc == 713091730960;
+        return upc == document.getElementById("fname").value;
     }
 
     function ButtonClick_Test() {
@@ -34,7 +36,12 @@
     }
     function myFunctionn() {
         var index = UPC_list.findIndex(checkAdult);
-        document.getElementById("result").innerText = Name_list[index] ;
+        if (index == -1) {
+            document.getElementById("result").innerText = "Not Found";
+        } else {
+            document.getElementById("result").innerText = Name_list[index];
+        }
+
     }
 
     function myFunction() {
@@ -48,6 +55,16 @@
 
         document.getElementById("result").innerText = "@tt";
     }
+
+    document.getElementById('fname').onkeypress = function(e){
+        if (!e) e = window.event;
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == '13'){
+            document.getElementById("result").innerText = "Seyedmansour";
+            return false;
+        }
+    }
+
 </script>
 <p>
     <a asp-action="">Create New</a>
