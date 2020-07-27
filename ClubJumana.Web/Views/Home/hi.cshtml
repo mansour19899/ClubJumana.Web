@@ -2,46 +2,158 @@
 @{
     ViewData["Title"] = "hi";
 }
+    <link href="/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
+<h1>Sales Order</h1>
+<div class="container-fluid" style="background: white;  margin-top: 30px">
+    <form method="post" action="/Home/hi">
+        <div class="row">
+            <div class="col-sm-12 row">
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6>Customer</h6>
+                </div>
+                <div class="form-group col-sm-4">
+                    <select class="form-control">
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                    </select>
+                </div>
 
-<h1>hi Mansour</h1>
-<h1>hi Mohammadi</h1>
+            </div>
+            <div class="col-sm-12 row">
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">Sales Order Date</h6>
+                </div>
+                <div class="input-group col-sm-4">
+                    <input type="text" class="form-control" placeholder="2017-06-04" id="mdate" data-dtp="dtp_PB8BP">
+                </div>
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">Sales Order #</h6>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-default" placeholder="Input Default">
+                    </div>
+                </div>
 
-<form method="post" action="/Home/hi">
+            </div>
+            <div class="col-sm-12 row">
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">Due Date</h6>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-default" placeholder="Input Default">
+                    </div>
+                </div>
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">PO #</h6>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-default" placeholder="Input Default">
+                    </div>
+                </div>
 
-    <table id="myTable" class="table table-bordered">
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>DatePublished</th>
-        </tr>
-        <tr>
-            <td>
-                <textarea name="[0].Title" placeholder="Question" id="question"  style="resize: none; width: 100%;"></textarea>
-            </td>
-            <td>
-                <textarea name="[0].Author" placeholder="Answer" id="answer"  style="resize: none; width: 100%;"></textarea>
-            </td>
-            <td>
-                <textarea name="[0].DatePublished" placeholder="Answer" id="answer"  style="resize: none; width: 100%;"></textarea>
-            </td>
+            </div>
+            <div class="col-sm-12 row">
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">Terms</h6>
+                </div>
+                <div class="form-group col-sm-4">
+                    <select class="form-control">
+                        <option>Due On receipt</option>
+                        <option>Net 10</option>
+                        <option>Net 30</option>
+                    </select>
+                </div>
+                <div class="col-sm-2 d-flex align-items-center justify-content-end">
+                    <h6 style="margin-bottom: 20px;">Terms Percent</h6>
+                </div>
+                <div class="col-sm-4 ">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-default" placeholder="Input Default">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div  class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 35%" >Item</th>
+                    <th style="width: 50%">Description</th>
+                    <th style="width: 5%">Unit Cost</th>
+                    <th style="width: 5%">Quantity</th>
+                    <th style="width: 5%">Line Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input class="form-control" type="text" name="[0].Title"/></td>
+                    <td><input class="form-control" type="text" name="[0].Title"/></td>
+                    <td><input class="form-control" type="text" name="[0].Title"/></td>
+                    <td><input class="form-control" type="text" name="[0].Title"/></td>
+                    <td><h5>12.00 $</h5></td>
+                </tr>
+                <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@example.com</td>
+                    <td>mary@example.com</td>
+                    <td>mary@example.com</td>
+                </tr>
+                <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@example.com</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+   
 
 
-           
-        </tr>
-    </table>
+        <table id="myTable" class="table table-bordered">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>DatePublished</th>
+            </tr>
+            <tr>
+                <td>
+                    <textarea name="[0].Title" placeholder="Question" id="question" style="resize: none; width: 100%;"></textarea>
+                </td>
+                <td>
+                    <textarea name="[0].Author" placeholder="Answer" id="answer" style="resize: none; width: 100%;"></textarea>
+                </td>
+                <td>
+                    <textarea name="[0].DatePublished" placeholder="Answer" id="answer" style="resize: none; width: 100%;"></textarea>
+                </td>
 
-    <div >
-        <input type="button" id="more_fields" onclick="add_fields();" value="Add More" class="btn btn-info" />
-    </div>
-    <input type="submit" />
-    <script type="text/javascript">
-        var ID = 1;
-        function add_fields() {
-            var tt = "salam";
-            var table = document.getElementById("myTable");
-            var row = table.insertRow(ID).innerHTML = '<tr><td><textarea name ="['+ ID +'].Title"' + ' placeholder="Question"  id=' + tt + ID + ' style = "resize: none; width:100%;"></textarea></td><td><textarea name ="['+ ID+'].Author"' + ' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ><td><textarea name ="['+ ID +'].DatePublished"' +' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ></tr>';
-            ID = ID + 1;
-        }
-    </script>
-</form>
+
+
+            </tr>
+        </table>
+
+        <div>
+            <input type="button" id="more_fields" onclick="add_fields();" value="Add More" class="btn btn-info" />
+        </div>
+        <input type="submit" />
+        <script type="text/javascript">
+            var ID = 1;
+            function add_fields() {
+                var tt = "salam";
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(ID).innerHTML = '<tr><td><textarea name ="[' + ID + '].Title"' + ' placeholder="Question"  id=' + tt + ID + ' style = "resize: none; width:100%;"></textarea></td><td><textarea name ="[' + ID + '].Author"' + ' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ><td><textarea name ="[' + ID + '].DatePublished"' + ' placeholder ="Answer"  id="answer" style="resize:none;width: 100%;"></textarea></td ></tr>';
+                ID = ID + 1;
+            }
+        </script>
+        <script src="/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    </form>
+</div>
+
+
 

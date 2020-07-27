@@ -22,10 +22,11 @@ namespace ClubJumana.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult hi(ICollection<Book> books)
+        public IActionResult hi(ICollection<Book> books,Saless saless)
         {
             var rrr = books.ToList();
-            return View();
+            var sala = saless;
+             return View();
         }
 
         public IActionResult salam()
@@ -44,6 +45,11 @@ namespace ClubJumana.Web.Controllers
             public string Title { get; set; }
             public string Author { get; set; }
             public DateTime DatePublished { get; set; }
+        }
+        public class Saless
+        {
+            public string FullName { get; set; }
+            public string Age { get; set; }
         }
     }
 }
