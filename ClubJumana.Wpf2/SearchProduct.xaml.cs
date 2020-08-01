@@ -395,23 +395,17 @@ namespace ClubJumana.Wpf2
 
             var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
 
-            SelecIndexOfClick(wer.Id);
             ShowProductInformation(wer.Product.Id);
+           // SelecIndexOfClick(wer.Id);
         }
 
         private async Task SelecIndexOfClick(int Id)
         {
-            try
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
-                {
-                    IndexOfLvProduct  = ListForLvProduct.ToList().FindIndex(p => p.Id == Id);
-                });
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Error In upload Image");
-            }
+                IndexOfLvProduct = ListForLvProduct.ToList().FindIndex(p => p.Id == Id);
+                this.Dispatcher.Invoke(() => lvProducts.SelectedIndex = IndexOfLvProduct);
+            });
 
         }
 
@@ -706,7 +700,7 @@ namespace ClubJumana.Wpf2
 
                 GrdInformationProduct.Visibility = Visibility.Hidden;
                 GrSearch.Visibility = Visibility.Visible;
-                lvProducts.SelectedIndex = IndexOfLvProduct;
+                //lvProducts.SelectedIndex = IndexOfLvProduct;
                 if (cmbType.SelectedIndex == 2)
                     txtSearch.Focus();
             }
