@@ -396,7 +396,7 @@ namespace ClubJumana.Wpf2
             var wer = (VariantViewModel)lvProducts.ItemContainerGenerator.ItemFromContainer(dep);
 
             ShowProductInformation(wer.Product.Id);
-           // SelecIndexOfClick(wer.Id);
+            SelecIndexOfClick(wer.Id);
         }
 
         private async Task SelecIndexOfClick(int Id)
@@ -425,6 +425,7 @@ namespace ClubJumana.Wpf2
             btnPreviousFullImage.Visibility = Visibility.Hidden;
             GrSearch.Visibility = Visibility.Hidden;
             GrdInformationProduct.Visibility = Visibility.Visible;
+            ImageSelected = 0;
         }
 
         private void AddSku(object sender, RoutedEventArgs e)
