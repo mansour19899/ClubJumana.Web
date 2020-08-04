@@ -32,13 +32,14 @@ namespace ClubJumana.Core.Services
             if (TowelInformation.company.Id == 0)
             {
                 int CompanyId = 1;
-                if (EnumerableExtensions.Any(_context.products))
+                if (EnumerableExtensions.Any(_onlineContext.products))
                 {
-                    TowelInformation.company.Id = _context.companies.Max(x => x.Id) + 1;
+                    TowelInformation.company.Id = _onlineContext.companies.Max(x => x.Id) + 1;
                 }
 
                 _onlineContext.companies.Add(TowelInformation.company);
-                _context.companies.Add(TowelInformation.company);
+                if (!Consts.Consts.OnlineModeOnly)
+                    _context.companies.Add(TowelInformation.company);
 
 
             }
@@ -58,23 +59,25 @@ namespace ClubJumana.Core.Services
                 ProductTittle = TowelInformation.Product.ProductTittle,
 
             });
-            _context.products.Add(new Product()
+
+            if (!Consts.Consts.OnlineModeOnly)
             {
-                Id = Id,
-                StyleNumber = TowelInformation.Product.StyleNumber,
-                BrandFK = TowelInformation.Product.BrandFK,
-                MaterialFK = TowelInformation.Product.MaterialFK,
-                CompanyFK = TowelInformation.company.Id,
-                CountryOfOrginFK = TowelInformation.Product.CountryOfOrginFK,
-                DescribeMaterial = TowelInformation.Product.DescribeMaterial,
-                ProductTittle = TowelInformation.Product.ProductTittle,
+                _context.products.Add(new Product()
+                {
+                    Id = Id,
+                    StyleNumber = TowelInformation.Product.StyleNumber,
+                    BrandFK = TowelInformation.Product.BrandFK,
+                    MaterialFK = TowelInformation.Product.MaterialFK,
+                    CompanyFK = TowelInformation.company.Id,
+                    CountryOfOrginFK = TowelInformation.Product.CountryOfOrginFK,
+                    DescribeMaterial = TowelInformation.Product.DescribeMaterial,
+                    ProductTittle = TowelInformation.Product.ProductTittle,
 
-            });
+                });
+            }
 
 
-
-
-            int TowelId = _context.variants.Max(x => x.Id) + 1;
+            int TowelId = _onlineContext.variants.Max(x => x.Id) + 1;
 
 
 
@@ -97,49 +100,58 @@ namespace ClubJumana.Core.Services
                     LastDateEdited = DateTime.Now,
                     Data1 = VARIABLE.Data1
                 });
-                _context.variants.Add(new Variant()
+
+                if (!Consts.Consts.OnlineModeOnly)
                 {
-                    Id = TowelId,
-                    ProductFK = Id,
-                    ColourFK = VARIABLE.ColourFK,
-                    ProductTypeFK = VARIABLE.ProductTypeFK,
-                    FobPrice = VARIABLE.FobPrice,
-                    WholesaleA = VARIABLE.WholesaleA,
-                    WholesaleB = VARIABLE.WholesaleB,
-                    RetailPrice = VARIABLE.RetailPrice,
-                    Width = VARIABLE.Width,
-                    length = VARIABLE.length,
-                    Size = VARIABLE.Size,
-                    Note = VARIABLE.Note,
-                    LastDateEdited = DateTime.Now,
-                    Data1 = VARIABLE.Data1
-                });
+                    _context.variants.Add(new Variant()
+                    {
+                        Id = TowelId,
+                        ProductFK = Id,
+                        ColourFK = VARIABLE.ColourFK,
+                        ProductTypeFK = VARIABLE.ProductTypeFK,
+                        FobPrice = VARIABLE.FobPrice,
+                        WholesaleA = VARIABLE.WholesaleA,
+                        WholesaleB = VARIABLE.WholesaleB,
+                        RetailPrice = VARIABLE.RetailPrice,
+                        Width = VARIABLE.Width,
+                        length = VARIABLE.length,
+                        Size = VARIABLE.Size,
+                        Note = VARIABLE.Note,
+                        LastDateEdited = DateTime.Now,
+                        Data1 = VARIABLE.Data1
+                    });
+                }
+
                 TowelId++;
 
             }
 
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Companies).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Companies).RowVersion++;
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Products).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Products).RowVersion++;
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
 
 
+            if (!Consts.Consts.OnlineModeOnly)
+            {
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Companies).RowVersion++;
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Products).RowVersion++;
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+            }
 
 
-            _context.SaveChanges();
             _onlineContext.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
 
             return 1;
         }
 
         public string GiveMeStyleNumber(int Category, int SubCategory)
         {
-            var CategoryStyleCode = _context.categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
-            var SubCategoryCode = _context.subcategories.SingleOrDefault(p => p.Id == SubCategory).Code;
+            var CategoryStyleCode = _onlineContext.categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
+            var SubCategoryCode = _onlineContext.subcategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _context.products.AsNoTracking().ToList().LastOrDefault();
+            var tt = _onlineContext.products.AsNoTracking().ToList().LastOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
@@ -160,7 +172,7 @@ namespace ClubJumana.Core.Services
         public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode)
 
         {
-            var list = _context.variants.Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
+            var list = _onlineContext.variants.Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
             string LastSkuNumber = "";
             Int32 SkuNumber = 0;
             int MaxSku = 0;
@@ -188,22 +200,37 @@ namespace ClubJumana.Core.Services
 
         public Variant GiveMeVariantById(int Id)
         {
-            return _context.variants.Include(p => p.Colour).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
+            if (Consts.Consts.OnlineModeOnly)
+                return _onlineContext.variants.Include(p => p.Colour).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
+            else
+                return _context.variants.Include(p => p.Colour).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
         }
 
 
         public Company ExistCompany(string CompanyName)
         {
-            return _context.companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
+            if (Consts.Consts.OnlineModeOnly)
+                return _onlineContext.companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
+            else
+                return _context.companies.FirstOrDefault(p => p.CompanyName.ToLower().CompareTo(CompanyName.ToLower()) == 0);
         }
 
         public List<VariantViewModel> AllVariantList()
         {
             List<VariantViewModel> list = new List<VariantViewModel>();
-
-            var VariantslList = _context.variants.OrderBy(p => p.ProductFK).Include(p => p.Product)
-                .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
-                .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
+            List<Variant> VariantslList;
+            if (Consts.Consts.OnlineModeOnly)
+            {
+                VariantslList = _onlineContext.variants.OrderBy(p => p.ProductFK).Include(p => p.Product)
+                   .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
+                   .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
+            }
+            else
+            {
+                VariantslList = _context.variants.OrderBy(p => p.ProductFK).Include(p => p.Product)
+                   .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
+                   .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
+            }
 
             foreach (var VARIABLE in VariantslList)
             {
@@ -234,10 +261,23 @@ namespace ClubJumana.Core.Services
 
         public Product GiveMeProductWithId(int Id)
         {
-            var product = _context.products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p => p.Variants).ThenInclude(p => p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
-                .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
-                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
-                .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
+            Product product;
+            if (Consts.Consts.OnlineModeOnly)
+            {
+                product = _onlineContext.products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p => p.Variants).ThenInclude(p => p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
+                    .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
+
+            }
+            else
+            {
+                product = _context.products.AsNoTracking().Include(p => p.Variants).ThenInclude(p => p.Images).Include(p => p.Variants).ThenInclude(p => p.Barcode).Include(p => p.Variants).ThenInclude(p => p.Colour).Include(p => p.Company).Include(p => p.Material)
+                    .Include(p => p.Brand).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.Variants).ThenInclude(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.CountryOfOrgin).FirstOrDefault(p => p.Id == Id);
+
+            }
 
 
 
@@ -248,7 +288,10 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
-            var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
+            Variant Variantt=new Variant();
+            if (!Consts.Consts.OnlineModeOnly)
+                 Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
+
             if (Variant == null)
             {
 
@@ -257,12 +300,14 @@ namespace ClubJumana.Core.Services
             {
                 Variant.Sku = Sku;
                 Variantt.Sku = Sku;
-                //_onlineContext.variants.Update(Variant);
-                //_context.variants.Update(Variant);
+
                 _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
-                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+                if (!Consts.Consts.OnlineModeOnly)
+                    _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+
                 _onlineContext.SaveChanges();
-                _context.SaveChanges();
+                if (!Consts.Consts.OnlineModeOnly)
+                    _context.SaveChanges();
             }
             return 1;
         }
@@ -271,23 +316,33 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
-            var NewBarcode = _onlineContext.barcodes.OrderBy(p=>p.Id).FirstOrDefault(p => p.Active == false);
-            var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
-            var NewBarcodee = _context.barcodes.FirstOrDefault(p => p.Id == NewBarcode.Id);
+            var NewBarcode = _onlineContext.barcodes.OrderBy(p => p.Id).FirstOrDefault(p => p.Active == false);
+
             if (NewBarcode == null)
                 return -1;
             else
             {
                 Variant.BarcodeFK = NewBarcode.Id;
                 NewBarcode.Active = true;
-                Variantt.BarcodeFK = NewBarcode.Id;
-                NewBarcodee.Active = true;
+                if (!Consts.Consts.OnlineModeOnly)
+                {
+                    var Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
+                    var NewBarcodee = _context.barcodes.FirstOrDefault(p => p.Id == NewBarcode.Id);
+                    Variantt.BarcodeFK = NewBarcode.Id;
+                    NewBarcodee.Active = true;
+                }
+
                 _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
-                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
                 _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion++;
-                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion++;
+
+                if (!Consts.Consts.OnlineModeOnly)
+                {
+                    _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+                    _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion++;
+                }
                 _onlineContext.SaveChanges();
-                _context.SaveChanges();
+                if (!Consts.Consts.OnlineModeOnly)
+                    _context.SaveChanges();
                 return 1;
             }
 
@@ -295,9 +350,12 @@ namespace ClubJumana.Core.Services
 
         private void DetachedAllEntries()
         {
-            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            if (!Consts.Consts.OnlineModeOnly)
             {
-                _context.Entry(entry.Entity).State = EntityState.Detached;
+                foreach (var entry in _context.ChangeTracker.Entries().ToList())
+                {
+                    _context.Entry(entry.Entity).State = EntityState.Detached;
+                }
             }
             foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
             {
@@ -338,35 +396,40 @@ namespace ClubJumana.Core.Services
                     Data6 = variant.Data6,
                     LastDateEdited = DateTime.Now,
                 });
-                _context.variants.Add(new Variant()
+                if (!Consts.Consts.OnlineModeOnly)
                 {
-                    Id = variant.Id,
-                    Sku = variant.Sku,
-                    ProductFK = variant.ProductFK,
-                    ColourFK = variant.ColourFK,
+                    _context.variants.Add(new Variant()
+                    {
+                        Id = variant.Id,
+                        Sku = variant.Sku,
+                        ProductFK = variant.ProductFK,
+                        ColourFK = variant.ColourFK,
 
-                    ProductTypeFK = variant.ProductTypeFK,
-                    FobPrice = variant.FobPrice,
-                    WholesaleA = variant.WholesaleA,
-                    WholesaleB = variant.WholesaleB,
-                    RetailPrice = variant.RetailPrice,
-                    Width = variant.Width,
-                    length = variant.length,
-                    Size = variant.Size,
-                    Note = variant.Note,
-                    Data1 = variant.Data1,
-                    Data2 = variant.Data2,
-                    Data3 = variant.Data3,
-                    Data4 = variant.Data4,
-                    Data5 = variant.Data5,
-                    Data6 = variant.Data6,
-                    LastDateEdited = DateTime.Now
-                });
+                        ProductTypeFK = variant.ProductTypeFK,
+                        FobPrice = variant.FobPrice,
+                        WholesaleA = variant.WholesaleA,
+                        WholesaleB = variant.WholesaleB,
+                        RetailPrice = variant.RetailPrice,
+                        Width = variant.Width,
+                        length = variant.length,
+                        Size = variant.Size,
+                        Note = variant.Note,
+                        Data1 = variant.Data1,
+                        Data2 = variant.Data2,
+                        Data3 = variant.Data3,
+                        Data4 = variant.Data4,
+                        Data5 = variant.Data5,
+                        Data6 = variant.Data6,
+                        LastDateEdited = DateTime.Now
+                    });
+                }
+
             }
             else
             {
                 Variant variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
-                Variant variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
+                Variant variantdbb;
+
                 if (variantdb == null)
                     return -1;
                 else
@@ -381,32 +444,40 @@ namespace ClubJumana.Core.Services
                     variantdb.Size = variant.Size;
                     variantdb.LastDateEdited = DateTime.Now;
 
-                    variantdbb.WholesaleA = variant.WholesaleA;
-                    variantdbb.WholesaleB = variant.WholesaleB;
-                    variantdbb.RetailPrice = variant.RetailPrice;
-                    variantdbb.FobPrice = variant.FobPrice;
-                    variantdbb.ColourFK = variant.ColourFK;
-                    variantdbb.length = variant.length;
-                    variantdbb.Width = variant.Width;
-                    variantdbb.Size = variant.Size;
-                    variantdbb.LastDateEdited = DateTime.Now;
+                    if (!Consts.Consts.OnlineModeOnly)
+                    {
+                        variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
+                        variantdbb.WholesaleA = variant.WholesaleA;
+                        variantdbb.WholesaleB = variant.WholesaleB;
+                        variantdbb.RetailPrice = variant.RetailPrice;
+                        variantdbb.FobPrice = variant.FobPrice;
+                        variantdbb.ColourFK = variant.ColourFK;
+                        variantdbb.length = variant.length;
+                        variantdbb.Width = variant.Width;
+                        variantdbb.Size = variant.Size;
+                        variantdbb.LastDateEdited = DateTime.Now;
+
+                    }
 
                 }
             }
 
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
+
             _onlineContext.SaveChanges();
-            _context.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
             return 1;
         }
 
         public int AddImageVariant(int variantFK, string imageName)
         {
             int NewId = 1;
-            if (_context.images.Count() != 0)
+            if (_onlineContext.images.Count() != 0)
             {
-                NewId = _context.images.Max(p => p.Id) + 1;
+                NewId = _onlineContext.images.Max(p => p.Id) + 1;
             }
 
             var Newimage = new Image()
@@ -425,30 +496,31 @@ namespace ClubJumana.Core.Services
             };
 
             _onlineContext.images.Add(Newimage);
-            _context.images.Add(Newimagee);
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Images).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Images).RowVersion++;
-            _context.SaveChanges();
-            _onlineContext.SaveChanges();
 
+            if (!Consts.Consts.OnlineModeOnly)
+            {
+                _context.images.Add(Newimagee);
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Images).RowVersion++;
+            }
+
+            _onlineContext.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
             return 1;
         }
 
         public List<string> GiveCountOfImagesVariant()
         {
-            return _context.images.Select(p => new string(p.ImageName)).ToList();
+            if (Consts.Consts.OnlineModeOnly)
+                return _onlineContext.images.Select(p => new string(p.ImageName)).ToList();
+            else
+                return _context.images.Select(p => new string(p.ImageName)).ToList();
         }
 
         public Colour AddColour(string name, string pantoneNumber)
         {
-            foreach (var entry in _context.ChangeTracker.Entries().ToList())
-            {
-                _context.Entry(entry.Entity).State = EntityState.Detached;
-            }
-            foreach (var entry in _onlineContext.ChangeTracker.Entries().ToList())
-            {
-                _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
-            }
+            DetachedAllEntries();
 
             int newId = _onlineContext.colours.Max(p => p.Id);
             Colour colour = new Colour();
@@ -461,12 +533,17 @@ namespace ClubJumana.Core.Services
 
 
             _onlineContext.colours.Add(colour);
-            _context.colours.Add(colour);
-
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Colours).RowVersion++;
-            _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Colours).RowVersion++;
+
+
+            if (!Consts.Consts.OnlineModeOnly)
+            {
+                _context.colours.Add(colour);
+                _context.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Colours).RowVersion++;
+            }
             _onlineContext.SaveChanges();
-            _context.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
 
             return new Colour { Id = colour.Id };
 
@@ -474,15 +551,28 @@ namespace ClubJumana.Core.Services
 
         public Colour IsExistColorByPantonNumber(string pantoneNumber)
         {
-            return _context.colours.FirstOrDefault(p =>
-                p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+            if (Consts.Consts.OnlineModeOnly)
+            {
+                return _onlineContext.colours.FirstOrDefault(p =>
+                    p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+            }
+            else
+            {
+                return _context.colours.FirstOrDefault(p =>
+                    p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+            }
+
         }
 
         public int UpdateVariantNote(int Id, string note)
         {
             DetachedAllEntries();
+            Variant tt = new Variant();
             var t = _onlineContext.variants.FirstOrDefault(p => p.Id == Id);
-            var tt = _context.variants.FirstOrDefault(p => p.Id == Id);
+
+            if (!Consts.Consts.OnlineModeOnly)
+                tt = _context.variants.FirstOrDefault(p => p.Id == Id);
+
             if (t != null)
             {
                 t.Note = note;
@@ -490,7 +580,8 @@ namespace ClubJumana.Core.Services
             }
 
             _onlineContext.SaveChanges();
-            _context.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
             return 1;
         }
 
@@ -504,16 +595,23 @@ namespace ClubJumana.Core.Services
             {
                 VARIABLE.Data1 = productInformationView.GSM;
             }
-            var product2 = _context.products.Include(p => p.Variants).FirstOrDefault(p => p.Id == productInformationView.Id);
-            product2.ProductTittle = productInformationView.ProductTittle;
-            product2.DescribeMaterial = productInformationView.DescriabeMaterial;
-            foreach (var VARIABLE in product2.Variants)
+
+            Product product2;
+            if (!Consts.Consts.OnlineModeOnly)
             {
-                VARIABLE.Data1 = productInformationView.GSM;
+                product2 = _context.products.Include(p => p.Variants).FirstOrDefault(p => p.Id == productInformationView.Id);
+                product2.ProductTittle = productInformationView.ProductTittle;
+                product2.DescribeMaterial = productInformationView.DescriabeMaterial;
+                foreach (var VARIABLE in product2.Variants)
+                {
+                    VARIABLE.Data1 = productInformationView.GSM;
+                }
             }
 
+
             _onlineContext.SaveChanges();
-            _context.SaveChanges();
+            if (!Consts.Consts.OnlineModeOnly)
+                _context.SaveChanges();
             return 1;
         }
 
@@ -521,11 +619,11 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
 
-            int Id = _context.productmasters.Max(p => p.Id);
+            int Id = _onlineContext.productmasters.Max(p => p.Id);
             foreach (var item in list)
             {
                 Id++;
-                _context.productmasters.Add(new ProductMaster()
+                _onlineContext.productmasters.Add(new ProductMaster()
                 {
                     Id = Id,
                     Name = "Set Description",
@@ -548,7 +646,7 @@ namespace ClubJumana.Core.Services
 
             }
 
-            _context.SaveChanges();
+            _onlineContext.SaveChanges();
             return 1;
         }
     }

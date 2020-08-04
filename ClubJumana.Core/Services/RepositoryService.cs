@@ -121,8 +121,8 @@ namespace ClubJumana.Core.Services
 
             }
 
-            var version = onlineDb.tablesversion.FirstOrDefault(p=>p.Id==(int)TableName.Barcodes).RowVersion;
-            _context.tablesversion.FirstOrDefault(p => p.Id == (int) TableName.Barcodes).RowVersion = version;
+            var version = onlineDb.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion;
+            _context.tablesversion.FirstOrDefault(p => p.Id == (int)TableName.Barcodes).RowVersion = version;
             _context.SaveChanges();
 
         }
@@ -710,7 +710,7 @@ namespace ClubJumana.Core.Services
 
             Image w;
             Image ww;
-            List<string>  ImagesName=new List<string>();
+            List<string> ImagesName = new List<string>();
             foreach (var VARIABLE in DiffrentItems)
             {
                 w = onlineDb.images.AsNoTracking().SingleOrDefault(p => p.Id == VARIABLE.Id);
@@ -804,18 +804,32 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<ProductMaster> AllProductMasterList()
         {
-            return _context.productmasters;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.productmasters;
+            else
+                return _context.productmasters;
+
+
         }
 
         public IQueryable<PurchaseOrder> AllPurchaseOrder()
         {
-            return _context.purchaseorders.AsNoTracking();
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.purchaseorders.AsNoTracking();
+            else
+                return _context.purchaseorders.AsNoTracking();
         }
 
         public IQueryable<SaleOrder> AllOrders()
         {
-            return _context.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
-                .Include(p => p.Customer).AsNoTracking();
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
+                    .Include(p => p.TaxArea)
+                    .Include(p => p.Customer).AsNoTracking();
+            else
+                return _context.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
+                    .Include(p => p.TaxArea)
+                    .Include(p => p.Customer).AsNoTracking();
         }
 
         public IQueryable<Vendor> AllVendor()
@@ -825,119 +839,179 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Province> AllProvinces()
         {
-            return _context.provinces;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.provinces;
+            else
+                return _context.provinces;
         }
 
         public IQueryable<Customer> AllCustomers()
         {
-            return _context.customers.Include(p=>p.Country).Include(p=>p.Province);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.customers.Include(p => p.Country).Include(p => p.Province);
+            else
+                return _context.customers.Include(p => p.Country).Include(p => p.Province);
         }
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
         {
-            return _context.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
+            else
+                return _context.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
         }
 
         public IQueryable<PurchaseOrder> GrnPurchaseOrder()
         {
-            return _context.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
+            else
+                return _context.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
         }
 
         public IQueryable<Country> AllCountriesList()
         {
-            return _context.countries;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.countries;
+            else
+                return _context.countries;
         }
 
         public IQueryable<Company> AllCompaniesList()
         {
-            return _context.companies;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.companies;
+            else
+                return _context.companies;
         }
 
         public IQueryable<Category> AllCategoriesList()
         {
-            return _context.categories;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.categories;
+            else
+                return _context.categories;
         }
 
         public IQueryable<SubCategory> AllSubCategoriesList()
         {
-            return _context.subcategories;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.subcategories;
+            else
+                return _context.subcategories;
         }
 
         public IQueryable<CategoriesSubCategory> AllCategoriesSubCategoryList()
         {
-            return _context.categoriessubcategories;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.categoriessubcategories;
+            else
+                return _context.categoriessubcategories;
         }
 
         public IQueryable<ProductType> AllProductTypeList()
         {
-            return _context.producttypes;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.producttypes;
+            else
+                return _context.producttypes;
         }
 
         public IQueryable<Brand> AllBrandList()
         {
-            return _context.brands;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.brands;
+            else
+                return _context.brands;
         }
 
         public IQueryable<Colour> AllColourList()
         {
-            return _context.colours.AsNoTracking();
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.colours.AsNoTracking();
+            else
+                return _context.colours.AsNoTracking();
         }
 
         public IQueryable<Material> AllMaterialList()
         {
-            return _context.materials;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.materials;
+            else
+                return _context.materials;
         }
 
         public IQueryable<Product> AllProductList()
         {
-            return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
+            else
+                return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
         }
 
         public IQueryable<Term> AllTerms()
         {
-            return _context.terms;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.terms;
+            else
+                return _context.terms;
         }
 
         public Country GiveMeCountryByID(int Id)
         {
-            return _context.countries.FirstOrDefault(p => p.Id == Id);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.countries.FirstOrDefault(p => p.Id == Id);
+            else
+                return _context.countries.FirstOrDefault(p => p.Id == Id);
         }
 
         public ProductMaster GiveMeProductMasterByUPC(string UPC)
         {
-            return _context.productmasters.FirstOrDefault(p => p.UPC.Trim().CompareTo(UPC.Trim()) == 0);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.productmasters.FirstOrDefault(p => p.UPC.Trim().CompareTo(UPC.Trim()) == 0);
+            else
+                return _context.productmasters.FirstOrDefault(p => p.UPC.Trim().CompareTo(UPC.Trim()) == 0);
         }
 
         public Customer GiveMeCustomerById(int Id)
         {
-            return _context.customers.FirstOrDefault(p => p.Id == Id);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.customers.FirstOrDefault(p => p.Id == Id);
+            else
+                return _context.customers.FirstOrDefault(p => p.Id == Id);
         }
 
         public Vendor GiveMeVendorById(int Id)
         {
-            return _context.vendors.FirstOrDefault(p => p.Id == Id);
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.vendors.FirstOrDefault(p => p.Id == Id);
+            else
+                return _context.vendors.FirstOrDefault(p => p.Id == Id);
         }
 
 
         public IQueryable<Warehouse> AllWarehouse()
         {
-            return _context.warehouses;
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.warehouses;
+            else
+                return _context.warehouses;
         }
 
         public int AddAndUpdateCustomer(Customer customer)
         {
             if (customer.Id == 0)
             {
-                customer.Id = _context.customers.Max(p => p.Id) + 1;
+                customer.Id = onlineDb.customers.Max(p => p.Id) + 1;
                 _context.customers.Add(customer);
             }
-                
+
             else
             {
-                _context.Update(customer);
+                onlineDb.Update(customer);
             }
 
-            _context.SaveChanges();
+            onlineDb.SaveChanges();
             return 1;
         }
 
@@ -945,38 +1019,38 @@ namespace ClubJumana.Core.Services
         {
             if (vendor.Id == 0)
             {
-                vendor.Id = _context.vendors.Max(p => p.Id) + 1;
-                _context.vendors.Add(vendor);
-            }
-                
-            else
-            {
-                _context.Update(vendor);
+                vendor.Id = onlineDb.vendors.Max(p => p.Id) + 1;
+                onlineDb.vendors.Add(vendor);
             }
 
-            _context.SaveChanges();
+            else
+            {
+                onlineDb.Update(vendor);
+            }
+
+            onlineDb.SaveChanges();
             return 1;
         }
 
         public int AddAndUpdateItem(ProductMaster productMaster)
         {
             if (productMaster.Id == 0)
-                _context.productmasters.Add(productMaster);
+                onlineDb.productmasters.Add(productMaster);
             else
             {
-                _context.Update(productMaster);
+                onlineDb.Update(productMaster);
             }
 
-            _context.SaveChanges();
+            onlineDb.SaveChanges();
             return 1;
         }
 
-        public string UploadFileToFTP( string fileName, string UploadDirectory)
+        public string UploadFileToFTP(string fileName, string UploadDirectory)
         {
             string FtpUrl = "ftp://mansour1989%2540clubjummana.com@132.148.182.213";
             string filePhath = "";
             string userName = "mansour1989@clubjummana.com";
-            string password = "Xx123456"; 
+            string password = "Xx123456";
             UploadDirectory = "/VariantsImage";
 
             string PureFileName = new FileInfo(fileName).Name;

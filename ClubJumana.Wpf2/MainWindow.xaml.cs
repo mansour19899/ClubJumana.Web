@@ -22,7 +22,9 @@ namespace ClubJumana.Wpf2
     /// </summary>
 
     public partial class MainWindow : Window
+
     {
+        const bool OnlineModeOnly = true;
         private RepositoryService _repositoryService;
         private ProductInformationService _productInformationService;
         private bool IsConnectToServer = true;
@@ -42,7 +44,7 @@ namespace ClubJumana.Wpf2
 
         private void BtnShowSearchProduct_OnClick(object sender, RoutedEventArgs e)
         {
-            SearchProduct frm=new SearchProduct(IsConnectToServer);
+            SearchProduct frm = new SearchProduct(IsConnectToServer);
             this.Hide();
             frm.ShowDialog();
             this.Show();
@@ -50,7 +52,7 @@ namespace ClubJumana.Wpf2
 
         private void BtnSHowAddProduct_OnClick(object sender, RoutedEventArgs e)
         {
-            AddProduct frm2=new AddProduct();
+            AddProduct frm2 = new AddProduct();
             this.Hide();
             frm2.ShowDialog();
             this.Show();
@@ -60,7 +62,8 @@ namespace ClubJumana.Wpf2
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
             {
-                _repositoryService.UpdateLocalDb();
+                if (!OnlineModeOnly)
+                    _repositoryService.UpdateLocalDb();
                 IsConnectToServer = true;
                 ErrorConection = "";
                 //txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);

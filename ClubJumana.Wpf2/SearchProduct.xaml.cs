@@ -889,13 +889,27 @@ namespace ClubJumana.Wpf2
                 btnPreviousFullImage.Visibility = Visibility.Hidden;
                 ShowImage();
             }
+            else if (images.Count-1 == ImageSelected)
+            {
+                btnNextImageVariant.Visibility = Visibility.Hidden;
+                btnNextFullImage.Visibility = Visibility.Hidden;
+                ShowImage();
+            }
+            else if ( ImageSelected==0)
+            {
+                btnPerviosImageVariant.Visibility = Visibility.Hidden;
+                btnPreviousFullImage.Visibility = Visibility.Hidden;
+                btnNextImageVariant.Visibility = Visibility.Visible;
+                btnNextFullImage.Visibility = Visibility.Visible;
+                ShowImage();
+            }
             else
             {
-                ShowImage();
                 btnNextImageVariant.Visibility = Visibility.Visible;
-                btnPerviosImageVariant.Visibility = Visibility.Hidden;
                 btnNextFullImage.Visibility = Visibility.Visible;
-                btnPreviousFullImage.Visibility = Visibility.Hidden;
+                btnPerviosImageVariant.Visibility = Visibility.Visible;
+                btnPreviousFullImage.Visibility = Visibility.Visible;
+                ShowImage();
             }
 
             void ShowImage()
@@ -919,38 +933,16 @@ namespace ClubJumana.Wpf2
 
         private void BtnNextImageVariant_OnClick(object sender, RoutedEventArgs e)
         {
-            ImageSelected++;
-            ShowImageVariant(SelectedIndexVariant, ImageSelected);
-            if (ImageSelected == countImageVariant - 1)
-            {
 
-                btnNextImageVariant.Visibility = Visibility.Hidden;
-                btnNextFullImage.Visibility = Visibility.Hidden;
-            }
-            if (ImageSelected == 1)
-            {
-                btnPerviosImageVariant.Visibility = Visibility.Visible;
-                btnPreviousFullImage.Visibility = Visibility.Visible;
-            }
+            ++ImageSelected;
+            ShowImageVariant(SelectedIndexVariant, ImageSelected);
         }
 
 
         private void BtnPreviousImageVariant_OnClick(object sender, RoutedEventArgs e)
         {
-            ImageSelected--;
+            --ImageSelected;
             ShowImageVariant(SelectedIndexVariant, ImageSelected);
-            if (ImageSelected == countImageVariant - 2)
-            {
-
-                btnNextImageVariant.Visibility = Visibility.Visible;
-                btnNextFullImage.Visibility = Visibility.Visible;
-            }
-
-            if (ImageSelected == 0)
-            {
-                btnPerviosImageVariant.Visibility = Visibility.Hidden;
-                btnPreviousFullImage.Visibility = Visibility.Hidden;
-            }
         }
 
         private void ImgVariant_OnMouseDown(object sender, MouseButtonEventArgs e)
