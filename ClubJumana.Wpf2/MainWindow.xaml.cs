@@ -45,9 +45,9 @@ namespace ClubJumana.Wpf2
         private void BtnShowSearchProduct_OnClick(object sender, RoutedEventArgs e)
         {
             SearchProduct frm = new SearchProduct(IsConnectToServer);
-            this.Hide();
+           // this.Hide();
             frm.ShowDialog();
-            this.Show();
+            //this.Show();
         }
 
         private void BtnSHowAddProduct_OnClick(object sender, RoutedEventArgs e)
