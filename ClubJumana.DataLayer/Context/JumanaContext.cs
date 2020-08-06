@@ -363,7 +363,7 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
+                entity.Property(e => e.FobPrice).HasColumnType("decimal(18,4)");
                 entity.HasOne<ProductType>(s => s.ProductType)
                     .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ProductTypeFK);

@@ -140,9 +140,9 @@
                         <Label Content="Country Of Orgin" Style="{StaticResource lblAddProduct}" />
                         <ComboBox Name="cmbCountryOfOrgin" SelectedValue="{Binding Product.CountryOfOrginFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}"  DisplayMemberPath="Name" SelectedValuePath="Id" />
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="0" >
+                    <StackPanel Grid.Row="3" Grid.Column="0" Height="250">
                         <Label Content="Describe Material" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtDescribeMaterial" Text="{Binding Product.DescribeMaterial}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                        <TextBox Name="txtDescribeMaterial" Text="{Binding Product.DescribeMaterial}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="180" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
                                  AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 0 0" >
                             <TextBox.RenderTransform>
                                 <TransformGroup>
@@ -194,9 +194,9 @@
                         <Label Content="GSM " Style="{StaticResource lblAddProduct}" />
                         <TextBox Name="txtGsm" Text="{Binding Variant.Data1}"  GotKeyboardFocus="TxtWidth_OnGotKeyboardFocus" GotMouseCapture="TxtWidth_OnGotMouseCapture" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" KeyDown="txtLenght_KeyDown" />
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="0" >
+                    <StackPanel Grid.Row="3" Grid.Column="0" Height="250">
                         <Label Content="Note" Style="{StaticResource lblAddProduct}" />
-                        <TextBox Name="txtNoteVariant" Text="{Binding Variant.Note}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
+                        <TextBox Name="txtNoteVariant" Text="{Binding Variant.Note}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" Height="170" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
                                  AcceptsReturn="True"  BorderBrush="DarkGray" BorderThickness="1" RenderTransformOrigin="0.5,0.5" Padding="10 5 0 0" >
                             <TextBox.RenderTransform>
                                 <TransformGroup>

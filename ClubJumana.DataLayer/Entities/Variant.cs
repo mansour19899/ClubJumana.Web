@@ -14,6 +14,7 @@ namespace ClubJumana.DataLayer.Entities
         public int? ColourFK { get; set; }
         public int? BarcodeFK { get; set; }
         public int? ProductTypeFK { get; set; }
+
         public decimal? FobPrice { get; set; }
         public decimal? WholesaleA { get; set; }
         public decimal? WholesaleB { get; set; }

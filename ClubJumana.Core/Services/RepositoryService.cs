@@ -840,9 +840,9 @@ namespace ClubJumana.Core.Services
         public IQueryable<Province> AllProvinces()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.provinces;
+                return onlineDb.provinces.OrderBy(p => p.Id);
             else
-                return _context.provinces;
+                return _context.provinces.OrderBy(p => p.Id);
         }
 
         public IQueryable<Customer> AllCustomers()
@@ -872,89 +872,89 @@ namespace ClubJumana.Core.Services
         public IQueryable<Country> AllCountriesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.countries;
+                return onlineDb.countries.OrderBy(p => p.Id);
             else
-                return _context.countries;
+                return _context.countries.OrderBy(p => p.Id);
         }
 
         public IQueryable<Company> AllCompaniesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.companies;
+                return onlineDb.companies.OrderBy(p => p.Id);
             else
-                return _context.companies;
+                return _context.companies.OrderBy(p => p.Id);
         }
 
         public IQueryable<Category> AllCategoriesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.categories;
+                return onlineDb.categories.OrderBy(p=>p.Id);
             else
-                return _context.categories;
+                return _context.categories.OrderBy(p=>p.Id);
         }
 
         public IQueryable<SubCategory> AllSubCategoriesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.subcategories;
+                return onlineDb.subcategories.OrderBy(p=>p.Id);
             else
-                return _context.subcategories;
+                return _context.subcategories.OrderBy(p => p.Id);
         }
 
         public IQueryable<CategoriesSubCategory> AllCategoriesSubCategoryList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.categoriessubcategories;
+                return onlineDb.categoriessubcategories.OrderBy(p => p.Id);
             else
-                return _context.categoriessubcategories;
+                return _context.categoriessubcategories.OrderBy(p => p.Id);
         }
 
         public IQueryable<ProductType> AllProductTypeList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.producttypes;
+                return onlineDb.producttypes.OrderBy(p=>p.Id);
             else
-                return _context.producttypes;
+                return _context.producttypes.OrderBy(p => p.Id);
         }
 
         public IQueryable<Brand> AllBrandList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.brands;
+                return onlineDb.brands.OrderBy(p=>p.Id);
             else
-                return _context.brands;
+                return _context.brands.OrderBy(p => p.Id);
         }
 
         public IQueryable<Colour> AllColourList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.colours.AsNoTracking();
+                return onlineDb.colours.OrderBy(p=>p.Id).AsNoTracking();
             else
-                return _context.colours.AsNoTracking();
+                return _context.colours.OrderBy(p => p.Id).AsNoTracking();
         }
 
         public IQueryable<Material> AllMaterialList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.materials;
+                return onlineDb.materials.OrderBy(p=>p.Id);
             else
-                return _context.materials;
+                return _context.materials.OrderBy(p => p.Id);
         }
 
         public IQueryable<Product> AllProductList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
+                return onlineDb.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory).OrderBy(p => p.Id);
             else
-                return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory);
+                return _context.products.Include(p => p.Variants).ThenInclude(p => p.ProductType.CategoriesSubCategory).OrderBy(p => p.Id);
         }
 
         public IQueryable<Term> AllTerms()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.terms;
+                return onlineDb.terms.OrderBy(p => p.Id);
             else
-                return _context.terms;
+                return _context.terms.OrderBy(p => p.Id);
         }
 
         public Country GiveMeCountryByID(int Id)
