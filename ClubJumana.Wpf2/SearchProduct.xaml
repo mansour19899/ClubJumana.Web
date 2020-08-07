@@ -234,7 +234,7 @@
                                 <GridViewColumn Header="F.O.B Price(US)"  Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding Path=FobPrice}" Width="100" Click="BtnInformationPrice" CommandParameter="{Binding}"/>
+                                            <Button Content="Click" Width="100" Click="BtnInformationPrice" CommandParameter="{Binding}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -402,7 +402,7 @@
                                                 <RowDefinition></RowDefinition>
                                                 <RowDefinition></RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="25"/>
+                                            <Label Name="lblFobPriceInCostCenter" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="25" MouseDoubleClick="LblFobPriceInCostCenter_OnMouseDoubleClick"/>
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Duty    " FontSize="25"/>
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="ExChange Rate    " FontSize="25"/>
                                             <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding Info.CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture"  Margin="10,10,10,-5" VerticalAlignment="Top" >

@@ -53,6 +53,7 @@ namespace ClubJumana.Wpf2
         private bool IsConnectToServer = true;
         private int IndexOfLvProduct = 0;
         private SnackbarMessageQueue myMessageQueue;
+        private string FobPriceCostCenter = "";
 
 
         private SearchProductViewModel viewModel;
@@ -108,6 +109,7 @@ namespace ClubJumana.Wpf2
 
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
+            this.Topmost = false;
         }
 
         private void CheckConectionToServe()
@@ -548,6 +550,7 @@ namespace ClubJumana.Wpf2
                     cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
                 else
                     cost.Duty = -1;
+                FobPriceCostCenter = Convert.ToDecimal(variantSelected.FobPrice).ToString();
                 cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
                 cost.WholeSaleA = variantSelected.WholesaleA.ToString();
                 cost.WholeSaleB = variantSelected.WholesaleB.ToString();
@@ -1062,6 +1065,11 @@ namespace ClubJumana.Wpf2
         private void BtnAddProductToProductMaster_OnClick(object sender, RoutedEventArgs e)
         {
             _productInformationService.TransferProductsToProductMaster(SelectedList);
+        }
+
+        private void LblFobPriceInCostCenter_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(FobPriceCostCenter);
         }
     }
 }

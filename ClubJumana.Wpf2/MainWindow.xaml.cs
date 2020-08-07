@@ -47,6 +47,8 @@ namespace ClubJumana.Wpf2
             SearchProduct frm = new SearchProduct(IsConnectToServer);
             this.WindowState = WindowState.Minimized;
             this.ShowInTaskbar = false;
+            frm.Topmost = true;
+            frm.Owner = this;
             frm.ShowDialog();
             this.WindowState = WindowState.Maximized;
             this.ShowInTaskbar = true;
@@ -57,6 +59,9 @@ namespace ClubJumana.Wpf2
             AddProduct frm2 = new AddProduct();
             this.WindowState = WindowState.Minimized;
             this.ShowInTaskbar = false;
+            frm2.Topmost = true;
+            frm2.Owner = this;
+            frm2.ShowDialog();
             this.WindowState = WindowState.Maximized;
             this.ShowInTaskbar = true;
         }
