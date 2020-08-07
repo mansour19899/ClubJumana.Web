@@ -45,17 +45,20 @@ namespace ClubJumana.Wpf2
         private void BtnShowSearchProduct_OnClick(object sender, RoutedEventArgs e)
         {
             SearchProduct frm = new SearchProduct(IsConnectToServer);
-           // this.Hide();
+            this.WindowState = WindowState.Minimized;
+            this.ShowInTaskbar = false;
             frm.ShowDialog();
-            //this.Show();
+            this.WindowState = WindowState.Maximized;
+            this.ShowInTaskbar = true;
         }
 
         private void BtnSHowAddProduct_OnClick(object sender, RoutedEventArgs e)
         {
             AddProduct frm2 = new AddProduct();
-            this.Hide();
-            frm2.ShowDialog();
-            this.Show();
+            this.WindowState = WindowState.Minimized;
+            this.ShowInTaskbar = false;
+            this.WindowState = WindowState.Maximized;
+            this.ShowInTaskbar = true;
         }
 
         private void CheckConectionToServe()
