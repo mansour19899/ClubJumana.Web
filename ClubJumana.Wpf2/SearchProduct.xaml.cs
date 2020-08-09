@@ -748,7 +748,7 @@ namespace ClubJumana.Wpf2
                     newVariant.Barcode = new Barcode();
                     newVariant.Barcode.BarcodeNumber = "Add Barcode";
                     InfoProduct.List.Add(newVariant);
-                    ListForLvProduct.Add(new VariantViewModel(){Barcode = newVariant.Barcode,Colour = newVariant.Colour,SKU = newVariant.Sku,
+                    ListForLvProduct.Add(new VariantViewModel(){Colour = newVariant.Colour,
                         Size = newVariant.Size,ProductType = newVariant.ProductType,Product = newVariant.Product,Id = newVariant.Id});
 
                 }

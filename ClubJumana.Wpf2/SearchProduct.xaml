@@ -225,13 +225,13 @@
 
                         </Grid>
                     </UniformGrid>
-                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding Info.List}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionChanged="LvVariant_OnSelectionChanged"  >
+                    <ListView SelectionMode="Single" Name="lvVariant" Grid.Row="1" Margin="30 10 10 60" FontSize="20" ItemsSource="{Binding Info.List}" ScrollViewer.HorizontalScrollBarVisibility="Auto" SelectionChanged="LvVariant_OnSelectionChanged"  >
                         <ListView.View>
                             <GridView >
                                 <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}"/>
                                 <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
-                                <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding Path=Size}" />
-                                <GridViewColumn Header="F.O.B Price(US)"  Width="200">
+                                <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
+                                <GridViewColumn Header="F.O.B Price(US)"  Width="180">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Content="Click" Width="100" Click="BtnInformationPrice" CommandParameter="{Binding}"/>
@@ -252,9 +252,9 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Wholesale A" Width="170" DisplayMemberBinding="{Binding Path=WholesaleA}" />
-                                <GridViewColumn Header="Wholesale B" Width="170" DisplayMemberBinding="{Binding Path=WholesaleB}" />
-                                <GridViewColumn Header="Retail Price" Width="170" DisplayMemberBinding="{Binding Path=RetailPrice}" />
+                                <GridViewColumn Header="Wholesale A" Width="160" DisplayMemberBinding="{Binding Path=WholesaleA}" />
+                                <GridViewColumn Header="Wholesale B" Width="160" DisplayMemberBinding="{Binding Path=WholesaleB}" />
+                                <GridViewColumn Header="Retail Price" Width="160" DisplayMemberBinding="{Binding Path=RetailPrice}" />
                                 <GridViewColumn Header="" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
