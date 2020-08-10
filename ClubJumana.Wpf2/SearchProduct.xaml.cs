@@ -44,6 +44,7 @@ namespace ClubJumana.Wpf2
         private List<Country> countriesList;
         private List<ProductType> ProductTypeList;
         private CostCenter cost;
+        private CostCenter costAnalyze;
         private string Path;
         private int SelectedIndexVariant = 0;
         private int ImageSelected = 0;
@@ -57,7 +58,7 @@ namespace ClubJumana.Wpf2
 
 
         private SearchProductViewModel viewModel;
-        public SearchProduct( bool IsConnetedToServer=false)
+        public SearchProduct(bool IsConnetedToServer = false)
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
@@ -67,7 +68,7 @@ namespace ClubJumana.Wpf2
             Path = AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\";
 
             viewModel = new SearchProductViewModel();
-            ListForLvProduct=new ObservableCollection<VariantViewModel>();
+            ListForLvProduct = new ObservableCollection<VariantViewModel>();
         }
 
         private void SearchProduct_OnLoaded(object sender, RoutedEventArgs e)
@@ -103,7 +104,7 @@ namespace ClubJumana.Wpf2
             //_repositoryService.UploadFileToFTP(AppDomain.CurrentDomain.BaseDirectory + "Images\\VariantsImage\\"+ "Excel Formula.txt", "/VariantsImage/");
 
             viewModel.Info = InfoProduct;
-            ListForLvProduct=new ObservableCollection<VariantViewModel>(VaraintList);
+            ListForLvProduct = new ObservableCollection<VariantViewModel>(VaraintList);
             viewModel.LvProductItemSource = ListForLvProduct;
             this.DataContext = viewModel;
 
@@ -116,7 +117,8 @@ namespace ClubJumana.Wpf2
         {
             if (CheckInternetConnection.IsConnectedToServer() == true)
             {
-                _repositoryService.UpdateLocalDb();
+                if (!Core.Consts.Consts.OnlineModeOnly)
+                    _repositoryService.UpdateLocalDb();
                 IsConnectToServer = true;
                 ErrorConection = "";
                 //txtMagicStyle.Foreground = new SolidColorBrush(Colors.Navy);
@@ -187,11 +189,6 @@ namespace ClubJumana.Wpf2
                 lblCountResult.Content = "Results :  " + t.Count();
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -209,13 +206,13 @@ namespace ClubJumana.Wpf2
                         break;
                     case 1:
 
-                        var t= VaraintList
+                        var t = VaraintList
                             .Where(p => p.Product.StyleNumber.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         ListForLvProduct = new ObservableCollection<VariantViewModel>(t);
                         viewModel.LvProductItemSource = ListForLvProduct;
                         break;
                     case 2:
-                        var variant= VaraintList.Where(p=>p.Barcode!=null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
+                        var variant = VaraintList.Where(p => p.Barcode != null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
                         if (variant == null)
                             myMessageQueue.Enqueue("Barcode Not Exist");
                         else
@@ -224,7 +221,7 @@ namespace ClubJumana.Wpf2
                         break;
                     case 3:
 
-                        var tt= VaraintList
+                        var tt = VaraintList
                             .Where(p => p.SKU.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         ListForLvProduct = new ObservableCollection<VariantViewModel>(tt);
                         viewModel.LvProductItemSource = ListForLvProduct;
@@ -272,7 +269,7 @@ namespace ClubJumana.Wpf2
                 case 1:
                     TempList.Clear();
                     //if (VaraintList.Count == 0)
-                       VaraintList = _productInformationService.AllVariantList();
+                    VaraintList = _productInformationService.AllVariantList();
                     TempList = VaraintList;
                     ListForLvProduct = new ObservableCollection<VariantViewModel>(TempList);
                     viewModel.LvProductItemSource = ListForLvProduct;
@@ -419,7 +416,7 @@ namespace ClubJumana.Wpf2
             viewModel.Info = InfoProduct;
             ShowImageVariant(0);
             cmbEditVariantProductType.ItemsSource = ProductTypeList.Where(p => p.CategorysubcategoreisFK == InfoProduct.List.ElementAt(0).ProductType.CategorysubcategoreisFK);
-            txtRemarksVariant.Text="";
+            txtRemarksVariant.Text = "";
             grdNoteVariant.Visibility = Visibility.Hidden;
             btnNextImageVariant.Visibility = Visibility.Hidden;
             btnPerviosImageVariant.Visibility = Visibility.Hidden;
@@ -502,7 +499,7 @@ namespace ClubJumana.Wpf2
             {
                 Clipboard.SetText(variant.Barcode.BarcodeNumber);
                 myMessageQueue.Enqueue("Barcode copied");
-               // MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
+                // MessageBox.Show(variant.Barcode.BarcodeNumber + " Copied");
             }
 
         }
@@ -514,7 +511,9 @@ namespace ClubJumana.Wpf2
                 Button b = sender as Button;
                 Variant variantSelected = b.CommandParameter as Variant;
                 ProductTypeForAddVariant.Visibility = Visibility.Collapsed;
-                InfoProduct.VariantSelected = variantSelected;
+                InfoProduct.VariantSelected = InfoProduct.List.FirstOrDefault(p => p.Id == variantSelected.Id);
+                InfoProduct.VariantSelected.ColourFK = InfoProduct.VariantSelected.Colour.Id;
+                cmbEditVariantColor.SelectedValue = InfoProduct.VariantSelected.Colour.Id;
                 HideAddColorPart();
                 GrdEditVariant.Visibility = Visibility.Visible;
             }
@@ -529,12 +528,13 @@ namespace ClubJumana.Wpf2
             Button b = sender as Button;
             Variant variantSelected = b.CommandParameter as Variant;
             cost = new CostCenter();
+            costAnalyze = new CostCenter();
 
             if (variantSelected.Product.CountryOfOrginFK == null)
             {
                 MessageBox.Show("Please Set Country Of Orgin");
             }
-            else if(variantSelected.FobPrice==null)
+            else if (variantSelected.FobPrice == null)
             {
                 MessageBox.Show("Please Set F.O.B Price");
             }
@@ -543,19 +543,37 @@ namespace ClubJumana.Wpf2
                 var country = _repositoryService.GiveMeCountryByID(38);
                 cost.Country = country;
                 if (country.ExChangeRate == null)
+                {
                     cost.ExchangeRate = -1;
+                    costAnalyze.ExchangeRate = -1;
+                }
+
                 else
+                {
                     cost.ExchangeRate = country.ExChangeRate.Value;
+                    costAnalyze.ExchangeRate = country.ExChangeRate.Value;
+                }
+
                 if (variantSelected.Product.CountryOfOrgin.Duty != null)
+                {
                     cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                    costAnalyze.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                }
+
                 else
+                {
                     cost.Duty = -1;
+                    costAnalyze.Duty = -1;
+                }
+
+                costAnalyze.FobPrice = 0.01m;
                 FobPriceCostCenter = Convert.ToDecimal(variantSelected.FobPrice).ToString();
                 cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
                 cost.WholeSaleA = variantSelected.WholesaleA.ToString();
                 cost.WholeSaleB = variantSelected.WholesaleB.ToString();
                 cost.RetailPrice = variantSelected.RetailPrice.ToString();
                 InfoProduct.CostCenter = cost;
+                InfoProduct.CostCenterAnalyze = costAnalyze;
                 GrdCostCenter.Visibility = Visibility.Visible;
             }
 
@@ -574,14 +592,49 @@ namespace ClubJumana.Wpf2
         {
             e.Handled = SetNumeric(sender, e);
             ControlKeyDown(e.Key, txtCostRate);
-
+            if (e.Key == Key.Enter)
+                InfoProduct.CostCenter.Duty = Convert.ToDecimal(txtCostRate.Text);
         }
         private void TxtExChangeRate_OnKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = SetNumeric(sender, e);
             ControlKeyDown(e.Key, txtExChangeRate);
+            if (e.Key == Key.Enter)
+                InfoProduct.CostCenter.ExchangeRate = Convert.ToDecimal(txtExChangeRate.Text);
+        }
+        private void TxtMainPrice_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtCostRate.Text))
+                ControlKeyDown(Key.Escape, txtMainPrice);
+            else
+                ControlKeyDown(Key.Enter, txtMainPrice);
         }
 
+        private void TxtCostRate_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtCostRate.Text))
+                ControlKeyDown(Key.Escape, txtCostRate);
+            else
+            {
+                ControlKeyDown(Key.Enter, txtCostRate);
+                InfoProduct.CostCenter.Duty = Convert.ToDecimal(txtCostRate.Text);
+            }
+
+
+        }
+
+        private void TxtExChangeRate_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtExChangeRate.Text))
+                ControlKeyDown(Key.Escape, txtExChangeRate);
+            else
+            {
+                ControlKeyDown(Key.Enter, txtExChangeRate);
+                InfoProduct.CostCenter.ExchangeRate = Convert.ToDecimal(txtExChangeRate.Text);
+            }
+
+
+        }
 
         private void TxtMainPrice_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -617,9 +670,15 @@ namespace ClubJumana.Wpf2
 
         private void ControlKeyDown(Key keyPress, TextBox textBox)
         {
+
             if (keyPress == Key.Enter || keyPress == Key.Tab)
             {
-                textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+
+                }
+                else
+                    textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
 
             }
             else if (keyPress == Key.Escape)
@@ -720,42 +779,79 @@ namespace ClubJumana.Wpf2
         {
             try
             {
-                var x = InfoProduct.VariantSelected.Id;
-                bool IsAddColor = false;
-                if (!String.IsNullOrWhiteSpace(txtColorNameInEditVariant.Text))
+                if (cmbEditVariantColor.SelectedIndex == -1)
                 {
-                    var t = _productInformationService.AddColour(txtColorNameInEditVariant.Text, txtPantonInEditVariant.Text);
-                    InfoProduct.VariantSelected.ColourFK = t.Id;
-                    IsAddColor = true;
-                    txtColorNameInEditVariant.Clear();
-                    txtPantonInEditVariant.Clear();
+                    MessageBox.Show("Please Choose the Color");
                 }
-                _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
-                if (x == InfoProduct.VariantSelected.Id)
+                else if (cmbEditVariantProductType.SelectedIndex == -1)
                 {
-                    InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
-                        (IsAddColor) ?  txtColorNameInEditVariant.Text:cmbEditVariantColor.Text;
-                    lvVariant.Items.Refresh();
-
-                    VaraintList.Single(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name = cmbEditVariantColor.Text;
-                    ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() {Name = (IsAddColor) ?  txtColorNameInEditVariant.Text:cmbEditVariantColor.Text };
+                    MessageBox.Show("Please Choose the Product Type");
                 }
-
                 else
                 {
-                    var newVariant = _productInformationService.GiveMeVariantById(InfoProduct.VariantSelected.Id);
-                    newVariant.Sku = "Add SKU";
-                    newVariant.Barcode = new Barcode();
-                    newVariant.Barcode.BarcodeNumber = "Add Barcode";
-                    InfoProduct.List.Add(newVariant);
-                    ListForLvProduct.Add(new VariantViewModel(){Colour = newVariant.Colour,
-                        Size = newVariant.Size,ProductType = newVariant.ProductType,Product = newVariant.Product,Id = newVariant.Id});
+                    var x = InfoProduct.VariantSelected.Id;
+                    bool IsAddColor = false;
+                    if (!String.IsNullOrWhiteSpace(txtColorNameInEditVariant.Text))
+                    {
+                        var t = _productInformationService.AddColour(txtColorNameInEditVariant.Text, txtPantonInEditVariant.Text);
+                        InfoProduct.VariantSelected.ColourFK = t.Id;
+                        IsAddColor = true;
+                        txtColorNameInEditVariant.Clear();
+                        txtPantonInEditVariant.Clear();
+                    }
 
+                    InfoProduct.VariantSelected.ColourFK = (int)cmbEditVariantColor.SelectedValue;
+                    _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
+                    if (x == InfoProduct.VariantSelected.Id)
+                    {
+                        int IndexOfVariant = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
+
+                        InfoProduct.List[IndexOfVariant].Colour.Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text;
+                        InfoProduct.List[IndexOfVariant].Colour.Id = InfoProduct.VariantSelected.ColourFK.Value;
+                        InfoProduct.List[IndexOfVariant].ColourFK = InfoProduct.VariantSelected.Colour.Id;
+
+                        //InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour.Name =
+                        //    (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text;
+                        //InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).ColourFK = InfoProduct.VariantSelected.ColourFK;
+
+                        lvVariant.Items.Refresh();
+
+                        ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
+                        VaraintList.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
+                    }
+                    else
+                    {
+                        var newVariant = _productInformationService.GiveMeVariantById(InfoProduct.VariantSelected.Id);
+                        newVariant.Sku = "Add SKU";
+                        newVariant.Barcode = new Barcode();
+                        newVariant.Barcode.BarcodeNumber = "Add Barcode";
+                        InfoProduct.List.Add(newVariant);
+                        VaraintList.Add(new VariantViewModel()
+                        {
+                            ColourFK = newVariant.ColourFK,
+                            Colour = newVariant.Colour,
+                            Size = newVariant.Size,
+                            ProductType = newVariant.ProductType,
+                            Product = newVariant.Product,
+                            Id = newVariant.Id
+                        });
+                        ListForLvProduct.Add(new VariantViewModel()
+                        {
+                            ColourFK = newVariant.ColourFK,
+                            Colour = newVariant.Colour,
+                            Size = newVariant.Size,
+                            ProductType = newVariant.ProductType,
+                            Product = newVariant.Product,
+                            Id = newVariant.Id
+                        });
+
+                    }
+
+                    cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
+                    cmbEditVariantColor.Items.Refresh();
+                    GrdEditVariant.Visibility = Visibility.Hidden;
                 }
-                
-                cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
-                cmbEditVariantColor.Items.Refresh();
-                GrdEditVariant.Visibility = Visibility.Hidden;
+
             }
             catch (Exception exception)
             {
@@ -805,7 +901,7 @@ namespace ClubJumana.Wpf2
                     var tt = lvVariant.SelectedItems[0] as Variant;
                     _productInformationService.AddImageVariant(tt.Id, FullNameImage);
                     imgVariant.Background = new ImageBrush(new BitmapImage(new Uri(DestentionPath)));
-                    
+
                     UploadImage(DestentionPath);
 
 
@@ -893,13 +989,13 @@ namespace ClubJumana.Wpf2
                 btnPreviousFullImage.Visibility = Visibility.Hidden;
                 ShowImage();
             }
-            else if (images.Count-1 == ImageSelected)
+            else if (images.Count - 1 == ImageSelected)
             {
                 btnNextImageVariant.Visibility = Visibility.Hidden;
                 btnNextFullImage.Visibility = Visibility.Hidden;
                 ShowImage();
             }
-            else if ( ImageSelected==0)
+            else if (ImageSelected == 0)
             {
                 btnPerviosImageVariant.Visibility = Visibility.Hidden;
                 btnPreviousFullImage.Visibility = Visibility.Hidden;
@@ -996,24 +1092,21 @@ namespace ClubJumana.Wpf2
             RowColorName.Visibility = Visibility.Collapsed;
             RowPantone.Visibility = Visibility.Collapsed;
         }
-
-        private void TxtPantonInEditVariant_OnLostFocus(object sender, RoutedEventArgs e)
+        private void TxtColorNameInEditVariant_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(txtPantonInEditVariant.Text))
+            if (!String.IsNullOrWhiteSpace(txtColorNameInEditVariant.Text))
             {
-                var color = _productInformationService.IsExistColorByPantonNumber(txtPantonInEditVariant.Text);
-                if (color!=null)
+                var color = _productInformationService.IsExistColorByPantonNumber(txtColorNameInEditVariant.Text);
+                if (color != null)
                 {
-                     MessageBox.Show("This Color Before Added");
-                     cmbEditVariantColor.SelectedValue = color.Id;
-                     RowcmbColor.IsEnabled = true;
-                     txtColorNameInEditVariant.Clear();
-                     txtPantonInEditVariant.Clear();
-                     RowColorName.Visibility = Visibility.Collapsed;
-                     RowPantone.Visibility = Visibility.Collapsed;
+                    MessageBox.Show("This Color Before Added");
+                    cmbEditVariantColor.SelectedValue = color.Id;
+                    RowcmbColor.IsEnabled = true;
+                    txtColorNameInEditVariant.Clear();
+                    txtPantonInEditVariant.Clear();
+                    RowColorName.Visibility = Visibility.Collapsed;
+                    RowPantone.Visibility = Visibility.Collapsed;
                 }
-                   
-
 
             }
         }
@@ -1058,7 +1151,7 @@ namespace ClubJumana.Wpf2
         {
             _productInformationService.UpdateProduct(InfoProduct);
             GrdEditProduct.Visibility = Visibility.Hidden;
-            myMessageQueue.Enqueue(InfoProduct.StyleNumber+" Updated.");
+            myMessageQueue.Enqueue(InfoProduct.StyleNumber + " Updated.");
 
         }
 
@@ -1071,5 +1164,7 @@ namespace ClubJumana.Wpf2
         {
             MessageBox.Show(FobPriceCostCenter);
         }
+
+
     }
 }

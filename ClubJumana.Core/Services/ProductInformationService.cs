@@ -554,12 +554,12 @@ namespace ClubJumana.Core.Services
             if (Consts.Consts.OnlineModeOnly)
             {
                 return _onlineContext.colours.FirstOrDefault(p =>
-                    p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+                    p.Name.ToLower().Replace(" ", "").Trim().CompareTo(pantoneNumber.ToLower().Replace(" ", "").Trim()) == 0);
             }
             else
             {
                 return _context.colours.FirstOrDefault(p =>
-                    p.PantoneNumber.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
+                    p.Name.ToLower().Replace("tcx", "").Trim().CompareTo(pantoneNumber.ToLower().Replace("tcx", "").Trim()) == 0);
             }
 
         }

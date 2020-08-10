@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Loaded="SearchProduct_OnLoaded"
         Icon="Content/Icon/VanmeIcon.ico"
-        Title="Magic Style - Product Information" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized"   PreviewKeyDown="Window_PreviewKeyDown">
+        Title="Magic Style - Product Information" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -163,14 +163,33 @@
                                         </LinearGradientBrush>
                                     </Label.Background>
                                 </Label>
-                                <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Info.Category, StringFormat= Category : {0}}" />
-                                <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Info.Subcategory, StringFormat= SubCategory : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle, StringFormat= Product Tittle :  {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Company, StringFormat= Company : {0}}"/>
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.GSM, StringFormat= GSM : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Material, StringFormat= Material : {0}}" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.DescriabeMaterial, StringFormat=  Remarks :  {0}}" />
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock Name="txttCategory" Style="{StaticResource Style1}" Text="Category" />
+                                <TextBlock Name="txtCategory" Style="{StaticResource Style1}" Text="{Binding Info.Category}" />
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock  Style="{StaticResource Style1}" Text="SubCategory" />
+                                    <TextBlock Name="txtSubCategory" Style="{StaticResource Style1}" Text="{Binding Info.Subcategory}" />
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock  Style="{StaticResource Style1}" Text="Product Tittle" />
+                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle}" />
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock  Style="{StaticResource Style1}" Text="Company" />
+                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Company}"/>
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock  Style="{StaticResource Style1}" Text="GSM" />
+                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.GSM}" />
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="3">
+                                    <TextBlock  Style="{StaticResource Style1}" Text="Material" />
+                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Material}" />
+                                </UniformGrid>
+                                <!--<TextBlock Style="{StaticResource Style1}" Text="{Binding Info.CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />-->
+                                <TextBlock Style="{StaticResource Style1}" Text="Remarks:" />
+                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.DescriabeMaterial}" />
                                 <TextBlock ></TextBlock>
                                 <Button Name="btnAddNewVariant" Content="Add New Variant" Width="150" HorizontalAlignment="Left" Click="BtnAddNewVariant_OnClick"/>
                             </StackPanel>
@@ -405,17 +424,17 @@
                                             <Label Name="lblFobPriceInCostCenter" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="FOB Price   " FontSize="25" MouseDoubleClick="LblFobPriceInCostCenter_OnMouseDoubleClick"/>
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Duty    " FontSize="25"/>
                                             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="ExChange Rate    " FontSize="25"/>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding Info.CostCenter.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture"  Margin="10,10,10,-5" VerticalAlignment="Top" >
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Text="{Binding Info.CostCenterAnalyze.FobPrice,UpdateSourceTrigger=Explicit}" Name="txtMainPrice" Grid.Row="0" Grid.Column="1" Width="250" KeyDown="txtMainPrice_KeyDown" GotKeyboardFocus="TxtMainPrice_OnGotKeyboardFocus" GotMouseCapture="TxtMainPrice_OnGotMouseCapture" LostFocus="TxtMainPrice_OnLostFocus"  Margin="10,10,10,-5" VerticalAlignment="Top" >
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding Info.CostCenter.Duty,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus"  Margin="10,0,10,-5">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtCostRate" Text="{Binding Info.CostCenterAnalyze.Duty,UpdateSourceTrigger=Explicit}" Grid.Row="1" Grid.Column="1" Width="250" KeyDown="txtCostRate_KeyDown" GotMouseCapture="TxtCostRate_OnGotMouseCapture" GotKeyboardFocus="TxtCostRate_OnGotKeyboardFocus" LostFocus="TxtCostRate_OnLostFocus"  Margin="10,0,10,-5">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
                                             </TextBox>
-                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding Info.CostCenter.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus"  Margin="10,0,10,15">
+                                            <TextBox Style="{StaticResource txtCostCentreStyle}" Name="txtExChangeRate"  Text="{Binding Info.CostCenterAnalyze.ExchangeRate,UpdateSourceTrigger=Explicit}" Grid.Row="2" Grid.Column="1" Width="250" KeyDown="TxtExChangeRate_OnKeyDown" GotMouseCapture="TxtExChangeRate_OnGotMouseCapture" GotKeyboardFocus="TxtExChangeRate_OnGotKeyboardFocus" LostFocus="TxtExChangeRate_OnLostFocus" Margin="10,0,10,15">
                                                 <TextBox.BitmapEffect>
                                                     <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
                                                 </TextBox.BitmapEffect>
@@ -423,7 +442,7 @@
 
                                             <StackPanel Margin="10" Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                                                 <Label Content="%" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
-                                                <Label Content="{Binding Info.CostCenter.LandedCostRate}" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>
+                                                <!--<Label Content="{Binding Info.CostCenter.LandedCostRate}" Style="{StaticResource LableStyle}" FontSize="25" Margin="0 0 20 0"/>-->
                                             </StackPanel>
                                             <ComboBox Name="cmbCountry" Grid.Row="2" SelectedIndex="37" Grid.Column="2" FontSize="20" DisplayMemberPath="Name" SelectedValuePath="Id" MaxWidth="300" SelectionChanged="CmbCountry_OnSelectionChanged" />
 
@@ -431,12 +450,12 @@
                                         <Grid  Margin="0 0 0 50" >
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.1*" />
-                                                <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="0.2*" />
                                                 <ColumnDefinition Width="0.2*" />
-                                                <ColumnDefinition Width="0.3*" />
+                                                <ColumnDefinition Width="0.04*" />
+                                                <ColumnDefinition Width="0.2*" />
+                                                <ColumnDefinition Width="0.1*" />
                                             </Grid.ColumnDefinitions>
-
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
                                                 <RowDefinition />
@@ -451,7 +470,7 @@
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
                                             <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="USD" FontSize="25"/>
-                                            <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Info.CostCenter.Country.Currency}" FontSize="25"/>
+                                            <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Info.CostCenter.Country.Currency}" FontSize="25"/>
                                             <Label Grid.Row="1" Grid.Column="1" Content=" Landed Cost" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="2" Grid.Column="1" Content=" Wholesale Price" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="3" Grid.Column="1" Content=" Sales Com 5%" Style="{StaticResource lblCostCentreStyle}"  />
@@ -462,26 +481,87 @@
                                             <Label Grid.Row="8" Grid.Column="1" Content=" WL Margin" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="9" Grid.Column="1" Content=" Retail" Style="{StaticResource lblCostCentreStyle}"  />
                                             <Label Grid.Row="10" Grid.Column="1" Content=" RTL Gross Margin" Style="{StaticResource lblCostCentreStyle}"  />
-                                            <TextBox Name="txtLandedCostUSD" Text="{Binding Info.CostCenter.LandedCostUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200" />
-                                            <TextBox Name="txtWholesaleUSD" Text="{Binding Info.CostCenter.WholesaleUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtSales5USD" Text="{Binding Info.CostCenter.Sales5USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtCreditIN10USD" Text="{Binding Info.CostCenter.CreditIN10USD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCashUSD" Text="{Binding Info.CostCenter.WholeCashUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCreditUSD" Text="{Binding Info.CostCenter.WholeCreditUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLGrossUSD" Text="{Binding Info.CostCenter.WLGrossUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLMarginUSD" Text="{Binding Info.CostCenter.WLMarginUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtReatailUSD" Text="{Binding Info.CostCenter.RetailUSD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtRTLGrossUSD" Text="{Binding Info.CostCenter.RTLGrossUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="2" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtLandedCostCAD" Text="{Binding Info.CostCenter.LandedCostD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="1" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200" />
-                                            <TextBox Name="txtWholesaleCAD" Text="{Binding Info.CostCenter.WholesaleD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="2" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtSales5CAD" Text="{Binding Info.CostCenter.Sales5D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="3" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtCreditIN10CAD" Text="{Binding Info.CostCenter.CreditIN10D ,Mode=OneWay}" IsReadOnly="True" Grid.Row="4" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCashCAD" Text="{Binding Info.CostCenter.WholeCashD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWholeCreditCAD" Text="{Binding Info.CostCenter.WholeCreditD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="6" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLGrossCAD" Text="{Binding Info.CostCenter.WLGrossD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="7" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtWLMarginCAD" Text="{Binding Info.CostCenter.WLMarginD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="8" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtReatailCAD" Text="{Binding Info.CostCenter.RetailD ,Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
-                                            <TextBox Name="txtRTLGrossCAD" Text="{Binding Info.CostCenter.RTLGrossD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="3" Style="{StaticResource txtCostCentreStyle}" Width="200"/>
+                                            <UniformGrid Grid.Row="1" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtLandedCostUSD" Text="{Binding Info.CostCenter.LandedCostUSD ,Mode=OneWay}"  IsReadOnly="True" Style="{StaticResource txtCostCentreStyleDefault}" Width="100" />
+                                                <TextBox Name="txttLandedCostUSD" Text="{Binding Info.CostCenterAnalyze.LandedCostUSD ,Mode=OneWay}" IsReadOnly="True" Style="{StaticResource txtCostCentreStyle}" Width="100" />
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="2" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholesaleUSD" Text="{Binding Info.CostCenter.WholesaleUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholesaleUSD" Text="{Binding Info.CostCenterAnalyze.WholesaleUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="3" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtSales5USD" Text="{Binding Info.CostCenter.Sales5USD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttSales5USD" Text="{Binding Info.CostCenterAnalyze.Sales5USD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="4" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtCreditIN10USD" Text="{Binding Info.CostCenter.CreditIN10USD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttCreditIN10USD" Text="{Binding Info.CostCenterAnalyze.CreditIN10USD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid  Grid.Row="5" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholeCashUSD" Text="{Binding Info.CostCenter.WholeCashUSD ,Mode=OneWay}" IsReadOnly="True" Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholeCashUSD" Text="{Binding Info.CostCenterAnalyze.WholeCashUSD ,Mode=OneWay}" IsReadOnly="True" Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="6" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholeCreditUSD" Text="{Binding Info.CostCenter.WholeCreditUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholeCreditUSD" Text="{Binding Info.CostCenterAnalyze.WholeCreditUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="7" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWLGrossUSD" Text="{Binding Info.CostCenter.WLGrossUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWLGrossUSD" Text="{Binding Info.CostCenterAnalyze.WLGrossUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="8" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWLMarginUSD" Text="{Binding Info.CostCenter.WLMarginUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWLMarginUSD" Text="{Binding Info.CostCenterAnalyze.WLMarginUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="9" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtReatailUSD" Text="{Binding Info.CostCenter.RetailUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttReatailUSD" Text="{Binding Info.CostCenterAnalyze.RetailUSD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="10" Grid.Column="2" Rows="1" Columns="2" >
+                                                <TextBox Name="txtRTLGrossUSD" Text="{Binding Info.CostCenter.RTLGrossUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttRTLGrossUSD" Text="{Binding Info.CostCenterAnalyze.RTLGrossUSD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="1" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtLandedCostCAD" Text="{Binding Info.CostCenter.LandedCostD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100" />
+                                                <TextBox Name="txttLandedCostCAD" Text="{Binding Info.CostCenterAnalyze.LandedCostD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100" />
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="2" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholesaleCAD" Text="{Binding Info.CostCenter.WholesaleD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholesaleCAD" Text="{Binding Info.CostCenterAnalyze.WholesaleD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="3" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtSales5CAD" Text="{Binding Info.CostCenter.Sales5D ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttSales5CAD" Text="{Binding Info.CostCenterAnalyze.Sales5D ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="4" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtCreditIN10CAD" Text="{Binding Info.CostCenter.CreditIN10D ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttCreditIN10CAD" Text="{Binding Info.CostCenterAnalyze.CreditIN10D ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="5" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholeCashCAD" Text="{Binding Info.CostCenter.WholeCashD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholeCashCAD" Text="{Binding Info.CostCenterAnalyze.WholeCashD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="6" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWholeCreditCAD" Text="{Binding Info.CostCenter.WholeCreditD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWholeCreditCAD" Text="{Binding Info.CostCenterAnalyze.WholeCreditD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="7" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWLGrossCAD" Text="{Binding Info.CostCenter.WLGrossD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWLGrossCAD" Text="{Binding Info.CostCenterAnalyze.WLGrossD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="9" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtReatailCAD" Text="{Binding Info.CostCenter.RetailD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttReatailCAD" Text="{Binding Info.CostCenterAnalyze.RetailD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="8" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtWLMarginCAD" Text="{Binding Info.CostCenter.WLMarginD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttWLMarginCAD" Text="{Binding Info.CostCenterAnalyze.WLMarginD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                            <UniformGrid Grid.Row="10" Grid.Column="4" Rows="1" Columns="2" >
+                                                <TextBox Name="txtRTLGrossCAD" Text="{Binding Info.CostCenter.RTLGrossD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txttRTLGrossCAD" Text="{Binding Info.CostCenterAnalyze.RTLGrossD,StringFormat= {} {0} %  ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
+                                            </UniformGrid>
+                                           
                                         </Grid>
 
                                     </StackPanel>
@@ -545,17 +625,17 @@
                         </UniformGrid>
                         <UniformGrid Name="RowcmbColor" Columns="3" Rows="1" IsEnabled="True">
                             <TextBlock Text="Color" />
-                            <ComboBox FontSize="15" Name="cmbEditVariantColor" SelectedValue="{Binding Info.VariantSelected.ColourFK }" DisplayMemberPath="Name" SelectedValuePath="Id" >
+                            <ComboBox FontSize="15" Name="cmbEditVariantColor" IsEditable="True"  DisplayMemberPath="Name" SelectedValuePath="Id" >
                             </ComboBox>
                             <Button Name="btnAddColorInEditVariant"  Content="Add Color" HorizontalAlignment="Center" Click="BtnAddColorInEditVariant_OnClick"/>
                         </UniformGrid>
                         <UniformGrid Name="RowColorName" Rows="1" Columns="3" Visibility="Collapsed">
                             <TextBlock Text=" Color Name"/>
-                            <TextBox Name="txtColorNameInEditVariant" />
+                            <TextBox Name="txtColorNameInEditVariant" LostFocus="TxtColorNameInEditVariant_OnLostFocus" />
                         </UniformGrid>
                         <UniformGrid Name="RowPantone" Rows="1" Columns="3" Visibility="Collapsed">
                             <TextBlock Text=" Pantone Number"/>
-                            <TextBox Name="txtPantonInEditVariant" LostFocus="TxtPantonInEditVariant_OnLostFocus" />
+                            <TextBox Name="txtPantonInEditVariant" />
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Width"/>

@@ -212,6 +212,19 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
+        private CostCenter _costCenterAnalyze;
+
+        public CostCenter CostCenterAnalyze
+        {
+            get { return _costCenterAnalyze; }
+            set
+            {
+                _costCenterAnalyze = value;
+                OnPropertyChanged();
+
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -22,7 +22,15 @@ namespace ClubJumana.Core.Convertors
             get => _fobPrice;
             set
             {
-                _fobPrice = value;
+                if (value == 0)
+                {
+                    _fobPrice = 0.01m;
+                }
+                else
+                {
+                    _fobPrice = value;
+                }
+               
 
                 //_fobPrice = value;
                 //_landedCostUSD = _fobPrice * (1 + (LandedCostRate / 100));
