@@ -55,7 +55,7 @@ namespace ClubJumana.Wpf2
         private int IndexOfLvProduct = 0;
         private SnackbarMessageQueue myMessageQueue;
         private string FobPriceCostCenter = "";
-
+        private bool IsChangeStarVariant = false;
 
         private SearchProductViewModel viewModel;
         public SearchProduct(bool IsConnetedToServer = false)
@@ -459,7 +459,9 @@ namespace ClubJumana.Wpf2
                         _productInformationService.AddSku(variant.Id, tet);
                         InfoProduct.List.FirstOrDefault(p => p.Id == variant.Id).Sku = tet;
                         lvVariant.Items.Refresh();
-                        ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id).SKU = tet;
+                        var ee = ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id);
+                        if (ee != null)
+                            ee.SKU = tet;
                         break;
                     case MessageBoxResult.No:
 
@@ -496,7 +498,11 @@ namespace ClubJumana.Wpf2
                         {
                             InfoProduct.List.FirstOrDefault(p => p.Id == variant.Id).Barcode = varaintt.Barcode;
                             lvVariant.Items.Refresh();
-                            ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id).Barcode = varaintt.Barcode;
+                            var ee=ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id);
+                            if (ee != null)
+                            {
+                                ee.Barcode = varaintt.Barcode;
+                            }
                         }
                         break;
                     case MessageBoxResult.No:
@@ -777,7 +783,7 @@ namespace ClubJumana.Wpf2
                 //lvProducts.SelectedIndex = IndexOfLvProduct;
                 if (cmbType.SelectedIndex == 2)
                     txtSearch.Focus();
-                if (cmbType.SelectedIndex == 5)
+                if (cmbType.SelectedIndex == 5&&IsChangeStarVariant)
                    UpdateStarList();
             }
             else
@@ -792,7 +798,8 @@ namespace ClubJumana.Wpf2
             ListForLvProduct = new ObservableCollection<VariantViewModel>(_productInformationService.AllStarVariantList());
             viewModel.LvProductItemSource = ListForLvProduct;
             txtSearch.Text = "";
-            lblCountResult.Content = ListForLvProduct.Count();
+            lblCountResult.Content ="Count :"+ ListForLvProduct.Count();
+            IsChangeStarVariant = false;
         }
         private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
         {
@@ -1209,7 +1216,8 @@ namespace ClubJumana.Wpf2
                 btnIsSetStarForVariant.Background = Brushes.Goldenrod;
                 _productInformationService.SetStar(variant.Id);
             }
-              
+
+            IsChangeStarVariant = true;
         }
     }
 }
