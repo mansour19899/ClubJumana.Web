@@ -91,7 +91,8 @@ namespace ClubJumana.Wpf2
                 new { Id = 2, Name = "Style Number" },
                 new { Id = 3, Name = "Barcode" },
                 new { Id = 4, Name = "SKU" },
-                new { Id = 5, Name = "Tittle" }
+                new { Id = 5, Name = "Tittle" },
+                new { Id = 6, Name = "Star List" }
             }.ToList();
 
             cmbType.SelectedIndex = 0;
@@ -149,8 +150,14 @@ namespace ClubJumana.Wpf2
         {
             //CheckConectionToServe();
             //ShowErrorMassegeToConectionInternet();
-            myMessageQueue.Enqueue("Club Jummana");
+            //myMessageQueue.Enqueue("Club Jummana");
+            if (cmbType.SelectedIndex == 5)
+                 UpdateStarList();
+            else
+                cmbType.SelectedIndex = 5;
+            
         }
+
         void SetFilter()
         {
             var t = TempList;
@@ -284,6 +291,9 @@ namespace ClubJumana.Wpf2
                     break;
                 case 4:
                     txtSearch.Clear();
+                    break;
+                case 6:
+                    UpdateStarList();
                     break;
                 default:
                     MessageBox.Show("Error 121");
@@ -743,6 +753,7 @@ namespace ClubJumana.Wpf2
         {
             GrdCostCenter.Visibility = Visibility.Hidden;
             GrdCostShowMore.Visibility = Visibility.Collapsed;
+
         }
 
         private void CmbCountry_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -766,6 +777,8 @@ namespace ClubJumana.Wpf2
                 //lvProducts.SelectedIndex = IndexOfLvProduct;
                 if (cmbType.SelectedIndex == 2)
                     txtSearch.Focus();
+                if (cmbType.SelectedIndex == 5)
+                   UpdateStarList();
             }
             else
             {
@@ -774,7 +787,13 @@ namespace ClubJumana.Wpf2
             }
         }
 
-
+        private void UpdateStarList()
+        {
+            ListForLvProduct = new ObservableCollection<VariantViewModel>(_productInformationService.AllStarVariantList());
+            viewModel.LvProductItemSource = ListForLvProduct;
+            txtSearch.Text = "";
+            lblCountResult.Content = ListForLvProduct.Count();
+        }
         private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -952,6 +971,7 @@ namespace ClubJumana.Wpf2
                 ShowImageVariant(SelectedIndexVariant);
                 grdNoteVariant.Visibility = Visibility.Visible;
                 ShowNoteVariant();
+                ShowStateStarOfVariant();
                 ImageSelected = 0;
             }
 
@@ -968,6 +988,14 @@ namespace ClubJumana.Wpf2
         private void ShowNoteVariant()
         {
             txtRemarksVariant.Text = InfoProduct.List[SelectedIndexVariant].Note;
+        }
+        private void ShowStateStarOfVariant()
+        {
+            if(InfoProduct.List[SelectedIndexVariant].IsStar)
+                btnIsSetStarForVariant.Background = Brushes.Goldenrod;
+            else
+                btnIsSetStarForVariant.Background = new SolidColorBrush(Color.FromRgb(96, 125, 139));
+
         }
 
         private void ShowImageVariant(int index, int imgSelect = 0)
@@ -1166,5 +1194,22 @@ namespace ClubJumana.Wpf2
         }
 
 
+        private void BtnIsSetStarForVariant_OnClick(object sender, RoutedEventArgs e)
+        {
+            var variant = lvVariant.SelectedItems[0] as Variant;
+            
+            if (btnIsSetStarForVariant.Background == Brushes.Goldenrod)
+            {
+                btnIsSetStarForVariant.Background = new SolidColorBrush(Color.FromRgb(96, 125, 139));
+                _productInformationService.SetStar(variant.Id,false);
+            }
+
+            else
+            {
+                btnIsSetStarForVariant.Background = Brushes.Goldenrod;
+                _productInformationService.SetStar(variant.Id);
+            }
+              
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public Company ExistCompany(string CompanyName);
 
         public List<VariantViewModel> AllVariantList();
+        public List<VariantViewModel> AllStarVariantList();
         public Product GiveMeProductWithId(int Id);
         public int AddSku(int Id, string Sku);
         public int AddBarcode(int Id);
@@ -26,6 +27,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int UpdateVariantNote(int Id,string note);
         public int UpdateProduct(ProductInformationViewModel productInformationView);
         public int TransferProductsToProductMaster(List<VariantViewModel> list);
+        public bool SetStar(int Id, bool Set = true);
     }
     
 }

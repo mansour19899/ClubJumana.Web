@@ -200,7 +200,20 @@
                                 <RowDefinition Height="0.15*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Button Name="btnEditNoteVariant" Content="Note" Width="100" HorizontalAlignment="Left" Click="BtnEditNoteVariant_OnClick" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnEditNoteVariant" Content="Note" Width="100" HorizontalAlignment="Left" Click="BtnEditNoteVariant_OnClick" />
+                                <Button
+                                    Name="btnIsSetStarForVariant"
+                                    Width="100"
+                                    Margin="20 0 0 0"
+                                    ToolTip="Set as favorite"
+                                    Click="BtnIsSetStarForVariant_OnClick">
+                                    <materialDesign:PackIcon
+                                        Kind="Star"
+                                        Height="24"
+                                        Width="24"/>
+                                </Button>
+                            </StackPanel>
                             <TextBlock Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource Style1}"  />
                         </Grid>
                         <Grid Margin="0 0 0 40">

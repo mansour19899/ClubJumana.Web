@@ -259,6 +259,51 @@ namespace ClubJumana.Core.Services
             return list;
         }
 
+        public List<VariantViewModel> AllStarVariantList()
+        {
+            List<VariantViewModel> list = new List<VariantViewModel>();
+            List<Variant> VariantslList;
+            if (Consts.Consts.OnlineModeOnly)
+            {
+                VariantslList = _onlineContext.variants.Where(p=>p.IsStar).OrderBy(p => p.ProductFK).Include(p => p.Product)
+                    .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
+                    .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
+            }
+            else
+            {
+                VariantslList = _context.variants.Where(p => p.IsStar).OrderBy(p => p.ProductFK).Include(p => p.Product)
+                    .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
+                    .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
+            }
+
+            foreach (var VARIABLE in VariantslList)
+            {
+                list.Add(new VariantViewModel()
+                {
+                    Id = VARIABLE.Id,
+                    SKU = VARIABLE.Sku,
+                    ProductFK = VARIABLE.ProductFK,
+                    ColourFK = VARIABLE.ColourFK,
+                    BarcodeFK = VARIABLE.BarcodeFK,
+                    ProductTypeFK = VARIABLE.ProductTypeFK,
+                    FobPrice = VARIABLE.FobPrice,
+                    WholesaleA = VARIABLE.WholesaleA,
+                    WholesaleB = VARIABLE.WholesaleB,
+                    RetailPrice = VARIABLE.RetailPrice,
+                    Size = VARIABLE.Size,
+                    Product = VARIABLE.Product,
+                    Colour = VARIABLE.Colour,
+                    Barcode = VARIABLE.Barcode,
+                    ProductType = VARIABLE.ProductType
+                });
+            }
+
+            //Add another Variant 
+
+            return list;
+        }
+
+
         public Product GiveMeProductWithId(int Id)
         {
             Product product;
@@ -648,6 +693,36 @@ namespace ClubJumana.Core.Services
 
             _onlineContext.SaveChanges();
             return 1;
+        }
+
+        public bool SetStar(int Id, bool Set=true)
+        {
+            try
+            {
+                var variant = _onlineContext.variants.FirstOrDefault(p => p.Id == Id);
+                if (variant == null)
+                    return false;
+                else
+                {
+                    if (Set)
+                    {
+                        variant.IsStar = true;
+                    }
+                    else
+                    {
+                        variant.IsStar = false;
+                    }
+
+                    _onlineContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
         }
     }
 }

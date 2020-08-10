@@ -61,10 +61,10 @@ namespace ClubJumana.DataLayer.Context
         {
             // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
-             //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-             optionsBuilder.UseMySQL("server=localhost;database=Test811;user=root;password=SmmRey2018");
-             // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-           //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+            //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test811;user=root;password=SmmRey2018");
+            // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+            //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 
             //Update-Database -Context JummanaContext
         }
@@ -76,19 +76,19 @@ namespace ClubJumana.DataLayer.Context
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.HasData(new TablesVersion() { Id = 1, Name = "Barcodes", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 2, Name = "Colours", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id =3 , Name = "Brands", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 4, Name = "Countries", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 5, Name = "Materials", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 6, Name = "Companies", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 7, Name = "Products", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 8, Name = "Categories", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 9, Name = "SubCategories", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 10, Name = "CategoriesSubCategories", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 11, Name = "ProductTypes", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 12, Name = "Varaints", NeedToUpdate = false,RowVersion = 0});
-                entity.HasData(new TablesVersion() { Id = 13, Name = "Images", NeedToUpdate = false,RowVersion = 0});
+                entity.HasData(new TablesVersion() { Id = 1, Name = "Barcodes", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 2, Name = "Colours", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 3, Name = "Brands", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 4, Name = "Countries", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 5, Name = "Materials", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 6, Name = "Companies", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 7, Name = "Products", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 8, Name = "Categories", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 9, Name = "SubCategories", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 10, Name = "CategoriesSubCategories", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 11, Name = "ProductTypes", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 12, Name = "Varaints", NeedToUpdate = false, RowVersion = 0 });
+                entity.HasData(new TablesVersion() { Id = 13, Name = "Images", NeedToUpdate = false, RowVersion = 0 });
 
             });
 
@@ -523,8 +523,8 @@ namespace ClubJumana.DataLayer.Context
 
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
-           //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-           // optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
+            //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
+            // optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
             optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 

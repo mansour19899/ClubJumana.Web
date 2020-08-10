@@ -36,6 +36,8 @@ namespace ClubJumana.DataLayer.Entities
         public string Data5 { get; set; }
         [StringLength(100)]
         public string Data6 { get; set; }
+
+        public bool IsStar { get; set; } = false;
         public DateTime LastDateEdited { get; set; }
         [Timestamp]
         public DateTime RowVersion { get; set; }
