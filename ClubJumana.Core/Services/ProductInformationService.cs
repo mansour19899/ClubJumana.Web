@@ -151,7 +151,7 @@ namespace ClubJumana.Core.Services
             var CategoryStyleCode = _onlineContext.categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
             var SubCategoryCode = _onlineContext.subcategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _onlineContext.products.AsNoTracking().ToList().LastOrDefault();
+            var tt = _onlineContext.products.AsNoTracking().OrderByDescending(p=>p.Id).FirstOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
