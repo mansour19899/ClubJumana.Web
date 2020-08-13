@@ -173,7 +173,7 @@
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="Product Tittle" />
-                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle}" />
+                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle}" ToolTip="{Binding Info.ProductTittle}" />
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="Company" />
