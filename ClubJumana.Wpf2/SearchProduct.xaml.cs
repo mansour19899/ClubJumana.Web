@@ -92,7 +92,7 @@ namespace ClubJumana.Wpf2
                 new { Id = 3, Name = "Barcode" },
                 new { Id = 4, Name = "SKU" },
                 new { Id = 5, Name = "Tittle" },
-                new { Id = 6, Name = "Star List" }
+                new { Id = 6, Name = "Favorite List" }
             }.ToList();
 
             cmbType.SelectedIndex = 0;
@@ -454,6 +454,8 @@ namespace ClubJumana.Wpf2
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
+                        if (variant.ProductType.CategoriesSubCategory == null)
+                            variant = _productInformationService.GiveMeVariantById(variant.Id);
                         var tet = _productInformationService.GiveMeSku(variant.ProductType.CategoriesSubCategory.Category.Sku_code,
                             variant.ProductType.CategoriesSubCategory.SubCategory.Code, variant.ProductType.Code);
                         _productInformationService.AddSku(variant.Id, tet);
@@ -831,7 +833,7 @@ namespace ClubJumana.Wpf2
                     if (x == InfoProduct.VariantSelected.Id)
                     {
                         int IndexOfVariant = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
-
+                        int CurrentColor = InfoProduct.List[IndexOfVariant].Colour.Id;
                         InfoProduct.List[IndexOfVariant].Colour.Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text;
                         InfoProduct.List[IndexOfVariant].Colour.Id = InfoProduct.VariantSelected.ColourFK.Value;
                         InfoProduct.List[IndexOfVariant].ColourFK = InfoProduct.VariantSelected.Colour.Id;
@@ -841,9 +843,12 @@ namespace ClubJumana.Wpf2
                         //InfoProduct.List.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).ColourFK = InfoProduct.VariantSelected.ColourFK;
 
                         lvVariant.Items.Refresh();
+                        if (CurrentColor != Convert.ToInt16(cmbEditVariantColor.SelectedValue))
+                        {
+                            ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
+                            VaraintList.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
+                        }
 
-                        ListForLvProduct.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
-                        VaraintList.FirstOrDefault(p => p.Id == InfoProduct.VariantSelected.Id).Colour = new Colour() { Name = (IsAddColor) ? txtColorNameInEditVariant.Text : cmbEditVariantColor.Text };
                     }
                     else
                     {
@@ -1170,6 +1175,8 @@ namespace ClubJumana.Wpf2
         {
             txtNoteVariant.Text = txtRemarksVariant.Text;
             GrdEditNoteVariant.Visibility = Visibility.Visible;
+            txtNoteVariant.Focus();
+            txtNoteVariant.Select(txtNoteVariant.Text.Length, 0);
         }
 
         private void BtnCloseGrdEditProduct_OnClick(object sender, RoutedEventArgs e)
