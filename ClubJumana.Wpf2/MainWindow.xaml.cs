@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClubJumana.Core.Services;
+using ClubJumana.DataLayer.Context;
+using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf2
 {
@@ -131,6 +133,7 @@ namespace ClubJumana.Wpf2
         {
             ShowErrorMassegeToConectionInternet();
             CheckImageForDownload();
+            //System.Diagnostics.Debugger.Break();
         }
     }
 }

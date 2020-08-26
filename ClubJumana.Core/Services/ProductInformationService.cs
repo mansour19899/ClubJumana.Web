@@ -297,7 +297,8 @@ namespace ClubJumana.Core.Services
                     Product = VARIABLE.Product,
                     Colour = VARIABLE.Colour,
                     Barcode = VARIABLE.Barcode,
-                    ProductType = VARIABLE.ProductType
+                    ProductType = VARIABLE.ProductType,
+                    Data1 = VARIABLE.Data1
                 });
             }
 
@@ -728,13 +729,20 @@ namespace ClubJumana.Core.Services
                 Description.AppendLine(item.ProductType.Name + "," + "100% Cotton,");
                 Description.AppendLine( item.Data1+ " GSM," + item.Size+",");
                 Description.AppendLine( item.Colour.Name);
-                ws.Cells[i, 1].Value =item.Barcode.BarcodeNumber;
+                try
+                {
+                    ws.Cells[i, 1].Value = item.Barcode.BarcodeNumber;
+                }
+                catch (Exception e)
+                {
+                    return -11;
+                }
                 ws.Cells[i, 2].Value = Description;
                 ws.Cells[i, 9].Value = Description;
                 ws.Cells[i, 3].Value = item.SKU;
                 ws.Cells[i, 4].Value = "Inventory";
                 ws.Cells[i, 5].Value = item.WholesaleB.ToString();
-                ws.Cells[i, 10].Value = item.FobPrice.ToString();
+                ws.Cells[i, 10].Value = Math.Round(item.FobPrice.Value * 1.38m,2,MidpointRounding.AwayFromZero).ToString();
                 ws.Cells[i, 14].Value = "0";
                 ws.Row(i).Height = 80;
                 ++i;

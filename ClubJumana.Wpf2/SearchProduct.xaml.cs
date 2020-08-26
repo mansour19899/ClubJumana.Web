@@ -152,10 +152,10 @@ namespace ClubJumana.Wpf2
             //ShowErrorMassegeToConectionInternet();
             //myMessageQueue.Enqueue("Club Jummana");
             if (cmbType.SelectedIndex == 5)
-                 UpdateStarList();
+                UpdateStarList();
             else
                 cmbType.SelectedIndex = 5;
-            
+
         }
 
         void SetFilter()
@@ -500,7 +500,7 @@ namespace ClubJumana.Wpf2
                         {
                             InfoProduct.List.FirstOrDefault(p => p.Id == variant.Id).Barcode = varaintt.Barcode;
                             lvVariant.Items.Refresh();
-                            var ee=ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id);
+                            var ee = ListForLvProduct.FirstOrDefault(p => p.Id == variant.Id);
                             if (ee != null)
                             {
                                 ee.Barcode = varaintt.Barcode;
@@ -785,8 +785,8 @@ namespace ClubJumana.Wpf2
                 //lvProducts.SelectedIndex = IndexOfLvProduct;
                 if (cmbType.SelectedIndex == 2)
                     txtSearch.Focus();
-                if (cmbType.SelectedIndex == 5&&IsChangeStarVariant)
-                   UpdateStarList();
+                if (cmbType.SelectedIndex == 5 && IsChangeStarVariant)
+                    UpdateStarList();
             }
             else
             {
@@ -800,7 +800,7 @@ namespace ClubJumana.Wpf2
             ListForLvProduct = new ObservableCollection<VariantViewModel>(_productInformationService.AllStarVariantList());
             viewModel.LvProductItemSource = ListForLvProduct;
             txtSearch.Text = "";
-            lblCountResult.Content ="Count :"+ ListForLvProduct.Count();
+            lblCountResult.Content = "Count :" + ListForLvProduct.Count();
             IsChangeStarVariant = false;
         }
         private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
@@ -864,7 +864,8 @@ namespace ClubJumana.Wpf2
                             Size = newVariant.Size,
                             ProductType = newVariant.ProductType,
                             Product = newVariant.Product,
-                            Id = newVariant.Id
+                            Id = newVariant.Id,
+                            Data1 = newVariant.Data1
                         });
                         ListForLvProduct.Add(new VariantViewModel()
                         {
@@ -873,7 +874,8 @@ namespace ClubJumana.Wpf2
                             Size = newVariant.Size,
                             ProductType = newVariant.ProductType,
                             Product = newVariant.Product,
-                            Id = newVariant.Id
+                            Id = newVariant.Id,
+                            Data1 = newVariant.Data1
                         });
 
                     }
@@ -1003,7 +1005,7 @@ namespace ClubJumana.Wpf2
         }
         private void ShowStateStarOfVariant()
         {
-            if(InfoProduct.List[SelectedIndexVariant].IsStar)
+            if (InfoProduct.List[SelectedIndexVariant].IsStar)
                 btnIsSetStarForVariant.Background = Brushes.Goldenrod;
             else
                 btnIsSetStarForVariant.Background = new SolidColorBrush(Color.FromRgb(96, 125, 139));
@@ -1200,13 +1202,15 @@ namespace ClubJumana.Wpf2
         private void BtnAddProductToProductMaster_OnClick(object sender, RoutedEventArgs e)
         {
             //_productInformationService.TransferProductsToProductMaster(SelectedList);
-          int res=  _productInformationService.ExcelForQuickbooks(SelectedList);
-          if (res == -10)
-              MessageBox.Show("Please Close Excel File");
-          else
-          {
-              myMessageQueue.Enqueue("Excel File Created.");
-            
+            int res = _productInformationService.ExcelForQuickbooks(SelectedList);
+            if (res == -10)
+                MessageBox.Show("Please Close Excel File");
+            else if (res == -1)
+                MessageBox.Show("Please Check Barcodes");
+            else
+            {
+                myMessageQueue.Enqueue("Excel File Created.");
+
             }
         }
 
@@ -1219,11 +1223,11 @@ namespace ClubJumana.Wpf2
         private void BtnIsSetStarForVariant_OnClick(object sender, RoutedEventArgs e)
         {
             var variant = lvVariant.SelectedItems[0] as Variant;
-            
+
             if (btnIsSetStarForVariant.Background == Brushes.Goldenrod)
             {
                 btnIsSetStarForVariant.Background = new SolidColorBrush(Color.FromRgb(96, 125, 139));
-                _productInformationService.SetStar(variant.Id,false);
+                _productInformationService.SetStar(variant.Id, false);
             }
 
             else
