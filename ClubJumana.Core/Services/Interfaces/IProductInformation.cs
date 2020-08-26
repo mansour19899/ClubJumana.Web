@@ -27,6 +27,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public int UpdateVariantNote(int Id,string note);
         public int UpdateProduct(ProductInformationViewModel productInformationView);
         public int TransferProductsToProductMaster(List<VariantViewModel> list);
+        public int ExcelForQuickbooks(List<VariantViewModel> list);
         public bool SetStar(int Id, bool Set = true);
     }
     

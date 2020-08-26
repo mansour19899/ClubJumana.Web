@@ -1199,7 +1199,15 @@ namespace ClubJumana.Wpf2
 
         private void BtnAddProductToProductMaster_OnClick(object sender, RoutedEventArgs e)
         {
-            _productInformationService.TransferProductsToProductMaster(SelectedList);
+            //_productInformationService.TransferProductsToProductMaster(SelectedList);
+          int res=  _productInformationService.ExcelForQuickbooks(SelectedList);
+          if (res == -10)
+              MessageBox.Show("Please Close Excel File");
+          else
+          {
+              myMessageQueue.Enqueue("Excel File Created.");
+            
+            }
         }
 
         private void LblFobPriceInCostCenter_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)

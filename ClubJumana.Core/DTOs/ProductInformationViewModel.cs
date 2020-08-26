@@ -94,7 +94,7 @@ namespace ClubJumana.Core.DTOs
         public decimal? WholesaleB { get; set; }
         public decimal? RetailPrice { get; set; }
         private string _size;
-
+        public string Data1 { get; set; }
         public string Size
         {
             get { return _size; }

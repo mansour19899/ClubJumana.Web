@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -13,6 +14,7 @@ using ClubJumana.DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using OfficeOpenXml;
 
 namespace ClubJumana.Core.Services
 {
@@ -250,7 +252,8 @@ namespace ClubJumana.Core.Services
                     Product = VARIABLE.Product,
                     Colour = VARIABLE.Colour,
                     Barcode = VARIABLE.Barcode,
-                    ProductType = VARIABLE.ProductType
+                    ProductType = VARIABLE.ProductType,
+                    Data1 = VARIABLE.Data1
                 });
             }
 
@@ -692,6 +695,56 @@ namespace ClubJumana.Core.Services
             }
 
             _onlineContext.SaveChanges();
+            return 1;
+        }
+
+        public int ExcelForQuickbooks(List<VariantViewModel> list)
+        {
+            var Path = AppDomain.CurrentDomain.BaseDirectory;
+            FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "QuickbooksSample.xlsx");
+
+            string filee = Path + "Results" + @"\" + "QuickbooksResult.xlsx";
+            FileInfo newFilee = new FileInfo(filee);
+            try
+            {
+                if (newFilee.Exists)
+                    newFilee.Delete();
+            }
+            catch (Exception e)
+            {
+                return -10;
+            }
+
+            ExcelPackage excel = new ExcelPackage(newFilee, newFile);
+
+            var wss = excel.Workbook.Worksheets;
+            var ws = excel.Workbook.Worksheets.ElementAt(0);
+            int i = 2;
+            StringBuilder Description;
+            foreach (var item in list)
+            {
+                Description=new StringBuilder();
+                Description.AppendLine(item.Product.StyleNumber);
+                Description.AppendLine(item.ProductType.Name + "," + "100% Cotton,");
+                Description.AppendLine( item.Data1+ " GSM," + item.Size+",");
+                Description.AppendLine( item.Colour.Name);
+                ws.Cells[i, 1].Value =item.Barcode.BarcodeNumber;
+                ws.Cells[i, 2].Value = Description;
+                ws.Cells[i, 9].Value = Description;
+                ws.Cells[i, 3].Value = item.SKU;
+                ws.Cells[i, 4].Value = "Inventory";
+                ws.Cells[i, 5].Value = item.WholesaleB.ToString();
+                ws.Cells[i, 10].Value = item.FobPrice.ToString();
+                ws.Cells[i, 14].Value = "0";
+                ws.Row(i).Height = 80;
+                ++i;
+            }
+
+            FileStream objFileStrm = File.Create(filee);
+            objFileStrm.Close();
+
+            // Write content to excel file  
+            File.WriteAllBytes(filee, excel.GetAsByteArray());
             return 1;
         }
 
