@@ -174,7 +174,7 @@ namespace ClubJumana.Core.Services
         public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode)
 
         {
-            var list = _onlineContext.variants.Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
+            var list = _onlineContext.variants.AsNoTracking().OrderBy(p=>p.Id).Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
             string LastSkuNumber = "";
             Int32 SkuNumber = 0;
             int MaxSku = 0;
