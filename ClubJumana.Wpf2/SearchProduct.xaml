@@ -214,7 +214,11 @@
                                         Width="24"/>
                                 </Button>
                             </StackPanel>
-                            <TextBlock Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource Style1}"  />
+                            <TextBox Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource txtSelectAble}"  >
+                                <TextBox.Resources>
+                                    
+                                </TextBox.Resources>
+                            </TextBox>
                         </Grid>
                         <Grid Margin="0 0 0 40">
                             <Grid.ColumnDefinitions>
