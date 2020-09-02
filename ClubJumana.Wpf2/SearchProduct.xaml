@@ -555,7 +555,7 @@
                                                 <TextBox Name="txttCreditIN10CAD" Text="{Binding Info.CostCenterAnalyze.CreditIN10D ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
                                             </UniformGrid>
                                             <UniformGrid Grid.Row="5" Grid.Column="4" Rows="1" Columns="2" >
-                                                <TextBox Name="txtWholeCashCAD" Text="{Binding Info.CostCenter.WholeCashD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100"/>
+                                                <TextBox Name="txtWholeCashCAD" Text="{Binding Info.CostCenter.WholeCashD ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" IsReadOnly="False"  Style="{StaticResource txtCostCentreStyleDefault}" Width="100" LostFocus="TxtWholeCashCAD_OnLostFocus"/>
                                                 <TextBox Name="txttWholeCashCAD" Text="{Binding Info.CostCenterAnalyze.WholeCashD ,Mode=OneWay}" IsReadOnly="True"  Style="{StaticResource txtCostCentreStyle}" Width="100"/>
                                             </UniformGrid>
                                             <UniformGrid Grid.Row="6" Grid.Column="4" Rows="1" Columns="2" >

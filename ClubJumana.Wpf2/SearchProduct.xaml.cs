@@ -1238,5 +1238,10 @@ namespace ClubJumana.Wpf2
 
             IsChangeStarVariant = true;
         }
+
+        private void TxtWholeCashCAD_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            InfoProduct.CostCenter.Calculate();
+        }
     }
 }

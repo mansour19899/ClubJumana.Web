@@ -163,7 +163,22 @@ namespace ClubJumana.Core.Convertors
         public decimal CreditIN10D { get => _creditIN10D; }
 
         private decimal _wholeCashD = 0;
-        public decimal WholeCashD { get => _wholeCashD; }
+
+        public decimal WholeCashD
+        {
+            get => _wholeCashD;
+            set
+            {
+                CalculateMargin(value);
+                OnPropertyChanged(nameof(WholeCashUSD));
+                OnPropertyChanged(nameof(WLGrossUSD));
+                OnPropertyChanged(nameof(WLGrossD));
+                OnPropertyChanged(nameof(WLMarginUSD));
+                OnPropertyChanged(nameof(WLMarginD));
+                OnPropertyChanged(nameof(WholeCreditUSD));
+                OnPropertyChanged(nameof(WholeCreditD));
+            }
+        }
 
         private decimal _wholeCreditD = 0;
         public decimal WholeCreditD { get => _wholeCreditD; }
@@ -257,7 +272,7 @@ namespace ClubJumana.Core.Convertors
         public string MarginWholeSaleB { get; set; }
 
         public string MarginRetailPrice { get; set; }
-        private void Calculate()
+        public void Calculate()
         {
             _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);
             _wholesaleUSD = Math.Round(_landedCostUSD * 1.55m, 2, MidpointRounding.AwayFromZero);
@@ -308,6 +323,23 @@ namespace ClubJumana.Core.Convertors
             OnPropertyChanged(nameof(LandedCostRate));
             OnPropertyChanged(nameof(ExchangeRate));
             OnPropertyChanged(nameof(Country));
+        }
+
+        private void CalculateMargin(decimal wholesaleCashCAD)
+        {
+            if(wholesaleCashCAD!=0m)
+            {
+                _wholeCashD = wholesaleCashCAD;
+                _wLGrossD = Math.Round(_wholeCashD - _landedCostD, 2, MidpointRounding.AwayFromZero);
+                _wLMarginD = Math.Round(_wLGrossD / _wholeCashD * 100, 2, MidpointRounding.AwayFromZero);
+                _wholeCreditD = 0m;
+
+                _wholeCashUSD = Math.Round(_wholeCashD / _exChangeRate, 2, MidpointRounding.AwayFromZero);
+                _wLGrossUSD = Math.Round(_wholeCashUSD - _landedCostUSD, 2, MidpointRounding.AwayFromZero);
+                _wLMarginUSD = Math.Round(_wLGrossUSD / _wholeCashUSD * 100, 2, MidpointRounding.AwayFromZero);
+                _wholeCreditUSD = 0m;
+            }
+
         }
     }
 }
