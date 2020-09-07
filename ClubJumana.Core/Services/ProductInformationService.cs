@@ -153,7 +153,7 @@ namespace ClubJumana.Core.Services
             var CategoryStyleCode = _onlineContext.categories.SingleOrDefault(p => p.Id == Category).StyleNum_code;
             var SubCategoryCode = _onlineContext.subcategories.SingleOrDefault(p => p.Id == SubCategory).Code;
 
-            var tt = _onlineContext.products.AsNoTracking().OrderByDescending(p=>p.Id).FirstOrDefault();
+            var tt = _onlineContext.products.AsNoTracking().OrderByDescending(p => p.Id).FirstOrDefault();
             string LastStyleNumber = "";
             if (tt == null)
             {
@@ -174,7 +174,7 @@ namespace ClubJumana.Core.Services
         public string GiveMeSku(string CategoryCode, string SubCategoryCode, string ProductTypeCode)
 
         {
-            var list = _onlineContext.variants.AsNoTracking().OrderBy(p=>p.Id).Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
+            var list = _onlineContext.variants.AsNoTracking().OrderBy(p => p.Id).Skip(90).Where(p => p.Sku != null && p.Sku != "0").ToList();
             string LastSkuNumber = "";
             Int32 SkuNumber = 0;
             int MaxSku = 0;
@@ -203,7 +203,7 @@ namespace ClubJumana.Core.Services
         public Variant GiveMeVariantById(int Id)
         {
             if (Consts.Consts.OnlineModeOnly)
-                return _onlineContext.variants.AsNoTracking().Include(p => p.Colour).Include(p=>p.Images).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
+                return _onlineContext.variants.AsNoTracking().Include(p => p.Colour).Include(p => p.Images).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
             else
                 return _context.variants.Include(p => p.Colour).Include(p => p.Product).Include(p => p.ProductType).Include(p => p.Barcode).FirstOrDefault(p => p.Id == Id);
         }
@@ -268,7 +268,7 @@ namespace ClubJumana.Core.Services
             List<Variant> VariantslList;
             if (Consts.Consts.OnlineModeOnly)
             {
-                VariantslList = _onlineContext.variants.Where(p=>p.IsStar).OrderBy(p => p.ProductFK).Include(p => p.Product)
+                VariantslList = _onlineContext.variants.Where(p => p.IsStar).OrderBy(p => p.ProductFK).Include(p => p.Product)
                     .Include(p => p.Barcode).Include(p => p.ProductType).ThenInclude(p => p.CategoriesSubCategory)
                     .Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).Include(p => p.Colour).ToList();
             }
@@ -337,9 +337,9 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             var Variant = _onlineContext.variants.SingleOrDefault(p => p.Id == Id);
-            Variant Variantt=new Variant();
+            Variant Variantt = new Variant();
             if (!Consts.Consts.OnlineModeOnly)
-                 Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
+                Variantt = _context.variants.SingleOrDefault(p => p.Id == Id);
 
             if (Variant == null)
             {
@@ -411,7 +411,7 @@ namespace ClubJumana.Core.Services
                 _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
             }
         }
-        public int AddOrUpdateVariant(Variant variant, int ProductId)
+        public int AddOrUpdateVariant(Variant variant, int ProductId, bool UpdateSameVariant)
         {
             DetachedAllEntries();
 
@@ -476,39 +476,70 @@ namespace ClubJumana.Core.Services
             }
             else
             {
-                Variant variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
-                Variant variantdbb;
+                Variant variantdb = new Variant();
 
+                Variant variantdbb;
+                List<Variant> list;
+                variantdb = _onlineContext.variants.SingleOrDefault(p => p.Id == variant.Id);
                 if (variantdb == null)
                     return -1;
                 else
                 {
-                    variantdb.WholesaleA = variant.WholesaleA;
-                    variantdb.WholesaleB = variant.WholesaleB;
-                    variantdb.RetailPrice = variant.RetailPrice;
-                    variantdb.FobPrice = variant.FobPrice;
-                    variantdb.ColourFK = variant.ColourFK;
-                    variantdb.length = variant.length;
-                    variantdb.Width = variant.Width;
-                    variantdb.Size = variant.Size;
-                    variantdb.LastDateEdited = DateTime.Now;
-
-                    if (!Consts.Consts.OnlineModeOnly)
+                    if (UpdateSameVariant)
                     {
-                        variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
-                        variantdbb.WholesaleA = variant.WholesaleA;
-                        variantdbb.WholesaleB = variant.WholesaleB;
-                        variantdbb.RetailPrice = variant.RetailPrice;
-                        variantdbb.FobPrice = variant.FobPrice;
-                        variantdbb.ColourFK = variant.ColourFK;
-                        variantdbb.length = variant.length;
-                        variantdbb.Width = variant.Width;
-                        variantdbb.Size = variant.Size;
-                        variantdbb.LastDateEdited = DateTime.Now;
+                        list = _onlineContext.variants.Where(p => p.ProductFK == variantdb.ProductFK && p.ProductTypeFK == variantdb.ProductTypeFK && p.Size.Trim().CompareTo(variantdb.Size.Trim()) == 0).ToList();
+                        if (list.Count == 0)
+                        {
+                            return -1;
+                        }
+                        else
+                        {
+                            foreach (var item in list)
+                            {
+                                item.WholesaleA = variant.WholesaleA;
+                                item.WholesaleB = variant.WholesaleB;
+                                item.RetailPrice = variant.RetailPrice;
+                                item.FobPrice = variant.FobPrice;
+                                item.length = variant.length;
+                                item.Width = variant.Width;
+                                item.Size = variant.Size;
+                                item.LastDateEdited = DateTime.Now;
+                            }
+                        }
 
                     }
+                    else
+                    {
 
+                        variantdb.WholesaleA = variant.WholesaleA;
+                        variantdb.WholesaleB = variant.WholesaleB;
+                        variantdb.RetailPrice = variant.RetailPrice;
+                        variantdb.FobPrice = variant.FobPrice;
+                        variantdb.ColourFK = variant.ColourFK;
+                        variantdb.length = variant.length;
+                        variantdb.Width = variant.Width;
+                        variantdb.Size = variant.Size;
+                        variantdb.LastDateEdited = DateTime.Now;
+
+                        if (!Consts.Consts.OnlineModeOnly)
+                        {
+
+                            variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
+                            variantdbb.WholesaleA = variant.WholesaleA;
+                            variantdbb.WholesaleB = variant.WholesaleB;
+                            variantdbb.RetailPrice = variant.RetailPrice;
+                            variantdbb.FobPrice = variant.FobPrice;
+                            variantdbb.ColourFK = variant.ColourFK;
+                            variantdbb.length = variant.length;
+                            variantdbb.Width = variant.Width;
+                            variantdbb.Size = variant.Size;
+                            variantdbb.LastDateEdited = DateTime.Now;
+
+                        }
+                    }
+                    
                 }
+
             }
 
             _onlineContext.tablesversion.SingleOrDefault(p => p.Id == (int)TableName.Variants).RowVersion++;
@@ -724,11 +755,11 @@ namespace ClubJumana.Core.Services
             StringBuilder Description;
             foreach (var item in list)
             {
-                Description=new StringBuilder();
+                Description = new StringBuilder();
                 Description.AppendLine(item.Product.StyleNumber);
                 Description.AppendLine(item.ProductType.Name + "," + "100% Cotton,");
-                Description.AppendLine( item.Data1+ " GSM," + item.Size+",");
-                Description.AppendLine( item.Colour.Name);
+                Description.AppendLine(item.Data1 + " GSM," + item.Size + ",");
+                Description.AppendLine(item.Colour.Name);
                 try
                 {
                     ws.Cells[i, 1].Value = item.Barcode.BarcodeNumber;
@@ -742,7 +773,7 @@ namespace ClubJumana.Core.Services
                 ws.Cells[i, 3].Value = item.SKU;
                 ws.Cells[i, 4].Value = "Inventory";
                 ws.Cells[i, 5].Value = item.WholesaleB.ToString();
-                ws.Cells[i, 10].Value = Math.Round(item.FobPrice.Value * 1.38m,2,MidpointRounding.AwayFromZero).ToString();
+                ws.Cells[i, 10].Value = Math.Round(item.FobPrice.Value * 1.38m, 2, MidpointRounding.AwayFromZero).ToString();
                 ws.Cells[i, 14].Value = "0";
                 ws.Row(i).Height = 80;
                 ++i;
@@ -756,7 +787,7 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
-        public bool SetStar(int Id, bool Set=true)
+        public bool SetStar(int Id, bool Set = true)
         {
             try
             {

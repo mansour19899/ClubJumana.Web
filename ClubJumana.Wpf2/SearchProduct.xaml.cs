@@ -805,6 +805,7 @@ namespace ClubJumana.Wpf2
         }
         private void BtnUpdateVariant_OnClick(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 if (cmbEditVariantColor.SelectedIndex == -1)
@@ -829,7 +830,7 @@ namespace ClubJumana.Wpf2
                     }
 
                     InfoProduct.VariantSelected.ColourFK = (int)cmbEditVariantColor.SelectedValue;
-                    _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id);
+                    _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id,CheckBoxUpdateSameVariants.IsChecked.Value);
                     if (x == InfoProduct.VariantSelected.Id)
                     {
                         int IndexOfVariant = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
@@ -878,6 +879,21 @@ namespace ClubJumana.Wpf2
                             Data1 = newVariant.Data1
                         });
 
+                    }
+
+                    if (CheckBoxUpdateSameVariants.IsChecked == true)
+                    {
+                        int IndexOfVariantt = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
+                        foreach (var variant in InfoProduct.List)
+                        {
+                            if(variant.ProductTypeFK == InfoProduct.List[IndexOfVariantt].ProductTypeFK&& variant.Size.Trim().CompareTo(InfoProduct.List[IndexOfVariantt].Size.Trim()) == 0)
+                            {
+                                variant.WholesaleA = InfoProduct.List[IndexOfVariantt].WholesaleA;
+                                variant.WholesaleB = InfoProduct.List[IndexOfVariantt].WholesaleB;
+                                variant.FobPrice = InfoProduct.List[IndexOfVariantt].FobPrice;
+                                variant.RetailPrice = InfoProduct.List[IndexOfVariantt].RetailPrice;
+                            }
+                        }
                     }
 
                     cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();

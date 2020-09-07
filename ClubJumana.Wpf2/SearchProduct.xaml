@@ -671,10 +671,19 @@
                             <TextBlock/>
                             <Button Name="btnCloseGrdEditVariant" Content="Exit" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#940000" Click="BtnCloseGrdEditVariant_OnClick" />
                             <Button Name="btnUpdateVariant" Content="Update" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" FontSize="20" Margin="10 0" Background="#0a5d00" Click="BtnUpdateVariant_OnClick" />
-
-
-
                         </UniformGrid>
+                        <UniformGrid>
+                            <TextBlock></TextBlock>
+                        </UniformGrid>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="False"
+                                      Name="CheckBoxUpdateSameVariants"
+                                Content="X"
+                                Style="{StaticResource MaterialDesignActionDarkCheckBox}"
+                                ToolTip="MaterialDesignActionDarkCheckBox" />
+                            <TextBlock Margin="20 0 0 0"> Update  Same Variants</TextBlock>
+                        </StackPanel>
+
 
                     </UniformGrid >
 
