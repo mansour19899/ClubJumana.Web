@@ -1453,7 +1453,10 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasMaxLength(100);
 
                     b.Property<decimal?>("FobPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<bool>("IsStar")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LastDateEdited")
                         .HasColumnType("datetime");

@@ -526,7 +526,7 @@ namespace ClubJumana.DataLayer.Context
             //  optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             // optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-            //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+          //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
              optionsBuilder.UseMySQL("server=localhost;database=Test2020;user=root;password=SmmRey2018");
 
 
