@@ -228,7 +228,7 @@ namespace ClubJumana.Wpf2
                         break;
                     case 3:
 
-                        var tt = VaraintList
+                        var tt = VaraintList.Where(p => p.SKU != null)
                             .Where(p => p.SKU.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         ListForLvProduct = new ObservableCollection<VariantViewModel>(tt);
                         viewModel.LvProductItemSource = ListForLvProduct;
