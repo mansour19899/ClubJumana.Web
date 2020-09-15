@@ -822,7 +822,9 @@ namespace ClubJumana.Core.Services
             var ws = excel.Workbook.Worksheets.ElementAt(0);
             int i = 2;
             StringBuilder Description;
-            foreach (var item in variants)
+
+
+            foreach (var item in variants.OrderBy(p=>p.ProductFK))
             {
                 ws.Cells[i, 1].Value = item.Id;
                 ws.Cells[i, 2].Value = item.Product.StyleNumber;
