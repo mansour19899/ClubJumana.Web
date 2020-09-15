@@ -830,7 +830,7 @@ namespace ClubJumana.Wpf2
                     }
 
                     InfoProduct.VariantSelected.ColourFK = (int)cmbEditVariantColor.SelectedValue;
-                    _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id,CheckBoxUpdateSameVariants.IsChecked.Value);
+                    _productInformationService.AddOrUpdateVariant(InfoProduct.VariantSelected, InfoProduct.Id, CheckBoxUpdateSameVariants.IsChecked.Value);
                     if (x == InfoProduct.VariantSelected.Id)
                     {
                         int IndexOfVariant = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
@@ -886,7 +886,7 @@ namespace ClubJumana.Wpf2
                         int IndexOfVariantt = InfoProduct.List.ToList().FindIndex(p => p.Id == InfoProduct.VariantSelected.Id);
                         foreach (var variant in InfoProduct.List)
                         {
-                            if(variant.ProductTypeFK == InfoProduct.List[IndexOfVariantt].ProductTypeFK&& variant.Size.Trim().CompareTo(InfoProduct.List[IndexOfVariantt].Size.Trim()) == 0)
+                            if (variant.ProductTypeFK == InfoProduct.List[IndexOfVariantt].ProductTypeFK && variant.Size.Trim().CompareTo(InfoProduct.List[IndexOfVariantt].Size.Trim()) == 0)
                             {
                                 variant.WholesaleA = InfoProduct.List[IndexOfVariantt].WholesaleA;
                                 variant.WholesaleB = InfoProduct.List[IndexOfVariantt].WholesaleB;
@@ -1278,8 +1278,14 @@ namespace ClubJumana.Wpf2
 
         private void BtnExportAll_OnClick(object sender, RoutedEventArgs e)
         {
-            btnExportAll.IsEnabled = false;
-            ExportSelectList();
+            if (SelectedList.Count == 0)
+                MessageBox.Show("Selected List is empty");
+            else
+            {
+                btnExportAll.IsEnabled = false;
+                ExportSelectList();
+            }
+
 
         }
 
