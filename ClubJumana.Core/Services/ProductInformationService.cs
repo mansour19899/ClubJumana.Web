@@ -787,6 +787,67 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
+        public int ExportAllDataBase(List<VariantViewModel> list)
+        {
+            List<Variant> variants=new List<Variant>();
+
+            foreach (var VARIABLE in list)
+            {
+                if (VARIABLE.BarcodeFK != null)
+                {
+                    variants.Add(_onlineContext.variants.Include(p=>p.Barcode)
+                        .Include(p=>p.ProductType).Include(p=>p.Colour).FirstOrDefault(p=>p.Id==VARIABLE.Id));
+                }
+            }
+            
+
+            var Path = AppDomain.CurrentDomain.BaseDirectory;
+            FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "ExportFromDataBase.xlsx");
+
+            string filee = Path + "Results" + @"\" + "Database-"+DateTime.Today.ToShortDateString()+ ".xlsx";
+            FileInfo newFilee = new FileInfo(filee);
+            try
+            {
+                if (newFilee.Exists)
+                    newFilee.Delete();
+            }
+            catch (Exception e)
+            {
+                return -10;
+            }
+
+            ExcelPackage excel = new ExcelPackage(newFilee, newFile);
+
+            var wss = excel.Workbook.Worksheets;
+            var ws = excel.Workbook.Worksheets.ElementAt(0);
+            int i = 2;
+            StringBuilder Description;
+            foreach (var item in variants)
+            {
+                ws.Cells[i, 1].Value = item.Id;
+                ws.Cells[i, 2].Value = item.Product.StyleNumber;
+                ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber;
+                ws.Cells[i, 4].Value = item.Sku;
+                ws.Cells[i, 5].Value = item.ProductType.Name;
+                ws.Cells[i, 6].Value = item.Colour.Name;
+                ws.Cells[i, 7].Value = item.Data1;
+                ws.Cells[i, 8].Value = item.Size;
+                ws.Cells[i, 9].Value = item.FobPrice.ToString();
+                ws.Cells[i, 10].Value = item.WholesaleA.ToString();
+                ws.Cells[i, 11].Value = item.WholesaleB.ToString();
+                ws.Cells[i, 12].Value = item.RetailPrice.ToString();
+                ws.Cells[i, 13].Value = item.LastDateEdited.ToString();
+                ++i;
+            }
+
+            FileStream objFileStrm = File.Create(filee);
+            objFileStrm.Close();
+
+            // Write content to excel file  
+            File.WriteAllBytes(filee, excel.GetAsByteArray());
+            return 1;
+        }
+
         public bool SetStar(int Id, bool Set = true)
         {
             try

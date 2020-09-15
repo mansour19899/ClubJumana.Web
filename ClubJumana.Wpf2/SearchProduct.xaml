@@ -83,7 +83,7 @@
                     </ComboBox>
                     <Button Name="BtnShowSelectedlist" Grid.Column="4" Margin="0 0 60 0" FontSize="20" Height="60" Click="Button_Click_1">Show List Selected</Button>
                 </Grid>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" Name="grdFilterMenu">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -93,7 +93,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Name="btnAddProductToProductMaster" Grid.Column="0" Margin="25,23,10,7" FontSize="20" Click="BtnAddProductToProductMaster_OnClick" Height="Auto">Excel For Quick Book</Button>
+                    <Button Name="btnShowMoreMunu" Grid.Column="0" Margin="25,23,10,7" FontSize="20" Click="BtnShowMoreMunu_OnClick" Height="Auto">More</Button>
                     <StackPanel  Grid.Column="1">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
                         <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
@@ -122,8 +122,24 @@
 
                     </StackPanel>
                 </Grid>
+                <Grid Grid.Row="2" Name="grdMoreMenu" Background="White" Visibility="Hidden">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Name="btnExportAll" Grid.Column="1" Margin="25,23,10,7" FontSize="20" Click="BtnExportAll_OnClick" Height="Auto">Export Select List</Button>
+                    <Button Name="btnExportForQickbooks" Grid.Column="2" Margin="25,23,10,7" FontSize="20" Click="BtnExportForQickbooks_OnClick" Height="Auto">Export 4 Quickbook</Button>
+                    <Button Name="btnAddProductToProductMaster" Grid.Column="3" Margin="25,23,10,7" FontSize="20" Click="BtnAddProductToProductMaster_OnClick" Height="Auto">Export to ProductM</Button>
+                    <Button Name="btnHideMoreMenu" Grid.Column="0" Margin="25,23,10,7" FontSize="20" Click="BtnHideMoreMenu_OnClick" Height="Auto">Back</Button>
 
-                <ListView SelectionMode="Multiple" ItemsSource="{Binding LvProductItemSource}" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20"  MouseDoubleClick="lvProducts_MouseDoubleClick" >
+                </Grid>
+
+                <ListView SelectionMode="Extended" ItemsSource="{Binding LvProductItemSource}" Name="lvProducts" Grid.Row="3" Margin="70 10 70 20" FontSize="20"  MouseDoubleClick="lvProducts_MouseDoubleClick" >
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="ALU" Width="120" DisplayMemberBinding="{Binding Path=Id}" />

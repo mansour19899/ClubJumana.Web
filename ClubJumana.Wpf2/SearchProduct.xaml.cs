@@ -1217,17 +1217,9 @@ namespace ClubJumana.Wpf2
 
         private void BtnAddProductToProductMaster_OnClick(object sender, RoutedEventArgs e)
         {
-            //_productInformationService.TransferProductsToProductMaster(SelectedList);
-            int res = _productInformationService.ExcelForQuickbooks(SelectedList);
-            if (res == -10)
-                MessageBox.Show("Please Close Excel File");
-            else if (res == -1)
-                MessageBox.Show("Please Check Barcodes");
-            else
-            {
-                myMessageQueue.Enqueue("Excel File Created.");
+            //lvProducts.SelectAll();
+            _productInformationService.TransferProductsToProductMaster(SelectedList);
 
-            }
         }
 
         private void LblFobPriceInCostCenter_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1259,5 +1251,57 @@ namespace ClubJumana.Wpf2
         {
             InfoProduct.CostCenter.Calculate();
         }
+
+        private void BtnShowMoreMunu_OnClick(object sender, RoutedEventArgs e)
+        {
+            grdMoreMenu.Visibility = Visibility.Visible;
+        }
+
+        private void BtnHideMoreMenu_OnClick(object sender, RoutedEventArgs e)
+        {
+            grdMoreMenu.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnExportForQickbooks_OnClick(object sender, RoutedEventArgs e)
+        {
+            int res = _productInformationService.ExcelForQuickbooks(SelectedList);
+            if (res == -10)
+                MessageBox.Show("Please Close Excel File");
+            else if (res == -1)
+                MessageBox.Show("Please Check Barcodes");
+            else
+            {
+                myMessageQueue.Enqueue("Excel File Created.");
+
+            }
+        }
+
+        private void BtnExportAll_OnClick(object sender, RoutedEventArgs e)
+        {
+            btnExportAll.IsEnabled = false;
+            ExportSelectList();
+
+        }
+
+        private async Task ExportSelectList()
+        {
+            await Task.Run(() =>
+            {
+                int res = _productInformationService.ExportAllDataBase(SelectedList);
+                if (res == -10)
+                    MessageBox.Show("Please Close Excel File");
+                else if (res == -1)
+                    MessageBox.Show("Please Check Barcodes");
+                else
+                {
+                    this.Dispatcher.Invoke(() => myMessageQueue.Enqueue("Excel File Created."));
+
+                }
+                this.Dispatcher.Invoke(() => btnExportAll.IsEnabled = true);
+            });
+
+        }
+
+
     }
 }
