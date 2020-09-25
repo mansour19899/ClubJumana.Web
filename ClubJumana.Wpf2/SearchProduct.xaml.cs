@@ -572,17 +572,27 @@ namespace ClubJumana.Wpf2
                     costAnalyze.ExchangeRate = country.ExChangeRate.Value;
                 }
 
-                if (variantSelected.Product.CountryOfOrgin.Duty != null)
+                try
                 {
-                    cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
-                    costAnalyze.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                    if (variantSelected.Product.CountryOfOrgin.Duty != null)
+                    {
+                        cost.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                        costAnalyze.Duty = variantSelected.Product.CountryOfOrgin.Duty.Value;
+                    }
+
+                    else
+                    {
+                        cost.Duty = -1;
+                        costAnalyze.Duty = -1;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    cost.Duty = -2;
+                    costAnalyze.Duty = -2;
                 }
 
-                else
-                {
-                    cost.Duty = -1;
-                    costAnalyze.Duty = -1;
-                }
+
 
                 costAnalyze.FobPrice = 0.01m;
                 FobPriceCostCenter = Convert.ToDecimal(variantSelected.FobPrice).ToString();
