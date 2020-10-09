@@ -149,6 +149,7 @@
                             <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
                             <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=SKU}" />
                             <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode.BarcodeNumber}" />
+                            <GridViewColumn Header="Product Tittle" Width="300" DisplayMemberBinding="{Binding Path=Product.ProductTittle}" />
                         </GridView>
                     </ListView.View>
                 </ListView>

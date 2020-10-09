@@ -1274,7 +1274,7 @@ namespace ClubJumana.Wpf2
 
         private void BtnExportForQickbooks_OnClick(object sender, RoutedEventArgs e)
         {
-            int res = _productInformationService.ExcelForQuickbooks(SelectedList);
+            int res = _productInformationService.ExcelForQuickbooks(SelectedList.Where(p=>p.Barcode!=null&&p.FobPrice!=null).OrderBy(p=>p.ProductFK).ToList());
             if (res == -10)
                 MessageBox.Show("Please Close Excel File");
             else if (res == -1)
