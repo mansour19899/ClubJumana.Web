@@ -189,7 +189,7 @@
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="Product Tittle" />
-                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.ProductTittle}" ToolTip="{Binding Info.ProductTittle}" />
+                                    <TextBox Text="{Binding Info.ProductTittle}" ToolTip="{Binding Info.ProductTittle}"  Style="{StaticResource txtSelectAble}"  />
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="Company" />
@@ -197,15 +197,15 @@
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="GSM" />
-                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.GSM}" />
+                                    <TextBox Text="{Binding Info.GSM}"  Style="{StaticResource txtSelectAble}"  />
                                 </UniformGrid>
                                 <UniformGrid Rows="1" Columns="3">
                                     <TextBlock  Style="{StaticResource Style1}" Text="Material" />
-                                    <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.Material}" />
+                                    <TextBox Text="{Binding Info.Material}"  Style="{StaticResource txtSelectAble}"  />
                                 </UniformGrid>
                                 <!--<TextBlock Style="{StaticResource Style1}" Text="{Binding Info.CountryOfOrigin, StringFormat= Country Of Origin : {0}}" />-->
                                 <TextBlock Style="{StaticResource Style1}" Text="Remarks:" />
-                                <TextBlock Style="{StaticResource Style1}" Text="{Binding Info.DescriabeMaterial}" />
+                                <TextBox Text="{Binding Info.DescriabeMaterial}"  Style="{StaticResource txtSelectAble}"  />
                                 <TextBlock ></TextBlock>
                                 <Button Name="btnAddNewVariant" Content="Add New Variant" Width="150" HorizontalAlignment="Left" Click="BtnAddNewVariant_OnClick"/>
                             </StackPanel>
@@ -230,11 +230,7 @@
                                         Width="24"/>
                                 </Button>
                             </StackPanel>
-                            <TextBox Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource txtSelectAble}"  >
-                                <TextBox.Resources>
-                                    
-                                </TextBox.Resources>
-                            </TextBox>
+                            <TextBox Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource txtSelectAble}"  />
                         </Grid>
                         <Grid Margin="0 0 0 40">
                             <Grid.ColumnDefinitions>
