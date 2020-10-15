@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\TowelImages\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\plugins\jqvmap\js\maps\" />
     <Folder Include="wwwroot\plugins\summernote\css\" />
