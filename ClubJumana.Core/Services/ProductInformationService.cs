@@ -830,15 +830,16 @@ namespace ClubJumana.Core.Services
                 ws.Cells[i, 2].Value = item.Product.StyleNumber;
                 ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber;
                 ws.Cells[i, 4].Value = item.Sku;
-                ws.Cells[i, 5].Value = item.ProductType.Name;
-                ws.Cells[i, 6].Value = item.Colour.Name;
-                ws.Cells[i, 7].Value = item.Data1;
-                ws.Cells[i, 8].Value = item.Size;
-                ws.Cells[i, 9].Value = item.FobPrice.ToString();
-                ws.Cells[i, 10].Value = item.WholesaleA.ToString();
-                ws.Cells[i, 11].Value = item.WholesaleB.ToString();
-                ws.Cells[i, 12].Value = item.RetailPrice.ToString();
-                ws.Cells[i, 13].Value = item.LastDateEdited.ToString();
+                ws.Cells[i, 5].Value = item.Product.ProductTittle;
+                ws.Cells[i, 6].Value = item.ProductType.Name;
+                ws.Cells[i, 7].Value = item.Colour.Name;
+                ws.Cells[i, 8].Value = item.Data1;
+                ws.Cells[i, 9].Value = item.Size;
+                ws.Cells[i, 10].Value = item.FobPrice.ToString();
+                ws.Cells[i, 11].Value = item.WholesaleA.ToString();
+                ws.Cells[i, 12].Value = item.WholesaleB.ToString();
+                ws.Cells[i, 13].Value = item.RetailPrice.ToString();
+                ws.Cells[i, 14].Value = item.LastDateEdited.ToString();
                 ++i;
             }
 
