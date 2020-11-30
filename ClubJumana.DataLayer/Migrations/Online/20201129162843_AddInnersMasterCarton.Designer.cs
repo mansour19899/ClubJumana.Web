@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations.Online
 {
     [DbContext(typeof(OnlineContext))]
-    partial class OnlineContextModelSnapshot : ModelSnapshot
+    [Migration("20201129162843_AddInnersMasterCarton")]
+    partial class AddInnersMasterCarton
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -378,7 +380,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<int>("ProductMasterFK")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Quntity")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RowVersion")
@@ -508,25 +510,25 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Height")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<string>("ITF14")
                         .HasColumnType("text");
 
-                    b.Property<decimal?>("Lenght")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<int>("Lenght")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
 
-                    b.Property<decimal?>("Weight")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("Width")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
