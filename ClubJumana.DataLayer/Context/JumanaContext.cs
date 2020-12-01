@@ -53,6 +53,10 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<TablesVersion> tablesversion { get; set; }
         public DbSet<Term> terms { get; set; }
 
+        public DbSet<Inner> inners { get; set; }
+        public DbSet<MasterCarton> mastercartons { get; set; }
+        public DbSet<InnerMasterCarton> innermastercartons { get; set; }
+
 
         #endregion
 
@@ -511,6 +515,42 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
             });
+
+            //----------------------------------- Inners ---------------------------------------
+            modelBuilder.Entity<Inner>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<ProductMaster>(s => s.ProductMaster)
+                    .WithMany(g => g.Inners)
+                    .HasForeignKey(s => s.ProductMasterFK);
+
+            });
+            //----------------------------------- MasterCarton ---------------------------------------
+            modelBuilder.Entity<MasterCarton>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- InnersMasterCarton ---------------------------------------
+            modelBuilder.Entity<InnerMasterCarton>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<Inner>(s => s.Inner)
+                    .WithMany(g => g.InnerMasterCartons)
+                    .HasForeignKey(s => s.InnerFK);
+
+                entity.HasOne<MasterCarton>(s => s.MasterCarton)
+                    .WithMany(g => g.InnerMasterCartons)
+                    .HasForeignKey(s => s.MasterCartonFK);
+            });
         }
 
     }
@@ -524,9 +564,9 @@ namespace ClubJumana.DataLayer.Context
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-              optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+             // optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=Test2020;user=root;password=SmmRey2018");
 
 

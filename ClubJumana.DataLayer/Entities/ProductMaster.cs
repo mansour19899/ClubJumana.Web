@@ -65,6 +65,7 @@ namespace ClubJumana.DataLayer.Entities
         public ICollection<SoItem> SoItems { get; set; }
         public ICollection<RefundItem> RefundItems { get; set; }
         public ICollection<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
+        public ICollection<Inner> Inners { get; set; }
         public Variant Variant { get; set; }
 
     }
