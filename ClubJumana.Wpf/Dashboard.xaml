@@ -50,11 +50,11 @@
             </StackPanel.Resources>
             <TextBlock Text="Dashboard" FontSize="28" Margin="110 5 0 0"/>
             <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" Visibility="Hidden">
                 <TextBlock Text="Finance" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" Visibility="Collapsed">
                 <TextBlock Text="Cash Managment" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
@@ -66,16 +66,16 @@
                 <TextBlock  Text="Purchasing" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" Visibility="Hidden">
                 <TextBlock Text="SetupAndExtensions" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 0" Visibility="Hidden">
                 <TextBlock Text="Intelligent Cloud Insights" FontSize="18" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                 <Image  Source="Content/Icon/ExpandArrowIcon.png" Height="20" Margin="5 5 0 0"  />
             </StackPanel>
-            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-            <Image  Source="Content/Icon/Menu1Icon.png" Height="25" Margin="20 0 0 0"  />
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" Visibility="Hidden"/>
+            <Image  Source="Content/Icon/Menu1Icon.png" Height="25" Margin="20 0 0 0" Visibility="Hidden" />
         </StackPanel>
         <Grid Grid.Row="3" >
             <Grid.RowDefinitions>

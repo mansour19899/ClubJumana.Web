@@ -389,7 +389,10 @@ namespace ClubJumana.Core.Services
                             }
                             else
                             {
-                                productInventoryWarehouse.ProductMaster.Transit += VARIABLE.Quantity;
+                                //productInventoryWarehouse.ProductMaster.Transit += VARIABLE.Quantity;
+                                var productmater = _context.productmasters.SingleOrDefault(p =>
+                                    p.Id == productInventoryWarehouse.ProductMaster_fk);
+                                productmater.Transit += VARIABLE.Quantity;
                             }
                         }
 
