@@ -14,11 +14,11 @@ namespace ClubJumana.Core.Services.Interfaces
 {
     public class UserService : IUserService
     {
-        private JummanaContext _context;
+        private OnlineContext _context;
 
         public UserService()
         {
-            _context = new JummanaContext();
+            _context = new OnlineContext();
         }
         public Invitation AllowRegister(string activeCode)
         {

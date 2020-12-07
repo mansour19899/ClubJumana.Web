@@ -11,11 +11,11 @@ namespace ClubJumana.Core.Services
 {
    public class ProductService: IProductService
     {
-        private JummanaContext _context;
+        private OnlineContext _context;
 
         public ProductService()
         {
-            _context = new JummanaContext();
+            _context = new OnlineContext();
         }
         public int AddOrUpdateProduct(ProductMaster product)
         {

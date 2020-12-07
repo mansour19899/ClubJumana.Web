@@ -16,13 +16,13 @@ namespace ClubJumana.Core.Services
 {
     public class PerchaseOrderService : IPerchaseOrderService
     {
-        private JummanaContext _context;
+        private OnlineContext _context;
 
         public PerchaseOrderService()
         {
-            //var optionsBuilder = new DbContextOptionsBuilder<JummanaContext>();
+            //var optionsBuilder = new DbContextOptionsBuilder<OnlineContext>();
             //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm28;Trusted_Connection=True");
-            _context = new JummanaContext();
+            _context = new OnlineContext();
         }
 
         private void DetachedAllEntries()

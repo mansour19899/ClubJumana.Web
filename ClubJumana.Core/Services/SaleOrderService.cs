@@ -13,10 +13,10 @@ namespace ClubJumana.Core.Services
 {
     public class SaleOrderService : ISaleOrderService
     {
-        private JummanaContext _context;
+        private OnlineContext _context;
         public SaleOrderService()
         {
-            _context = new JummanaContext();
+            _context = new OnlineContext();
         }
         private void DetachedAllEntries()
         {
