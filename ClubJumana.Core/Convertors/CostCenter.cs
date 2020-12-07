@@ -276,10 +276,10 @@ namespace ClubJumana.Core.Convertors
         {
             _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);
             _wholesaleUSD = Math.Round(_landedCostUSD * 1.55m, 2, MidpointRounding.AwayFromZero);
-            _sales5USD = Math.Round(_wholesaleUSD * 0.05m, 2, MidpointRounding.AwayFromZero);
+            _sales5USD = Math.Round(_wholesaleUSD * 0.1m, 2, MidpointRounding.AwayFromZero);
             _creditIN10USD = Math.Round(_wholesaleUSD * 0.1m + _sales5USD, 2, MidpointRounding.AwayFromZero);
             _wholeCashUSD = Math.Round(_sales5USD + _wholesaleUSD, 2, MidpointRounding.AwayFromZero);
-            _wholeCreditUSD = Math.Round(_wholesaleUSD + _creditIN10USD, 2, MidpointRounding.AwayFromZero);
+            _wholeCreditUSD = Math.Round(_wholeCashUSD + _creditIN10USD, 2, MidpointRounding.AwayFromZero);
             _wLGrossUSD = Math.Round(_wholeCashUSD - _landedCostUSD, 2, MidpointRounding.AwayFromZero);
             _wLMarginUSD = Math.Round(_wLGrossUSD / _wholeCashUSD * 100, 2, MidpointRounding.AwayFromZero);
             _retailUSD = Math.Round(_landedCostUSD * 4, 2, MidpointRounding.AwayFromZero);
