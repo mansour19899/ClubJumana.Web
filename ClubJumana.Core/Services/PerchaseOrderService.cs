@@ -356,9 +356,9 @@ namespace ClubJumana.Core.Services
                         {
                             ID++;
                             ProductInventoryWarehouse productInventoryWarehouse =
-                                _context.productinventorywarehouses.Include(p=>p.ProductMaster).SingleOrDefault(p =>
-                                    p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                                    p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
+                                _context.productinventorywarehouses.Include(p => p.ProductMaster).SingleOrDefault(p =>
+                                      p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
+                                      p.Warehouse_fk == asnViewModel.ToWarehouse_fk);
                             if (productInventoryWarehouse != null)
                             {
                                 productInventoryWarehouse.OnTheWayInventory += VARIABLE.Quantity;
@@ -489,12 +489,15 @@ namespace ClubJumana.Core.Services
                 //_context.SaveChanges();
 
                 Item itemm = new Item();
+                int NewQuantityEnter = 0;
+                int DiffrentQuntity = 0;
                 foreach (var item in items)
                 {
-
+                    ProductInventoryWarehouse productInventory;
                     if (item.IsChanged && item.Id != 0)
                     {
                         itemm = _context.items.SingleOrDefault(p => p.Id == item.Id);
+                        NewQuantityEnter = item.Quantity - itemm.GrnQuantity;
                         itemm.ProductMaster_fk = item.ProductMaster_fk;
                         itemm.GrnQuantity = item.Quantity;
                         itemm.GrnPrice = item.Price;
@@ -514,41 +517,68 @@ namespace ClubJumana.Core.Services
                             itemm.Checked = false;
                         }
 
-                    }
-
-                }
-
-                if (done)
-                {
-                    ProductInventoryWarehouse productInventory;
-                    foreach (var VARIABLE in items)
-                    {
-                        if (!VARIABLE.IsDeleted)
+                        DiffrentQuntity = itemm.AsnQuantity - itemm.GrnQuantity;
+                        productInventory = _context.productinventorywarehouses.Include(p => p.ProductMaster).SingleOrDefault(p =>
+                            p.ProductMaster_fk == item.ProductMaster_fk &&
+                            p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
+                        if (productInventory != null)
                         {
-                            productInventory = _context.productinventorywarehouses.Include(p => p.ProductMaster).SingleOrDefault(p =>
-                                  p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
-                                  p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
-                            if (productInventory != null)
+                            productInventory.Income += NewQuantityEnter;
+                            productInventory.Inventory += NewQuantityEnter;
+                            productInventory.OnTheWayInventory -= NewQuantityEnter;
+                            if (done)
+                                productInventory.OnTheWayInventory -= DiffrentQuntity;
+                            if (PO.FromWarehouse_fk == 1)
                             {
-                                productInventory.Income += VARIABLE.Quantity;
-                                productInventory.Inventory += VARIABLE.Quantity;
-                                productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
-                                if (PO.FromWarehouse_fk == 1)
-                                {
-                                    productInventory.ProductMaster.Income += VARIABLE.Quantity;
-                                    productInventory.ProductMaster.StockOnHand += VARIABLE.Quantity;
-                                    productInventory.ProductMaster.Transit -= VARIABLE.Quantity;
-                                }
-                                else
-                                {
-                                    productInventory.ProductMaster.StockOnHand += VARIABLE.Diffrent;
-                                }
-
+                                productInventory.ProductMaster.Income += NewQuantityEnter;
+                                productInventory.ProductMaster.StockOnHand += NewQuantityEnter;
+                                productInventory.ProductMaster.Transit -= NewQuantityEnter;
+                                if (done)
+                                    productInventory.ProductMaster.Transit -= DiffrentQuntity;
                             }
+
                         }
 
                     }
+
+
+                    if (!item.IsDeleted)
+                    {
+
+                    }
                 }
+
+                //if (done)
+                //{
+                //    ProductInventoryWarehouse productInventory;
+                //    foreach (var VARIABLE in items)
+                //    {
+                //        if (!VARIABLE.IsDeleted)
+                //        {
+                //            productInventory = _context.productinventorywarehouses.Include(p => p.ProductMaster).SingleOrDefault(p =>
+                //                  p.ProductMaster_fk == VARIABLE.ProductMaster_fk &&
+                //                  p.Warehouse_fk == grnViewModel.ToWarehouse_fk);
+                //            if (productInventory != null)
+                //            {
+                //                productInventory.Income += VARIABLE.Quantity;
+                //                productInventory.Inventory += VARIABLE.Quantity;
+                //                productInventory.OnTheWayInventory -= VARIABLE.PreviousQuantity;
+                //                if (PO.FromWarehouse_fk == 1)
+                //                {
+                //                    productInventory.ProductMaster.Income += VARIABLE.Quantity;
+                //                    productInventory.ProductMaster.StockOnHand += VARIABLE.Quantity;
+                //                    productInventory.ProductMaster.Transit -= VARIABLE.Quantity;
+                //                }
+                //                else
+                //                {
+                //                    productInventory.ProductMaster.StockOnHand += VARIABLE.Diffrent;
+                //                }
+
+                //            }
+                //        }
+
+                //    }
+                //}
 
                 _context.SaveChanges();
 
