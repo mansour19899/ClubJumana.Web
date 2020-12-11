@@ -12,7 +12,17 @@ namespace ClubJumana.Core.DTOs
 {
     public class SaleOrderViewModel : INotifyPropertyChanged
     {
-        public int Id { get; set; }
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged();
+
+            }
+        }
 
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
@@ -21,7 +31,17 @@ namespace ClubJumana.Core.DTOs
         public DateTime? DueDate { get; set; }
         public DateTime? ShipDate { get; set; }
         public DateTime? InvoiceDate { get; set; }
-        public int? InvoiceNumber { get; set; }
+        private int? _invoiceNumber;
+        public int? InvoiceNumber
+        {
+            get { return _invoiceNumber; }
+            set
+            {
+                _invoiceNumber = value;
+                OnPropertyChanged();
+
+            }
+        }
         public int? Cashier_fk { get; set; }
         public int? Customer_fk { get; set; }
         public int? Warehouse_fk { get; set; }

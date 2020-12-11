@@ -133,6 +133,7 @@ namespace ClubJumana.Wpf.UserControls
                     RemoveSoItemViewModel.Remove(VARIABLE);
                 inventoryProducts.Remove(inventoryProducts.First(p=>p.IdProduct==VARIABLE.ProductMaster_fk));
             }
+            dgSoItems.Items.Refresh();
             SumSoItemPrice();
         }
 

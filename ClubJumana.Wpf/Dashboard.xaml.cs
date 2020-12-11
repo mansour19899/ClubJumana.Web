@@ -174,25 +174,36 @@ namespace ClubJumana.Wpf
             {
                 UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
             }
-            int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
 
-            mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
-            myMessageQueue.Enqueue(mes);
-
-            if (ID == 0)
+            if (UCSaleOrder.SaleOrderViewModel.InvoiceNumber == null)
             {
-                salesOrderListview.Add(new SalesOrderListview()
+                int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+
+                mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
+                myMessageQueue.Enqueue(mes);
+
+                if (x == 0)
                 {
-                    No = ID,
-                    CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
-                    DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
-                    Balance = 0,
-                    TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
-                    Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
-                });
-                lvSalesOrder.ItemsSource = salesOrderListview;
-                lvSalesOrder.Items.Refresh();
+                    salesOrderListview.Add(new SalesOrderListview()
+                    {
+                        No = ID,
+                        CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
+                        DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
+                        Balance = 0,
+                        TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
+                        Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
+                    });
+                    lvSalesOrder.ItemsSource = salesOrderListview;
+                    lvSalesOrder.Items.Refresh();
+                    UCSaleOrder.SaleOrderViewModel.Id = ID;
+                }
             }
+            else
+            {
+                mes = (x == 0) ? "mansour" : "Mohammadi";
+                myMessageQueue.Enqueue(mes);
+            }
+
         }
 
         private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
@@ -224,7 +235,7 @@ namespace ClubJumana.Wpf
         {
             _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
             myMessageQueue.Enqueue("Invoice Created.");
-            UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
+           // UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
             UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
 
         }

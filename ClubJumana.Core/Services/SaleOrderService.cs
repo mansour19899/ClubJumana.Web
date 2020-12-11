@@ -124,16 +124,17 @@ namespace ClubJumana.Core.Services
                     });
 
                     model.ProductMaster.GoodsReserved += model.Quantity;
+                    _context.productmasters.Update(model.ProductMaster);
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {
-                    soItem = _context.soitems.Include(p=>p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.Include(p => p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
                     soItem.ProductMaster.GoodsReserved -= model.Quantity;
                     _context.Remove(soItem);
                 }
                 else if (model.Id != 0)
                 {
-                    soItem = _context.soitems.Include(p=>p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
+                    soItem = _context.soitems.Include(p => p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
 
                     soItem.Cost = model.Cost;
                     soItem.Discount = model.Discount;
@@ -156,13 +157,125 @@ namespace ClubJumana.Core.Services
 
             _context.SaveChanges();
 
-            return saleOrder.Id;
+            return So.Id;
+        }
+
+        public int UpdateInvoice(SaleOrderViewModel saleOrder)
+        {
+            DetachedAllEntries();
+            SaleOrder So = new SaleOrder();
+
+            So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
+            So.Type = saleOrder.Type;
+            So.SoDate = saleOrder.SoDate;
+            So.ShipDate = saleOrder.ShipDate;
+            So.ExpriationDate = saleOrder.ExpriationDate;
+            So.DueDate = saleOrder.DueDate;
+            So.InvoiceDate = saleOrder.InvoiceDate;
+            So.term_fk = saleOrder.term_fk;
+            So.InvoiceNumber = saleOrder.InvoiceNumber;
+            So.Cashier_fk = saleOrder.Cashier_fk;
+            So.Customer_fk = saleOrder.Customer_fk;
+            So.Warehouse_fk = saleOrder.Warehouse_fk;
+            So.ShipMethod_fk = saleOrder.ShipMethod_fk;
+            So.Subtotal = saleOrder.Subtotal;
+            So.SoTotalPrice = saleOrder.SoTotalPrice;
+            So.TaxArea_fk = saleOrder.TaxArea_fk;
+            So.Tax = saleOrder.Tax;
+            So.Handling = saleOrder.Handling;
+            So.Freight = saleOrder.Freight;
+            So.TotalDiscount = saleOrder.TotalDiscount;
+            So.TrackingNo = saleOrder.TrackingNo;
+            So.BillingAddress = saleOrder.BillingAddress;
+            So.ShippingAddress = saleOrder.ShippingAddress;
+            So.ShipVia = saleOrder.ShipVia;
+            So.MessageOnInvoice = saleOrder.MessageOnInvoice;
+            So.MessageOnStatment = saleOrder.MessageOnStatment;
+            So.Note = saleOrder.Note;
+            So.Quantity = saleOrder.Quantity;
+            So.IsDeleted = false;
+
+
+            SoItem soItem = new SoItem();
+            ProductInventoryWarehouse inventoryProduct;
+            int def = 0;
+
+            foreach (var model in saleOrder.SoItems)
+            {
+                if (model.Id == 0 && !model.IsDeleted)
+                {
+                    _context.soitems.Add(new SoItem()
+                    {
+                        So_fk = So.Id,
+                        ProductMaster_fk = model.ProductMaster_fk,
+                        Cost = model.Cost,
+                        Discount = model.Discount,
+                        Quantity = model.Quantity,
+                        Price = model.Price,
+                        TotalPrice = model.TotalPrice
+                    });
+                     inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                    inventoryProduct.Inventory -= model.Quantity;
+                    inventoryProduct.OutCome += model.Quantity;
+                    inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
+                    inventoryProduct.ProductMaster.Outcome += model.Quantity;
+
+                    _context.productinventorywarehouses.Update(inventoryProduct);
+                    _context.productmasters.Update(inventoryProduct.ProductMaster);
+
+                }
+                else if (model.Id != 0 && model.IsDeleted)
+                {
+                    soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
+                    inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                    inventoryProduct.Inventory += model.Quantity;
+                    inventoryProduct.OutCome -= model.Quantity;
+                    inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
+                    inventoryProduct.ProductMaster.Outcome -= model.Quantity;
+
+                    _context.Remove(soItem);
+                }
+                else if (model.Id != 0)
+                {
+                    soItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p=>p.ProductInventoryWarehouses)
+                        .SingleOrDefault(p => p.Id == model.Id);
+                    soItem.Cost = model.Cost;
+                    soItem.Discount = model.Discount;
+                    soItem.Price = model.Price;
+                    soItem.TotalPrice = model.TotalPrice;
+                    if (soItem.Quantity != model.Quantity)
+                    {
+                        def = model.Quantity - soItem.Quantity;
+                        soItem.Quantity = model.Quantity;
+                        soItem.ProductMaster.StockOnHand -= def;
+                        soItem.ProductMaster.Outcome += def;
+
+                        inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+                            p.ProductMaster_fk == saleOrder.Warehouse_fk);
+                       inventoryProduct.Inventory -= def;
+                       inventoryProduct.OutCome += def;
+                       _context.productinventorywarehouses.Update(inventoryProduct);
+                       _context.productmasters.Update(soItem.ProductMaster);
+                    }
+
+                }
+                else
+                {
+
+                }
+            }
+
+            _context.SaveChanges();
+
+            return So.Id;
         }
 
         public SaleOrderViewModel GiveSaleOrderById(int id)
         {
 
-            var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p=>p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+            var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
@@ -235,12 +348,12 @@ namespace ClubJumana.Core.Services
 
         public List<SalesOrderListview> SalesOrdersListView()
         {
-            return _context.saleorders.Where(p=>p.InvoiceNumber==null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance =0, TotalBeforeTax = p.Subtotal,Total = p.SoTotalPrice}).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
 
         }
         public List<SalesOrderListview> SalesInvoceListView()
         {
-            return _context.saleorders.Where(p=>p.InvoiceNumber!=null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
 
         }
 
