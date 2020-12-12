@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Name="txtPurchasingName" Text="SALES ORDER" VerticalAlignment="Center" FontSize="17"></TextBlock>
+            <TextBlock Name="txtName" Text="SALES ORDER" VerticalAlignment="Center" FontSize="17"></TextBlock>
             <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/EditIcon.png" />
             <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/CreateNewEntry.png" />
             <Image Grid.Column="3" Margin="10"  Source="../Content/Icon/DeleteIcon.png" />
@@ -53,8 +53,8 @@
             </Grid>
         </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <TextBlock   FontSize="40" Text="SO#: " FontWeight="ExtraLight"/>
-            <TextBlock   FontSize="40" Text="{Binding Id, StringFormat= SLO-{0}}" FontWeight="ExtraLight"/>
+            <TextBlock   FontSize="40" Text="#: " FontWeight="ExtraLight"/>
+            <TextBlock Name="txtNum"  FontSize="40" Text="salam" FontWeight="ExtraLight"/>
         </StackPanel>
         <Border Padding="0 0" Grid.Row="2" Grid.Column="1" BorderThickness="0,1,0,1" BorderBrush="Black"  >
             <Grid >

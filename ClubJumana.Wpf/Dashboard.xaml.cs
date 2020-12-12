@@ -200,8 +200,8 @@ namespace ClubJumana.Wpf
             }
             else
             {
-                mes = (x == 0) ? "mansour" : "Mohammadi";
-                myMessageQueue.Enqueue(mes);
+                int ID = _saleOrderService.UpdateInvoice(UCSaleOrder.SaleOrderViewModel);
+                myMessageQueue.Enqueue("Invoice Updated.");
             }
 
         }
@@ -702,6 +702,11 @@ namespace ClubJumana.Wpf
 
             UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
             UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
+            UCSaleOrder.txtNum.Text = (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
+                ? "SO-"+ _dataContextVM.SaleOrderViewModel.Id
+                : "INV-" + _dataContextVM.SaleOrderViewModel.InvoiceNumber;
+            UCSaleOrder.txtName.Text = (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
+                ? "Sales Order" : "Invoice";
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
         }

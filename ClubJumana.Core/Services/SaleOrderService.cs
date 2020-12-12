@@ -123,8 +123,9 @@ namespace ClubJumana.Core.Services
                         TotalPrice = model.TotalPrice
                     });
 
-                    model.ProductMaster.GoodsReserved += model.Quantity;
-                    _context.productmasters.Update(model.ProductMaster);
+                   // model.ProductMaster.GoodsReserved += model.Quantity;
+                    _context.productmasters.FirstOrDefault(p=>p.Id==model.ProductMaster_fk).GoodsReserved+= model.Quantity;
+                    //_context.productmasters.Update(model.ProductMaster);
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {
@@ -229,7 +230,7 @@ namespace ClubJumana.Core.Services
                 {
                     soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
                     inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
-                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk&&p.ProductMaster_fk==model.ProductMaster_fk);
                     inventoryProduct.Inventory += model.Quantity;
                     inventoryProduct.OutCome -= model.Quantity;
                     inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
@@ -253,7 +254,7 @@ namespace ClubJumana.Core.Services
                         soItem.ProductMaster.Outcome += def;
 
                         inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
-                            p.ProductMaster_fk == saleOrder.Warehouse_fk);
+                            p.Warehouse_fk == saleOrder.Warehouse_fk);
                        inventoryProduct.Inventory -= def;
                        inventoryProduct.OutCome += def;
                        _context.productinventorywarehouses.Update(inventoryProduct);
