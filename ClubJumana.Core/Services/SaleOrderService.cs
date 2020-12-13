@@ -349,12 +349,12 @@ namespace ClubJumana.Core.Services
 
         public List<SalesOrderListview> SalesOrdersListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
 
         }
         public List<SalesOrderListview> SalesInvoceListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
 
         }
 
@@ -369,7 +369,7 @@ namespace ClubJumana.Core.Services
             return true;
         }
 
-        public bool CreateInvoice(int Id)
+        public int CreateInvoice(int Id)
         {
             DetachedAllEntries();
             var SalesOrder = _context.saleorders.FirstOrDefault(p => p.Id == Id);
@@ -392,7 +392,7 @@ namespace ClubJumana.Core.Services
             }
 
             _context.SaveChanges();
-            return true;
+            return SalesOrder.InvoiceNumber.Value;
         }
 
         public bool AddRefund(Refund refund)

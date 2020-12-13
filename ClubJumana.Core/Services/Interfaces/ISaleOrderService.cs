@@ -14,7 +14,7 @@ namespace ClubJumana.Core.Services.Interfaces
        public List<SalesOrderListview> SalesOrdersListView();
        public List<SalesOrderListview> SalesInvoceListView();
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder,bool IsPrint);
-       public bool CreateInvoice(int Id);
+       public int CreateInvoice(int Id);
 
        public bool AddRefund(Refund refund);
        public List<RefundItem> CovertToRefundItem(ObservableCollection<RefundItemsViewModel> refundItemsViewModel);

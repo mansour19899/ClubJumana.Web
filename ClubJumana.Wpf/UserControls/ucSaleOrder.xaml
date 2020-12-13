@@ -69,6 +69,7 @@
                             <Setter Property="Foreground" Value="#FF505C6D"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Margin" Value="20 0 30 0"></Setter>
+                            <Setter Property="Padding" Value="0"></Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="TextDecorations" Value="Underline"></Setter>
@@ -83,6 +84,13 @@
                     <TextBlock Text="Request Approval" />
                     <TextBlock Name="btnPrintOrSend" Text="Print/Send" MouseDown="BtnPrintOrSend_OnMouseDown" />
                     <TextBlock Text="Navigate" />
+                    <Border Background="#FF8C00" Name="btnRecivePayment" Margin="0 10 0 10" CornerRadius="10,10,10,10" MouseDown="BtnRecivePayment_OnMouseDown">
+                        <TextBlock Text="Receive payment"  Foreground="White"/>
+                    </Border>
+                    <Border Background="DarkGreen" Name="btnDeposited" Margin="0 10 0 10" CornerRadius="10,10,10,10">
+                        <TextBlock Text="Deposited"  Foreground="White"/>
+                    </Border>
+
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <TextBlock Text="More options" />
 

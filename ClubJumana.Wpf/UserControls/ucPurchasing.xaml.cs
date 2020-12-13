@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Enums;
+using ClubJumana.Core.Generator;
 using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf.UserControls
@@ -89,27 +90,33 @@ namespace ClubJumana.Wpf.UserControls
             {
                 case Mode.PO:
                     this.DataContext = PoViewModel;
+                    txtNum.Text = PoViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Visible;
                     break;
                 case Mode.Asn:
                     this.DataContext = AsnViewModel;
+                    txtNum.Text = AsnViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Visible;
 
                     break;
                 case Mode.Grn:
                     this.DataContext = GrnViewModel;
+                    txtNum.Text = GrnViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Visible;
                     break;
                 case Mode.POInvoice:
                     this.DataContext = PoViewModel;
+                    txtNum.Text = PoViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Hidden;
                     break;
                 case Mode.AsnInvoice:
                     this.DataContext = AsnViewModel;
+                    txtNum.Text = AsnViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Hidden;
                     break;
                 case Mode.GrnInvoice:
                     this.DataContext = GrnViewModel;
+                    txtNum.Text = GrnViewModel.Number;
                     btnSavePurchasing.Visibility = Visibility.Hidden;
                     break;
             }

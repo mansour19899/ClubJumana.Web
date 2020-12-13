@@ -179,7 +179,17 @@ namespace ClubJumana.Wpf
             {
                 int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
 
-                mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
+                //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
+
+                if (x == 0)
+                {
+                    mes = "Sales Order Created";
+                    UCSaleOrder.txtNum.Text = ID.ShowSaleOrderNumber();
+                }
+                else
+                {
+                    mes = "Sales Order Updated";
+                }
                 myMessageQueue.Enqueue(mes);
 
                 if (x == 0)
@@ -227,16 +237,68 @@ namespace ClubJumana.Wpf
                 Purchasing.CalculateCost();
 
             SaveAndUpdate(Purchasing.IsPosting);
+            RefreshLvPurchasing();
 
+        }
+        private async Task RefreshLvPurchasing()
+        {
+            await Task.Run(() =>
+            {
+                PurchaseOrdersList.Clear();
+                PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
+
+                if (Purchasing.IsPosting && Mode == Mode.PO)
+                {
+                    this.Dispatcher.Invoke(() =>
+                            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() }).OrderByDescending(p => p.Alu)
+                            );
+                    this.Dispatcher.Invoke(() => lvPurchasing.Items.Refresh());
+                }
+                else if (Purchasing.IsPosting && Mode == Mode.Asn)
+                {
+                    this.Dispatcher.Invoke(() =>
+                            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true && p.CreatedAsn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() }).OrderByDescending(p => p.Alu)
+
+                    );
+                    this.Dispatcher.Invoke(() => lvPurchasing.Items.Refresh());
+                }
+                else if (Purchasing.IsPosting && Mode == Mode.Grn)
+                {
+                    this.Dispatcher.Invoke(() =>
+                            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true && p.CreatedGrn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() }).OrderByDescending(p => p.Alu)
+
+                    );
+                    this.Dispatcher.Invoke(() => lvPurchasing.Items.Refresh());
+                }
+                else
+                {
+
+                }
+            });
+
+        }
+        private void BtnPostSalesOrder_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
+        {
+            int ID = _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
+            UCSaleOrder.txtNum.Text = ID.ShowInvoceNumber();
+            UCSaleOrder.txtName.Text = "Invoice";
+            myMessageQueue.Enqueue("Invoice Created.");
+            DeleteSalesOrderFromList(UCSaleOrder.SaleOrderViewModel.Id);
+            // UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
+            UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
 
         }
 
-        private void BtnPostSalesOrder_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
+        private async Task DeleteSalesOrderFromList(int Id)
         {
-            _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
-            myMessageQueue.Enqueue("Invoice Created.");
-           // UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
-            UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
+            int IndexOfLvSalesorder = -1;
+            await Task.Run(() =>
+            {
+                IndexOfLvSalesorder = salesOrderListview.ToList().FindIndex(p => p.No == Id);
+                salesOrderListview.RemoveAt(IndexOfLvSalesorder);
+                this.Dispatcher.Invoke(() => lvSalesOrder.ItemsSource = salesOrderListview);
+                this.Dispatcher.Invoke(() => lvSalesOrder.Items.Refresh());
+            });
 
         }
         private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
@@ -443,29 +505,27 @@ namespace ClubJumana.Wpf
         void SaveAndUpdate(bool done = false)
         {
             string message = "";
-            bool IsSuccessSavedOrUpdated = false;
+            int NumOfPurchase = -1;
             switch (Purchasing.Mode)
             {
                 case Mode.PO:
                     SelectedPo.ApproveUser_fk = user.Id;
-                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdatePoViewModel(SelectedPo, SelectedPo.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
+                    NumOfPurchase = _purchaseOrderService.AddOrUpdatePoViewModel(SelectedPo, SelectedPo.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
                 case Mode.Asn:
                     SelectedAsn.ApproveUser_fk = user.Id;
-                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateAsnViewModel(SelectedAsn, SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
+                    NumOfPurchase = _purchaseOrderService.AddOrUpdateAsnViewModel(SelectedAsn, SelectedAsn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
                 case Mode.Grn:
                     SelectedGrn.ApproveUser_fk = user.Id;
-                    IsSuccessSavedOrUpdated = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn, SelectedGrn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
+                    NumOfPurchase = _purchaseOrderService.AddOrUpdateGrnViewModel(SelectedGrn, SelectedGrn.ItemsOfPurchaseOrderViewModels.Concat(Purchasing.RemoveItemsOfPurchaseOrderViewModel), done);
                     break;
                 default:
                     break;
             }
 
-            if (IsSuccessSavedOrUpdated)
+            if (NumOfPurchase != -1)
             {
-                UpdatePurchaseList();
-
                 switch (Purchasing.Mode)
                 {
                     case Mode.PO:
@@ -473,6 +533,7 @@ namespace ClubJumana.Wpf
                         {
                             Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Purchase Order Posted.");
+                            Purchasing.txtNum.Text = NumOfPurchase.ShowPoNumber();
                         }
                         else
                             myMessageQueue.Enqueue("Purchase Order Saved.");
@@ -482,6 +543,7 @@ namespace ClubJumana.Wpf
                         {
                             Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Advanced Shipment Notice Posted.");
+                            Purchasing.txtNum.Text = NumOfPurchase.ShowAsnNumber();
                         }
                         else
                             myMessageQueue.Enqueue("Advanced Shipment Notice Saved.");
@@ -492,6 +554,7 @@ namespace ClubJumana.Wpf
                         {
                             Purchasing.btnSavePurchasing.Visibility = Visibility.Hidden;
                             myMessageQueue.Enqueue("Goods Receive Note Posted.");
+                            Purchasing.txtNum.Text = NumOfPurchase.ShowGrnNumber();
                         }
                         else
                             myMessageQueue.Enqueue("Goods Receive Note Saved");
@@ -510,23 +573,7 @@ namespace ClubJumana.Wpf
 
         }
 
-        private async Task UpdatePurchaseList()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    PurchaseOrdersList.Clear();
-                    PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
 
-                });
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Error In upload Image");
-            }
-
-        }
         private void BtnAddItem_OnClick(object? sender, EventArgs e)
         {
             string UPCForSearch = "";
@@ -702,11 +749,22 @@ namespace ClubJumana.Wpf
 
             UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
             UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
-            UCSaleOrder.txtNum.Text = (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
-                ? "SO-"+ _dataContextVM.SaleOrderViewModel.Id
-                : "INV-" + _dataContextVM.SaleOrderViewModel.InvoiceNumber;
-            UCSaleOrder.txtName.Text = (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
-                ? "Sales Order" : "Invoice";
+
+            if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
+            {
+                UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();
+                UCSaleOrder.txtName.Text = "Sales Order";
+                UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Visible;
+                UCSaleOrder.btnRecivePayment.Visibility = Visibility.Collapsed;
+                UCSaleOrder.btnDeposited.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.InvoiceNumber.Value.ShowInvoceNumber();
+                UCSaleOrder.txtName.Text = "Invoice";
+                UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
+                UCSaleOrder.btnRecivePayment.Visibility = Visibility.Visible;
+            }
             Bordermanagement.Child = UCSaleOrder;
             SubPage.Visibility = Visibility.Visible;
         }
@@ -749,7 +807,7 @@ namespace ClubJumana.Wpf
         }
         private void BtnPurChaseorder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.PO;
             txtMode.Text = "Purchase Order";
             HideListview();
@@ -759,7 +817,7 @@ namespace ClubJumana.Wpf
         private void BtnPurchaseorderInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
 
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true & p.PoNumber != -1).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true & p.PoNumber != -1).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.PoTotal, InvoiceNumber = p.PoNumber.ShowPoNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.POInvoice;
             txtMode.Text = "Purchase Order Invoice";
             HideListview();
@@ -767,7 +825,7 @@ namespace ClubJumana.Wpf
         }
         private void BtnGit_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true && p.CreatedAsn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedPO == true && p.CreatedAsn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.Asn;
             txtMode.Text = "Advanced Shipment Notice";
             HideListview();
@@ -776,7 +834,7 @@ namespace ClubJumana.Wpf
 
         private void BtnGitInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.AsnTotal, InvoiceNumber = p.Asnumber.ShowAsnNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.AsnInvoice;
             txtMode.Text = "ASN Invoice";
             HideListview();
@@ -785,7 +843,7 @@ namespace ClubJumana.Wpf
 
         private void BtnGrn_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true && p.CreatedGrn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedAsn == true && p.CreatedGrn == false).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.Grn;
             txtMode.Text = "Goods Receive Note";
             HideListview();
@@ -794,7 +852,7 @@ namespace ClubJumana.Wpf
 
         private void BtnGrnInvoice_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedGrn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() });
+            lvPurchasing.ItemsSource = PurchaseOrdersList.Where(p => p.CreatedGrn == true).Select(p => new PurchasingListview() { Alu = p.Id, LastModified = p.RowVersion, TotalPrice = p.GrnTotal, InvoiceNumber = p.Grnumber.ShowGrnNumber() }).OrderByDescending(p => p.Alu);
             Mode = Mode.GrnInvoice;
             txtMode.Text = "Grn Invoice";
             HideListview();

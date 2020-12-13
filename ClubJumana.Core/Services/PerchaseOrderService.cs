@@ -36,12 +36,12 @@ namespace ClubJumana.Core.Services
             //    _onlineContext.Entry(entry.Entity).State = EntityState.Detached;
             //}
         }
-        public bool AddOrUpdatePoViewModel(PoViewModel poViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
+        public int AddOrUpdatePoViewModel(PoViewModel poViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
             DetachedAllEntries();
             if (poViewModel.CreatedInvoice)
             {
-                return false;
+                return 0;
             }
             else
             {
@@ -188,18 +188,18 @@ namespace ClubJumana.Core.Services
                 _context.SaveChanges();
 
 
-                return true;
+                return PO.PoNumber;
             }
 
         }
 
-        public bool AddOrUpdateAsnViewModel(AsnViewModel asnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
+        public int AddOrUpdateAsnViewModel(AsnViewModel asnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
             DetachedAllEntries();
 
             if (asnViewModel.CreatedInvoice)
             {
-                return false;
+                return 0;
             }
             else
             {
@@ -401,17 +401,17 @@ namespace ClubJumana.Core.Services
                 _context.SaveChanges();
 
 
-                return true;
+                return PO.Asnumber;
             }
 
         }
 
-        public bool AddOrUpdateGrnViewModel(GrnViewModel grnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
+        public int AddOrUpdateGrnViewModel(GrnViewModel grnViewModel, IEnumerable<ItemsOfPurchaseOrderViewModel> items, bool done = false)
         {
             DetachedAllEntries();
             if (grnViewModel.CreatedInvoice)
             {
-                return false;
+                return 0;
             }
             else
             {
@@ -583,7 +583,7 @@ namespace ClubJumana.Core.Services
                 _context.SaveChanges();
 
 
-                return true;
+                return PO.Grnumber;
             }
 
         }

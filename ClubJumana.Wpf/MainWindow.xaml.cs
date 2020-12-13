@@ -687,7 +687,7 @@ namespace ClubJumana.Wpf
         void SaveAndUpdate(bool done = false)
         {
             string message = "";
-            bool IsSuccessSavedOrUpdated = false;
+            int IsSuccessSavedOrUpdated = 0;
             switch (Mode)
             {
                 case Mode.PO:
@@ -704,7 +704,7 @@ namespace ClubJumana.Wpf
                     break;
             }
 
-            if (IsSuccessSavedOrUpdated)
+            if (IsSuccessSavedOrUpdated!=0)
             {
                 if (done)
                 {

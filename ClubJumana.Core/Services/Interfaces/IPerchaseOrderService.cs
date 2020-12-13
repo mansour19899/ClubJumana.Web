@@ -18,9 +18,9 @@ namespace ClubJumana.Core.Services.Interfaces
 
        PurchaseOrder GivePurchaseOrderById(int id);
 
-       bool AddOrUpdatePoViewModel(PoViewModel poViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
-       bool AddOrUpdateAsnViewModel(AsnViewModel asnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
-       bool AddOrUpdateGrnViewModel(GrnViewModel grnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
+       int AddOrUpdatePoViewModel(PoViewModel poViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
+       int AddOrUpdateAsnViewModel(AsnViewModel asnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
+       int AddOrUpdateGrnViewModel(GrnViewModel grnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
 
    }
 }

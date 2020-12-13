@@ -54,7 +54,7 @@
         </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
             <TextBlock   FontSize="40" Text="{Binding ModeName, StringFormat= {}  {0}# :}" FontWeight="ExtraLight"/>
-            <TextBlock   FontSize="40" Text="{Binding Number, StringFormat= {}  {0}}" FontWeight="ExtraLight"/>
+            <TextBlock Name="txtNum"  FontSize="40" Text="salam" FontWeight="ExtraLight"/>
         </StackPanel>
         <Border Padding="0 0" Grid.Row="2" Grid.Column="1" BorderThickness="0,1,0,1" BorderBrush="Black"  >
             <Grid Grid.Row="2" Grid.Column="1">

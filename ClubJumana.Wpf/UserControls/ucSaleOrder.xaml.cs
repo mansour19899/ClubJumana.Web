@@ -397,5 +397,10 @@ namespace ClubJumana.Wpf.UserControls
             public int Transit { get; set; }
             public int Quantity { get; set; }
         }
+
+        private void BtnRecivePayment_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("hii Mansour");
+        }
     }
 }

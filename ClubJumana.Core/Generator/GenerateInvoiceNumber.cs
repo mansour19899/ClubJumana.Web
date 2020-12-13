@@ -9,29 +9,29 @@ namespace ClubJumana.Core.Generator
         public static string ShowPoNumber(this int Id)
         {
 
-            return "65- " + Id.ToString();
+            return "65-" + Id.ToString();
         }
         public static string ShowAsnNumber(this int Id)
         {
 
-            return "76- " + Id.ToString();
+            return "76-" + Id.ToString();
         }
         public static string ShowGrnNumber(this int Id)
         {
 
-            return "97- " + Id.ToString();
+            return "97-" + Id.ToString();
         }
 
         public static string ShowSaleOrderNumber(this int Id)
         {
 
-            return "SO - " + Id.ToString();
+            return "SO-" + Id.ToString();
         }
 
         public static string ShowInvoceNumber(this int Id)
         {
 
-            return "Inv - " + Id.ToString();
+            return "INV-" + Id.ToString();
         }
     }
 }
