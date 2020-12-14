@@ -56,6 +56,10 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Inner> inners { get; set; }
         public DbSet<MasterCarton> mastercartons { get; set; }
         public DbSet<InnerMasterCarton> innermastercartons { get; set; }
+        public DbSet<Payment> payments { get; set; }
+        public DbSet<PaymentMethod> paymentmethods { get; set; }
+        public DbSet<PaymentInvoice> paymentinvoices { get; set; }
+        public DbSet<DepositTo> deposittos { get; set; }
 
 
         #endregion
@@ -66,7 +70,7 @@ namespace ClubJumana.DataLayer.Context
             // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
             //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-            optionsBuilder.UseMySQL("server=localhost;database=Test2020;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test80Test;user=root;password=SmmRey2018");
             // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 
@@ -550,6 +554,56 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<MasterCarton>(s => s.MasterCarton)
                     .WithMany(g => g.InnerMasterCartons)
                     .HasForeignKey(s => s.MasterCartonFK);
+            });
+
+            //----------------------------------- Payment ---------------------------------------
+            modelBuilder.Entity<Payment>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<PaymentMethod>(s => s.PaymentMethod)
+                    .WithMany(g => g.Payments)
+                    .HasForeignKey(s => s.PaymentMethodFK);
+
+                entity.HasOne<DepositTo>(s => s.DepositTo)
+                    .WithMany(g => g.Payments)
+                    .HasForeignKey(s => s.DepositToFK);
+
+            });
+            //----------------------------------- Payment Invoice ---------------------------------------
+            modelBuilder.Entity<PaymentInvoice>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<Payment>(s => s.Payment)
+                    .WithMany(g => g.PaymentInvoices)
+                    .HasForeignKey(s => s.PaymenteFK);
+
+                entity.HasOne<SaleOrder>(s => s.Invoice)
+                    .WithMany(g => g.PaymentInvoices)
+                    .HasForeignKey(s => s.InvoiceFK);
+            });
+
+            //----------------------------------- Payment Method ---------------------------------------
+            modelBuilder.Entity<PaymentMethod>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+
+            //----------------------------------- Deposit To ---------------------------------------
+            modelBuilder.Entity<DepositTo>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
             });
         }
 

@@ -30,6 +30,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal Subtotal { get; set; }
 
         public decimal SoTotalPrice { get; set; }
+        public decimal OpenBalance { get; set; } = -1;
 
         public int? TaxArea_fk { get; set; }
 
@@ -56,11 +57,13 @@ namespace ClubJumana.DataLayer.Entities
         public int? Quantity { get; set; } = 0;
 
         public bool IsDeleted { get; set; } = false;
+        public bool IsPaid { get; set; } = false;
         [Timestamp]
         public DateTime RowVersion { get; set; }
 
         public ICollection<SoItem> SoItems { get; set; }
         public ICollection<Refund> Refunds { get; set; }
+        public ICollection<PaymentInvoice> PaymentInvoices { get; set; }
         public Users.User User { get; set; }
 
 
