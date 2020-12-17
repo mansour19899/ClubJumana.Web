@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ClubJumana.Wpf.UserControls.ucSaleOrder"
+﻿<UserControl x:Class="ClubJumana.Wpf.UserControls.ucPayment"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,12 +7,10 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcSaleOrder_OnLoaded">
+             d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcPayment_OnLoaded">
     <Grid Margin="0 40 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -31,10 +29,7 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Name="txtName" Text="SALES ORDER" VerticalAlignment="Center" FontSize="17"></TextBlock>
-            <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/EditIcon.png" />
-            <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/CreateNewEntry.png" />
-            <Image Grid.Column="3" Margin="10"  Source="../Content/Icon/DeleteIcon.png" />
+            <TextBlock   FontSize="40" Text="Receive Payment " FontWeight="ExtraLight"/>
             <Grid Grid.Column="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -42,66 +37,12 @@
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
-                <Button Padding="20 0"  Content="Save" HorizontalAlignment="Right" Background="#020082" BorderBrush="#EDEDF9" Name="btnSaveSalesOrder" Click="BtnSaveSalesOrder_OnClick">
-                    <Button.Foreground>
-                        <SolidColorBrush Color="White" Opacity="1"/>
-                    </Button.Foreground>
-                </Button>
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
                 <Image Grid.Column="2" Margin="10"  Source="../Content/Icon/compressIcon.png" />
-                <Image Name="btnCloseSubPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseSubPage_OnMouseDown"  />
+                <Image Name="btnCloseSecendPage" Grid.Column="3" Margin="10"  Source="../Content/Icon/CloseIcon.png"  MouseDown="BtnCloseSecendPage_OnMouseDown" />
             </Grid>
         </Grid>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <TextBlock   FontSize="40" Text="#: " FontWeight="ExtraLight"/>
-            <TextBlock Name="txtNum"  FontSize="40" Text="salam" FontWeight="ExtraLight"/>
-        </StackPanel>
-        <Border Padding="0 0" Grid.Row="2" Grid.Column="1" BorderThickness="0,1,0,1" BorderBrush="Black"  >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="60"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" >
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="16"/>
-                            <Setter Property="Foreground" Value="#FF505C6D"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="20 0 30 0"></Setter>
-                            <Setter Property="Padding" Value="0"></Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="TextDecorations" Value="Underline"></Setter>
-                                    <Setter Property="Cursor" Value="Hand"></Setter>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-
-                    </StackPanel.Resources>
-                    <TextBlock Text="Process" />
-                    <TextBlock Name="btnPostSalesOrder" Text="Create Invoice" MouseDown="BtnPostSalesOrder_OnMouseDown" />
-                    <TextBlock Text="Request Approval" />
-                    <TextBlock Name="btnPrintOrSend" Text="Print/Send" MouseDown="BtnPrintOrSend_OnMouseDown" />
-                    <TextBlock Text="Navigate" />
-                    <Border Background="#FF8C00" Name="btnRecivePayment" Margin="0 10 0 10" CornerRadius="10,10,10,10" MouseDown="BtnRecivePayment_OnMouseDown">
-                        <TextBlock Text="Receive payment"  Foreground="White"/>
-                        </Border>
-                    <Border Background="DarkGreen" Name="btnDeposited" Margin="0 10 0 10" CornerRadius="10,10,10,10">
-                        <TextBlock Text="Deposited"  Foreground="White"/>
-                    </Border>
-
-                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
-                    <TextBlock Text="More options" />
-
-                </StackPanel>
-                <Border Name="btnShowImageOfVendor" Grid.Column="1" Style="{StaticResource BorderMouseOver}">
-                    <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/high_importanceIcon.png" />
-                </Border>
-
-            </Grid>
-        </Border>
-        <Grid Grid.Row="3" Grid.Column="1" Margin="0 20 0 50">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0 20 0 50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Name="ColumnOfImageItem" Width="0"/>
@@ -318,6 +259,7 @@
 
                     </Border>
                     <UniformGrid Grid.Row="1" Columns="2" Rows="1"  Margin="0 20 0 0">
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -335,8 +277,8 @@
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
                             <StackPanel  ZIndex="2214200" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" >
-                                <TextBox x:Name="txtCustomerLookup" Text="{Binding Customer.CompanyName, Mode=OneWay}" FontSize="{StaticResource Font1}" Margin="10 0" Style="{StaticResource MaterialDesignTextBox}" IsReadOnly="False" TextChanged="TxtCustomerLookup_OnTextChanged" KeyDown="TxtCustomerLookup_OnKeyDown" GotMouseCapture="TxtCustomerLookup_OnGotMouseCapture" GotKeyboardFocus="TxtCustomerLookup_OnGotKeyboardFocus"/>
-                                <Border x:Name="lvCustomerLookupBorder" Panel.ZIndex="300" Background="White" BorderBrush="Blue" BorderThickness="1" Margin="10 -1 10 50"  KeyDown="LvCustomerLookupBorder_OnKeyDown">
+                                <TextBox x:Name="txtCustomerLookup" Text="{Binding Customer.CompanyName, Mode=OneWay}" FontSize="{StaticResource Font1}" Margin="10 0" Style="{StaticResource MaterialDesignTextBox}" IsReadOnly="False"  />
+                                <Border x:Name="lvCustomerLookupBorder" Panel.ZIndex="300" Background="White" BorderBrush="Blue" BorderThickness="1" Margin="10 -1 10 50"  >
                                     <Border.Style>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="Visibility" Value="Hidden"/>
@@ -360,7 +302,7 @@
                                         </Style>
                                     </Border.Style>
                                     <ScrollViewer Height="190">
-                                        <ListView x:Name="lvCustomerLookup" BorderBrush="Blue" BorderThickness="3" MouseDoubleClick="LvCustomerLookup_OnMouseDoubleClick" >
+                                        <ListView x:Name="lvCustomerLookup" BorderBrush="Blue" BorderThickness="3"  >
                                             <ListView.ItemTemplate >
                                                 <DataTemplate >
                                                     <Grid Width="400">
@@ -382,26 +324,34 @@
 
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" >
-                                <TextBlock Text="Contact" Style="{StaticResource Style1}"/>
+                                <TextBlock Text="Payment Date" Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
-                            <TextBox Name="txtContactName" IsReadOnly="True" Grid.Row="1" Grid.Column="1" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Customer.ContactName}"   Margin="10 0"/>
+                            <DatePicker Grid.Row="1" Grid.Column="1" Margin="10 3" SelectedDate="{Binding SoDate}"  Name="dpiPaymentDate"   VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
 
                             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" >
-                                <TextBlock Text="Sales Order Date" Style="{StaticResource Style1}"/>
+                                <TextBlock Text="Payment Method" Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
-                            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10 3" SelectedDate="{Binding SoDate}"  Name="dpiSoDate" KeyDown="DpiSoDate_OnKeyDown"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
+                            <ComboBox Name="cmbPaymentMethod" FontSize="{StaticResource Font1}"
+                                      Margin="10 0"
+                                      Grid.Row="2"
+                                      Grid.Column="1"
+                                      materialDesign:TextFieldAssist.HasClearButton="True"
+                                      IsEditable="True"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      materialDesign:TextFieldAssist.SuffixText="sw"
+                                      DisplayMemberPath="Code" SelectedValuePath="Id"   SelectedValue="{Binding term_fk}"/>
                             <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" >
-                                <TextBlock Text="Expiration Date " Style="{StaticResource Style1}"/>
+                                <TextBlock Text="Reference no. " Style="{StaticResource Style1}"/>
                                 <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                             </StackPanel>
-                            <DatePicker Margin="10 3" SelectedDate="{Binding ExpriationDate}" Name="dpiExpiration" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
-                                <StackPanel Orientation="Horizontal" Grid.Row="4">
-                                    <TextBlock Text="Terms" Style="{StaticResource Style1}"/>
-                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                </StackPanel>
-                                <ComboBox Name="cmbTerms" FontSize="{StaticResource Font1}"
+                            <TextBox Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding PoNumber}"   Margin="10 0"/>
+                            <StackPanel Orientation="Horizontal" Grid.Row="4">
+                                <TextBlock Text="Deposit To" Style="{StaticResource Style1}"/>
+                                <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                            </StackPanel>
+                            <ComboBox Name="cmbDepositTo" FontSize="{StaticResource Font1}"
                                           Margin="10 0"
                                           Grid.Row="4"
                                           Grid.Column="1"
@@ -422,44 +372,18 @@
                             </Grid.RowDefinitions>
                             <UniformGrid Columns="2" Rows="1" Grid.Row="0">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="Due Date" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Email" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <DatePicker  Margin="10 3" SelectedDate="{Binding  DueDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
-                            </UniformGrid>
-                            <UniformGrid Columns="2" Rows="1" Grid.Row="1">
-                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Invoice Date" Style="{StaticResource Style1}"/>
-                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                </StackPanel>
-                                <DatePicker Margin="10 3"  SelectedDate="{Binding InvoiceDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
-                            </UniformGrid>
-                            <UniformGrid Columns="2" Rows="1" Grid.Row="2">
-                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="P.O Number" Style="{StaticResource Style1}"/>
-                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                </StackPanel>
-                                <TextBox HorizontalContentAlignment="Center" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding PoNumber}"   Margin="10 0"/>
-                            </UniformGrid>
-                            <UniformGrid Columns="2" Rows="1" Grid.Row="3">
-                                <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="Sales Person" Style="{StaticResource Style1}"/>
-                                    <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                </StackPanel>
-                                <ComboBox Name="cmbSalesPerson" FontSize="{StaticResource Font1}"
-                                          Margin="10 0"
-                                          materialDesign:TextFieldAssist.HasClearButton="True"
-                                          IsEditable="True"
-                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                          materialDesign:TextFieldAssist.SuffixText="sw"
-                                          DisplayMemberPath="UserName" SelectedValuePath="Id"   SelectedValue="{Binding Cashier_fk}"/>
+                                <TextBox  HorizontalContentAlignment="Center" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding PoNumber}"   Margin="10 0"/>
+
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1" Grid.Row="4">
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                                    <TextBlock Text="Terms Percent" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="Amount Receive" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Name="txtTermPercent" HorizontalContentAlignment="Center" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding TermPercent,UpdateSourceTrigger=PropertyChanged}"   Margin="10 0" KeyDown="TxtTermPercent_OnKeyDown" LostFocus="TxtTermPercent_OnLostFocus"/>
+                                <TextBox Name="txtTermPercent" HorizontalContentAlignment="Center" FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding TermPercent,UpdateSourceTrigger=PropertyChanged}"   Margin="10 0"/>
                             </UniformGrid>
                         </Grid>
 
@@ -468,34 +392,21 @@
 
                     </UniformGrid>
 
-
                     <Border BorderThickness="0 0 0 2" Margin="10 0" BorderBrush="Black" VerticalAlignment="Bottom" Grid.Row="2" >
                         <UniformGrid Columns="3">
                             <TextBlock Name="txtShowInventory" Text="  Lines " FontSize="20" Margin="0 0 0 10"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="20" VerticalAlignment="Center" Text="UPC "/>
-                                <TextBox Name="txtSearch" Width="300" KeyDown="TxtSearch_OnKeyDown"/>
-                                <Button Name="btnAddItem" Background="DarkGreen" Foreground="White" Content="  Add Item  " Click="BtnAddItem_OnClick"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Name="btnDeleteItem" Content="Delete Item" Background="DarkRed" Foreground="White"  Width="150" Margin="0 0 40 10" Click="BtnDeleteItem_OnClick" />
-                            </StackPanel>
                         </UniformGrid>
-
                     </Border>
                     <StackPanel Grid.Row="3" >
                         <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgSoItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgSoItems_OnCellEditEnding" SelectionChanged="dgSoItems_SelectionChanged" LostFocus="dgSoItems_LostFocus"    >
+                            <DataGrid  Name="dgSoItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue"   >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
-                                    <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
-                                    <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="*"/>
-                                    <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
-                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" IsReadOnly="False"/>
-                                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="" Binding="{Binding ProductMaster.StyleNumber}" Width="100" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Desciption" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Due Date" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Orginal Amount" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Open Balance" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                                    <DataGridTextColumn Header="Payment" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>
@@ -514,7 +425,7 @@
                                               Margin="10 0"
                                               SelectedValue="{Binding TaxArea_fk}"
                                               FontSize="15"
-                                              DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
+                                              DisplayMemberPath="Name" SelectedValuePath="Id" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >

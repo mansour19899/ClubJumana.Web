@@ -57,6 +57,7 @@ namespace ClubJumana.Wpf
         private ucSaleOrder UCSaleOrder;
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
+        private ucPayment UCPayment;
 
         private List<SalesOrderListview> salesOrderListview;
         private Customer customer;
@@ -85,6 +86,7 @@ namespace ClubJumana.Wpf
             itemCard = new ucItemCard();
             Purchasing = new ucPurchasing();
             UCSaleOrder = new ucSaleOrder();
+            UCPayment=new ucPayment();
 
             UCVendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
@@ -101,6 +103,8 @@ namespace ClubJumana.Wpf
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCVendorCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
+            UCSaleOrder.BtnRecivePayment += BtnbtnRecivePayment_OnbtnRecivePaymentOnClick;
+            UCPayment.BtnCloseSecendPage += BtnCloseSecendPage_OnCloseSecendPageOnClick;
 
             DataContext = _dataContextVM;
 
@@ -304,6 +308,17 @@ namespace ClubJumana.Wpf
         private void BtnCloseSubPage_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
         {
             SubPage.Visibility = Visibility.Hidden;
+
+        }
+        private void BtnbtnRecivePayment_OnbtnRecivePaymentOnClick(object? sender, EventArgs e)
+        {
+            SecoundBordermanagement.Child = UCPayment;
+            SecoundBordermanagement.Visibility = Visibility.Visible;
+
+        }
+        private void BtnCloseSecendPage_OnCloseSecendPageOnClick(object? sender, EventArgs e)
+        {
+            SecoundBordermanagement.Visibility = Visibility.Hidden;
 
         }
         private void BtnPrintOrSend_OnBtnPrintOrSendOnClick(object? sender, EventArgs e)

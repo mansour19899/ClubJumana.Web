@@ -323,6 +323,9 @@
             <Border Name="Bordermanagement" Grid.Column="1"  MaxWidth="1800"  Background="White">
 
             </Border>
+            <Border Name="SecoundBordermanagement" Grid.Column="1"  MaxWidth="1800"  Background="White" Visibility="Hidden">
+
+            </Border>
         </Grid>
 
         <materialDesign:Snackbar Grid.Row="2"  x:Name="SnackbarResult" Panel.ZIndex="99999"  />
