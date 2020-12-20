@@ -7,6 +7,7 @@ using System.Text;
 using ClubJumana.DataLayer.Entities;
 using JetBrains.Annotations;
 using ClubJumana.DataLayer.Entities.Users;
+using ClubJumana.Core.Generator;
 
 namespace ClubJumana.Core.DTOs
 {
@@ -184,7 +185,7 @@ namespace ClubJumana.Core.DTOs
         public int? Quantity { get; set; } = 0;
 
         public bool IsDeleted { get; set; } = false;
-
+        public decimal OpenBalance { get; set; }
 
         public ObservableCollection<SoItemVeiwModel> SoItems { get; set; }
 
@@ -299,8 +300,8 @@ namespace ClubJumana.Core.DTOs
             get { return _termPercent; }
             set
             {
-                _termPercent = value/100;
-                _priceTerm = Math.Round(_price * _termPercent + _price,2, MidpointRounding.AwayFromZero);
+                _termPercent = value / 100;
+                _priceTerm = Math.Round(_price * _termPercent + _price, 2, MidpointRounding.AwayFromZero);
                 if (_discount != 0)
                     _totalPrice = _quantity * _priceTerm - (_quantity * _priceTerm * _discount / 100);
                 else
@@ -403,14 +404,14 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _quantity = value;
-                _totalPrice = Math.Round(value * Price, 2, MidpointRounding.ToEven) ;
+                _totalPrice = Math.Round(value * Price, 2, MidpointRounding.ToEven);
             }
         }
 
         public decimal Cost { get; set; }
         public decimal Price { get; set; }
 
-        private decimal _totalPrice=0;
+        private decimal _totalPrice = 0;
 
         public decimal TotalPrice
         {
@@ -435,9 +436,45 @@ namespace ClubJumana.Core.DTOs
         public int No { get; set; }
         public string CustomerName { get; set; }
         public DateTime? DueDate { get; set; }
-        public decimal Balance { get; set; }
+        public decimal OpenBalance { get; set; }
         public decimal TotalBeforeTax { get; set; }
         public decimal SalesTax { get; set; }
         public decimal Total { get; set; }
+    }
+
+    public class CustomersInvoiceViewModel
+    {
+        public int Id { get; set; }
+        public bool IsSelected { get; set; }
+        public string Description { get; set; }
+        private int? _invoiceNumber = -1;
+        public int? InvoiceNumber
+        {
+            get { return _invoiceNumber; }
+            set
+            {
+                _invoiceNumber = value;
+                if (_invoiceDate != null)
+                    Description = $"Invoice # {_invoiceNumber.Value.ShowInvoceNumber()} ({_invoiceDate.Value.ToShortDateString()})";
+                // OnPropertyChanged();
+
+            }
+        }
+        private DateTime? _invoiceDate;
+        public DateTime? InvoiceDate
+        {
+            get { return _invoiceDate; }
+            set
+            {
+                _invoiceDate = value;
+                Description = $"Invoice # {_invoiceNumber.Value.ShowInvoceNumber()} ({_invoiceDate.Value.ToShortDateString()})";
+                // OnPropertyChanged();
+
+            }
+        }
+        public DateTime? DueDate { get; set; }
+        public decimal OrginalAmount { get; set; }
+        public decimal OpenBalance { get; set; }
+        public decimal Payment { get; set; }
     }
 }

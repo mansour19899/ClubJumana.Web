@@ -47,6 +47,8 @@ namespace ClubJumana.Wpf
         private List<Customer> customers;
         private List<Province> provinces;
         private List<Country> countries;
+        private List<PaymentMethod> paymentMethods;
+        private List<DepositTo> depositTos;
 
         public Mode Mode = Mode.Nothong;
         public static User user;
@@ -58,6 +60,7 @@ namespace ClubJumana.Wpf
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
         private ucPayment UCPayment;
+
 
         private List<SalesOrderListview> salesOrderListview;
         private Customer customer;
@@ -114,9 +117,15 @@ namespace ClubJumana.Wpf
             customers = _repositoryService.AllCustomers().ToList();
             provinces = _repositoryService.AllProvinces().ToList();
             countries = _repositoryService.AllCountriesList().ToList();
-
+            paymentMethods = _repositoryService.AllPaymentMethods().ToList();
+            depositTos = _repositoryService.AllDepositTos().ToList();
             UCCustomer.cmbCountries.ItemsSource = countries;
             UCCustomer.cmbProvinces.ItemsSource = provinces;
+
+            UCPayment.cmbPaymentMethod.ItemsSource = paymentMethods;
+            UCPayment.cmbPaymentMethod.SelectedValue = 1;
+            UCPayment.cmbDepositTo.ItemsSource = depositTos;
+            UCPayment.cmbDepositTo.SelectedValue = 1;
 
             UCSaleOrder.CustomersList = customers;
             UCSaleOrder.cmbSalesPerson.ItemsSource = _userService.AllSalesPeople();
@@ -312,6 +321,15 @@ namespace ClubJumana.Wpf
         }
         private void BtnbtnRecivePayment_OnbtnRecivePaymentOnClick(object? sender, EventArgs e)
         {
+            UCPayment.txtCusomerEmail.Text = _dataContextVM.SaleOrderViewModel.Customer.Email;
+            UCPayment.txtCustomerName.Text = _dataContextVM.SaleOrderViewModel.Customer.FullName;
+            UCPayment.txtCompanyName.Text = _dataContextVM.SaleOrderViewModel.Customer.CompanyName;
+            UCPayment.InvoiceList = _saleOrderService.GiveMeAllOpenInvoiceForCustomer(_dataContextVM.SaleOrderViewModel.Customer.Id);
+            UCPayment.dgInvoicesOpen.ItemsSource = UCPayment.InvoiceList;
+            UCPayment.NewPayment.AmountReceived = _dataContextVM.SaleOrderViewModel.SoTotalPrice;
+
+
+
             SecoundBordermanagement.Child = UCPayment;
             SecoundBordermanagement.Visibility = Visibility.Visible;
 

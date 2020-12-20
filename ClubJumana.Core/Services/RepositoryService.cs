@@ -957,6 +957,22 @@ namespace ClubJumana.Core.Services
                 return _context.terms.OrderBy(p => p.Id);
         }
 
+        public IQueryable<PaymentMethod> AllPaymentMethods()
+        {
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.paymentmethods.OrderBy(p => p.Id);
+            else
+                return _context.paymentmethods.OrderBy(p => p.Id);
+        }
+
+        public IQueryable<DepositTo> AllDepositTos()
+        {
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.deposittos.OrderBy(p => p.Id);
+            else
+                return _context.deposittos.OrderBy(p => p.Id);
+        }
+
         public Country GiveMeCountryByID(int Id)
         {
             if (Consts.Consts.OnlineModeOnly)

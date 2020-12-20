@@ -65,6 +65,8 @@ namespace ClubJumana.Core.Services
                     Note = saleOrder.Note,
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
+                    OpenBalance = saleOrder.OpenBalance,
+                    
 
                 };
                 _context.saleorders.Add(So);
@@ -103,6 +105,7 @@ namespace ClubJumana.Core.Services
                 So.Note = saleOrder.Note;
                 So.Quantity = saleOrder.Quantity;
                 So.IsDeleted = false;
+                So.OpenBalance = saleOrder.OpenBalance;
 
             }
 
@@ -195,7 +198,7 @@ namespace ClubJumana.Core.Services
             So.Note = saleOrder.Note;
             So.Quantity = saleOrder.Quantity;
             So.IsDeleted = false;
-
+            So.OpenBalance = saleOrder.OpenBalance;
 
             SoItem soItem = new SoItem();
             ProductInventoryWarehouse inventoryProduct;
@@ -343,18 +346,19 @@ namespace ClubJumana.Core.Services
                 TermPercent = saleOrder.TermPercent,
                 IsDeleted = false,
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
-                User = saleOrder.User
+                User = saleOrder.User,
+                OpenBalance = saleOrder.OpenBalance
             };
         }
 
         public List<SalesOrderListview> SalesOrdersListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
 
         }
         public List<SalesOrderListview> SalesInvoceListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, Balance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
 
         }
 
@@ -438,9 +442,17 @@ namespace ClubJumana.Core.Services
             return refundItems;
         }
 
+        public List<CustomersInvoiceViewModel> GiveMeAllOpenInvoiceForCustomer(int CustomrId)
+        {
+            return _context.saleorders.Where(p=>p.InvoiceNumber!=null&&p.IsPaid==false&&p.Customer_fk.Value==CustomrId).Select(p=>new CustomersInvoiceViewModel()
+                {Id = p.Id,InvoiceNumber = p.InvoiceNumber,InvoiceDate = p.InvoiceDate,DueDate = p.DueDate,OrginalAmount = p.SoTotalPrice,OpenBalance = p.OpenBalance,Payment = 0M,IsSelected = false})
+                .ToList();
+        }
+
 
         private void ResrevdItemsOfSaleOrder(int Id)
         {
+            //Check
             var soItem = _context.soitems.Where(p => p.So_fk == Id).Include(p => p.ProductMaster).ToList();
 
             foreach (SoItem item in soItem)
