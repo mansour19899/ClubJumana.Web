@@ -130,6 +130,10 @@ namespace ClubJumana.Wpf
             UCSaleOrder.CustomersList = customers;
             UCSaleOrder.cmbSalesPerson.ItemsSource = _userService.AllSalesPeople();
             UCSaleOrder.cmbTerms.ItemsSource = _repositoryService.AllTerms().ToList();
+            UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
+            UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
+            UCSaleOrder.cmbTaxHandling.ItemsSource = provinces;
+            UCSaleOrder.cmbTaxShipping.ItemsSource = provinces;
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
         }
@@ -212,7 +216,7 @@ namespace ClubJumana.Wpf
                         No = ID,
                         CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
                         DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
-                        Balance = 0,
+                        OpenBalance = 0,
                         TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
                         Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
                     });
