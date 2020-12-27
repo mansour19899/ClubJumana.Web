@@ -8,38 +8,74 @@
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White">
     <Grid Margin="0 40 0 0">
-         <Grid.RowDefinitions>
-             <RowDefinition Height="150"/>
-             <RowDefinition Height="70"/>
-             <RowDefinition Height="150"/>
-             <RowDefinition Height="*"/>
-         </Grid.RowDefinitions>   
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Inner" FontSize="25" Height="50" Margin="100 0 0 0" Background="DarkGreen" Foreground="White" Width="150"/>
-            <Button  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <UniformGrid Rows="1" Columns="4">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Inner" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkGreen" Foreground="White" Width="150"/>
+                <Button  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White"/>
+            </StackPanel>
+            <Label/>
+            <Label/>
+            <StackPanel Orientation="Horizontal" Height="70" HorizontalAlignment="Right" Margin="0 0 50 0">
+                <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
+                <Image  Margin="10"  Source="../Content/Icon/compressIcon.png" />
+                <Image  Name="btnCloseInnerPage"  Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseInnerPage_OnMouseDown" />
+            </StackPanel>
+        </UniformGrid>
+
         <TextBlock Text="Inner" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50"/>
         <UniformGrid Columns="3" Rows="1" Grid.Row="2">
             <StackPanel Margin="20 20">
                 <TextBlock Text="Barcode" FontSize="20" Margin="10 0 0 0"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="250" />
+                <StackPanel Orientation="Horizontal" Height="70">
+                    <TextBox Width="250" Text="{Binding UPC}" />
                     <Button Content="Find" FontSize="18" Foreground="White" Background="Purple" Width="150" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="20 20">
-                <TextBlock Text="Inner ITF-14" FontSize="20" Margin="10 0 0 0"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="250" />
+                <TextBlock Text="Inner ITF-14" FontSize="20" Margin="10 0 0 0" />
+                <StackPanel Orientation="Horizontal" Height="70">
+                    <TextBox Name="txtInnerITF14" Width="250"  MaxLength="14" LostFocus="TxtInnerITF14_OnLostFocus" TextChanged="TxtInnerITF14_OnTextChanged" KeyDown="TxtInnerITF14_OnKeyDown"/>
+                    <Image Name="imgApproval"  Margin="10"  Source="../Content/Icon/approval.png" Height="30" Visibility="Collapsed" />
+                    <Image Name="imgDuplicateITF"  Margin="10"  Source="../Content/Icon/minus.png" Height="30" Visibility="Collapsed" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="20 20">
                 <TextBlock Text="Inner Quantity" FontSize="20" Margin="10 0 0 0"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="250" />
+                <StackPanel Orientation="Horizontal" Height="70">
+                    <TextBox Name="txtInnerQuantity" Width="250"  MaxLength="2" KeyDown="TxtInnerQuantity_OnKeyDown"/>
+                    <Button Name="btnAddInner" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0" Click="BtnAddInner_OnClick"  >
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=imgApproval,Path=Visibility}" Value="Visible">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </UniformGrid>
-        
+        <TextBlock Name="txtDescription" Margin="40 0 0 0" Grid.Row="3" FontSize="20" Text="{Binding Name}"/>
+        <UniformGrid Columns="2" Grid.Row="4">
+            <DataGrid  Name="dgInners" ItemsSource="{Binding Inners}"  Margin="50"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="ITF14" Binding="{Binding ITF14}" Width="200" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="200" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </UniformGrid>
+
+
     </Grid>
 </UserControl>

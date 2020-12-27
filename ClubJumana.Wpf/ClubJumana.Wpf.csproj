@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\Icon\approval.png" />
     <None Remove="Content\Icon\CloseIcon.png" />
     <None Remove="Content\Icon\compressIcon.png" />
     <None Remove="Content\Icon\CreateNewEntry.png" />
@@ -18,6 +19,7 @@
     <None Remove="Content\Icon\high_importanceIcon.png" />
     <None Remove="Content\Icon\Menu1Icon.png" />
     <None Remove="Content\Icon\menuIcon.png" />
+    <None Remove="Content\Icon\minus.png" />
     <None Remove="Content\Icon\NotificationIcon.png" />
     <None Remove="Content\Icon\questionIcon.png" />
     <None Remove="Content\Icon\searchIcon.png" />
@@ -64,6 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Content\Icon\approval.png" />
     <Resource Include="Content\Icon\CloseIcon.png" />
     <Resource Include="Content\Icon\compressIcon.png" />
     <Resource Include="Content\Icon\CreateNewEntry.png" />
@@ -75,6 +78,7 @@
     <Resource Include="Content\Icon\high_importanceIcon.png" />
     <Resource Include="Content\Icon\Menu1Icon.png" />
     <Resource Include="Content\Icon\menuIcon.png" />
+    <Resource Include="Content\Icon\minus.png" />
     <Resource Include="Content\Icon\NotificationIcon.png" />
     <Resource Include="Content\Icon\questionIcon.png" />
     <Resource Include="Content\Icon\searchIcon.png" />

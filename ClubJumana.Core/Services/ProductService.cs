@@ -72,5 +72,39 @@ namespace ClubJumana.Core.Services
 
             return dic;
         }
+
+        public ProductMaster GetProductMasterById(int Id)
+        {
+            return _context.productmasters.Include(p=>p.Inners).ThenInclude(p=>p.InnerMasterCartons).ThenInclude(p=>p.MasterCarton).FirstOrDefault(p => p.Id == Id);
+        }
+
+        public int AddInner(Inner inner)
+        {
+            inner.Id = _context.inners.Max(p => p.Id) + 1;
+            _context.inners.Add(inner);
+            _context.SaveChanges();
+            return 1;
+        }
+
+        public bool CheckInnerITF(string itf14)
+        {
+            var x = _context.inners.FirstOrDefault(p => p.ITF14.CompareTo(itf14) == 0);
+
+            if (x == null)
+                return false;
+            else
+                return true;
+
+        }
+
+        public bool CheckMasterCartonITF(string itf14)
+        {
+            var x = _context.mastercartons.FirstOrDefault(p => p.ITF14.CompareTo(itf14) == 0);
+
+            if (x == null)
+                return false;
+            else
+                return true;
+        }
     }
 }

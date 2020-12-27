@@ -53,5 +53,13 @@ namespace ClubJumana.Wpf.UserControls
         {
             MessageBox.Show(txtDescription.Text);
         }
+
+        public event EventHandler<EventArgs> BtnCreateInner;
+        private void BtnCreateInner_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnCreateInner != null)
+                BtnCreateInner(sender, e);
+        }
     }
 }

@@ -66,6 +66,7 @@
                     <TextBlock Text="Process" />
                     <TextBlock Text="Item" />
                     <TextBlock Text="History" />
+                    <TextBlock Name="btnCreateInner" Text="Create Inner/Master Carton" MouseDown="BtnCreateInner_OnMouseDown" />
                     <TextBlock Text="Special Sales Prices &amp; Dicounts" />
                     <TextBlock Text="Request Approval" />
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />

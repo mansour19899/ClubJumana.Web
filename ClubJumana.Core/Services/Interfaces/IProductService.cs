@@ -10,5 +10,10 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddOrUpdateProduct(ProductMaster product);
 
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id);
+
+        public ProductMaster GetProductMasterById(int Id);
+        public int AddInner(Inner inner);
+        public bool CheckInnerITF(string itf14);
+        public bool CheckMasterCartonITF(string itf14);
     }
 }

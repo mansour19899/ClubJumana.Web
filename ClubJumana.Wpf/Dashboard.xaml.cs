@@ -24,6 +24,7 @@ using ClubJumana.Wpf.UserControls;
 using MaterialDesignThemes.Wpf;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Org.BouncyCastle.Crypto.Tls;
 using Color = System.Drawing.Color;
 using Path = System.Windows.Shapes.Path;
 
@@ -38,6 +39,7 @@ namespace ClubJumana.Wpf
         private PerchaseOrderService _purchaseOrderService;
         private UserService _userService;
         private SaleOrderService _saleOrderService;
+        private ProductService _productService;
         private PurchaseOrder SelectedPurchaseOrder;
         private PoViewModel SelectedPo;
         private AsnViewModel SelectedAsn;
@@ -60,6 +62,7 @@ namespace ClubJumana.Wpf
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
         private ucPayment UCPayment;
+        private ucInnerMasterCarton UCInnerMasterCarton;
 
 
         private List<SalesOrderListview> salesOrderListview;
@@ -74,6 +77,7 @@ namespace ClubJumana.Wpf
             _purchaseOrderService = new PerchaseOrderService();
             _userService = new UserService();
             _saleOrderService = new SaleOrderService();
+            _productService = new ProductService();
             PurchaseOrdersList = new List<PurchaseOrder>();
             PurchaseOrdersList.AddRange(_repositoryService.AllPurchaseOrder().ToList());
 
@@ -90,6 +94,7 @@ namespace ClubJumana.Wpf
             Purchasing = new ucPurchasing();
             UCSaleOrder = new ucSaleOrder();
             UCPayment=new ucPayment();
+            UCInnerMasterCarton=new ucInnerMasterCarton();
 
             UCVendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
@@ -102,6 +107,11 @@ namespace ClubJumana.Wpf
             Purchasing.BtnPrintOrSend += BtnPrintOrSend_OnBtnPrintOrSendOnClick;
             UCSaleOrder.BtnAddItemOnClick += BtnAddItem_OnClick;
             itemCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
+            itemCard.BtnCreateInner += BtnCreateInner_OnClick;
+            itemCard.BtnCreateInner += BtnCreateInner_OnClick;
+            UCInnerMasterCarton.BtnAddInner += BtnAddInner_OnClick;
+            UCInnerMasterCarton.BtnCloseInnerPage += BtnCloseInnerPage_OnClick;
+            UCInnerMasterCarton.CheckExistITF14 += CheckExistInnerITF14;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
@@ -680,6 +690,79 @@ namespace ClubJumana.Wpf
             }
 
 
+        }
+
+        private void BtnCreateInner_OnClick(object? sender, EventArgs e)
+        {
+            UCInnerMasterCarton.productMaster = _productService.GetProductMasterById(_dataContextVM.ProductMaster.Id);
+            UCInnerMasterCarton.DataContext = UCInnerMasterCarton.productMaster;
+            SecoundBordermanagement.Child = UCInnerMasterCarton;
+            SecoundBordermanagement.Visibility = Visibility.Visible;
+        }
+
+        private void BtnAddInner_OnClick(object? sender, EventArgs e)
+        {
+            if (UCInnerMasterCarton.txtInnerQuantity.Text.Length == 0)
+            {
+                MessageBox.Show("Please Inter Quantity");
+                UCInnerMasterCarton.txtInnerQuantity.Focus();
+            }
+            else
+            {
+                Inner newInner = new Inner()
+                {
+                    ITF14 = UCInnerMasterCarton.txtInnerITF14.Text,
+                    Quantity = Convert.ToInt16(UCInnerMasterCarton.txtInnerQuantity.Text),
+                    ProductMasterFK = UCInnerMasterCarton.productMaster.Id
+                };
+                _productService.AddInner(newInner);
+                UCInnerMasterCarton.productMaster.Inners.Add(newInner);
+                UCInnerMasterCarton.dgInners.Items.Refresh();
+                myMessageQueue.Enqueue("ITF-14 Added. ");
+            }
+
+
+        }
+        private void CheckExistInnerITF14(object? sender, EventArgs e)
+        {
+            if(UCInnerMasterCarton.txtInnerITF14.Text.Length==14)
+                CheckExistInner(UCInnerMasterCarton.txtInnerITF14.Text);
+            else if (UCInnerMasterCarton.txtInnerITF14.Text.Length == 0)
+            {
+
+            }
+            else
+            {
+                myMessageQueue.Enqueue("Enter 14");
+                UCInnerMasterCarton.txtInnerITF14.Clear();
+            }
+
+        }
+
+        private async Task CheckExistInner(string itf)
+        {
+            await Task.Run(() =>
+            {
+                bool IsExist = _productService.CheckInnerITF(itf);
+
+                if (IsExist)
+                {
+                    this.Dispatcher.Invoke(() =>
+                        UCInnerMasterCarton.imgDuplicateITF.Visibility=Visibility.Visible
+                    );
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                        UCInnerMasterCarton.imgApproval.Visibility = Visibility.Visible
+                    );
+                }
+            });
+
+        }
+        private void BtnCloseInnerPage_OnClick(object? sender, EventArgs e)
+        {
+            SecoundBordermanagement.Visibility = Visibility.Hidden;
         }
         private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
