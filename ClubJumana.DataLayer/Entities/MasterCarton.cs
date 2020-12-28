@@ -8,6 +8,7 @@ namespace ClubJumana.DataLayer.Entities
    public class MasterCarton
     {
         public int Id { get; set; }
+        public int TotalQuantity { get; set; }
         public string ITF14 { get; set; }
         public decimal? Weight { get; set; }
         public decimal? Lenght { get; set; }
