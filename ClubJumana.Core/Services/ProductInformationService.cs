@@ -537,7 +537,7 @@ namespace ClubJumana.Core.Services
 
                         }
                     }
-                    
+
                 }
 
             }
@@ -789,22 +789,28 @@ namespace ClubJumana.Core.Services
 
         public int ExportAllDataBase(List<VariantViewModel> list)
         {
-            List<Variant> variants=new List<Variant>();
+            List<Variant> variants = new List<Variant>();
 
             foreach (var VARIABLE in list)
             {
-                if (VARIABLE.BarcodeFK != null)
+                //if (VARIABLE.BarcodeFK != null)
+                //{
+                //    variants.Add(_onlineContext.variants.Include(p=>p.Barcode)
+                //        .Include(p=>p.ProductType).Include(p=>p.Colour).FirstOrDefault(p=>p.Id==VARIABLE.Id));
+                //}
+
+                if (true)
                 {
-                    variants.Add(_onlineContext.variants.Include(p=>p.Barcode)
-                        .Include(p=>p.ProductType).Include(p=>p.Colour).FirstOrDefault(p=>p.Id==VARIABLE.Id));
+                    variants.Add(_onlineContext.variants.Include(p => p.Barcode)
+                        .Include(p => p.ProductType).Include(p => p.Colour).FirstOrDefault(p => p.Id == VARIABLE.Id));
                 }
             }
-            
+
 
             var Path = AppDomain.CurrentDomain.BaseDirectory;
             FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "ExportFromDataBase.xlsx");
 
-            string filee = Path + "Results" + @"\" + "Database-"+DateTime.Today.ToShortDateString()+ ".xlsx";
+            string filee = Path + "Results" + @"\" + "Database-" + DateTime.Today.ToShortDateString() + ".xlsx";
             FileInfo newFilee = new FileInfo(filee);
             try
             {
@@ -824,12 +830,18 @@ namespace ClubJumana.Core.Services
             StringBuilder Description;
 
 
-            foreach (var item in variants.OrderBy(p=>p.ProductFK))
+            foreach (var item in variants.OrderBy(p => p.ProductFK))
             {
                 ws.Cells[i, 1].Value = item.Id;
                 ws.Cells[i, 2].Value = item.Product.StyleNumber;
-                ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber;
-                ws.Cells[i, 4].Value = item.Sku;
+                if (item.Barcode != null)
+                    ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber;
+                else
+                    ws.Cells[i, 3].Value = "-";
+                if (item.Sku != null)
+                    ws.Cells[i, 4].Value = item.Sku;
+                else
+                    ws.Cells[i, 4].Value = "-";
                 ws.Cells[i, 5].Value = item.Product.ProductTittle;
                 ws.Cells[i, 6].Value = item.ProductType.Name;
                 ws.Cells[i, 7].Value = item.Colour.Name;

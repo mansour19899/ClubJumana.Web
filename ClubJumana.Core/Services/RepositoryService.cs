@@ -928,9 +928,9 @@ namespace ClubJumana.Core.Services
         public IQueryable<Colour> AllColourList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.colours.OrderBy(p=>p.Id).AsNoTracking();
+                return onlineDb.colours.OrderBy(p=>p.Name).AsNoTracking();
             else
-                return _context.colours.OrderBy(p => p.Id).AsNoTracking();
+                return _context.colours.OrderBy(p => p.Name).AsNoTracking();
         }
 
         public IQueryable<Material> AllMaterialList()
