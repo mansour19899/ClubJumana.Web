@@ -15,5 +15,6 @@ namespace ClubJumana.Core.Services.Interfaces
         public int AddInner(Inner inner);
         public bool CheckInnerITF(string itf14);
         public bool CheckMasterCartonITF(string itf14);
+        public Inner GetInnerByITF(string itf14);
     }
 }

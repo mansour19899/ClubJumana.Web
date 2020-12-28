@@ -106,5 +106,10 @@ namespace ClubJumana.Core.Services
             else
                 return true;
         }
+
+        public Inner GetInnerByITF(string itf14)
+        {
+            return _context.inners.FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
+        }
     }
 }

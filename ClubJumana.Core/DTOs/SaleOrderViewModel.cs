@@ -188,6 +188,7 @@ namespace ClubJumana.Core.DTOs
         public decimal OpenBalance { get; set; }
 
         public ObservableCollection<SoItemVeiwModel> SoItems { get; set; }
+        public List<Province> Provinces { get; set; }
 
         public User User { get; set; }
 

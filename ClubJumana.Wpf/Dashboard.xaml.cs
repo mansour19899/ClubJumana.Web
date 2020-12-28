@@ -112,6 +112,8 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.BtnAddInner += BtnAddInner_OnClick;
             UCInnerMasterCarton.BtnCloseInnerPage += BtnCloseInnerPage_OnClick;
             UCInnerMasterCarton.CheckExistITF14 += CheckExistInnerITF14;
+            UCInnerMasterCarton.CheckExistITF14Master += CheckExistMasterITF14;
+            UCInnerMasterCarton.BtnAddInnerForMaster += BtnAddInnerForMaster_OnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
@@ -142,8 +144,6 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbTerms.ItemsSource = _repositoryService.AllTerms().ToList();
             UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
-            UCSaleOrder.cmbTaxHandling.ItemsSource = provinces;
-            UCSaleOrder.cmbTaxShipping.ItemsSource = provinces;
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
         }
@@ -738,14 +738,30 @@ namespace ClubJumana.Wpf
             }
 
         }
+        private void CheckExistMasterITF14(object? sender, EventArgs e)
+        {
+            if (UCInnerMasterCarton.txtMasterITF14.Text.Length == 14)
+                CheckExistMaster(UCInnerMasterCarton.txtMasterITF14.Text);
+            else if (UCInnerMasterCarton.txtMasterITF14.Text.Length == 0)
+            {
+
+            }
+            else
+            {
+                myMessageQueue.Enqueue("Enter 14");
+                UCInnerMasterCarton.txtMasterITF14.Clear();
+            }
+
+        }
 
         private async Task CheckExistInner(string itf)
         {
             await Task.Run(() =>
             {
-                bool IsExist = _productService.CheckInnerITF(itf);
+                bool IsExistMaster = _productService.CheckMasterCartonITF(itf);
+                bool IsExistInner = _productService.CheckInnerITF(itf);
 
-                if (IsExist)
+                if (IsExistInner || IsExistMaster)
                 {
                     this.Dispatcher.Invoke(() =>
                         UCInnerMasterCarton.imgDuplicateITF.Visibility=Visibility.Visible
@@ -760,9 +776,45 @@ namespace ClubJumana.Wpf
             });
 
         }
+        private async Task CheckExistMaster(string itf)
+        {
+            await Task.Run(() =>
+            {
+                bool IsExistMaster = _productService.CheckMasterCartonITF(itf);
+                bool IsExistInner = _productService.CheckInnerITF(itf);
+
+                if (IsExistInner||IsExistMaster)
+                {
+                    this.Dispatcher.Invoke(() =>
+                        UCInnerMasterCarton.imgDuplicateITFMaster.Visibility = Visibility.Visible
+                    );
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                        UCInnerMasterCarton.imgApprovalMaster.Visibility = Visibility.Visible
+                    );
+                }
+            });
+
+        }
         private void BtnCloseInnerPage_OnClick(object? sender, EventArgs e)
         {
             SecoundBordermanagement.Visibility = Visibility.Hidden;
+        }
+        private void BtnAddInnerForMaster_OnClick(object? sender, EventArgs e)
+        {
+            var inner = _productService.GetInnerByITF(UCInnerMasterCarton.txtAddInnerForMaster.Text.Trim());
+            if(inner==null)
+                myMessageQueue.Enqueue("Inner Not Found.");
+            else
+            {
+                UCInnerMasterCarton.innerMasterCartons.Add(new InnerMasterCarton(){Inner = inner,InnerQuntity = 0,InnerFK = inner.Id,
+                    Id =UCInnerMasterCarton.innerMasterCartons.Count+1});
+                UCInnerMasterCarton.dgInnersForMaster.ItemsSource = UCInnerMasterCarton.innerMasterCartons;
+                UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
+                myMessageQueue.Enqueue("Inner Add To List.");
+            }
         }
         private void LvPurchasing_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -860,15 +912,15 @@ namespace ClubJumana.Wpf
                     TaxArea = provinces.SingleOrDefault(p => p.Id == 2),
                     Warehouse_fk = 2,
                     term_fk = 3,
-
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
             }
             else
                 _dataContextVM.SaleOrderViewModel = _saleOrderService.GiveSaleOrderById(Id);
 
+            _dataContextVM.SaleOrderViewModel.Provinces = provinces;
             UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
-            UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
+           // UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
 
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {

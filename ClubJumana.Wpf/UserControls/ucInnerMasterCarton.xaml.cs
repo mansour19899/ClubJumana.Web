@@ -21,9 +21,11 @@ namespace ClubJumana.Wpf.UserControls
     public partial class ucInnerMasterCarton : UserControl
     {
         public ProductMaster productMaster;
+        public List<InnerMasterCarton> innerMasterCartons;
         public ucInnerMasterCarton()
         {
             InitializeComponent();
+            innerMasterCartons=new List<InnerMasterCarton>();
         }
 
         public event EventHandler<EventArgs> BtnAddInner;
@@ -83,6 +85,33 @@ namespace ClubJumana.Wpf.UserControls
         }
 
         private void TxtInnerQuantity_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e);
+        }
+
+        public event EventHandler<EventArgs> BtnAddInnerForMaster;
+        private void BtnAddInnrForMaster_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnAddInnerForMaster != null)
+                BtnAddInnerForMaster(sender, e);
+        }
+
+        private void TxtMasterITF14_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            imgDuplicateITFMaster.Visibility = Visibility.Collapsed;
+            imgApprovalMaster.Visibility = Visibility.Collapsed;
+        }
+
+        public event EventHandler<EventArgs> CheckExistITF14Master;
+        private void TxtMasterITF14_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (CheckExistITF14Master != null)
+                CheckExistITF14Master(sender, e);
+        }
+
+        private void TxtMasterITF14_OnKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = SetNumeric(sender, e);
         }

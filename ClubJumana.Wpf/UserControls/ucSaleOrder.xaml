@@ -8,6 +8,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcSaleOrder_OnLoaded">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="ItemsCVS" Source="{Binding Provinces}" />
+    </UserControl.Resources>
     <Grid Margin="0 40 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -495,7 +498,28 @@
                                     <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="*"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                                     <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" IsReadOnly="False"/>
+                                    <DataGridComboBoxColumn Header="Tax"
+                                                            ItemsSource="{Binding Source={StaticResource ItemsCVS}}"
+                                                            SelectedValueBinding="{Binding dee}"
+                                                            SelectedValuePath="Id"
+                                                            DisplayMemberPath="Name" />
                                     <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+                                    <DataGridComboBoxColumn 
+                                        SelectedValueBinding="{Binding CompanyID}" 
+                                        DisplayMemberPath="Name" 
+                                        SelectedValuePath="ID"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource Findancestor, AncestorType={x:Type Window}}, Path=DataContext.Products}" >
+                                        <DataGridComboBoxColumn.ElementStyle>
+                                            <Style TargetType="{x:Type ComboBox}">
+                                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.CompanyItems, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                            </Style>
+                                        </DataGridComboBoxColumn.ElementStyle>
+                                        <DataGridComboBoxColumn.EditingElementStyle>
+                                            <Style TargetType="{x:Type ComboBox}">
+                                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.CompanyItems, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                            </Style>
+                                        </DataGridComboBoxColumn.EditingElementStyle>
+                                    </DataGridComboBoxColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>
@@ -509,7 +533,7 @@
                                     <ComboBox Name="cmbTaxAreaSo" 
                                               materialDesign:TextFieldAssist.HasClearButton="True"
                                               IsEditable="True"
-                                            
+                                              ItemsSource="{Binding Provinces}"
                                               materialDesign:TextFieldAssist.SuffixText="sw"
                                               Margin="10 5"
                                               SelectedValue="{Binding TaxArea_fk}"
@@ -526,7 +550,7 @@
                                        <ComboBox Name="cmbTaxHandling" 
                                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                                  IsEditable="True"
-                                            
+                                                 ItemsSource="{Binding Provinces}"
                                                  materialDesign:TextFieldAssist.SuffixText="sw"
                                                  Margin="10 5"
                                                  SelectedValue="{Binding TaxArea_fk}"
@@ -544,6 +568,7 @@
                                         <ComboBox Name="cmbTaxShipping" 
                                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                                   IsEditable="True"
+                                                  ItemsSource="{Binding Provinces}"
                                                   materialDesign:TextFieldAssist.SuffixText="sw"
                                                   Margin="10 5"
                                                   SelectedValue="{Binding TaxArea_fk}"
