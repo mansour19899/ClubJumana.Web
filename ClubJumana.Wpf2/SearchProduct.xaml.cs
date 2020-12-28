@@ -91,7 +91,7 @@ namespace ClubJumana.Wpf2
                 new { Id = 2, Name = "Style Number" },
                 new { Id = 3, Name = "Barcode" },
                 new { Id = 4, Name = "SKU" },
-                new { Id = 5, Name = "Tittle" },
+                new { Id = 5, Name = "Title" },
                 new { Id = 6, Name = "Favorite List" }
             }.ToList();
 
@@ -232,6 +232,13 @@ namespace ClubJumana.Wpf2
                             .Where(p => p.SKU.Trim().Contains(txtSearch.Text.Trim())).ToList();
                         ListForLvProduct = new ObservableCollection<VariantViewModel>(tt);
                         viewModel.LvProductItemSource = ListForLvProduct;
+                        break;
+                    case 4:
+
+                        var ttt = VaraintList.Where(p => p.Product.ProductTittle != null)
+                            .Where(p => p.Product.ProductTittle.ToLower().Trim().Contains(txtSearch.Text.ToLower().Trim())).ToList();
+                        ListForLvProduct = new ObservableCollection<VariantViewModel>(ttt);
+                        viewModel.LvProductItemSource = ListForLvProduct;
 
                         break;
                     default:
@@ -290,6 +297,9 @@ namespace ClubJumana.Wpf2
                     txtSearch.Clear();
                     break;
                 case 4:
+                    txtSearch.Clear();
+                    break;
+                case 5:
                     txtSearch.Clear();
                     break;
                 case 6:

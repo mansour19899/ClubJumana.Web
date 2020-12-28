@@ -172,7 +172,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Grid.Column="2">
                         <Label Content="Color" Style="{StaticResource lblAddProduct}" />
-                        <ComboBox Name="cmbColors" SelectedValue="{Binding Variant.ColourFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" />
+                        <ComboBox Name="cmbColors" SelectedValue="{Binding Variant.ColourFK}" FontSize="{StaticResource myFont}" Margin="{StaticResource LabelMargin}" DisplayMemberPath="Name" SelectedValuePath="Id" IsEditable="True" />
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <Label Content="Product Type" Style="{StaticResource lblAddProduct}" />

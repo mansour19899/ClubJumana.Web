@@ -183,9 +183,11 @@ namespace ClubJumana.Wpf2
                 lblReview1.Foreground = Brushes.Black;
                 btnYesForAdd.IsEnabled = true;
 
+                var tCategory =Convert.ToInt32(cmbCategory.SelectedValue)  ;
+                var tSubCategory = Convert.ToInt32(cmbSubCategory.SelectedValue) ;
                 addVariant.Product.StyleNumber =
-                    _productInformationService.GiveMeStyleNumber(cmbCategory.SelectedIndex,
-                        cmbSubCategory.SelectedIndex);
+                    _productInformationService.GiveMeStyleNumber(tCategory,
+                        tSubCategory);
                 StringBuilder Review = new StringBuilder(String.Format(
                     $" StyleNumber : {addVariant.Product.StyleNumber}  \n\n Category : {cmbCategory.Text}" +
                     $" \n\n SubCategory : {cmbSubCategory.Text} \n\n GSM : {addVariant.Variants.FirstOrDefault().Data1}" +
@@ -372,7 +374,7 @@ namespace ClubJumana.Wpf2
 
         private void LblSize_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            addVariant.Variant.Size = addVariant.Variant.Width.ToString() + "x" + addVariant.Variant.length.ToString();
+            addVariant.Variant.Size = addVariant.Variant.Width.ToString() + " X " + addVariant.Variant.length.ToString();
             txtSize.Text = addVariant.Variant.Size;
         }
 
