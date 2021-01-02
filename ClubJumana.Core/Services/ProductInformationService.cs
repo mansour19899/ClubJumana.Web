@@ -698,8 +698,16 @@ namespace ClubJumana.Core.Services
         public int TransferProductsToProductMaster(List<VariantViewModel> list)
         {
             DetachedAllEntries();
+            int Id = 0;
+            try
+            {
+                 Id = _onlineContext.productmasters.Max(p => p.Id);
+            }
+            catch (Exception e)
+            {
+                 Id = 0;
+            }
 
-            int Id = _onlineContext.productmasters.Max(p => p.Id);
             foreach (var item in list)
             {
                 Id++;

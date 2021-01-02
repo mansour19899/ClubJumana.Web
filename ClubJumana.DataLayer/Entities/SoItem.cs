@@ -23,6 +23,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal Price { get; set; }
         public decimal PriceTerm { get; set; }
         public decimal TotalPrice { get; set; }
+        public byte TaxCode { get; set; }
 
         public SaleOrder SaleOrder { get; set; }
         public ProductMaster ProductMaster { get; set; }

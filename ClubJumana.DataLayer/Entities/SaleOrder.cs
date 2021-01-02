@@ -34,12 +34,12 @@ namespace ClubJumana.DataLayer.Entities
 
         public int? TaxArea_fk { get; set; }
 
-        public decimal Tax { get; set; }
-
         public decimal Handling { get; set; }
+        public byte HandlingTaxCode { get; set; }
 
 
-        public decimal Freight { get; set; }
+        public decimal Shipping { get; set; }
+        public byte ShippingTaxCode { get; set; }
 
 
         public decimal TotalDiscount { get; set; }
@@ -62,6 +62,7 @@ namespace ClubJumana.DataLayer.Entities
         public DateTime RowVersion { get; set; }
 
         public ICollection<SoItem> SoItems { get; set; }
+        public ICollection<Tax> Taxes { get; set; }
         public ICollection<Refund> Refunds { get; set; }
         public ICollection<PaymentInvoice> PaymentInvoices { get; set; }
         public Users.User User { get; set; }

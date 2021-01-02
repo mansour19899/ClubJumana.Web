@@ -1,14 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ClubJumana.DataLayer.Migrations.Online
 {
-    public partial class FixInnersMasterCarton : Migration
+    public partial class AddTaxRate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Quntity",
-                table: "inners");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Tax_saleorders_SalesOrderFK",
+                table: "Tax");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Tax",
+                table: "Tax");
+
+            migrationBuilder.RenameTable(
+                name: "Tax",
+                newName: "taxes");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Tax_SalesOrderFK",
+                table: "taxes",
+                newName: "IX_taxes_SalesOrderFK");
 
             migrationBuilder.AlterColumn<bool>(
                 name: "IsAbaleToRefund",
@@ -20,34 +35,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldNullable: true,
                 oldDefaultValue: (short)1);
 
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Width",
-                table: "mastercartons",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Weight",
-                table: "mastercartons",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Lenght",
-                table: "mastercartons",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Height",
-                table: "mastercartons",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
             migrationBuilder.AlterColumn<bool>(
                 name: "Checked",
                 table: "items",
@@ -68,11 +55,33 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldNullable: true,
                 oldDefaultValue: (short)0);
 
-            migrationBuilder.AddColumn<int>(
-                name: "Quantity",
-                table: "inners",
+            migrationBuilder.AlterColumn<decimal>(
+                name: "Rate",
+                table: "taxes",
+                type: "decimal(7,4)",
                 nullable: false,
-                defaultValue: 0);
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18, 2)");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_taxes",
+                table: "taxes",
+                column: "Id");
+
+            migrationBuilder.CreateTable(
+                name: "TaxRates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Rate = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaxRates", x => x.Id);
+                });
 
             migrationBuilder.UpdateData(
                 table: "tablesversion",
@@ -164,13 +173,37 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 keyValue: 13,
                 column: "NeedToUpdate",
                 value: false);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_taxes_saleorders_SalesOrderFK",
+                table: "taxes",
+                column: "SalesOrderFK",
+                principalTable: "saleorders",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Quantity",
-                table: "inners");
+            migrationBuilder.DropForeignKey(
+                name: "FK_taxes_saleorders_SalesOrderFK",
+                table: "taxes");
+
+            migrationBuilder.DropTable(
+                name: "TaxRates");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_taxes",
+                table: "taxes");
+
+            migrationBuilder.RenameTable(
+                name: "taxes",
+                newName: "Tax");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_taxes_SalesOrderFK",
+                table: "Tax",
+                newName: "IX_Tax_SalesOrderFK");
 
             migrationBuilder.AlterColumn<short>(
                 name: "IsAbaleToRefund",
@@ -182,38 +215,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldNullable: true,
                 oldDefaultValue: true);
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Width",
-                table: "mastercartons",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Weight",
-                table: "mastercartons",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Lenght",
-                table: "mastercartons",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Height",
-                table: "mastercartons",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldNullable: true);
-
             migrationBuilder.AlterColumn<short>(
                 name: "Checked",
                 table: "items",
@@ -234,12 +235,18 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldNullable: true,
                 oldDefaultValue: false);
 
-            migrationBuilder.AddColumn<int>(
-                name: "Quntity",
-                table: "inners",
-                type: "int",
+            migrationBuilder.AlterColumn<decimal>(
+                name: "Rate",
+                table: "Tax",
+                type: "decimal(18, 2)",
                 nullable: false,
-                defaultValue: 0);
+                oldClrType: typeof(decimal),
+                oldType: "decimal(7,4)");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Tax",
+                table: "Tax",
+                column: "Id");
 
             migrationBuilder.UpdateData(
                 table: "tablesversion",
@@ -331,6 +338,14 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 keyValue: 13,
                 column: "NeedToUpdate",
                 value: (short)0);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Tax_saleorders_SalesOrderFK",
+                table: "Tax",
+                column: "SalesOrderFK",
+                principalTable: "saleorders",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }

@@ -1,13 +1,19 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubJumana.DataLayer.Migrations.Online
 {
-    public partial class AddInnersMasterCarton : Migration
+    public partial class AddTaxRate1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_TaxRates",
+                table: "TaxRates");
+
+            migrationBuilder.RenameTable(
+                name: "TaxRates",
+                newName: "taxrates");
+
             migrationBuilder.AlterColumn<bool>(
                 name: "IsAbaleToRefund",
                 table: "soitems",
@@ -38,73 +44,10 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldNullable: true,
                 oldDefaultValue: (short)0);
 
-            migrationBuilder.CreateTable(
-                name: "inners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    ProductMasterFK = table.Column<int>(nullable: false),
-                    ITF14 = table.Column<string>(nullable: true),
-                    Quntity = table.Column<int>(nullable: false),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_inners", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_inners_productmasters_ProductMasterFK",
-                        column: x => x.ProductMasterFK,
-                        principalTable: "productmasters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "mastercartons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    ITF14 = table.Column<string>(nullable: true),
-                    Weight = table.Column<int>(nullable: false),
-                    Lenght = table.Column<int>(nullable: false),
-                    Width = table.Column<int>(nullable: false),
-                    Height = table.Column<int>(nullable: false),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_mastercartons", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "innermastercartons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    InnerFK = table.Column<int>(nullable: false),
-                    MasterCartonFK = table.Column<int>(nullable: false),
-                    RowVersion = table.Column<DateTime>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
-                    InnerQuntity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_innermastercartons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_innermastercartons_inners_InnerFK",
-                        column: x => x.InnerFK,
-                        principalTable: "inners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_innermastercartons_mastercartons_MasterCartonFK",
-                        column: x => x.MasterCartonFK,
-                        principalTable: "mastercartons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_taxrates",
+                table: "taxrates",
+                column: "Id");
 
             migrationBuilder.UpdateData(
                 table: "tablesversion",
@@ -196,33 +139,17 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 keyValue: 13,
                 column: "NeedToUpdate",
                 value: false);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_innermastercartons_InnerFK",
-                table: "innermastercartons",
-                column: "InnerFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_innermastercartons_MasterCartonFK",
-                table: "innermastercartons",
-                column: "MasterCartonFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_inners_ProductMasterFK",
-                table: "inners",
-                column: "ProductMasterFK");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "innermastercartons");
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_taxrates",
+                table: "taxrates");
 
-            migrationBuilder.DropTable(
-                name: "inners");
-
-            migrationBuilder.DropTable(
-                name: "mastercartons");
+            migrationBuilder.RenameTable(
+                name: "taxrates",
+                newName: "TaxRates");
 
             migrationBuilder.AlterColumn<short>(
                 name: "IsAbaleToRefund",
@@ -253,6 +180,11 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 oldClrType: typeof(bool),
                 oldNullable: true,
                 oldDefaultValue: false);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_TaxRates",
+                table: "TaxRates",
+                column: "Id");
 
             migrationBuilder.UpdateData(
                 table: "tablesversion",

@@ -63,7 +63,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _subtotal = value;
-                _subtotalwithServices = _subtotal + _freight + _handling;
+                _subtotalwithServices = _subtotal + _Shipping + _handling;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SubtotalwithServices));
                 CalculateTotalPrice();
@@ -93,18 +93,15 @@ namespace ClubJumana.Core.DTOs
         public int? term_fk { get; set; }
         public Term Term { get; set; }
         public decimal TermPercent { get; set; } = 0;
-        private decimal _tax;
+        private List<Tax> _taxes;
 
-        public decimal Tax
+        public List<Tax> Taxes
         {
             get
             {
-                if (IsSaveDatabase)
-                    return _tax;
-                else
-                    return Math.Round(_tax, 2, MidpointRounding.AwayFromZero);
+                return _taxes;
             }
-            set { _tax = value; }
+            set { _taxes = value; }
         }
 
 
@@ -123,31 +120,32 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _handling = value;
-                _subtotalwithServices = _subtotal + value + _freight;
+                _subtotalwithServices = _subtotal + value + _Shipping;
                 OnPropertyChanged(nameof(SoTotalPrice));
                 OnPropertyChanged(nameof(SubtotalwithServices));
                 OnPropertyChanged();
                 CalculateTotalPrice();
             }
         }
+        public byte HandlingTaxCode { get; set; }
 
 
-        private decimal _freight;
+        private decimal _Shipping;
 
-        public decimal Freight
+        public decimal Shipping
         {
             get
             {
                 if (IsSaveDatabase)
-                    return _freight;
+                    return _Shipping;
                 else
-                    return Math.Round(_freight, 2, MidpointRounding.AwayFromZero);
+                    return Math.Round(_Shipping, 2, MidpointRounding.AwayFromZero);
 
 
             }
             set
             {
-                _freight = value;
+                _Shipping = value;
                 _subtotalwithServices = _subtotal + value + _handling;
                 OnPropertyChanged(nameof(SoTotalPrice));
                 OnPropertyChanged(nameof(SubtotalwithServices));
@@ -155,6 +153,7 @@ namespace ClubJumana.Core.DTOs
                 CalculateTotalPrice();
             }
         }
+        public byte ShippingTaxCode { get; set; }
 
         private decimal _totalDiscount;
 
@@ -241,14 +240,14 @@ namespace ClubJumana.Core.DTOs
 
         private void CalculateTotalPrice()
         {
-            _tax = 0;
-            foreach (var VARIABLE in TaxRate)
-            {
-                if (VARIABLE != 0)
-                    _tax = VARIABLE * _subtotalwithServices + _tax;
-            }
+            //_tax = 0;
+            //foreach (var VARIABLE in TaxRate)
+            //{
+            //    if (VARIABLE != 0)
+            //        _tax = VARIABLE * _subtotalwithServices + _tax;
+            //}
 
-            _soTotalPrice = _subtotalwithServices + _tax;
+            //_soTotalPrice = _subtotalwithServices + _tax;
             OnPropertyChanged(nameof(Tax));
             OnPropertyChanged(nameof(SoTotalPrice));
         }

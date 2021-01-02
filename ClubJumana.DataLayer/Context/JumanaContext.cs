@@ -31,6 +31,8 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Customer> customers { get; set; }
         public DbSet<ProductInventoryWarehouse> productinventorywarehouses { get; set; }
         public DbSet<SaleOrder> saleorders { get; set; }
+        public DbSet<Tax> taxes { get; set; }
+        public DbSet<TaxRate> taxrates { get; set; }
         public DbSet<SoItem> soitems { get; set; }
         public DbSet<Refund> refunds { get; set; }
         public DbSet<RefundItem> refunditems { get; set; }
@@ -70,7 +72,7 @@ namespace ClubJumana.DataLayer.Context
             // var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             // optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
             //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-            optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test86;user=root;password=SmmRey2018");
             // optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
 
@@ -222,6 +224,7 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
 
@@ -229,6 +232,7 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<SaleOrder>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 //entity.Property(e => e.OrderedDate).HasColumnType("smalldatetime");
                 //entity.Property(e => e.CancelDate).HasColumnType("smalldatetime");
 
@@ -288,6 +292,7 @@ namespace ClubJumana.DataLayer.Context
             modelBuilder.Entity<SoItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.QuantityRefunded).HasDefaultValue(0);
                 entity.Property(e => e.IsAbaleToRefund).HasDefaultValue(true);
 
@@ -299,11 +304,29 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SoItems)
                     .HasForeignKey(s => s.ProductMaster_fk);
             });
+            //----------------------------------- Tax ---------------------------------------
+            modelBuilder.Entity<Tax>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasOne<SaleOrder>(s => s.SaleOrder)
+                    .WithMany(g => g.Taxes)
+                    .HasForeignKey(s => s.SalesOrderFK);
+                entity.Property(e => e.Rate).HasColumnType("decimal(7,4)");
+
+            });
+            //----------------------------------- Tax Rate ---------------------------------------
+            modelBuilder.Entity<TaxRate>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Rate).HasColumnType("decimal(7,4)");
+            });
             //----------------------------------- Invitation ---------------------------------------
             modelBuilder.Entity<Invitation>(entity =>
             {
                 entity.HasKey(e => e.Id);
-
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.HasOne<User>(s => s.UserSendInvitation)
                     .WithMany(g => g.SendInvitations)
                     .HasForeignKey(s => s.UserSendInvitation_fk);
@@ -319,7 +342,7 @@ namespace ClubJumana.DataLayer.Context
             {
 
                 entity.HasKey(e => e.Id);
-
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.HasOne<SaleOrder>(s => s.SaleOrder)
                     .WithMany(g => g.Refunds)
                     .HasForeignKey(s => s.SaleOrder_fk);
@@ -332,7 +355,7 @@ namespace ClubJumana.DataLayer.Context
             {
 
                 entity.HasKey(e => e.Id);
-
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.HasOne<Refund>(s => s.Refund)
                     .WithMany(g => g.RefundItems)
                     .HasForeignKey(s => s.Refund_fk);
@@ -618,9 +641,9 @@ namespace ClubJumana.DataLayer.Context
             //var dbContextOptionss = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=EFCore-smm97;Trusted_Connection=True").EnableSensitiveDataLogging().Options; ;
             //optionsBuilder.UseMySQL("server=localhost;database=db1;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=localhost;database=Test80;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test86;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-              optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+            //  optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=Test2020;user=root;password=SmmRey2018");
 
 

@@ -1075,7 +1075,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Refund", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RefundDate")
@@ -1114,7 +1113,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.RefundItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -1149,7 +1147,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SaleOrder", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("BillingAddress")
@@ -1167,11 +1164,11 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<DateTime?>("ExpriationDate")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("Freight")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<decimal>("Handling")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<byte>("HandlingTaxCode")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("InvoiceDate")
                         .HasColumnType("datetime");
@@ -1218,8 +1215,14 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<string>("ShipVia")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Shipping")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("text");
+
+                    b.Property<byte>("ShippingTaxCode")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("SoDate")
                         .HasColumnType("datetime");
@@ -1228,9 +1231,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("Tax")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<int?>("TaxArea_fk")
@@ -1272,7 +1272,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SoItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
@@ -1310,6 +1309,9 @@ namespace ClubJumana.DataLayer.Migrations.Online
 
                     b.Property<int>("So_fk")
                         .HasColumnType("int");
+
+                    b.Property<byte>("TaxCode")
+                        .HasColumnType("tinyint");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -1457,6 +1459,59 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         });
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Tax", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("SalesOrderFK")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesOrderFK");
+
+                    b.ToTable("taxes");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.TaxRate", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("taxrates");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Term", b =>
                 {
                     b.Property<int>("Id")
@@ -1481,7 +1536,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("ActiveCode")
@@ -1539,7 +1593,6 @@ namespace ClubJumana.DataLayer.Migrations.Online
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("ActiveCode")
@@ -2085,6 +2138,15 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
                         .WithMany("SoItems")
                         .HasForeignKey("So_fk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Tax", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
+                        .WithMany("Taxes")
+                        .HasForeignKey("SalesOrderFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
