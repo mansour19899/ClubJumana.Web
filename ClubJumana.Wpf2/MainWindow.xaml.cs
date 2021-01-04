@@ -59,11 +59,11 @@ namespace ClubJumana.Wpf2
         private void BtnSHowAddProduct_OnClick(object sender, RoutedEventArgs e)
         {
             AddProduct frm2 = new AddProduct();
-            this.WindowState = WindowState.Minimized;
-            this.ShowInTaskbar = false;
+            //this.WindowState = WindowState.Minimized;
+            //this.ShowInTaskbar = false;
             //frm2.Topmost = true;
             frm2.Owner = this;
-            frm2.ShowDialog();
+            frm2.Show();
             this.WindowState = WindowState.Maximized;
             this.ShowInTaskbar = true;
         }
