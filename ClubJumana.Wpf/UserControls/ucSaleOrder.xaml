@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White" Loaded="UcSaleOrder_OnLoaded">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="ItemsCVS" Source="{Binding Provinces}" />
+        <CollectionViewSource x:Key="ItemsCVS" Source="{Binding TaxRates}" />
     </UserControl.Resources>
     <Grid Margin="0 40 0 0">
         <Grid.RowDefinitions>
@@ -499,28 +499,14 @@
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                                     <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" IsReadOnly="False"/>
                                     <DataGridComboBoxColumn Header="Tax"
-                                                            ItemsSource="{Binding Source={StaticResource ItemsCVS}}"
-                                                            SelectedValueBinding="{Binding dee}"
+                                                            x:Name="CmbTaxCode"
+                                                            SelectedValueBinding="{Binding Path=TaxCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                             SelectedValuePath="Id"
-                                                            DisplayMemberPath="Name" />
-                                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
-                                    <DataGridComboBoxColumn 
-                                        SelectedValueBinding="{Binding CompanyID}" 
-                                        DisplayMemberPath="Name" 
-                                        SelectedValuePath="ID"
-                                        ItemsSource="{Binding RelativeSource={RelativeSource Findancestor, AncestorType={x:Type Window}}, Path=DataContext.Products}" >
-                                        <DataGridComboBoxColumn.ElementStyle>
-                                            <Style TargetType="{x:Type ComboBox}">
-                                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.CompanyItems, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-                                            </Style>
-                                        </DataGridComboBoxColumn.ElementStyle>
-                                        <DataGridComboBoxColumn.EditingElementStyle>
-                                            <Style TargetType="{x:Type ComboBox}">
-                                                <Setter Property="ItemsSource" Value="{Binding Path=DataContext.CompanyItems, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-                                            </Style>
-                                        </DataGridComboBoxColumn.EditingElementStyle>
+                                                            DisplayMemberPath="Name" >
+
                                     </DataGridComboBoxColumn>
-                                </DataGrid.Columns>
+                                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+                             </DataGrid.Columns>
                             </DataGrid>
                         </Border>
                         <UniformGrid Rows="1" Columns="2" Height="360">
@@ -533,10 +519,8 @@
                                     <ComboBox Name="cmbTaxAreaSo" 
                                               materialDesign:TextFieldAssist.HasClearButton="True"
                                               IsEditable="True"
-                                              ItemsSource="{Binding Provinces}"
                                               materialDesign:TextFieldAssist.SuffixText="sw"
                                               Margin="10 5"
-                                              SelectedValue="{Binding TaxArea_fk}"
                                               FontSize="15"
                                               DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
                                 </UniformGrid>
@@ -546,34 +530,32 @@
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
                                    <UniformGrid Columns="2" Rows="1">
-                                       <TextBox Text="{Binding Handling,StringFormat=N2}" HorizontalContentAlignment="Right" />
+                                       <TextBox Name="txtHandling" Text="{Binding Handling,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" TextChanged="TxtHandling_OnTextChanged" />
                                        <ComboBox Name="cmbTaxHandling" 
                                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                                  IsEditable="True"
-                                                 ItemsSource="{Binding Provinces}"
                                                  materialDesign:TextFieldAssist.SuffixText="sw"
                                                  Margin="10 5"
-                                                 SelectedValue="{Binding TaxArea_fk}"
+                                                 SelectedValue="{Binding HandlingTaxCode,UpdateSourceTrigger=PropertyChanged}"
                                                  FontSize="15"
-                                                 DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
+                                                 DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxHandling_OnSelectionChanged"/>
                                     </UniformGrid>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Freight" Style="{StaticResource Style1}"/>
+                                        <TextBlock Text="Shipping" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
                                     <UniformGrid Columns="2" Rows="1">
-                                        <TextBox Text="{Binding Freight,StringFormat=N2}" HorizontalContentAlignment="Right" />
+                                        <TextBox Name="txtShipping" Text="{Binding Shipping,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" TextChanged="TxtShipping_OnTextChanged"/>
                                         <ComboBox Name="cmbTaxShipping" 
                                                   materialDesign:TextFieldAssist.HasClearButton="True"
                                                   IsEditable="True"
-                                                  ItemsSource="{Binding Provinces}"
                                                   materialDesign:TextFieldAssist.SuffixText="sw"
                                                   Margin="10 5"
-                                                  SelectedValue="{Binding TaxArea_fk}"
+                                                  SelectedValue="{Binding ShippingTaxCode,UpdateSourceTrigger=PropertyChanged}"
                                                   FontSize="15"
-                                                  DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
+                                                  DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxShipping_OnSelectionChanged"/>
                                     </UniformGrid>
                                     
                                 </UniformGrid>
@@ -629,43 +611,118 @@
                                     <Label Content="Subtotal" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalwithServices,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Subtotal,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding TotalDiscount}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <TextBlock />
                                     <TextBlock />
                                     <Label Content="Discount" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalDiscount,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                             <UniformGrid Columns="4" Rows="1">
-                                    <TextBlock />
+                                <UniformGrid.Style>
+                                    <Style>
+                                        <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Handling}" Value="0">
+                                                <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        </Style>
+                                </UniformGrid.Style>
+                                <TextBlock />
                                     <TextBlock />
                                     <Label Content="Handling" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Name="txtHandlingResult" Style="{StaticResource StyleReadOnly}" Text="{Binding Handling,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"/>
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Shipping}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <TextBlock />
                                     <TextBlock />
-                                    <Label Content="Freight" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
+                                    <Label Content="Shipping" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Shipping,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
-                                <UniformGrid Name="TotalChargePart6" Columns="4" Rows="1">
+                                <UniformGrid  Columns="4" Rows="1" Name="Tax1" Visibility="Collapsed">
                                     <TextBlock />
                                     <TextBlock />
-                                    <Label Content="Tax" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
+                                    <Label Name="lblTax1" Content="Tax1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding Tax,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Name="txtTax1" Style="{StaticResource StyleReadOnly}"  FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                    </Grid>
+                                </UniformGrid>
+                                <UniformGrid  Columns="4" Rows="1"  Name="Tax2" Visibility="Collapsed">
+                                    <TextBlock />
+                                    <TextBlock />
+                                    <Label Name="lblTax2" Content="Tax2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                                    <Grid>
+                                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBlock Name="txtTax2" Style="{StaticResource StyleReadOnly}"  FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                    </Grid>
+                                </UniformGrid>
+                                <UniformGrid  Columns="4" Rows="1"  Name="Tax3" Visibility="Collapsed">
+                                    <TextBlock />
+                                    <TextBlock />
+                                    <Label Name="lblTax3" Content="Tax3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                                    <Grid>
+                                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBlock Name="txtTax3" Style="{StaticResource StyleReadOnly}"  FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                    </Grid>
+                                </UniformGrid>
+                                <UniformGrid  Columns="4" Rows="1"  Name="Tax4" Visibility="Collapsed">
+                                    <TextBlock />
+                                    <TextBlock />
+                                    <Label Name="lblTax4" Content="Tax4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                                    <Grid>
+                                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBlock Name="txtTax4" Style="{StaticResource StyleReadOnly}"  FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                    </Grid>
+                                </UniformGrid>
+                                <UniformGrid  Columns="4" Rows="1"  Name="Tax5" Visibility="Collapsed">
+                                    <TextBlock />
+                                    <TextBlock />
+                                    <Label Name="lblTax5" Content="Tax5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                                    <Grid>
+                                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBlock Name="txtTax5" Style="{StaticResource StyleReadOnly}"  FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                    </Grid>
+                                </UniformGrid>
+                                <UniformGrid  Columns="4" Rows="1"  Name="Tax6" Visibility="Collapsed">
+                                    <TextBlock />
+                                    <TextBlock />
+                                    <Label Name="lblTax6" Content="Tax6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="14"/>
+                                    <Grid>
+                                        <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
+                                        <TextBlock Name="txtTax6" Style="{StaticResource StyleReadOnly}" Text="{Binding Tax,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
@@ -683,7 +740,7 @@
                                     <Label Content="Deposit" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice1,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
@@ -692,7 +749,7 @@
                                     <Label Content="Balance Due" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice,StringFormat=N2}" FontSize="28" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice1,StringFormat=N2}" FontSize="28" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using ClubJumana.DataLayer.Entities;
@@ -25,6 +26,7 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
+        public bool AllowToCalculate = false;
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
         public DateTime? SoDate { get; set; }
@@ -63,10 +65,7 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _subtotal = value;
-                _subtotalwithServices = _subtotal + _Shipping + _handling;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(SubtotalwithServices));
-                CalculateTotalPrice();
             }
         }
 
@@ -120,14 +119,27 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _handling = value;
-                _subtotalwithServices = _subtotal + value + _Shipping;
-                OnPropertyChanged(nameof(SoTotalPrice));
-                OnPropertyChanged(nameof(SubtotalwithServices));
                 OnPropertyChanged();
+                SumPrice();
                 CalculateTotalPrice();
             }
         }
-        public byte HandlingTaxCode { get; set; }
+
+        private int _handlingTaxCode;
+        public int HandlingTaxCode
+        {
+            get
+            {
+                return _handlingTaxCode;
+            }
+            set
+            {
+                _handlingTaxCode = value;
+                OnPropertyChanged();
+                SumPrice();
+                CalculateTotalPrice();
+            }
+        }
 
 
         private decimal _Shipping;
@@ -146,14 +158,27 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _Shipping = value;
-                _subtotalwithServices = _subtotal + value + _handling;
-                OnPropertyChanged(nameof(SoTotalPrice));
-                OnPropertyChanged(nameof(SubtotalwithServices));
                 OnPropertyChanged();
+                SumPrice();
                 CalculateTotalPrice();
             }
         }
-        public byte ShippingTaxCode { get; set; }
+
+        private int _shippingTaxCode;
+        public int ShippingTaxCode
+        {
+            get
+            {
+                return _shippingTaxCode;
+            }
+            set
+            {
+                _shippingTaxCode = value;
+                OnPropertyChanged();
+                SumPrice();
+                CalculateTotalPrice();
+            }
+        }
 
         private decimal _totalDiscount;
 
@@ -205,51 +230,91 @@ namespace ClubJumana.Core.DTOs
         public Province TaxArea { get; set; }
         public Warehouse Warehouse { get; set; }
 
-        public string TaxName { get; set; }
 
-        private decimal _subtotalwithServices;
 
-        public decimal SubtotalwithServices
+        private List<TaxRate> _taxRates;
+
+        public List<TaxRate> TaxRates
         {
-            get
-            {
-                if (IsSaveDatabase)
-                    return _subtotalwithServices;
-                else
-                    return Math.Round(_subtotalwithServices, 2, MidpointRounding.AwayFromZero);
-
-            }
+            get { return _taxRates; }
             set
             {
-                _subtotalwithServices = value;
-                OnPropertyChanged();
+                _taxRates = value;
             }
         }
 
-        private List<decimal> _taxRate;
-
-        public List<decimal> TaxRate
+        public void CalculateTotalPrice()
         {
-            get { return _taxRate; }
-            set
+            if (AllowToCalculate)
             {
-                _taxRate = value;
+                _soTotalPrice = _subtotal + _Shipping + _handling;
+                foreach (var VARIABLE in _taxes)
+                {
+                    _soTotalPrice += VARIABLE.TaxAmount;
+                }
+
+
+                OnPropertyChanged(nameof(Tax));
+                OnPropertyChanged(nameof(SoTotalPrice));
+            }
+
+        }
+        public void CalculateTax(decimal price, int taxCode)
+        {
+            if (AllowToCalculate)
+            {
+                var ratecode = TaxRates.FirstOrDefault(p => p.Id == taxCode);
+                var x = ratecode.Code.Split(' ');
+                var xx = x[0].Split('/');
+                decimal priceTax = 0;
+                if (xx.Count() == 1)
+                {
+                    priceTax = Math.Round(price * ratecode.Rate / 100, 2, MidpointRounding.AwayFromZero);
+                    var xxx = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
+                    if (xxx == null)
+                    {
+                        Taxes.Add(new Tax() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
+                    }
+                    else
+                    {
+                        xxx.Amount += price;
+                        xxx.TaxAmount += priceTax;
+                    }
+                }
+                else
+                {
+
+                }
+                //if (tax == null)
+                //{
+                //    SaleOrderViewModel.Taxes.Add(new );
+                //}
+            }
+        }
+
+        public void SumPrice()
+        {
+            if (AllowToCalculate)
+            {
+                _subtotal = 0;
+                _soTotalPrice = 0;
+                _totalDiscount = 0;
+                _taxes.Clear();
+                foreach (var item in SoItems)
+                {
+                    _subtotal += item.TotalPrice;
+                    _totalDiscount = (item.Quantity * item.Price - item.TotalPrice) + _totalDiscount;
+                    if (item.TaxCode != 0)
+                        CalculateTax(item.TotalPrice, item.TaxCode);
+                }
+                if (_Shipping != 0)
+                    CalculateTax(_Shipping, _shippingTaxCode);
+                if (_handling != 0)
+                    CalculateTax(_handling, _handlingTaxCode);
+                OnPropertyChanged(nameof(Subtotal));
                 CalculateTotalPrice();
             }
-        }
 
-        private void CalculateTotalPrice()
-        {
-            //_tax = 0;
-            //foreach (var VARIABLE in TaxRate)
-            //{
-            //    if (VARIABLE != 0)
-            //        _tax = VARIABLE * _subtotalwithServices + _tax;
-            //}
-
-            //_soTotalPrice = _subtotalwithServices + _tax;
-            OnPropertyChanged(nameof(Tax));
-            OnPropertyChanged(nameof(SoTotalPrice));
         }
 
         public bool IsSaveDatabase { get; set; } = false;
@@ -366,6 +431,17 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _totalPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _taxCode;
+        public int TaxCode
+        {
+            get { return _taxCode; }
+            set
+            {
+                _taxCode = value;
                 OnPropertyChanged();
             }
         }

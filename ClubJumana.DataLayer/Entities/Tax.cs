@@ -8,7 +8,8 @@ namespace ClubJumana.DataLayer.Entities
    public class Tax
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        [StringLength(15)]
+        public string Code { get; set; }
         public decimal Rate { get; set; }
         public decimal Amount { get; set; }
         public decimal TaxAmount { get; set; }

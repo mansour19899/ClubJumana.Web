@@ -54,9 +54,9 @@ namespace ClubJumana.Core.Services
                     TaxArea_fk = saleOrder.TaxArea_fk,
                     Taxes = saleOrder.Taxes,
                     Handling = saleOrder.Handling,
-                    HandlingTaxCode = saleOrder.HandlingTaxCode,
+                  //  HandlingTaxCode = saleOrder.HandlingTaxCode,
                     Shipping = saleOrder.Shipping,
-                    ShippingTaxCode = saleOrder.ShippingTaxCode,
+                    //ShippingTaxCode = saleOrder.ShippingTaxCode,
                     TotalDiscount = saleOrder.TotalDiscount,
                     TrackingNo = saleOrder.TrackingNo,
                     BillingAddress = saleOrder.BillingAddress,
@@ -96,9 +96,9 @@ namespace ClubJumana.Core.Services
                 So.TaxArea_fk = saleOrder.TaxArea_fk;
                 So.Taxes = saleOrder.Taxes;
                 So.Handling = saleOrder.Handling;
-                So.HandlingTaxCode = saleOrder.HandlingTaxCode;
+                //So.HandlingTaxCode = saleOrder.HandlingTaxCode;
                 So.Shipping = saleOrder.Shipping;
-                So.ShippingTaxCode = saleOrder.ShippingTaxCode;
+                //So.ShippingTaxCode = saleOrder.ShippingTaxCode;
                 So.TotalDiscount = saleOrder.TotalDiscount;
                 So.TrackingNo = saleOrder.TrackingNo;
                 So.BillingAddress = saleOrder.BillingAddress;
@@ -191,9 +191,9 @@ namespace ClubJumana.Core.Services
             So.TaxArea_fk = saleOrder.TaxArea_fk;
             So.Taxes = saleOrder.Taxes;
             So.Handling = saleOrder.Handling;
-            So.HandlingTaxCode = saleOrder.HandlingTaxCode;
+           // So.HandlingTaxCode = saleOrder.HandlingTaxCode;
             So.Shipping = saleOrder.Shipping;
-            So.ShippingTaxCode = saleOrder.ShippingTaxCode;
+           // So.ShippingTaxCode = saleOrder.ShippingTaxCode;
             So.TotalDiscount = saleOrder.TotalDiscount;
             So.TrackingNo = saleOrder.TrackingNo;
             So.BillingAddress = saleOrder.BillingAddress;
@@ -286,7 +286,7 @@ namespace ClubJumana.Core.Services
         {
 
             var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
-                  .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).SingleOrDefault();
+                  .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).Include(p => p.Taxes).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
 
@@ -319,7 +319,6 @@ namespace ClubJumana.Core.Services
             return new SaleOrderViewModel()
             {
                 Id = saleOrder.Id,
-                TaxRate = TaxRate2,
                 Type = saleOrder.Type,
                 SoDate = saleOrder.SoDate,
                 ShipDate = saleOrder.ShipDate,

@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations.Online
 {
     [DbContext(typeof(OnlineContext))]
-    partial class OnlineContextModelSnapshot : ModelSnapshot
+    [Migration("20210103145553_ChangeTaxRate")]
+    partial class ChangeTaxRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1465,11 +1467,10 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(7,4)");
+                        .HasColumnType("decimal(18, 2)");
 
-                    b.Property<string>("Code")
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(7,4)");
@@ -1483,7 +1484,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("int");
 
                     b.Property<decimal>("TaxAmount")
-                        .HasColumnType("decimal(7,4)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id");
 
@@ -1501,12 +1502,10 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("bit");
 
                     b.Property<string>("Code")
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(7,4)");

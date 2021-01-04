@@ -1160,32 +1160,32 @@ namespace ClubJumana.Wpf
 
         private void PrepareTaxitem(Province province)
         {
-            saleOrder.TaxName = "";
-            var taxrate = new List<decimal>();
-            if (province != null)
-            {
-                if (province.HST != 0 && province.HST != null)
-                {
-                    saleOrder.TaxName = saleOrder.TaxName + "HST";
-                    taxrate.Add(province.HST.Value);
-                    cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.HST.Value * 100).ToString() + " %";
-                }
+            //saleOrder.TaxName = "";
+            //var taxrate = new List<decimal>();
+            //if (province != null)
+            //{
+            //    if (province.HST != 0 && province.HST != null)
+            //    {
+            //        saleOrder.TaxName = saleOrder.TaxName + "HST";
+            //        taxrate.Add(province.HST.Value);
+            //        cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.HST.Value * 100).ToString() + " %";
+            //    }
 
-                if (province.GST != 0 && province.GST != null)
-                {
-                    saleOrder.TaxName = saleOrder.TaxName + "GST";
-                    taxrate.Add(province.GST.Value);
-                    cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.GST.Value * 100).ToString() + " %";
-                }
+            //    if (province.GST != 0 && province.GST != null)
+            //    {
+            //        saleOrder.TaxName = saleOrder.TaxName + "GST";
+            //        taxrate.Add(province.GST.Value);
+            //        cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.GST.Value * 100).ToString() + " %";
+            //    }
 
-                if (province.QST != 0 && province.QST != null)
-                {
-                    saleOrder.TaxName = saleOrder.TaxName + ",QST";
-                    taxrate.Add(province.QST.Value);
-                    cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.GST.Value * 100).ToString() + " %  ," + (province.QST.Value * 100).ToString() + " %";
-                }
-                saleOrder.TaxRate = taxrate;
-            }
+            //    if (province.QST != 0 && province.QST != null)
+            //    {
+            //        saleOrder.TaxName = saleOrder.TaxName + ",QST";
+            //        taxrate.Add(province.QST.Value);
+            //        cmbTaxAreaSo.ToolTip = saleOrder.TaxName + " : " + (province.GST.Value * 100).ToString() + " %  ," + (province.QST.Value * 100).ToString() + " %";
+            //    }
+            //    saleOrder.TaxRate = taxrate;
+            //}
 
 
         }

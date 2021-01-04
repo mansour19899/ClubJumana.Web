@@ -48,6 +48,7 @@ namespace ClubJumana.Wpf
         private List<Warehouse> warehouses;
         private List<Customer> customers;
         private List<Province> provinces;
+        private List<TaxRate> taxRates;
         private List<Country> countries;
         private List<PaymentMethod> paymentMethods;
         private List<DepositTo> depositTos;
@@ -128,7 +129,8 @@ namespace ClubJumana.Wpf
             warehouses = _repositoryService.AllWarehouse().ToList();
             customers = _repositoryService.AllCustomers().ToList();
             provinces = _repositoryService.AllProvinces().ToList();
-            countries = _repositoryService.AllCountriesList().ToList();
+            provinces = _repositoryService.AllProvinces().ToList();
+            taxRates = _repositoryService.AlltaTaxRates().ToList();
             paymentMethods = _repositoryService.AllPaymentMethods().ToList();
             depositTos = _repositoryService.AllDepositTos().ToList();
             UCCustomer.cmbCountries.ItemsSource = countries;
@@ -912,16 +914,25 @@ namespace ClubJumana.Wpf
                     TaxArea = provinces.SingleOrDefault(p => p.Id == 2),
                     Warehouse_fk = 2,
                     term_fk = 3,
+                    Taxes = new List<Tax>(),
+                    ShippingTaxCode = 1,
+                    HandlingTaxCode = 1
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
+                UCSaleOrder.CollapsedTax(0);
             }
             else
                 _dataContextVM.SaleOrderViewModel = _saleOrderService.GiveSaleOrderById(Id);
 
             _dataContextVM.SaleOrderViewModel.Provinces = provinces;
+            _dataContextVM.SaleOrderViewModel.TaxRates = taxRates;
             UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
-           // UCSaleOrder.cmbTaxAreaSo.ItemsSource = provinces;
-
+            UCSaleOrder.cmbTaxAreaSo.ItemsSource = taxRates;
+            UCSaleOrder.cmbTaxShipping.ItemsSource = taxRates;
+            UCSaleOrder.cmbTaxShipping.SelectedValue = _dataContextVM.SaleOrderViewModel.ShippingTaxCode;
+            UCSaleOrder.cmbTaxHandling.ItemsSource = taxRates;
+            UCSaleOrder.cmbTaxHandling.SelectedValue = _dataContextVM.SaleOrderViewModel.HandlingTaxCode;
+            UCSaleOrder.CmbTaxCode.ItemsSource = taxRates;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {
                 UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();

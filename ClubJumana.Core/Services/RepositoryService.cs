@@ -845,6 +845,14 @@ namespace ClubJumana.Core.Services
                 return _context.provinces.OrderBy(p => p.Id);
         }
 
+        public IQueryable<TaxRate> AlltaTaxRates()
+        {
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.taxrates.OrderBy(p => p.Id);
+            else
+                return _context.taxrates.OrderBy(p => p.Id);
+        }
+
         public IQueryable<Customer> AllCustomers()
         {
             if (Consts.Consts.OnlineModeOnly)

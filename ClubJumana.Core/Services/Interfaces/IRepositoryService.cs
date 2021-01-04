@@ -16,6 +16,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Warehouse> AllWarehouse();
         IQueryable<Vendor> AllVendor();
         IQueryable<Province> AllProvinces();
+        IQueryable<TaxRate> AlltaTaxRates();
         IQueryable<Customer> AllCustomers();
         IQueryable<PurchaseOrder> AsnPurchaseOrder();
         IQueryable<PurchaseOrder> GrnPurchaseOrder();

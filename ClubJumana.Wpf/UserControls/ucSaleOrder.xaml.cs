@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClubJumana.Core.Convertors;
 using ClubJumana.Core.DTOs;
 using ClubJumana.Core.Enums;
 using ClubJumana.DataLayer.Entities;
@@ -41,7 +42,7 @@ namespace ClubJumana.Wpf.UserControls
                     RemoveSoItemViewModel.Clear();
                     foreach (var item in _saleOrderViewModel.SoItems)
                     {
-                      AddInventoryInformation(item);
+                        AddInventoryInformation(item);
                     }
                 }
 
@@ -51,14 +52,14 @@ namespace ClubJumana.Wpf.UserControls
         public ucSaleOrder()
         {
             InitializeComponent();
-            SaleOrderViewModel=new SaleOrderViewModel();
-            inventoryProducts=new List<InventoryProduct>();
-            RemoveSoItemViewModel=new List<SoItemVeiwModel>();
+            SaleOrderViewModel = new SaleOrderViewModel();
+            inventoryProducts = new List<InventoryProduct>();
+            RemoveSoItemViewModel = new List<SoItemVeiwModel>();
         }
 
         private void UcSaleOrder_OnLoaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
         public event EventHandler<EventArgs> BtnSaveOnClick;
         private void BtnSaveSalesOrder_OnClick(object sender, RoutedEventArgs e)
@@ -98,7 +99,7 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (e.Key == Key.Enter)
             {
-               BtnAddItem_OnClick(sender,e);
+                BtnAddItem_OnClick(sender, e);
             }
         }
 
@@ -120,6 +121,7 @@ namespace ClubJumana.Wpf.UserControls
                     BtnAddItemOnClick(sender, e);
             }
 
+            SaleOrderViewModel.AllowToCalculate = true;
         }
 
         private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
@@ -131,10 +133,10 @@ namespace ClubJumana.Wpf.UserControls
                 SaleOrderViewModel.SoItems.Remove(VARIABLE);
                 if (VARIABLE.Id == 0)
                     RemoveSoItemViewModel.Remove(VARIABLE);
-                inventoryProducts.Remove(inventoryProducts.First(p=>p.IdProduct==VARIABLE.ProductMaster_fk));
+                inventoryProducts.Remove(inventoryProducts.First(p => p.IdProduct == VARIABLE.ProductMaster_fk));
             }
             dgSoItems.Items.Refresh();
-            SumSoItemPrice();
+            SumSalesOrder();
         }
 
         private void DgSoItems_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -163,10 +165,10 @@ namespace ClubJumana.Wpf.UserControls
                     if (Qyt < 0)
                         Qyt = Qyt * -1;
                     SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity = Qyt;
-                    inventoryProducts.ElementAt(row_index).Reserved-= inventoryProducts.ElementAt(row_index).Quantity;
-                    inventoryProducts.ElementAt(row_index).Reserved+= Qyt;
-                    inventoryProducts.ElementAt(row_index).Quantity= Qyt;
-                 break;
+                    inventoryProducts.ElementAt(row_index).Reserved -= inventoryProducts.ElementAt(row_index).Quantity;
+                    inventoryProducts.ElementAt(row_index).Reserved += Qyt;
+                    inventoryProducts.ElementAt(row_index).Quantity = Qyt;
+                    break;
                 case "Discount":
                     if (SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity == 0)
                     {
@@ -193,53 +195,110 @@ namespace ClubJumana.Wpf.UserControls
 
             }
 
-            SumSoItemPrice();
+
+            SumSalesOrder();
+
         }
 
-        private void SumSoItemPrice()
+        private void SumSalesOrder()
         {
-            SaleOrderViewModel.Subtotal = 0;
-            SaleOrderViewModel.SoTotalPrice = 0;
-            SaleOrderViewModel.TotalDiscount = 0;
-            foreach (var item in SaleOrderViewModel.SoItems)
+            SaleOrderViewModel.SumPrice();
+            ShowTaxes();
+
+        }
+
+        public void ShowTaxes()
+        {
+            int i = 0;
+            foreach (var itemTax in SaleOrderViewModel.Taxes.OrderBy(p=>p.Code))
             {
-                SaleOrderViewModel.Subtotal = item.TotalPrice + SaleOrderViewModel.Subtotal;
-                SaleOrderViewModel.TotalDiscount = (item.Quantity * item.Price - item.TotalPrice) + SaleOrderViewModel.TotalDiscount;
+                i++;
+                switch (i)
+                {
+                    case 1:
+                        lblTax1.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax1.Text = itemTax.TaxAmount.ToString();
+                        Tax1.Visibility = Visibility.Visible;
+                        break;
+                    case 2:
+                        lblTax2.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax2.Text = itemTax.TaxAmount.ToString();
+                        Tax2.Visibility = Visibility.Visible;
+                        break;
+                    case 3:
+                        lblTax3.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax3.Text = itemTax.TaxAmount.ToString();
+                        Tax3.Visibility = Visibility.Visible;
+                        break;
+                    case 4:
+                        lblTax4.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax4.Text = itemTax.TaxAmount.ToString();
+                        Tax4.Visibility = Visibility.Visible;
+                        break;
+                    case 5:
+                        lblTax5.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax5.Text = itemTax.TaxAmount.ToString();
+                        Tax5.Visibility = Visibility.Visible;
+                        break;
+                    case 6:
+                        lblTax6.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        txtTax6.Text = itemTax.TaxAmount.ToString();
+                        Tax6.Visibility = Visibility.Visible;
+                        break;
+                }
+
             }
+            CollapsedTax(i);
+        }
+        public void CollapsedTax(int i)
+        {
+            if (i == 0)
+                Tax1.Visibility = Visibility.Collapsed;
+            if (i < 2)
+                Tax2.Visibility = Visibility.Collapsed;
+            if (i < 3)
+                Tax3.Visibility = Visibility.Collapsed;
+            if (i < 4)
+                Tax4.Visibility = Visibility.Collapsed;
+            if (i < 5)
+                Tax5.Visibility = Visibility.Collapsed;
+            if (i < 6)
+                Tax6.Visibility = Visibility.Collapsed;
         }
         private void CmbTaxAreaSo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PrepareTaxitem(cmbTaxAreaSo.SelectedItem as Province);
+            // PrepareTaxitem(cmbTaxAreaSo.SelectedItem as Province);
+
         }
 
         private void PrepareTaxitem(Province province)
         {
-            SaleOrderViewModel.TaxName = "";
-            var taxrate = new List<decimal>();
-            if (province != null)
-            {
-                if (province.HST != 0 && province.HST != null)
-                {
-                    SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + "HST";
-                    taxrate.Add(province.HST.Value);
-                    cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.HST.Value * 100).ToString() + " %";
-                }
+            //SaleOrderViewModel.TaxName = "";
+            //var taxrate = new List<decimal>();
+            //if (province != null)
+            //{
+            //    if (province.HST != 0 && province.HST != null)
+            //    {
+            //        SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + "HST";
+            //        taxrate.Add(province.HST.Value);
+            //        cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.HST.Value * 100).ToString() + " %";
+            //    }
 
-                if (province.GST != 0 && province.GST != null)
-                {
-                    SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + "GST";
-                    taxrate.Add(province.GST.Value);
-                    cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.GST.Value * 100).ToString() + " %";
-                }
+            //    if (province.GST != 0 && province.GST != null)
+            //    {
+            //        SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + "GST";
+            //        taxrate.Add(province.GST.Value);
+            //        cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.GST.Value * 100).ToString() + " %";
+            //    }
 
-                if (province.QST != 0 && province.QST != null)
-                {
-                    SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + ",QST";
-                    taxrate.Add(province.QST.Value);
-                    cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.GST.Value * 100).ToString() + " %  ," + (province.QST.Value * 100).ToString() + " %";
-                }
-                SaleOrderViewModel.TaxRate = taxrate;
-            }
+            //    if (province.QST != 0 && province.QST != null)
+            //    {
+            //        SaleOrderViewModel.TaxName = SaleOrderViewModel.TaxName + ",QST";
+            //        taxrate.Add(province.QST.Value);
+            //        cmbTaxAreaSo.ToolTip = SaleOrderViewModel.TaxName + " : " + (province.GST.Value * 100).ToString() + " %  ," + (province.QST.Value * 100).ToString() + " %";
+            //    }
+            //    SaleOrderViewModel.TaxRate = taxrate;
+            //}
 
 
         }
@@ -258,7 +317,7 @@ namespace ClubJumana.Wpf.UserControls
 
                 lvCustomerLookupBorder.Visibility = Visibility.Visible;
             }
-            
+
         }
 
         private void TxtCustomerLookup_OnKeyDown(object sender, KeyEventArgs e)
@@ -316,12 +375,12 @@ namespace ClubJumana.Wpf.UserControls
         private void TxtCustomerLookup_OnGotMouseCapture(object sender, MouseEventArgs e)
         {
             AllowSearch = true;
-            
+
         }
 
         private void TxtCustomerLookup_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-           TxtCustomerLookup_OnGotMouseCapture(null,null);
+            TxtCustomerLookup_OnGotMouseCapture(null, null);
         }
 
         private void DpiSoDate_OnKeyDown(object sender, KeyEventArgs e)
@@ -333,7 +392,7 @@ namespace ClubJumana.Wpf.UserControls
                 e.Handled = true;
             }
 
-            
+
         }
 
 
@@ -341,7 +400,7 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (e.Key == Key.Enter)
             {
-                TxtTermPercent_OnLostFocus(null,null);
+                TxtTermPercent_OnLostFocus(null, null);
             }
 
         }
@@ -372,7 +431,7 @@ namespace ClubJumana.Wpf.UserControls
             {
                 var inventory = inventoryProducts.SingleOrDefault(i =>
                     i.IdProduct == SaleOrderViewModel.SoItems.ElementAt(dgSoItems.SelectedIndex).ProductMaster_fk);
-                txtShowInventory.Text = "Stock On Hand: " +inventory.StockOnHand + "   Reserved: " +inventory.Reserved + "   Transit: " + inventory.Transit;
+                txtShowInventory.Text = "Stock On Hand: " + inventory.StockOnHand + "   Reserved: " + inventory.Reserved + "   Transit: " + inventory.Transit;
                 txtShowInventory.FontSize = 20;
             }
         }
@@ -404,6 +463,30 @@ namespace ClubJumana.Wpf.UserControls
             e.Handled = true;
             if (BtnRecivePayment != null)
                 BtnRecivePayment(sender, e);
+        }
+
+        private void TxtHandling_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate)
+                ShowTaxes();
+        }
+
+        private void CmbTaxHandling_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate)
+                ShowTaxes();
+        }
+
+        private void CmbTaxShipping_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate)
+                ShowTaxes();
+        }
+
+        private void TxtShipping_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate)
+                ShowTaxes();
         }
     }
 }
