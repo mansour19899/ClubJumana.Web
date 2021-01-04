@@ -916,14 +916,14 @@ namespace ClubJumana.Wpf
                     term_fk = 3,
                     Taxes = new List<Tax>(),
                     ShippingTaxCode = 1,
-                    HandlingTaxCode = 1
+                    HandlingTaxCode = 1,
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
                 UCSaleOrder.CollapsedTax(0);
             }
             else
                 _dataContextVM.SaleOrderViewModel = _saleOrderService.GiveSaleOrderById(Id);
-
+            _dataContextVM.SaleOrderViewModel.AllowToCalculate = false;
             _dataContextVM.SaleOrderViewModel.Provinces = provinces;
             _dataContextVM.SaleOrderViewModel.TaxRates = taxRates;
             UCSaleOrder.SaleOrderViewModel = _dataContextVM.SaleOrderViewModel;
@@ -949,6 +949,7 @@ namespace ClubJumana.Wpf
                 UCSaleOrder.btnRecivePayment.Visibility = Visibility.Visible;
             }
             Bordermanagement.Child = UCSaleOrder;
+            UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
             SubPage.Visibility = Visibility.Visible;
         }
 

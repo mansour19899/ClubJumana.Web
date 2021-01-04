@@ -490,14 +490,14 @@
                         <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
                             <DataGrid  Name="dgSoItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgSoItems_OnCellEditEnding" SelectionChanged="dgSoItems_SelectionChanged" LostFocus="dgSoItems_LostFocus"    >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
-                                    <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
-                                    <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="*"/>
-                                    <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
-                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="*" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="170" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="170" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="200" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="150" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                                    <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="140"/>
+                                    <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="150" IsReadOnly="False"/>
                                     <DataGridComboBoxColumn Header="Tax"
                                                             x:Name="CmbTaxCode"
                                                             SelectedValueBinding="{Binding Path=TaxCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -505,7 +505,7 @@
                                                             DisplayMemberPath="Name" >
 
                                     </DataGridComboBoxColumn>
-                                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="100" IsReadOnly="True"/>
                              </DataGrid.Columns>
                             </DataGrid>
                         </Border>
@@ -630,7 +630,7 @@
                                     <Label Content="Discount" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalDiscount,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalDiscount,StringFormat=- {0}}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                             <UniformGrid Columns="4" Rows="1">

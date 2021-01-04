@@ -121,22 +121,29 @@ namespace ClubJumana.Wpf.UserControls
                     BtnAddItemOnClick(sender, e);
             }
 
-            SaleOrderViewModel.AllowToCalculate = true;
         }
 
         private void BtnDeleteItem_OnClick(object sender, RoutedEventArgs e)
         {
-            RemoveSoItemViewModel.AddRange(dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList());
-            foreach (var VARIABLE in RemoveSoItemViewModel)
+            if (dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList().Count == 0)
             {
-                VARIABLE.IsDeleted = true;
-                SaleOrderViewModel.SoItems.Remove(VARIABLE);
-                if (VARIABLE.Id == 0)
-                    RemoveSoItemViewModel.Remove(VARIABLE);
-                inventoryProducts.Remove(inventoryProducts.First(p => p.IdProduct == VARIABLE.ProductMaster_fk));
+
             }
-            dgSoItems.Items.Refresh();
-            SumSalesOrder();
+            else
+            {
+                RemoveSoItemViewModel.AddRange(dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList());
+                foreach (var VARIABLE in RemoveSoItemViewModel)
+                {
+                    VARIABLE.IsDeleted = true;
+                    SaleOrderViewModel.SoItems.Remove(VARIABLE);
+                    if (VARIABLE.Id == 0)
+                        RemoveSoItemViewModel.Remove(VARIABLE);
+                    inventoryProducts.Remove(inventoryProducts.First(p => p.IdProduct == VARIABLE.ProductMaster_fk));
+                }
+                dgSoItems.Items.Refresh();
+                SumSalesOrder();
+            }
+
         }
 
         private void DgSoItems_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

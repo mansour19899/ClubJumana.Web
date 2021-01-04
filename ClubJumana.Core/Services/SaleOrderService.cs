@@ -54,9 +54,9 @@ namespace ClubJumana.Core.Services
                     TaxArea_fk = saleOrder.TaxArea_fk,
                     Taxes = saleOrder.Taxes,
                     Handling = saleOrder.Handling,
-                  //  HandlingTaxCode = saleOrder.HandlingTaxCode,
+                    HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode),
                     Shipping = saleOrder.Shipping,
-                    //ShippingTaxCode = saleOrder.ShippingTaxCode,
+                    ShippingTaxCode = Convert.ToByte(saleOrder.ShippingTaxCode),
                     TotalDiscount = saleOrder.TotalDiscount,
                     TrackingNo = saleOrder.TrackingNo,
                     BillingAddress = saleOrder.BillingAddress,
@@ -96,9 +96,9 @@ namespace ClubJumana.Core.Services
                 So.TaxArea_fk = saleOrder.TaxArea_fk;
                 So.Taxes = saleOrder.Taxes;
                 So.Handling = saleOrder.Handling;
-                //So.HandlingTaxCode = saleOrder.HandlingTaxCode;
+                So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
                 So.Shipping = saleOrder.Shipping;
-                //So.ShippingTaxCode = saleOrder.ShippingTaxCode;
+                So.ShippingTaxCode = Convert.ToByte(saleOrder.ShippingTaxCode);
                 So.TotalDiscount = saleOrder.TotalDiscount;
                 So.TrackingNo = saleOrder.TrackingNo;
                 So.BillingAddress = saleOrder.BillingAddress;
@@ -163,6 +163,8 @@ namespace ClubJumana.Core.Services
                 }
             }
 
+
+
             _context.SaveChanges();
 
             return So.Id;
@@ -191,9 +193,9 @@ namespace ClubJumana.Core.Services
             So.TaxArea_fk = saleOrder.TaxArea_fk;
             So.Taxes = saleOrder.Taxes;
             So.Handling = saleOrder.Handling;
-           // So.HandlingTaxCode = saleOrder.HandlingTaxCode;
+            So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
             So.Shipping = saleOrder.Shipping;
-           // So.ShippingTaxCode = saleOrder.ShippingTaxCode;
+            So.ShippingTaxCode = Convert.ToByte(saleOrder.ShippingTaxCode);
             So.TotalDiscount = saleOrder.TotalDiscount;
             So.TrackingNo = saleOrder.TrackingNo;
             So.BillingAddress = saleOrder.BillingAddress;

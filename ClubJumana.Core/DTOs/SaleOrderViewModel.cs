@@ -283,6 +283,14 @@ namespace ClubJumana.Core.DTOs
                 }
                 else
                 {
+                    int IdRateCode;
+
+                       IdRateCode= TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[0]).ToLower().Replace(" ",""))==0).Id;
+                       CalculateTax(price, IdRateCode);
+
+                       IdRateCode = TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[1] + x[1]).ToLower().Replace(" ", "")) == 0).Id;
+                       CalculateTax(price, IdRateCode);
+
 
                 }
                 //if (tax == null)
@@ -312,6 +320,7 @@ namespace ClubJumana.Core.DTOs
                 if (_handling != 0)
                     CalculateTax(_handling, _handlingTaxCode);
                 OnPropertyChanged(nameof(Subtotal));
+                OnPropertyChanged(nameof(TotalDiscount));
                 CalculateTotalPrice();
             }
 
