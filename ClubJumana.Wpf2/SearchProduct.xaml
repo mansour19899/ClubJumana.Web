@@ -96,7 +96,7 @@
                     <Button Name="btnShowMoreMunu" Grid.Column="0" Margin="25,23,10,7" FontSize="20" Click="BtnShowMoreMunu_OnClick" Height="Auto">More</Button>
                     <StackPanel  Grid.Column="1">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick">Category :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged"  >
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbCategory_SelectionChanged" IsEditable="True"  >
                             <ComboBox.Background>
                                 <ImageBrush/>
                             </ComboBox.Background>
@@ -104,15 +104,15 @@
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_1">Sub Category :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged"></ComboBox>
+                        <ComboBox Style="{StaticResource cmbFilter}"  Name="cmbSubCategory" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbSubCategory_SelectionChanged" IsEditable="True"/>
                     </StackPanel>
                     <StackPanel Grid.Column="3">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_2">Product Type :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged"></ComboBox>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbProductType" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cmbProductType_SelectionChanged" IsEditable="True"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4">
                         <Label FontSize="20" MouseDoubleClick="Label_MouseDoubleClick_3">Company :</Label>
-                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged"></ComboBox>
+                        <ComboBox Style="{StaticResource cmbFilter}" Name="cmbCompany" DisplayMemberPath="CompanyName" SelectedValuePath="Id" SelectionChanged="cmbCompany_SelectionChanged" IsEditable="True"></ComboBox>
                     </StackPanel>
                     <Button Name="btnAddToList" Grid.Column="5" Margin="25,23,10,7" FontSize="20" Click="btnAddToList_Click" Height="Auto">Add To List</Button>
                     <StackPanel Grid.Column="6">
@@ -146,9 +146,9 @@
                             <GridViewColumn Header="Product Type" Width="200" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
                             <GridViewColumn Header="Style Number" Width="200" DisplayMemberBinding="{Binding Path=Product.StyleNumber}"/>
                             <GridViewColumn Header="Colour" Width="200" DisplayMemberBinding="{Binding Path=Colour.Name}" />
-                            <GridViewColumn Header="Size" Width="200" DisplayMemberBinding="{Binding Path=Size}" />
-                            <GridViewColumn Header="Sku" Width="340" DisplayMemberBinding="{Binding Path=SKU}" />
-                            <GridViewColumn Header="Barcode" Width="300" DisplayMemberBinding="{Binding Path=Barcode.BarcodeNumber}" />
+                            <GridViewColumn Header="Size" Width="150" DisplayMemberBinding="{Binding Path=Size}" />
+                            <GridViewColumn Header="Sku" Width="270" DisplayMemberBinding="{Binding Path=SKU}" />
+                            <GridViewColumn Header="Barcode" Width="250" DisplayMemberBinding="{Binding Path=Barcode.BarcodeNumber}" />
                             <GridViewColumn Header="Product Tittle" Width="300" DisplayMemberBinding="{Binding Path=Product.ProductTittle}" />
                         </GridView>
                     </ListView.View>
