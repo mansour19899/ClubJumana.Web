@@ -33,10 +33,21 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             SaleOrder So = new SaleOrder();
+            int newIdSo = 1;
+            try
+            {
+                newIdSo = _context.saleorders.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                newIdSo = 1;
+            }
+
             if (saleOrder.Id == 0)
             {
                 So = new SaleOrder()
                 {
+                    Id = newIdSo,
                     Type = saleOrder.Type,
                     SoDate = saleOrder.SoDate,
                     ShipDate = saleOrder.ShipDate,
@@ -52,7 +63,6 @@ namespace ClubJumana.Core.Services
                     Subtotal = saleOrder.Subtotal,
                     SoTotalPrice = saleOrder.SoTotalPrice,
                     TaxArea_fk = saleOrder.TaxArea_fk,
-                    Taxes = saleOrder.Taxes,
                     Handling = saleOrder.Handling,
                     HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode),
                     Shipping = saleOrder.Shipping,
@@ -68,7 +78,7 @@ namespace ClubJumana.Core.Services
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
                     OpenBalance = saleOrder.OpenBalance,
-                    
+
 
                 };
                 _context.saleorders.Add(So);
@@ -78,7 +88,7 @@ namespace ClubJumana.Core.Services
             }
             else
             {
-                So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
+                So = _context.saleorders.Include(p=>p.Taxes).SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
                 So.SoDate = saleOrder.SoDate;
                 So.ShipDate = saleOrder.ShipDate;
@@ -94,7 +104,6 @@ namespace ClubJumana.Core.Services
                 So.Subtotal = saleOrder.Subtotal;
                 So.SoTotalPrice = saleOrder.SoTotalPrice;
                 So.TaxArea_fk = saleOrder.TaxArea_fk;
-                So.Taxes = saleOrder.Taxes;
                 So.Handling = saleOrder.Handling;
                 So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
                 So.Shipping = saleOrder.Shipping;
@@ -114,6 +123,15 @@ namespace ClubJumana.Core.Services
             }
 
             SoItem soItem = new SoItem();
+            int newId = 1;
+            try
+            {
+                newId = _context.soitems.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                newId = 1;
+            }
 
             foreach (var model in saleOrder.SoItems)
             {
@@ -121,17 +139,19 @@ namespace ClubJumana.Core.Services
                 {
                     _context.soitems.Add(new SoItem()
                     {
+                        Id = newId,
                         So_fk = So.Id,
                         ProductMaster_fk = model.ProductMaster_fk,
                         Cost = model.Cost,
                         Discount = model.Discount,
                         Quantity = model.Quantity,
                         Price = model.Price,
-                        TotalPrice = model.TotalPrice
+                        TotalPrice = model.TotalPrice,
+                        TaxCode = Convert.ToByte(model.TaxCode)
                     });
 
-                   // model.ProductMaster.GoodsReserved += model.Quantity;
-                    _context.productmasters.FirstOrDefault(p=>p.Id==model.ProductMaster_fk).GoodsReserved+= model.Quantity;
+                    // model.ProductMaster.GoodsReserved += model.Quantity;
+                    _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk).GoodsReserved += model.Quantity;
                     //_context.productmasters.Update(model.ProductMaster);
                 }
                 else if (model.Id != 0 && model.IsDeleted)
@@ -148,6 +168,7 @@ namespace ClubJumana.Core.Services
                     soItem.Discount = model.Discount;
                     soItem.Price = model.Price;
                     soItem.TotalPrice = model.TotalPrice;
+                    soItem.TaxCode = Convert.ToByte(model.TaxCode);
                     if (soItem.Quantity != model.Quantity)
                     {
                         soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
@@ -161,9 +182,57 @@ namespace ClubJumana.Core.Services
                 {
 
                 }
+
+                newId++;
             }
 
+            Tax tax = new Tax();
+            int newIdTax = 1;
+            try
+            {
+                newIdTax = _context.taxes.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                newIdTax = 1;
+            }
 
+            int SoTaxesOld = So.Taxes.Count;
+            int IndexTax = 0;
+            foreach (var model in saleOrder.Taxes)
+            {
+                if (IndexTax>=SoTaxesOld)
+                {
+                    _context.taxes.Add(new Tax()
+                    {
+                        Id = newIdTax,
+                        Code = model.Code,
+                        TaxAmount = model.TaxAmount,
+                        Amount = model.Amount,
+                        SalesOrderFK = So.Id,
+                        Rate = model.Rate,
+
+                    });
+                    newIdTax++;
+                }
+                else if (IndexTax<SoTaxesOld)
+                {
+                    So.Taxes.ElementAt(IndexTax).Code = model.Code;
+                    So.Taxes.ElementAt(IndexTax).TaxAmount = model.TaxAmount;
+                    So.Taxes.ElementAt(IndexTax).Amount = model.Amount;
+                    So.Taxes.ElementAt(IndexTax).SalesOrderFK = So.Id;
+                    So.Taxes.ElementAt(IndexTax).Rate = model.Rate;
+                    IndexTax++;
+                }
+            }
+
+            if (IndexTax < SoTaxesOld)
+            {
+                for (int i = IndexTax; i < SoTaxesOld; i++)
+                {
+                    _context.taxes.Remove(So.Taxes.ElementAt(i));
+                }
+            }
 
             _context.SaveChanges();
 
@@ -226,8 +295,8 @@ namespace ClubJumana.Core.Services
                         Price = model.Price,
                         TotalPrice = model.TotalPrice
                     });
-                     inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
-                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                    inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                       .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
                     inventoryProduct.Inventory -= model.Quantity;
                     inventoryProduct.OutCome += model.Quantity;
                     inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
@@ -241,7 +310,7 @@ namespace ClubJumana.Core.Services
                 {
                     soItem = _context.soitems.SingleOrDefault(p => p.Id == model.Id);
                     inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
-                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk&&p.ProductMaster_fk==model.ProductMaster_fk);
+                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == model.ProductMaster_fk);
                     inventoryProduct.Inventory += model.Quantity;
                     inventoryProduct.OutCome -= model.Quantity;
                     inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
@@ -251,7 +320,7 @@ namespace ClubJumana.Core.Services
                 }
                 else if (model.Id != 0)
                 {
-                    soItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p=>p.ProductInventoryWarehouses)
+                    soItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses)
                         .SingleOrDefault(p => p.Id == model.Id);
                     soItem.Cost = model.Cost;
                     soItem.Discount = model.Discount;
@@ -266,10 +335,10 @@ namespace ClubJumana.Core.Services
 
                         inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
                             p.Warehouse_fk == saleOrder.Warehouse_fk);
-                       inventoryProduct.Inventory -= def;
-                       inventoryProduct.OutCome += def;
-                       _context.productinventorywarehouses.Update(inventoryProduct);
-                       _context.productmasters.Update(soItem.ProductMaster);
+                        inventoryProduct.Inventory -= def;
+                        inventoryProduct.OutCome += def;
+                        _context.productinventorywarehouses.Update(inventoryProduct);
+                        _context.productmasters.Update(soItem.ProductMaster);
                     }
 
                 }
@@ -308,7 +377,8 @@ namespace ClubJumana.Core.Services
                     IsAbaleToRefund = VARIABLE.IsAbaleToRefund,
                     TotalPrice = VARIABLE.TotalPrice,
                     PriceTerm = VARIABLE.PriceTerm,
-                    TermPercent = saleOrder.TermPercent
+                    TermPercent = saleOrder.TermPercent,
+                    TaxCode = Convert.ToInt32(VARIABLE.TaxCode)
                 });
             }
 
@@ -362,12 +432,12 @@ namespace ClubJumana.Core.Services
 
         public List<SalesOrderListview> SalesOrdersListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber == null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p => p.No).ToList();
 
         }
         public List<SalesOrderListview> SalesInvoceListView()
         {
-            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p=>p.No).ToList();
+            return _context.saleorders.Where(p => p.InvoiceNumber != null).Select(p => new SalesOrderListview() { No = p.Id, CustomerName = p.Customer.CompanyName, DueDate = p.DueDate, OpenBalance = 0, TotalBeforeTax = p.Subtotal, Total = p.SoTotalPrice }).OrderByDescending(p => p.No).ToList();
 
         }
 
@@ -453,8 +523,8 @@ namespace ClubJumana.Core.Services
 
         public List<CustomersInvoiceViewModel> GiveMeAllOpenInvoiceForCustomer(int CustomrId)
         {
-            return _context.saleorders.Where(p=>p.InvoiceNumber!=null&&p.IsPaid==false&&p.Customer_fk.Value==CustomrId).Select(p=>new CustomersInvoiceViewModel()
-                {Id = p.Id,InvoiceNumber = p.InvoiceNumber,InvoiceDate = p.InvoiceDate,DueDate = p.DueDate,OrginalAmount = p.SoTotalPrice,OpenBalance = p.OpenBalance,Payment = 0M,IsSelected = false})
+            return _context.saleorders.Where(p => p.InvoiceNumber != null && p.IsPaid == false && p.Customer_fk.Value == CustomrId).Select(p => new CustomersInvoiceViewModel()
+            { Id = p.Id, InvoiceNumber = p.InvoiceNumber, InvoiceDate = p.InvoiceDate, DueDate = p.DueDate, OrginalAmount = p.SoTotalPrice, OpenBalance = p.OpenBalance, Payment = 0M, IsSelected = false })
                 .ToList();
         }
 

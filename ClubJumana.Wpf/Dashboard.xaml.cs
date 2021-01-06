@@ -950,6 +950,7 @@ namespace ClubJumana.Wpf
             }
             Bordermanagement.Child = UCSaleOrder;
             UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
+            UCSaleOrder.ShowTaxes();
             SubPage.Visibility = Visibility.Visible;
         }
 

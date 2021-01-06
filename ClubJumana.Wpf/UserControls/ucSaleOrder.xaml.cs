@@ -223,32 +223,32 @@ namespace ClubJumana.Wpf.UserControls
                 switch (i)
                 {
                     case 1:
-                        lblTax1.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax1.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax1.Text = itemTax.TaxAmount.ToString();
                         Tax1.Visibility = Visibility.Visible;
                         break;
                     case 2:
-                        lblTax2.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax2.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax2.Text = itemTax.TaxAmount.ToString();
                         Tax2.Visibility = Visibility.Visible;
                         break;
                     case 3:
-                        lblTax3.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax3.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax3.Text = itemTax.TaxAmount.ToString();
                         Tax3.Visibility = Visibility.Visible;
                         break;
                     case 4:
-                        lblTax4.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax4.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax4.Text = itemTax.TaxAmount.ToString();
                         Tax4.Visibility = Visibility.Visible;
                         break;
                     case 5:
-                        lblTax5.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax5.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax5.Text = itemTax.TaxAmount.ToString();
                         Tax5.Visibility = Visibility.Visible;
                         break;
                     case 6:
-                        lblTax6.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount;
+                        lblTax6.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
                         txtTax6.Text = itemTax.TaxAmount.ToString();
                         Tax6.Visibility = Visibility.Visible;
                         break;

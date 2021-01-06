@@ -497,12 +497,13 @@
                                     <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
                                     <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="140"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="150" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="100" IsReadOnly="False"/>
                                     <DataGridComboBoxColumn Header="Tax"
                                                             x:Name="CmbTaxCode"
                                                             SelectedValueBinding="{Binding Path=TaxCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                             SelectedValuePath="Id"
-                                                            DisplayMemberPath="Name" >
+                                                            DisplayMemberPath="Name" 
+                                                            Width="200">
 
                                     </DataGridComboBoxColumn>
                                     <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="100" IsReadOnly="True"/>
