@@ -77,7 +77,7 @@
                         <ColumnDefinition Width="253*" />
                         <ColumnDefinition Width="422*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center">Search :</Label>
+                    <Label Name="btnDoubleCheckProduct" Grid.Column="1" FontSize="40" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDoubleClick="BtnDoubleCheckProduct_OnMouseDoubleClick">Search :</Label>
                     <TextBox  x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}" Height="60" Grid.Column="2" FontSize="25" KeyDown="TextBox_KeyDown"/>
                     <ComboBox Name="cmbType" DisplayMemberPath="Name" SelectedValuePath="Id" Padding="10" Margin="10" FontSize="24" Grid.Column="3" BorderBrush="#FF1BAC2F" Foreground="Black" FontWeight="Medium" Background="White" SelectionChanged="cmbType_SelectionChanged">
                     </ComboBox>

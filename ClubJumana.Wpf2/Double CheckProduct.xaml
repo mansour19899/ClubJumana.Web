@@ -1,0 +1,47 @@
+﻿<Window x:Class="ClubJumana.Wpf2.Double_CheckProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClubJumana.Wpf2"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Loaded="Double_CheckProduct_OnLoaded"
+        Icon="Content/Icon/VanmeIcon.ico"
+        Title="Magic Style - Product Information" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <UniformGrid Rows="1" Columns="3">
+            <TextBlock/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox  x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}" Height="60" Width="400" FontSize="25" KeyDown="TxtSearch_OnKeyDown"/>
+                <Button Content="Search" FontSize="30" Height="60" Margin="20 0 0 0"/>
+            </StackPanel>
+        </UniformGrid>
+        <UniformGrid Rows="1" Columns="3" Grid.Row="1">
+            <TextBlock/>
+            <TextBlock Text="{Binding Barcode.BarcodeNumber}" HorizontalAlignment="Center" FontSize="60" Foreground="DarkGreen" FontWeight="Bold" />
+        </UniformGrid>
+        <StackPanel Grid.Row="2" Margin="100 0 0 0">
+        <StackPanel.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="28"/>
+                <Setter Property="Margin" Value="0 10"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+        </StackPanel.Resources>
+            <TextBlock Text="{Binding Product.StyleNumber,StringFormat=Style Number :    {0}}" Foreground="DarkBlue"/>
+            <TextBlock Text="{Binding ProductType.Name,StringFormat=Product Type :    {0}}" Foreground="DarkMagenta"/>
+            <TextBlock Text="{Binding Sku,StringFormat= Sku :                  {0}}" Foreground="DarkOliveGreen"/>
+            <TextBlock Text="{Binding Colour.Name,StringFormat=Colour:              {0}}"/>
+            <TextBlock Text="{Binding Data1,StringFormat= GSM:                 {0}}"/>
+            <TextBlock Text="{Binding Size,StringFormat=Size:                  {0}}"/>
+            <TextBlock Text="{Binding Width,StringFormat=Width:               {0}}"/>
+            <TextBlock Text="{Binding length,StringFormat=Length:            {0}}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1329,5 +1329,13 @@ namespace ClubJumana.Wpf2
         }
 
 
+        private void BtnDoubleCheckProduct_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Double_CheckProduct frm = new Double_CheckProduct();
+            frm.Owner = this;
+            frm.VariantViewModels = VaraintList;
+            frm.Show();
+
+        }
     }
 }
