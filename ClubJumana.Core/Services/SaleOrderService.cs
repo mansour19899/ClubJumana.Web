@@ -49,6 +49,7 @@ namespace ClubJumana.Core.Services
                 {
                     Id = newIdSo,
                     Type = saleOrder.Type,
+                    HaveDeposit = saleOrder.HaveDeposit,
                     SoDate = saleOrder.SoDate,
                     ShipDate = saleOrder.ShipDate,
                     ExpriationDate = saleOrder.ExpriationDate,
@@ -90,6 +91,7 @@ namespace ClubJumana.Core.Services
             {
                 So = _context.saleorders.Include(p=>p.Taxes).SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
+                So.HaveDeposit = saleOrder.HaveDeposit;
                 So.SoDate = saleOrder.SoDate;
                 So.ShipDate = saleOrder.ShipDate;
                 So.ExpriationDate = saleOrder.ExpriationDate;
@@ -246,6 +248,7 @@ namespace ClubJumana.Core.Services
 
             So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
             So.Type = saleOrder.Type;
+            So.HaveDeposit = saleOrder.HaveDeposit;
             So.SoDate = saleOrder.SoDate;
             So.ShipDate = saleOrder.ShipDate;
             So.ExpriationDate = saleOrder.ExpriationDate;
@@ -356,9 +359,12 @@ namespace ClubJumana.Core.Services
         public SaleOrderViewModel GiveSaleOrderById(int id)
         {
 
-            var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term).Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
-                  .Include(p => p.Customer).Include(p => p.User).Include(p => p.Warehouse).Include(p => p.Taxes).SingleOrDefault();
-
+            var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term)
+                .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+                  .Include(p => p.Customer).Include(p => p.User)
+                .Include(p => p.Warehouse).Include(p => p.Taxes)
+                .Include(p=>p.PaymentInvoices).ThenInclude(p=>p.Payment).SingleOrDefault();
+            
             var listSoItem = new List<SoItemVeiwModel>();
 
             foreach (var VARIABLE in saleOrder.SoItems)
@@ -392,6 +398,7 @@ namespace ClubJumana.Core.Services
             {
                 Id = saleOrder.Id,
                 Type = saleOrder.Type,
+                HaveDeposit = saleOrder.HaveDeposit,
                 SoDate = saleOrder.SoDate,
                 ShipDate = saleOrder.ShipDate,
                 ExpriationDate = saleOrder.ExpriationDate,
@@ -426,7 +433,7 @@ namespace ClubJumana.Core.Services
                 IsDeleted = false,
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User,
-                OpenBalance = saleOrder.OpenBalance
+                OpenBalance = saleOrder.OpenBalance,
             };
         }
 

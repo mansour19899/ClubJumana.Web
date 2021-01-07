@@ -15,6 +15,7 @@ namespace ClubJumana.DataLayer.Entities
         public int Id { get; set; }
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
+        public bool HaveDeposit { get; set; } = false;
         public DateTime? SoDate { get; set; }
         public DateTime? ExpriationDate { get; set; }
         public DateTime? DueDate { get; set; }

@@ -64,6 +64,7 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnSaveOnClick;
         private void BtnSaveSalesOrder_OnClick(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(SaleOrderViewModel.Deposit.ReferenceNo);
             e.Handled = true;
             if (BtnSaveOnClick != null)
                 BtnSaveOnClick(sender, e);

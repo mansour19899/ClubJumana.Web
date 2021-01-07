@@ -29,6 +29,42 @@ namespace ClubJumana.Core.DTOs
         public bool AllowToCalculate = false;
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
+        public bool HaveDeposit { get; set; } = false;
+        private Payment _deposit;
+        public Payment Deposit
+        {
+            get
+            { return _deposit; }
+            set
+            {
+                _deposit = value;
+                AmountDeposit = _deposit.AmountReceived;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private decimal _amountDeposit;
+
+        public decimal AmountDeposit
+        {
+            get
+            {
+                if (IsSaveDatabase)
+                    return _amountDeposit;
+                else
+                    return Math.Round(_amountDeposit, 2, MidpointRounding.AwayFromZero);
+
+            }
+            set
+            {
+                _amountDeposit = value;
+                _deposit.AmountReceived = _amountDeposit;
+                _openBalance = _soTotalPrice - _amountDeposit;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(OpenBalance));
+            }
+        }
         public DateTime? SoDate { get; set; }
         public DateTime? ExpriationDate { get; set; }
         public DateTime? DueDate { get; set; }
@@ -209,7 +245,25 @@ namespace ClubJumana.Core.DTOs
         public int? Quantity { get; set; } = 0;
 
         public bool IsDeleted { get; set; } = false;
-        public decimal OpenBalance { get; set; }
+
+        private decimal _openBalance;
+
+        public decimal OpenBalance
+        {
+            get
+            {
+                if (IsSaveDatabase)
+                    return _openBalance;
+                else
+                    return Math.Round(_openBalance, 2, MidpointRounding.AwayFromZero);
+
+            }
+            set
+            {
+                _openBalance = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<SoItemVeiwModel> SoItems { get; set; }
         public List<Province> Provinces { get; set; }

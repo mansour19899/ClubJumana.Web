@@ -566,7 +566,7 @@
                                         <TextBlock Text="Deposit" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Deposit,StringFormat=N2}" HorizontalContentAlignment="Right" />
+                                    <TextBox Text="{Binding AmountDeposit,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
@@ -587,7 +587,7 @@
                                         <TextBlock Text="Reference no" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                     </StackPanel>
-                                    <TextBox Text="{Binding Deposit,StringFormat=N2}" HorizontalContentAlignment="Right" />
+                                    <TextBox Text="{Binding Deposit.ReferenceNo,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
@@ -741,7 +741,7 @@
                                     <Label Content="Deposit" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice1,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding AmountDeposit,StringFormat=- {0}}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
@@ -750,7 +750,7 @@
                                     <Label Content="Balance Due" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SoTotalPrice1,StringFormat=N2}" FontSize="28" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding OpenBalance,StringFormat=N2}" FontSize="20" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
 
