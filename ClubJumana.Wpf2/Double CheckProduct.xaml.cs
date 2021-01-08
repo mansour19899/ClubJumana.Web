@@ -38,13 +38,51 @@ namespace ClubJumana.Wpf2
         {
             if (e.Key == Key.Enter)
             {
-                var variant = VariantViewModels.Where(p => p.Barcode != null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
+                Search();
+            }
+        }
+
+        private void BtnSearch_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+            Search();
+        }
+
+
+        private void Search()
+        {
+            VariantViewModel variant;
+            if (rbUPC.IsChecked == true)
+            {
+                variant = VariantViewModels.Where(p => p.Barcode != null).Where(p => p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
                 if (variant == null)
                     MessageBox.Show("Barcode Not Exist");
                 else
-                    DataContext = _productInformationService.GiveMeVariantById(variant.Id);
-                txtSearch.Clear();
+                {
+                    var ttt = _productInformationService.GiveMeVariantById(variant.Id);
+                    ttt.Product.StyleNumber = ttt.Product.StyleNumber.Trim();
+                    DataContext = ttt;
+                }
             }
+            else if (rbSKU.IsChecked==true)
+            {
+                variant = VariantViewModels.Where(p => p.SKU != null).Where(p => p.SKU.Trim().CompareTo(txtSearch.Text.Trim()) == 0).FirstOrDefault();
+                if (variant == null)
+                    MessageBox.Show("SKU Not Exist");
+                else
+                {
+                    var ttt= _productInformationService.GiveMeVariantById(variant.Id);
+                    ttt.Product.StyleNumber = ttt.Product.StyleNumber.Trim();
+                    DataContext = ttt;
+                }
+                   
+            }
+            else
+            {
+                MessageBox.Show("Error 143");
+            }
+            
+            txtSearch.Clear();
         }
     }
 }

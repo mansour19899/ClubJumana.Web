@@ -12,19 +12,27 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="300"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <UniformGrid Rows="1" Columns="3">
             <TextBlock/>
             <StackPanel Orientation="Horizontal">
                 <TextBox  x:Name="txtSearch" Style="{StaticResource txtCostCentreStyle}" Height="60" Width="400" FontSize="25" KeyDown="TxtSearch_OnKeyDown"/>
-                <Button Content="Search" FontSize="30" Height="60" Margin="20 0 0 0"/>
+                <Button Content="Search" FontSize="30" Height="60" Margin="20 0 0 0" Name="btnSearch" Click="BtnSearch_OnClick"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Name="rbUPC" Content="UPC" FontSize="20" Margin="30 0" IsChecked="True"/>
+                <RadioButton Name="rbSKU" Content="SKU" FontSize="20"/>
             </StackPanel>
         </UniformGrid>
         <UniformGrid Rows="1" Columns="3" Grid.Row="1">
             <TextBlock/>
-            <TextBlock Text="{Binding Barcode.BarcodeNumber}" HorizontalAlignment="Center" FontSize="60" Foreground="DarkGreen" FontWeight="Bold" />
+            <StackPanel>
+                <TextBlock Text="{Binding Barcode.BarcodeNumber}" HorizontalAlignment="Center" FontSize="60" Foreground="DarkGreen" FontWeight="Bold" />
+                <TextBlock Text="{Binding ProductType.Name}" HorizontalAlignment="Center" FontSize="60" Foreground="DarkMagenta" FontWeight="Bold" />
+                <TextBlock Text="{Binding Product.StyleNumber}" HorizontalAlignment="Center" FontSize="60" Foreground="DarkBlue" FontWeight="Bold" />
+            </StackPanel>
         </UniformGrid>
         <StackPanel Grid.Row="2" Margin="100 0 0 0">
         <StackPanel.Resources>
@@ -34,14 +42,13 @@
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
         </StackPanel.Resources>
-            <TextBlock Text="{Binding Product.StyleNumber,StringFormat=Style Number :    {0}}" Foreground="DarkBlue"/>
-            <TextBlock Text="{Binding ProductType.Name,StringFormat=Product Type :    {0}}" Foreground="DarkMagenta"/>
+            <TextBlock Text="{Binding Product.ProductTittle,StringFormat=Title:                  {0}}" Foreground="DarkBlue"/>
             <TextBlock Text="{Binding Sku,StringFormat= Sku :                  {0}}" Foreground="DarkOliveGreen"/>
             <TextBlock Text="{Binding Colour.Name,StringFormat=Colour:              {0}}"/>
             <TextBlock Text="{Binding Data1,StringFormat= GSM:                 {0}}"/>
-            <TextBlock Text="{Binding Size,StringFormat=Size:                  {0}}"/>
+            <TextBlock Text="{Binding Size,StringFormat=Size:                   {0}}"/>
             <TextBlock Text="{Binding Width,StringFormat=Width:               {0}}"/>
-            <TextBlock Text="{Binding length,StringFormat=Length:            {0}}"/>
+            <TextBlock Text="{Binding length,StringFormat=Length:              {0}}"/>
         </StackPanel>
     </Grid>
 </Window>
