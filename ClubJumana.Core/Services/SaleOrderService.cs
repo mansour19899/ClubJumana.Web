@@ -43,6 +43,9 @@ namespace ClubJumana.Core.Services
                 newIdSo = 1;
             }
 
+            if (saleOrder.AmountDeposit != 0)
+                saleOrder.HaveDeposit = true;
+
             if (saleOrder.Id == 0)
             {
                 So = new SaleOrder()
@@ -79,8 +82,7 @@ namespace ClubJumana.Core.Services
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
                     OpenBalance = saleOrder.OpenBalance,
-
-
+                    
                 };
                 _context.saleorders.Add(So);
 
@@ -89,7 +91,7 @@ namespace ClubJumana.Core.Services
             }
             else
             {
-                So = _context.saleorders.Include(p=>p.Taxes).SingleOrDefault(p => p.Id == saleOrder.Id);
+                So = _context.saleorders.Include(p=>p.Taxes).Include(p=>p.PaymentInvoices).ThenInclude(p=>p.Payment).SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
                 So.HaveDeposit = saleOrder.HaveDeposit;
                 So.SoDate = saleOrder.SoDate;
@@ -121,7 +123,20 @@ namespace ClubJumana.Core.Services
                 So.Quantity = saleOrder.Quantity;
                 So.IsDeleted = false;
                 So.OpenBalance = saleOrder.OpenBalance;
+                if (saleOrder.Deposit.Id != 0&&saleOrder.HaveDeposit)
+                {
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.AmountReceived =
+                        saleOrder.Deposit.AmountReceived;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.DepositToFK =
+                        saleOrder.Deposit.DepositToFK;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.PaymentMethodFK =
+                        saleOrder.Deposit.PaymentMethodFK;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.ReferenceNo =
+                        saleOrder.Deposit.ReferenceNo;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.PaymentDate =DateTime.Now;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Amount= saleOrder.Deposit.AmountReceived;
 
+                }
             }
 
             SoItem soItem = new SoItem();
@@ -236,6 +251,34 @@ namespace ClubJumana.Core.Services
                 }
             }
 
+
+            if (saleOrder.Deposit.Id == 0 && saleOrder.AmountDeposit != 0)
+            {
+                saleOrder.Deposit.Note = "Deposit";
+                try
+                {
+                    saleOrder.Deposit.Id = _context.payments.Max(p => p.Id) + 1;
+                }
+                catch (Exception e)
+                {
+                    saleOrder.Deposit.Id = 1;
+                }
+                _context.payments.Add(saleOrder.Deposit);
+
+                int IdInvoicePayment = 1;
+                try
+                {
+                    IdInvoicePayment = _context.paymentinvoices.Max(p => p.Id) + 1;
+                }
+                catch (Exception e)
+                {
+                    IdInvoicePayment = 1;
+                }
+
+                _context.paymentinvoices.Add(new PaymentInvoice(){Id = IdInvoicePayment,InvoiceFK = So.Id,PaymenteFK =saleOrder.Deposit.Id,Amount = saleOrder.AmountDeposit});
+            }
+
+            
             _context.SaveChanges();
 
             return So.Id;
@@ -393,6 +436,15 @@ namespace ClubJumana.Core.Services
             TaxRate2.Add(saleOrder.TaxArea.QST.Value);
             TaxRate2.Add(saleOrder.TaxArea.GST.Value);
 
+            Payment Deposit;
+            if (saleOrder.HaveDeposit)
+            {
+                Deposit=saleOrder.PaymentInvoices.OrderBy(p=>p.Id).ElementAt(0).Payment;
+            }
+            else
+            {
+                Deposit=new Payment(){Id = 0,DepositToFK = 1,PaymentMethodFK = 1,AmountReceived = 0};
+            }
 
             return new SaleOrderViewModel()
             {
@@ -434,6 +486,7 @@ namespace ClubJumana.Core.Services
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User,
                 OpenBalance = saleOrder.OpenBalance,
+                Deposit = Deposit
             };
         }
 

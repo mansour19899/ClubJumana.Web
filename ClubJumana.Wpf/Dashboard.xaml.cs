@@ -933,6 +933,8 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbTaxHandling.ItemsSource = taxRates;
             UCSaleOrder.cmbTaxHandling.SelectedValue = _dataContextVM.SaleOrderViewModel.HandlingTaxCode;
             UCSaleOrder.CmbTaxCode.ItemsSource = taxRates;
+            UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
+            UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {
                 UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();

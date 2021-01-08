@@ -569,6 +569,16 @@
                                     <TextBox Text="{Binding AmountDeposit,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AmountDeposit}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Payment Method" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -578,11 +588,21 @@
                                               IsEditable="True"
                                               materialDesign:TextFieldAssist.SuffixText="sw"
                                               Margin="10 5"
-                                              SelectedValue="{Binding TaxArea_fk}"
+                                              SelectedValue="{Binding  Deposit.PaymentMethodFK}"
                                               FontSize="15"
                                               DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AmountDeposit}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Reference no" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -590,6 +610,16 @@
                                     <TextBox Text="{Binding Deposit.ReferenceNo,StringFormat=N2}" HorizontalContentAlignment="Right" />
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AmountDeposit}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Deposit To" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -599,7 +629,7 @@
                                               IsEditable="True"
                                               materialDesign:TextFieldAssist.SuffixText="sw"
                                               Margin="10 5"
-                                              SelectedValue="{Binding TaxArea_fk}"
+                                              SelectedValue="{Binding Deposit.DepositToFK}"
                                               FontSize="15"
                                               DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
                                 </UniformGrid>
@@ -736,6 +766,16 @@
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AmountDeposit}" Value="0">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <TextBlock />
                                     <TextBlock />
                                     <Label Content="Deposit" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>
