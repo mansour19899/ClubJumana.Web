@@ -912,7 +912,6 @@ namespace ClubJumana.Wpf
                     Id = 0,
                     TaxArea_fk = 2,
                     TaxArea = provinces.SingleOrDefault(p => p.Id == 2),
-                    Warehouse_fk = 2,
                     term_fk = 3,
                     Taxes = new List<Tax>(),
                     ShippingTaxCode = 1,
@@ -935,6 +934,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.CmbTaxCode.ItemsSource = taxRates;
             UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
+            UCSaleOrder.cmbShipFrom.ItemsSource = warehouses;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {
                 UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();

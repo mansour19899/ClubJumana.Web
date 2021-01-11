@@ -64,10 +64,17 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnSaveOnClick;
         private void BtnSaveSalesOrder_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(SaleOrderViewModel.Deposit.ReferenceNo);
-            e.Handled = true;
-            if (BtnSaveOnClick != null)
-                BtnSaveOnClick(sender, e);
+            if (SaleOrderViewModel.OpenBalance < 0)
+            {
+                MessageBox.Show("You need to specify an account to credit the deposit to.");
+            }
+            else
+            {
+                e.Handled = true;
+                if (BtnSaveOnClick != null)
+                    BtnSaveOnClick(sender, e);
+            }
+
         }
 
         public event EventHandler<EventArgs> BtnCloseSubPage;

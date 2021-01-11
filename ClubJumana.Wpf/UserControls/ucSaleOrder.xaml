@@ -294,9 +294,9 @@
                         <RowDefinition Height="75"/>
                         <RowDefinition Height="220"/>
                         <RowDefinition Height="100"/>
-                        <RowDefinition Height="900"/>
+                        <RowDefinition Height="800"/>
                         <RowDefinition Height="100"/>
-                        <RowDefinition Height="588"/>
+                        <RowDefinition Height="558"/>
 
                     </Grid.RowDefinitions>
                     <Grid.Resources>
@@ -809,8 +809,22 @@
 
                     </Border>
                     <StackPanel Grid.Row="5"  Margin="0 20 0 0">
-                        <UniformGrid Height="92" Columns="2" Rows="1"  Margin="0 20 0 0">
+                        <UniformGrid Height="82" Columns="2" Rows="1"  Margin="0 20 0 0">
                             <UniformGrid Columns="1" Rows="2" >
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Ship From" Style="{StaticResource Style1}"/>
+                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                    </StackPanel>
+                                    <ComboBox Name="cmbShipFrom" 
+                                              materialDesign:TextFieldAssist.HasClearButton="True"
+                                              IsEditable="True"
+                                              materialDesign:TextFieldAssist.SuffixText="sw"
+                                              Margin="10 5"
+                                              SelectedValue="{Binding  Warehouse_fk}"
+                                              FontSize="15"
+                                              DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="CmbTaxAreaSo_OnSelectionChanged"/>
+                                </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Ship Via" Style="{StaticResource Style1}"/>
@@ -818,13 +832,7 @@
                                     </StackPanel>
                                     <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding ShipVia}"   Margin="10 0"/>
                                 </UniformGrid>
-                                <UniformGrid Columns="2" Rows="1">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Tracking No" Style="{StaticResource Style1}"/>
-                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
-                                    </StackPanel>
-                                    <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding TrackingNo}"   Margin="10 0"/>
-                                </UniformGrid>
+
                             </UniformGrid>
                             <UniformGrid Columns="1" Rows="2" >
                                 <UniformGrid Columns="2" Rows="1">
@@ -834,9 +842,14 @@
                                     </StackPanel>
                                     <DatePicker Margin="10 3" SelectedDate="{Binding  ShipDate}" Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" FontSize="{StaticResource Font1}" HorizontalContentAlignment="Center" />
                                 </UniformGrid>
+                                <UniformGrid Columns="2" Rows="1">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock Text="Tracking No" Style="{StaticResource Style1}"/>
+                                        <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
+                                    </StackPanel>
+                                    <TextBox FontSize="{StaticResource Font1}" VerticalContentAlignment="Bottom" Style="{StaticResource MaterialDesignTextBox}" Text="{Binding TrackingNo}"   Margin="10 0"/>
+                                </UniformGrid>
                             </UniformGrid>
-
-
 
                         </UniformGrid>
                         <UniformGrid Columns="2" Rows="1">

@@ -27,7 +27,20 @@ namespace ClubJumana.DataLayer.Entities
                 _amountReceived = value;
                 OnPropertyChanged();
             }
-        } 
+        }
+        private decimal _openBalance = 0;
+        public decimal OpenBalance
+        {
+            get
+            {
+                return _openBalance;
+            }
+            set
+            {
+                _openBalance = value;
+                OnPropertyChanged();
+            }
+        }
         public string Note { get; set; }
         public string Attachments { get; set; }
         public ICollection<PaymentInvoice> PaymentInvoices { get; set; }
