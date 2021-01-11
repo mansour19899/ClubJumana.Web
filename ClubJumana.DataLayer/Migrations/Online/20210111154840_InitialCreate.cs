@@ -207,6 +207,23 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 });
 
             migrationBuilder.CreateTable(
+                name: "taxrates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Code = table.Column<string>(maxLength: 15, nullable: true),
+                    Name = table.Column<string>(maxLength: 20, nullable: true),
+                    Rate = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    RowVersion = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_taxrates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "terms",
                 columns: table => new
                 {
@@ -329,6 +346,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     PaymentMethodFK = table.Column<int>(nullable: false),
                     DepositToFK = table.Column<int>(nullable: false),
                     AmountReceived = table.Column<decimal>(nullable: false),
+                    OpenBalance = table.Column<decimal>(nullable: false),
                     Note = table.Column<string>(nullable: true),
                     Attachments = table.Column<string>(nullable: true),
                     RowVersion = table.Column<DateTime>(nullable: false)
@@ -657,6 +675,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 {
                     Id = table.Column<int>(nullable: false),
                     Type = table.Column<bool>(nullable: false),
+                    HaveDeposit = table.Column<bool>(nullable: false),
                     SoDate = table.Column<DateTime>(nullable: true),
                     ExpriationDate = table.Column<DateTime>(nullable: true),
                     DueDate = table.Column<DateTime>(nullable: true),
@@ -838,23 +857,23 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tax",
+                name: "taxes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Rate = table.Column<decimal>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
-                    TaxAmount = table.Column<decimal>(nullable: false),
+                    Code = table.Column<string>(maxLength: 15, nullable: true),
+                    Rate = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                    TaxAmount = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
                     SalesOrderFK = table.Column<int>(nullable: false),
                     RowVersion = table.Column<DateTime>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tax", x => x.Id);
+                    table.PrimaryKey("PK_taxes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tax_saleorders_SalesOrderFK",
+                        name: "FK_taxes_saleorders_SalesOrderFK",
                         column: x => x.SalesOrderFK,
                         principalTable: "saleorders",
                         principalColumn: "Id",
@@ -1368,8 +1387,8 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 column: "So_fk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tax_SalesOrderFK",
-                table: "Tax",
+                name: "IX_taxes_SalesOrderFK",
+                table: "taxes",
                 column: "SalesOrderFK");
 
             migrationBuilder.CreateIndex(
@@ -1434,7 +1453,10 @@ namespace ClubJumana.DataLayer.Migrations.Online
                 name: "tablesversion");
 
             migrationBuilder.DropTable(
-                name: "Tax");
+                name: "taxes");
+
+            migrationBuilder.DropTable(
+                name: "taxrates");
 
             migrationBuilder.DropTable(
                 name: "userroles");

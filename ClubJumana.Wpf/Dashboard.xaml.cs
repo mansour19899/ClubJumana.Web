@@ -111,10 +111,12 @@ namespace ClubJumana.Wpf
             itemCard.BtnCreateInner += BtnCreateInner_OnClick;
             itemCard.BtnCreateInner += BtnCreateInner_OnClick;
             UCInnerMasterCarton.BtnAddInner += BtnAddInner_OnClick;
+            UCInnerMasterCarton.BtnAddMaster += BtnAddMaster_OnClick;
             UCInnerMasterCarton.BtnCloseInnerPage += BtnCloseInnerPage_OnClick;
             UCInnerMasterCarton.CheckExistITF14 += CheckExistInnerITF14;
             UCInnerMasterCarton.CheckExistITF14Master += CheckExistMasterITF14;
             UCInnerMasterCarton.BtnAddInnerForMaster += BtnAddInnerForMaster_OnClick;
+            UCInnerMasterCarton.SearchITF += BtnSearchITF_OnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
@@ -720,10 +722,73 @@ namespace ClubJumana.Wpf
                 _productService.AddInner(newInner);
                 UCInnerMasterCarton.productMaster.Inners.Add(newInner);
                 UCInnerMasterCarton.dgInners.Items.Refresh();
-                myMessageQueue.Enqueue("ITF-14 Added. ");
+                myMessageQueue.Enqueue("ITF-14 Inner Added. ");
             }
 
 
+        }
+        private void BtnAddMaster_OnClick(object? sender, EventArgs e)
+        {
+            List<InnerMasterCarton> list= UCInnerMasterCarton.dgInnersForMaster.Items.OfType<InnerMasterCarton>().ToList();
+            //foreach (var item in UCInnerMasterCarton.dgInnersForMaster.Items)
+            //{
+            //    list.Add(item as InnerMasterCarton);
+            //}
+            MasterCarton newMasterCarton=new MasterCarton()
+            {
+                ITF14 = UCInnerMasterCarton.txtMasterITF14.Text,
+                InnerMasterCartons = list,
+                Lenght = Convert.ToDecimal(UCInnerMasterCarton.txtLengthMaster.Text),
+                Width = Convert.ToDecimal(UCInnerMasterCarton.txtWidthMaster.Text),
+                Height = Convert.ToDecimal(UCInnerMasterCarton.txtHeightMaster.Text),
+                Weight = Convert.ToDecimal(UCInnerMasterCarton.txtWeightMaster.Text),
+            };
+
+            _productService.AddMaster(newMasterCarton);
+            myMessageQueue.Enqueue("ITF-14 Master Added. ");
+            UCInnerMasterCarton.txtAddInnerForMaster.Clear();
+            UCInnerMasterCarton.txtMasterITF14.Clear();
+            UCInnerMasterCarton.txtWidthMaster.Clear();
+            UCInnerMasterCarton.txtWeightMaster.Clear();
+            UCInnerMasterCarton.txtLengthMaster.Clear();
+            UCInnerMasterCarton.txtHeightMaster.Clear();
+            UCInnerMasterCarton.dgInnersForMaster.ItemsSource=null;
+            UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
+        }
+        private void BtnSearchITF_OnClick(object? sender, EventArgs e)
+        {
+            var t = _productService.GetInnerByITF(UCInnerMasterCarton.txtSearchITF.Text);
+            if(t!=null)
+                UCInnerMasterCarton.ShowInner(t);
+            else
+            {
+                MessageBox.Show("Koja sedel");
+            }
+            //List<InnerMasterCarton> list = UCInnerMasterCarton.dgInnersForMaster.Items.OfType<InnerMasterCarton>().ToList();
+            ////foreach (var item in UCInnerMasterCarton.dgInnersForMaster.Items)
+            ////{
+            ////    list.Add(item as InnerMasterCarton);
+            ////}
+            //MasterCarton newMasterCarton = new MasterCarton()
+            //{
+            //    ITF14 = UCInnerMasterCarton.txtMasterITF14.Text,
+            //    InnerMasterCartons = list,
+            //    Lenght = Convert.ToDecimal(UCInnerMasterCarton.txtLengthMaster.Text),
+            //    Width = Convert.ToDecimal(UCInnerMasterCarton.txtWidthMaster.Text),
+            //    Height = Convert.ToDecimal(UCInnerMasterCarton.txtHeightMaster.Text),
+            //    Weight = Convert.ToDecimal(UCInnerMasterCarton.txtWeightMaster.Text),
+            //};
+
+            //_productService.AddMaster(newMasterCarton);
+            //myMessageQueue.Enqueue("ITF-14 Master Added. ");
+            //UCInnerMasterCarton.txtAddInnerForMaster.Clear();
+            //UCInnerMasterCarton.txtMasterITF14.Clear();
+            //UCInnerMasterCarton.txtWidthMaster.Clear();
+            //UCInnerMasterCarton.txtWeightMaster.Clear();
+            //UCInnerMasterCarton.txtLengthMaster.Clear();
+            //UCInnerMasterCarton.txtHeightMaster.Clear();
+            //UCInnerMasterCarton.dgInnersForMaster.ItemsSource = null;
+            //UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
         }
         private void CheckExistInnerITF14(object? sender, EventArgs e)
         {

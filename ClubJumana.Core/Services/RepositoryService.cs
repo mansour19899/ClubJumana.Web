@@ -805,7 +805,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<ProductMaster> AllProductMasterList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.productmasters;
+                return onlineDb.productmasters.OrderBy(p => p.Id).AsNoTracking();
             else
                 return _context.productmasters;
 
@@ -815,7 +815,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<PurchaseOrder> AllPurchaseOrder()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.purchaseorders.AsNoTracking();
+                return onlineDb.purchaseorders.OrderBy(p => p.Id).AsNoTracking();
             else
                 return _context.purchaseorders.AsNoTracking();
         }
@@ -825,7 +825,7 @@ namespace ClubJumana.Core.Services
             if (Consts.Consts.OnlineModeOnly)
                 return onlineDb.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
                     .Include(p => p.TaxArea)
-                    .Include(p => p.Customer).AsNoTracking();
+                    .Include(p => p.Customer).OrderByDescending(p => p.Id).AsNoTracking();
             else
                 return _context.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
                     .Include(p => p.TaxArea)
@@ -834,7 +834,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Vendor> AllVendor()
         {
-            return _context.vendors;
+            return _context.vendors.OrderByDescending(p => p.Id);
         }
 
         public IQueryable<Province> AllProvinces()
@@ -856,25 +856,25 @@ namespace ClubJumana.Core.Services
         public IQueryable<Customer> AllCustomers()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.customers.Include(p => p.Country).Include(p => p.Province);
+                return onlineDb.customers.Include(p => p.Country).Include(p => p.Province).OrderByDescending(p => p.Id);
             else
-                return _context.customers.Include(p => p.Country).Include(p => p.Province);
+                return _context.customers.Include(p => p.Country).Include(p => p.Province).OrderByDescending(p => p.Id);
         }
 
         public IQueryable<PurchaseOrder> AsnPurchaseOrder()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
+                return onlineDb.purchaseorders.Where(p => p.CreatedPO == true).OrderByDescending(p => p.Id).AsNoTracking();
             else
-                return _context.purchaseorders.Where(p => p.CreatedPO == true).AsNoTracking();
+                return _context.purchaseorders.Where(p => p.CreatedPO == true).OrderByDescending(p => p.Id).AsNoTracking();
         }
 
         public IQueryable<PurchaseOrder> GrnPurchaseOrder()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
+                return onlineDb.purchaseorders.Where(p => p.CreatedAsn == true).OrderByDescending(p => p.Id).AsNoTracking();
             else
-                return _context.purchaseorders.Where(p => p.CreatedAsn == true).AsNoTracking();
+                return _context.purchaseorders.Where(p => p.CreatedAsn == true).OrderByDescending(p => p.Id).AsNoTracking();
         }
 
         public IQueryable<Country> AllCountriesList()

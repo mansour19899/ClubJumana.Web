@@ -80,8 +80,52 @@ namespace ClubJumana.Core.Services
 
         public int AddInner(Inner inner)
         {
-            inner.Id = _context.inners.Max(p => p.Id) + 1;
+            try
+            {
+                inner.Id = _context.inners.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                inner.Id = 1;
+            }
             _context.inners.Add(inner);
+            _context.SaveChanges();
+            return 1;
+        }
+
+        public int AddMaster(MasterCarton masterCarton)
+        {
+            var temp = masterCarton.InnerMasterCartons.ToList();
+            int newIdInnerMaster = 1;
+            int totalQuantity = 0;
+            try
+            {
+                masterCarton.Id = _context.mastercartons.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                masterCarton.Id = 1;
+
+            }
+
+            try
+            {
+                 newIdInnerMaster = _context.innermastercartons.Max(p=>p.Id)+1;
+            }
+            catch (Exception e)
+            {
+                newIdInnerMaster = 1;
+            }
+            foreach (var item in masterCarton.InnerMasterCartons)
+            {
+                item.Id = newIdInnerMaster;
+                item.MasterCartonFK = masterCarton.Id;
+                totalQuantity += item.InnerQuntity;
+                newIdInnerMaster++;
+            }
+
+            masterCarton.TotalQuantity = totalQuantity;
+            _context.mastercartons.Add(masterCarton);
             _context.SaveChanges();
             return 1;
         }
@@ -109,7 +153,14 @@ namespace ClubJumana.Core.Services
 
         public Inner GetInnerByITF(string itf14)
         {
-            return _context.inners.FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
+            return _context.inners.Include(p=>p.ProductMaster).FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
+        }
+
+        public MasterCarton GetMasterByITF(string itf14)
+        {
+            return _context.mastercartons.Include(p=>p.InnerMasterCartons)
+                .ThenInclude(p=>p.Inner).ThenInclude(p=>p.ProductMaster)
+                .FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
     }
 }

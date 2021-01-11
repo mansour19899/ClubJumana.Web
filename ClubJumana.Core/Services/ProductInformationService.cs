@@ -733,28 +733,30 @@ namespace ClubJumana.Core.Services
 
             foreach (var item in list)
             {
-                Id++;
-                _onlineContext.productmasters.Add(new ProductMaster()
+                if (item.Barcode != null)
                 {
-                    Id = Id,
-                    Name = "Set Description",
-                    StyleNumber = item.Product.StyleNumber,
-                    SKU = item.SKU,
-                    UPC = item.Barcode.BarcodeNumber,
-                    Size = item.Size,
-                    Color = item.Colour.Name,
-                    MadeIn = item.Product.CountryOfOrgin.Name,
-                    VariantFK = item.Id,
-                    FobPrice = item.FobPrice,
-                    WholesalePrice = item.WholesaleB,
-                    RetailPrice = item.RetailPrice,
-                    StockOnHand = 0,
-                    GoodsReserved = 0,
-                    LastUpdateInventory = DateTime.Now,
-                    Income = 0,
-                    Outcome = 0,
-                });
-
+                    Id++;
+                    _onlineContext.productmasters.Add(new ProductMaster()
+                    {
+                        Id = Id,
+                        Name = "Set Description",
+                        StyleNumber = item.Product.StyleNumber,
+                        SKU = item.SKU,
+                        UPC = item.Barcode.BarcodeNumber,
+                        Size = item.Size,
+                        Color = item.Colour.Name,
+                        MadeIn = item.Product.CountryOfOrgin.Name,
+                        VariantFK = item.Id,
+                        FobPrice = item.FobPrice,
+                        WholesalePrice = item.WholesaleB,
+                        RetailPrice = item.RetailPrice,
+                        StockOnHand = 0,
+                        GoodsReserved = 0,
+                        LastUpdateInventory = DateTime.Now,
+                        Income = 0,
+                        Outcome = 0,
+                    });
+                }
             }
 
             _onlineContext.SaveChanges();

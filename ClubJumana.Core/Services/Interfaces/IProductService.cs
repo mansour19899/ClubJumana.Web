@@ -13,8 +13,10 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public ProductMaster GetProductMasterById(int Id);
         public int AddInner(Inner inner);
+        public int AddMaster(MasterCarton masterCarton);
         public bool CheckInnerITF(string itf14);
         public bool CheckMasterCartonITF(string itf14);
         public Inner GetInnerByITF(string itf14);
+        public MasterCarton GetMasterByITF(string itf14);
     }
 }

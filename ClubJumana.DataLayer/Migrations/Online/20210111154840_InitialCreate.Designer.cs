@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubJumana.DataLayer.Migrations.Online
 {
     [DbContext(typeof(OnlineContext))]
-    [Migration("20210102174102_AddTaxRate")]
-    partial class AddTaxRate
+    [Migration("20210111154840_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -585,6 +585,9 @@ namespace ClubJumana.DataLayer.Migrations.Online
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("OpenBalance")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime");
@@ -1172,6 +1175,9 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<byte>("HandlingTaxCode")
                         .HasColumnType("tinyint");
 
+                    b.Property<bool>("HaveDeposit")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("InvoiceDate")
                         .HasColumnType("datetime");
 
@@ -1467,10 +1473,11 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(7,4)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(7,4)");
@@ -1484,7 +1491,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
                         .HasColumnType("int");
 
                     b.Property<decimal>("TaxAmount")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(7,4)");
 
                     b.HasKey("Id");
 
@@ -1498,8 +1505,16 @@ namespace ClubJumana.DataLayer.Migrations.Online
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(7,4)");
@@ -1511,7 +1526,7 @@ namespace ClubJumana.DataLayer.Migrations.Online
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaxRates");
+                    b.ToTable("taxrates");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Term", b =>

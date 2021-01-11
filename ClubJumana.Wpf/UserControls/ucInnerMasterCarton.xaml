@@ -15,8 +15,8 @@
         </Grid.RowDefinitions>
         <UniformGrid Rows="1" Columns="4">
             <StackPanel Orientation="Horizontal">
-                <Button Content="Inner" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkGreen" Foreground="White" Width="150"/>
-                <Button  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White"/>
+                <Button Name="btnShowInnerPage" Content="Inner" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkGreen" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
+                <Button Name="btnShowMasterPage"  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White" Click="BtnShowMasterPage_OnClick"/>
             </StackPanel>
             <Label/>
             <Label/>
@@ -26,8 +26,8 @@
                 <Image  Name="btnCloseInnerPage"  Margin="10"  Source="../Content/Icon/CloseIcon.png" MouseDown="BtnCloseInnerPage_OnMouseDown" />
             </StackPanel>
         </UniformGrid>
-        <TextBlock Text="Master Carton" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50"/>
-        <Grid Grid.Row="2">
+        <TextBlock Name="txtHeader" Text="Search" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50"/>
+        <Grid Name="InnerPage" Grid.Row="2" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="150"/>
@@ -80,7 +80,7 @@
             </UniformGrid>
 
         </Grid>
-        <Grid Grid.Row="2" Background="White" Visibility="Visible">
+        <Grid Name="MasterPage" Grid.Row="2" Background="White" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="*"/>
@@ -99,7 +99,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="#" Binding="{Binding Id}" Width="150" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Inner ITF14" Binding="{Binding Inner.ITF14}" Width="300" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding InnerQuntity}" Width="100" IsReadOnly="False"/>
+                    <DataGridTextColumn Header="Inner Quantity" Binding="{Binding InnerQuntity}" Width="200" IsReadOnly="False"/>
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock Text="Total Quantity" Grid.Row="2" Grid.Column="1" FontSize="20"/>
@@ -112,22 +112,22 @@
             <UniformGrid Columns="1" Rows="6" Grid.Row="1" Grid.Column="2" Margin="0 50 0 0">
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Weight (LB)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Width="300"/>
+                    <TextBox Name="txtWeightMaster" Width="300"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Length (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Width="300"/>
+                    <TextBox Name="txtLengthMaster" Width="300"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Width (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Width="300"/>
+                    <TextBox Name="txtWidthMaster" Width="300"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Height (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Width="300"/>
+                    <TextBox Name="txtHeightMaster" Width="300"/>
                 </StackPanel>
                 <TextBlock/>
-                <Button Name="btnAddMaster" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0"  >
+                <Button Name="btnAddMaster" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0" Click="BtnAddMaster_OnClick"  >
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -140,8 +140,63 @@
                     </Button.Style>
                 </Button>
 
-</UniformGrid>
+            </UniformGrid>
 
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10">
+                    <TextBox Name="txtSearchITF" Width="300" Height="50" VerticalAlignment="Top" Margin="0 10 0 0" FontSize="20" MaxLength="14"/>
+                    <Button Name="btnSearch" Content="Search" Height="50" Margin="20 10 0 0" Background="CornflowerBlue" Click="BtnSearch_OnClick"/>
+                </StackPanel>
+                <TextBlock Name="txtTypeSearch" Text="Inner" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="DarkBlue"/>
+            </StackPanel>
+            <UniformGrid Rows="1" Columns="2" Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel  Margin="50 0 0 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="10 30 0 0"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Description" Width="250"/>
+                        <TextBlock Name="txtInnerName" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="250"  Text="UPC"/>
+                        <TextBlock Name="txtInnerUPC"  Text="UPC"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="SKU" Width="250"/>
+                        <TextBlock Name="txtInnerSKU"  Text="SKU"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="Quantity Per Inner" Width="250" VerticalAlignment="Center"/>
+                        <Border Background="DarkBlue" Width="100" CornerRadius="5">
+                            <TextBlock Name="txtInnerQuantityPerInner"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+                <ListView SelectionMode="Single" Width="400"  Name="lvMasterCartonInnerSearch"  Grid.Row="1" Grid.Column="1" Margin="0" FontSize="15"  MouseDoubleClick="LvMasterCartonInnerSearch_OnMouseDoubleClick" Visibility="Visible" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="Alu" Width="120" DisplayMemberBinding="{Binding Path=MasterCarton.Id}" />
+                            <GridViewColumn Header="Master Caton ITF14" Width="220" DisplayMemberBinding="{Binding Path=MasterCarton.ITF14}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </UniformGrid>
         </Grid>
 
 

@@ -35,6 +35,13 @@ namespace ClubJumana.Wpf.UserControls
             if (BtnAddInner != null)
                 BtnAddInner(sender, e);
         }
+        public event EventHandler<EventArgs> BtnAddMaster;
+        private void BtnAddMaster_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnAddMaster != null)
+                BtnAddMaster(sender, e);
+        }
 
         public event EventHandler<EventArgs> BtnCloseInnerPage;
         private void BtnCloseInnerPage_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -114,6 +121,40 @@ namespace ClubJumana.Wpf.UserControls
         private void TxtMasterITF14_OnKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = SetNumeric(sender, e);
+        }
+
+        private void BtnShowInnerPage_OnClick(object sender, RoutedEventArgs e)
+        {
+            MasterPage.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnShowMasterPage_OnClick(object sender, RoutedEventArgs e)
+        {
+            MasterPage.Visibility = Visibility.Visible;
+        }
+        public event EventHandler<EventArgs> SearchITF;
+        private void BtnSearch_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (SearchITF != null)
+                SearchITF(sender, e);
+        }
+
+        public void ShowInner(Inner inner)
+        {
+            txtTypeSearch.Text = "Inner";
+            txtInnerName.Text = inner.ProductMaster.Name;
+            txtInnerUPC.Text = inner.ProductMaster.UPC;
+            txtInnerSKU.Text = inner.ProductMaster.SKU;
+            txtInnerQuantityPerInner.Text = inner.Quantity.ToString();
+            lvMasterCartonInnerSearch.ItemsSource = inner.InnerMasterCartons;
+            //txtTypeSearch.Foreground=
+
+        }
+
+        private void LvMasterCartonInnerSearch_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
