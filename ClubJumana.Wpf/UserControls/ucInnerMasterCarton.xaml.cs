@@ -23,10 +23,13 @@ namespace ClubJumana.Wpf.UserControls
     {
         public ProductMaster productMaster;
         public List<InnerMasterCarton> innerMasterCartons;
+        public MasterCarton MasterSelected;
+        public Inner InnerSelected;
+        public Inner InnerSelectedOfMaster;
         public ucInnerMasterCarton()
         {
             InitializeComponent();
-            innerMasterCartons=new List<InnerMasterCarton>();
+            innerMasterCartons = new List<InnerMasterCarton>();
         }
 
         public event EventHandler<EventArgs> BtnAddInner;
@@ -126,12 +129,22 @@ namespace ClubJumana.Wpf.UserControls
 
         private void BtnShowInnerPage_OnClick(object sender, RoutedEventArgs e)
         {
+            txtHeader.Text = "Inner";
+            InnerPage.Visibility = Visibility.Visible;
             MasterPage.Visibility = Visibility.Hidden;
+            SearchPage.Visibility = Visibility.Hidden;
         }
 
         private void BtnShowMasterPage_OnClick(object sender, RoutedEventArgs e)
         {
+            txtHeader.Text = "Master Carton";
             MasterPage.Visibility = Visibility.Visible;
+            SearchPage.Visibility = Visibility.Hidden;
+        }
+        private void BtnShowSearch_OnClick(object sender, RoutedEventArgs e)
+        {
+            txtHeader.Text = "";
+            SearchPage.Visibility = Visibility.Visible;
         }
         public event EventHandler<EventArgs> SearchITF;
         private void BtnSearch_OnClick(object sender, RoutedEventArgs e)
@@ -144,12 +157,13 @@ namespace ClubJumana.Wpf.UserControls
         public void ShowInner(Inner inner)
         {
             txtTypeSearch.Text = "Inner";
+            InnerSelected = inner;
             txtInnerName.Text = inner.ProductMaster.Name;
             txtInnerUPC.Text = inner.ProductMaster.UPC;
             txtInnerSKU.Text = inner.ProductMaster.SKU;
             txtInnerQuantityPerInner.Text = inner.Quantity.ToString();
             lvMasterCartonInnerSearch.ItemsSource = inner.InnerMasterCartons;
-            lvMasterCartonInnerSearch.Items .Refresh();
+            lvMasterCartonInnerSearch.Items.Refresh();
             MasterCartonSearch.Visibility = Visibility.Hidden;
             InnerSearch.Visibility = Visibility.Visible;
             //txtTypeSearch.Foreground=
@@ -158,7 +172,9 @@ namespace ClubJumana.Wpf.UserControls
         public void ShowMaster(MasterCarton master)
         {
             txtTypeSearch.Text = "Master Carton";
+            MasterSelected = master;
             txtPcsPerCarton.Text = master.TotalQuantity.ToString();
+            txtITF14Master.Text = master.ITF14;
             txtLenghtCTN.Text = master.Lenght.ToString();
             txtWeightCTN.Text = master.Weight.ToString();
             txtWidthCTN.Text = master.Width.Value.RoundNumtoStr();
@@ -170,7 +186,7 @@ namespace ClubJumana.Wpf.UserControls
                 lvInnersOfMaster.Items.Add(item.Inner);
             }
             lvInnersOfMaster.Items.Refresh();
-            if(master.InnerMasterCartons.Count!=0)
+            if (master.InnerMasterCartons.Count != 0)
                 ShowInnerOfMaster(master.InnerMasterCartons.ElementAt(0).Inner);
             MasterCartonSearch.Visibility = Visibility.Visible;
             InnerSearch.Visibility = Visibility.Hidden;
@@ -180,30 +196,69 @@ namespace ClubJumana.Wpf.UserControls
 
         }
 
+
         public void ShowInnerOfMaster(Inner inner)
         {
+            InnerSelectedOfMaster = inner;
             txtInnerITF142.Text = inner.ITF14;
             txtInnerName2.Text = inner.ProductMaster.Name;
             txtInnerUPC2.Text = inner.ProductMaster.UPC;
             txtInnerSKU2.Text = inner.ProductMaster.SKU;
             txtInnerQuantityPerInner2.Text = inner.Quantity.ToString();
+            int QuantityInnerinMaster = inner.InnerMasterCartons
+                .FirstOrDefault(p => p.MasterCartonFK == MasterSelected.Id).InnerQuntity;
+            txtPackMaster.Text =QuantityInnerinMaster+"/"+MasterSelected.TotalQuantity ;
         }
         private void LvMasterCartonInnerSearch_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (InnerMasterCarton)lvMasterCartonInnerSearch.ItemContainerGenerator.ItemFromContainer(dep);
+            txtSearchITF.Text = wer.MasterCarton.ITF14.Trim();
+            BtnSearch_OnClick(sender,e);
+            //txtSearchITF.Text=
         }
 
         private void LvInnersOfMaster_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowInnerOfMaster(lvInnersOfMaster.SelectedItem as Inner);
+            var x = lvInnersOfMaster.SelectedItem as Inner;
+            if (x != null)
+                ShowInnerOfMaster(x);
         }
 
         private void TxtSearchITF_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                BtnSearch_OnClick(sender,e);
+                BtnSearch_OnClick(sender, e);
+                txtSearchITF.Clear();
             }
+        }
+
+
+        private void LvInnersOfMaster_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DependencyObject dep = (DependencyObject)e.OriginalSource;
+            while ((dep != null) && !(dep is ListViewItem))
+            {
+                dep = VisualTreeHelper.GetParent(dep);
+            }
+
+            if (dep == null)
+                return;
+
+            var wer = (Inner)lvInnersOfMaster.ItemContainerGenerator.ItemFromContainer(dep);
+
+            txtSearchITF.Text = wer.ITF14.Trim();
+            BtnSearch_OnClick(sender, e);
+
         }
     }
 }

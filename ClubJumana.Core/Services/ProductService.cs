@@ -120,8 +120,8 @@ namespace ClubJumana.Core.Services
             {
                 item.Id = newIdInnerMaster;
                 item.MasterCartonFK = masterCarton.Id;
-                totalQuantity += item.InnerQuntity;
-                newIdInnerMaster++;
+                totalQuantity += item.InnerQuntity*item.Inner.Quantity;
+                 newIdInnerMaster++;
             }
 
             masterCarton.TotalQuantity = totalQuantity;

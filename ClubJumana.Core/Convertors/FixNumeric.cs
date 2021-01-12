@@ -11,6 +11,8 @@ namespace ClubJumana.Core.Convertors
         public static string RoundNumtoStr(this decimal num)
         {
             var str = num.ToString().Split('.');
+            if (str.Count() == 1)
+                return str[0] + ".00";
             if (str[1].Length == 2)
                 return str[0] + "." + str[1];
             else if (str[1].Length == 1)

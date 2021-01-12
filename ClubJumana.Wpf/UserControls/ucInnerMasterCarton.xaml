@@ -15,12 +15,12 @@
         </Grid.RowDefinitions>
         <UniformGrid Rows="1" Columns="4">
             <StackPanel Orientation="Horizontal">
-                <Button Name="btnShowInnerPage" Content="Inner" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkGreen" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
-                <Button Name="btnShowMasterPage"  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White" Click="BtnShowMasterPage_OnClick"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button Name="btnShowSearch" Content="Search" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkSlateBlue" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
+                <Button Name="btnShowSearch" Content="Search" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkSlateBlue" Foreground="White" Width="150" Click="BtnShowSearch_OnClick"/>
+                <Button Name="btnShowInnerPage" Content="Inner" FontSize="25" Height="50" Margin="60 0 0 0" Background="DarkGreen" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
                 </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnShowMasterPage"  Content="Master Carton" FontSize="25" Height="50" Margin="0 0 0 0" Background="DarkOrange" Foreground="White" Click="BtnShowMasterPage_OnClick"/>
+            </StackPanel>
             <Label/>
             <StackPanel Orientation="Horizontal" Height="70" HorizontalAlignment="Right" Margin="0 0 50 0">
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
@@ -145,7 +145,7 @@
             </UniformGrid>
 
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Name="SearchPage" Grid.Row="2" Background="White" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="140"/>
                 <RowDefinition/>
@@ -209,7 +209,10 @@
                             <Setter Property="Margin" Value="10 30 0 0"></Setter>
                         </Style>
                     </StackPanel.Resources>
-
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Master ITF14" Width="250" Foreground="Maroon" FontWeight="Bold"/>
+                        <TextBlock Name="txtITF14Master" Text="Description" Foreground="Maroon" FontWeight="Bold"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="Weight" Width="250"/>
                         <TextBlock Name="txtWeightCTN" Text="Description"/>
@@ -227,13 +230,19 @@
                         <TextBlock Name="txtHeightCTN" Text="Description"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="Pack" Width="250" VerticalAlignment="Center"/>
+                        <Border Background="DarkCyan" Width="100" CornerRadius="5">
+                            <TextBlock Name="txtPackMaster"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock   Text="Pcs Per Carton" Width="250" VerticalAlignment="Center"/>
                         <Border Background="DarkSlateBlue" Width="100" CornerRadius="5">
                             <TextBlock Name="txtPcsPerCarton"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
                         </Border>
                     </StackPanel>
                 </StackPanel>
-                <ListView SelectionMode="Single" Width="400"  Name="lvInnersOfMaster"  Grid.Row="1" Grid.Column="1" Margin="0" FontSize="15"  SelectionChanged="LvInnersOfMaster_OnSelectionChanged" Visibility="Visible" >
+                <ListView SelectionMode="Single" Width="400"  Name="lvInnersOfMaster"  Grid.Row="1" Grid.Column="1" Margin="0" FontSize="15"  SelectionChanged="LvInnersOfMaster_OnSelectionChanged" Visibility="Visible" MouseDoubleClick="LvInnersOfMaster_OnMouseDoubleClick">
                     <ListView.View>
                         <GridView >
                             <GridViewColumn Header="Alu" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
@@ -251,8 +260,8 @@
                         </Style>
                     </StackPanel.Resources>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock  Text="Inner ITF14" Width="250" Foreground="DarkGreen"/>
-                        <TextBlock Name="txtInnerITF142" Text="Description" Foreground="DarkGreen"/>
+                        <TextBlock  Text="Inner ITF14" Width="250" Foreground="DarkGreen" FontWeight="Bold"/>
+                        <TextBlock Name="txtInnerITF142" Text="Description" Foreground="DarkGreen" FontWeight="Bold"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="Description" Width="250"/>
