@@ -32,6 +32,9 @@ namespace ClubJumana.Core.Services
         public int SaveAndUpdateSaleOrder(SaleOrderViewModel saleOrder)
         {
             DetachedAllEntries();
+            bool IsInvoice = false;
+            if (saleOrder.InvoiceNumber != null)
+                IsInvoice = true;
             SaleOrder So = new SaleOrder();
             int newIdSo = 1;
             try
@@ -82,7 +85,7 @@ namespace ClubJumana.Core.Services
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
                     OpenBalance = saleOrder.OpenBalance,
-                    
+
                 };
                 _context.saleorders.Add(So);
 
@@ -91,7 +94,7 @@ namespace ClubJumana.Core.Services
             }
             else
             {
-                So = _context.saleorders.Include(p=>p.Taxes).Include(p=>p.PaymentInvoices).ThenInclude(p=>p.Payment).SingleOrDefault(p => p.Id == saleOrder.Id);
+                So = _context.saleorders.Include(p => p.Taxes).Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).SingleOrDefault(p => p.Id == saleOrder.Id);
                 So.Type = saleOrder.Type;
                 So.HaveDeposit = saleOrder.HaveDeposit;
                 So.SoDate = saleOrder.SoDate;
@@ -123,7 +126,8 @@ namespace ClubJumana.Core.Services
                 So.Quantity = saleOrder.Quantity;
                 So.IsDeleted = false;
                 So.OpenBalance = saleOrder.OpenBalance;
-                if (saleOrder.Deposit.Id != 0&&saleOrder.HaveDeposit)
+
+                if (saleOrder.Deposit.Id != 0 && saleOrder.HaveDeposit)
                 {
                     So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.AmountReceived =
                         saleOrder.Deposit.AmountReceived;
@@ -133,13 +137,15 @@ namespace ClubJumana.Core.Services
                         saleOrder.Deposit.PaymentMethodFK;
                     So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.ReferenceNo =
                         saleOrder.Deposit.ReferenceNo;
-                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.PaymentDate =DateTime.Now;
-                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Amount= saleOrder.Deposit.AmountReceived;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment.PaymentDate = DateTime.Now;
+                    So.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Amount = saleOrder.Deposit.AmountReceived;
 
                 }
             }
 
             SoItem soItem = new SoItem();
+            ProductInventoryWarehouse inventoryProduct;
+            int def = 0;
             int newId = 1;
             try
             {
@@ -167,31 +173,80 @@ namespace ClubJumana.Core.Services
                         TaxCode = Convert.ToByte(model.TaxCode)
                     });
 
-                    // model.ProductMaster.GoodsReserved += model.Quantity;
-                    _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk).GoodsReserved += model.Quantity;
-                    //_context.productmasters.Update(model.ProductMaster);
+                    inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                    if (IsInvoice)
+                    {
+                        inventoryProduct.Inventory -= model.Quantity;
+                        inventoryProduct.OutCome += model.Quantity;
+                        inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
+                        inventoryProduct.ProductMaster.Outcome += model.Quantity;
+                        inventoryProduct.ProductMaster.GoodsReserved -= model.Quantity;
+                        _context.productinventorywarehouses.Update(inventoryProduct);
+                        _context.productmasters.Update(inventoryProduct.ProductMaster);
+                    }
+                    else
+                    {
+                        inventoryProduct.ProductMaster.GoodsReserved += model.Quantity;
+                    }
+
+
                 }
                 else if (model.Id != 0 && model.IsDeleted)
                 {
                     soItem = _context.soitems.Include(p => p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
-                    soItem.ProductMaster.GoodsReserved -= model.Quantity;
+                    if (IsInvoice)
+                    {
+                        inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                            .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == model.ProductMaster_fk);
+                        inventoryProduct.Inventory += model.Quantity;
+                        inventoryProduct.OutCome -= model.Quantity;
+                        inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
+                        inventoryProduct.ProductMaster.Outcome -= model.Quantity;
+                    }
+                    else
+                    {
+                        soItem.ProductMaster.GoodsReserved -= model.Quantity;
+                    }
+
                     _context.Remove(soItem);
                 }
                 else if (model.Id != 0)
                 {
-                    soItem = _context.soitems.Include(p => p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
-
+                    soItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses)
+                        .SingleOrDefault(p => p.Id == model.Id);
                     soItem.Cost = model.Cost;
                     soItem.Discount = model.Discount;
                     soItem.Price = model.Price;
                     soItem.TotalPrice = model.TotalPrice;
                     soItem.TaxCode = Convert.ToByte(model.TaxCode);
+
                     if (soItem.Quantity != model.Quantity)
                     {
                         soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
                         _context.productmasters.Update(soItem.ProductMaster);
                         soItem.Quantity = model.Quantity;
                         soItem.ProductMaster.GoodsReserved += model.Quantity;
+
+                        if (IsInvoice)
+                        {
+                            def = model.Quantity - soItem.Quantity;
+                            soItem.Quantity = model.Quantity;
+                            soItem.ProductMaster.StockOnHand -= def;
+                            soItem.ProductMaster.Outcome += def;
+                            inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+                                p.Warehouse_fk == saleOrder.Warehouse_fk);
+                            inventoryProduct.Inventory -= def;
+                            inventoryProduct.OutCome += def;
+                            _context.productinventorywarehouses.Update(inventoryProduct);
+                        }
+                        else
+                        {
+                            soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
+                            soItem.Quantity = model.Quantity;
+                            soItem.ProductMaster.GoodsReserved += model.Quantity;
+                        }
+                        _context.productmasters.Update(soItem.ProductMaster);
                     }
 
                 }
@@ -218,7 +273,7 @@ namespace ClubJumana.Core.Services
             int IndexTax = 0;
             foreach (var model in saleOrder.Taxes)
             {
-                if (IndexTax>=SoTaxesOld)
+                if (IndexTax >= SoTaxesOld)
                 {
                     _context.taxes.Add(new Tax()
                     {
@@ -232,7 +287,7 @@ namespace ClubJumana.Core.Services
                     });
                     newIdTax++;
                 }
-                else if (IndexTax<SoTaxesOld)
+                else if (IndexTax < SoTaxesOld)
                 {
                     So.Taxes.ElementAt(IndexTax).Code = model.Code;
                     So.Taxes.ElementAt(IndexTax).TaxAmount = model.TaxAmount;
@@ -275,10 +330,10 @@ namespace ClubJumana.Core.Services
                     IdInvoicePayment = 1;
                 }
 
-                _context.paymentinvoices.Add(new PaymentInvoice(){Id = IdInvoicePayment,InvoiceFK = So.Id,PaymenteFK =saleOrder.Deposit.Id,Amount = saleOrder.AmountDeposit});
+                _context.paymentinvoices.Add(new PaymentInvoice() { Id = IdInvoicePayment, InvoiceFK = So.Id, PaymenteFK = saleOrder.Deposit.Id, Amount = saleOrder.AmountDeposit });
             }
 
-            
+
             _context.SaveChanges();
 
             return So.Id;

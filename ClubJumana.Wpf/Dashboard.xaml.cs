@@ -94,8 +94,8 @@ namespace ClubJumana.Wpf
             itemCard = new ucItemCard();
             Purchasing = new ucPurchasing();
             UCSaleOrder = new ucSaleOrder();
-            UCPayment=new ucPayment();
-            UCInnerMasterCarton=new ucInnerMasterCarton();
+            UCPayment = new ucPayment();
+            UCInnerMasterCarton = new ucInnerMasterCarton();
 
             UCVendorCard.BtnSaveOnClick += BtnSaveForVendor_OnBtnSaveOnClick;
             itemCard.BtnSaveOnClick += BtnSaveForItem_OnBtnSaveOnClick;
@@ -199,6 +199,7 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveSalesOrder_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
+
             int x = UCSaleOrder.SaleOrderViewModel.Id;
             string mes = "";
             foreach (var VARIABLE in UCSaleOrder.RemoveSoItemViewModel)
@@ -206,44 +207,38 @@ namespace ClubJumana.Wpf
                 UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
             }
 
-            if (UCSaleOrder.SaleOrderViewModel.InvoiceNumber == null)
+            int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+
+            //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
+
+            if (x == 0)
             {
-                int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+                mes = "Sales Order Created";
+                UCSaleOrder.txtNum.Text = ID.ShowSaleOrderNumber();
 
-                //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
-
-                if (x == 0)
+                salesOrderListview.Add(new SalesOrderListview()
                 {
-                    mes = "Sales Order Created";
-                    UCSaleOrder.txtNum.Text = ID.ShowSaleOrderNumber();
-                }
-                else
-                {
-                    mes = "Sales Order Updated";
-                }
-                myMessageQueue.Enqueue(mes);
-
-                if (x == 0)
-                {
-                    salesOrderListview.Add(new SalesOrderListview()
-                    {
-                        No = ID,
-                        CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
-                        DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
-                        OpenBalance = 0,
-                        TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
-                        Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
-                    });
-                    lvSalesOrder.ItemsSource = salesOrderListview;
-                    lvSalesOrder.Items.Refresh();
-                    UCSaleOrder.SaleOrderViewModel.Id = ID;
-                }
+                    No = ID,
+                    CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
+                    DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
+                    OpenBalance = 0,
+                    TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
+                    Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
+                });
+                lvSalesOrder.ItemsSource = salesOrderListview;
+                lvSalesOrder.Items.Refresh();
+                UCSaleOrder.SaleOrderViewModel.Id = ID;
+            }
+            else if (UCSaleOrder.SaleOrderViewModel.InvoiceNumber != null)
+            {
+                mes = "Invoice Updated.";
             }
             else
             {
-                int ID = _saleOrderService.UpdateInvoice(UCSaleOrder.SaleOrderViewModel);
-                myMessageQueue.Enqueue("Invoice Updated.");
+                mes = "Sales Order Updated";
             }
+            myMessageQueue.Enqueue(mes);
+
 
         }
 
@@ -729,12 +724,12 @@ namespace ClubJumana.Wpf
         }
         private void BtnAddMaster_OnClick(object? sender, EventArgs e)
         {
-            List<InnerMasterCarton> list= UCInnerMasterCarton.dgInnersForMaster.Items.OfType<InnerMasterCarton>().ToList();
+            List<InnerMasterCarton> list = UCInnerMasterCarton.dgInnersForMaster.Items.OfType<InnerMasterCarton>().ToList();
             //foreach (var item in UCInnerMasterCarton.dgInnersForMaster.Items)
             //{
             //    list.Add(item as InnerMasterCarton);
             //}
-            MasterCarton newMasterCarton=new MasterCarton()
+            MasterCarton newMasterCarton = new MasterCarton()
             {
                 ITF14 = UCInnerMasterCarton.txtMasterITF14.Text,
                 InnerMasterCartons = list,
@@ -752,17 +747,35 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.txtWeightMaster.Clear();
             UCInnerMasterCarton.txtLengthMaster.Clear();
             UCInnerMasterCarton.txtHeightMaster.Clear();
-            UCInnerMasterCarton.dgInnersForMaster.ItemsSource=null;
+            UCInnerMasterCarton.dgInnersForMaster.ItemsSource = null;
             UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
         }
         private void BtnSearchITF_OnClick(object? sender, EventArgs e)
         {
-            var t = _productService.GetInnerByITF(UCInnerMasterCarton.txtSearchITF.Text);
-            if(t!=null)
+            Inner t = _productService.GetInnerByITF(UCInnerMasterCarton.txtSearchITF.Text);
+            MasterCarton master = new MasterCarton();
+            if (t != null)
                 UCInnerMasterCarton.ShowInner(t);
             else
             {
-                MessageBox.Show("Koja sedel");
+                master = _productService.GetMasterByITF(UCInnerMasterCarton.txtSearchITF.Text);
+            }
+
+            if (master == null)
+            {
+                myMessageQueue.Enqueue("ITF14 Not Found.");
+            }
+            else if (master.Id != 0)
+            {
+                UCInnerMasterCarton.ShowMaster(master);
+            }
+            else if (t != null)
+            {
+
+            }
+            else
+            {
+                myMessageQueue.Enqueue("ITF14 Not Found.");
             }
             //List<InnerMasterCarton> list = UCInnerMasterCarton.dgInnersForMaster.Items.OfType<InnerMasterCarton>().ToList();
             ////foreach (var item in UCInnerMasterCarton.dgInnersForMaster.Items)
@@ -792,7 +805,7 @@ namespace ClubJumana.Wpf
         }
         private void CheckExistInnerITF14(object? sender, EventArgs e)
         {
-            if(UCInnerMasterCarton.txtInnerITF14.Text.Length==14)
+            if (UCInnerMasterCarton.txtInnerITF14.Text.Length == 14)
                 CheckExistInner(UCInnerMasterCarton.txtInnerITF14.Text);
             else if (UCInnerMasterCarton.txtInnerITF14.Text.Length == 0)
             {
@@ -831,7 +844,7 @@ namespace ClubJumana.Wpf
                 if (IsExistInner || IsExistMaster)
                 {
                     this.Dispatcher.Invoke(() =>
-                        UCInnerMasterCarton.imgDuplicateITF.Visibility=Visibility.Visible
+                        UCInnerMasterCarton.imgDuplicateITF.Visibility = Visibility.Visible
                     );
                 }
                 else
@@ -850,7 +863,7 @@ namespace ClubJumana.Wpf
                 bool IsExistMaster = _productService.CheckMasterCartonITF(itf);
                 bool IsExistInner = _productService.CheckInnerITF(itf);
 
-                if (IsExistInner||IsExistMaster)
+                if (IsExistInner || IsExistMaster)
                 {
                     this.Dispatcher.Invoke(() =>
                         UCInnerMasterCarton.imgDuplicateITFMaster.Visibility = Visibility.Visible
@@ -872,12 +885,17 @@ namespace ClubJumana.Wpf
         private void BtnAddInnerForMaster_OnClick(object? sender, EventArgs e)
         {
             var inner = _productService.GetInnerByITF(UCInnerMasterCarton.txtAddInnerForMaster.Text.Trim());
-            if(inner==null)
+            if (inner == null)
                 myMessageQueue.Enqueue("Inner Not Found.");
             else
             {
-                UCInnerMasterCarton.innerMasterCartons.Add(new InnerMasterCarton(){Inner = inner,InnerQuntity = 0,InnerFK = inner.Id,
-                    Id =UCInnerMasterCarton.innerMasterCartons.Count+1});
+                UCInnerMasterCarton.innerMasterCartons.Add(new InnerMasterCarton()
+                {
+                    Inner = inner,
+                    InnerQuntity = 0,
+                    InnerFK = inner.Id,
+                    Id = UCInnerMasterCarton.innerMasterCartons.Count + 1
+                });
                 UCInnerMasterCarton.dgInnersForMaster.ItemsSource = UCInnerMasterCarton.innerMasterCartons;
                 UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
                 myMessageQueue.Enqueue("Inner Add To List.");
@@ -1002,7 +1020,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbShipFrom.ItemsSource = warehouses;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {
-                UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();
+                UCSaleOrder.txtNum.Text = _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();
                 UCSaleOrder.txtName.Text = "Sales Order";
                 UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Visible;
                 UCSaleOrder.btnRecivePayment.Visibility = Visibility.Collapsed;
@@ -1010,7 +1028,7 @@ namespace ClubJumana.Wpf
             }
             else
             {
-                UCSaleOrder.txtNum.Text= _dataContextVM.SaleOrderViewModel.InvoiceNumber.Value.ShowInvoceNumber();
+                UCSaleOrder.txtNum.Text = _dataContextVM.SaleOrderViewModel.InvoiceNumber.Value.ShowInvoceNumber();
                 UCSaleOrder.txtName.Text = "Invoice";
                 UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
                 UCSaleOrder.btnRecivePayment.Visibility = Visibility.Visible;

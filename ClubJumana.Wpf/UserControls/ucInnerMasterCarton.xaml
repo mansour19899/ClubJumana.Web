@@ -18,7 +18,9 @@
                 <Button Name="btnShowInnerPage" Content="Inner" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkGreen" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
                 <Button Name="btnShowMasterPage"  Content="Master Carton" FontSize="25" Height="50" Margin="50 0 0 0" Background="DarkOrange" Foreground="White" Click="BtnShowMasterPage_OnClick"/>
             </StackPanel>
-            <Label/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnShowSearch" Content="Search" FontSize="25" Height="50" Margin="30 0 0 0" Background="DarkSlateBlue" Foreground="White" Width="150" Click="BtnShowInnerPage_OnClick"/>
+                </StackPanel>
             <Label/>
             <StackPanel Orientation="Horizontal" Height="70" HorizontalAlignment="Right" Margin="0 0 50 0">
                 <Image Grid.Column="1" Margin="10"  Source="../Content/Icon/externallinkIcon.png" />
@@ -154,13 +156,13 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10">
-                    <TextBox Name="txtSearchITF" Width="300" Height="50" VerticalAlignment="Top" Margin="0 10 0 0" FontSize="20" MaxLength="14"/>
+                    <TextBox Name="txtSearchITF" Width="300" Height="50" VerticalAlignment="Top" Margin="0 10 0 0" FontSize="20" MaxLength="14" KeyDown="TxtSearchITF_OnKeyDown"/>
                     <Button Name="btnSearch" Content="Search" Height="50" Margin="20 10 0 0" Background="CornflowerBlue" Click="BtnSearch_OnClick"/>
                 </StackPanel>
-                <TextBlock Name="txtTypeSearch" Text="Inner" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="DarkBlue"/>
+                <TextBlock Name="txtTypeSearch" Text="" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="DarkBlue"/>
             </StackPanel>
-            <UniformGrid Rows="1" Columns="2" Grid.Row="1" Grid.ColumnSpan="2">
-                <StackPanel  Margin="50 0 0 0">
+            <UniformGrid Name="InnerSearch" Rows="1" Columns="2" Grid.Row="1" Grid.ColumnSpan="2" Visibility="Hidden">
+                <StackPanel  Margin="100 0 0 0">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="20"/>
@@ -196,6 +198,81 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+            </UniformGrid>
+            <UniformGrid Name="MasterCartonSearch" Rows="1" Columns="3" Grid.Row="1" Grid.ColumnSpan="2" Background="White" Visibility="Hidden">
+                <StackPanel Margin="100 0 0 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="10 30 0 0"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Weight" Width="250"/>
+                        <TextBlock Name="txtWeightCTN" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Lenght" Width="250"/>
+                        <TextBlock Name="txtLenghtCTN" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Width" Width="250"/>
+                        <TextBlock Name="txtWidthCTN" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Height" Width="250"/>
+                        <TextBlock Name="txtHeightCTN" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="Pcs Per Carton" Width="250" VerticalAlignment="Center"/>
+                        <Border Background="DarkSlateBlue" Width="100" CornerRadius="5">
+                            <TextBlock Name="txtPcsPerCarton"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+                <ListView SelectionMode="Single" Width="400"  Name="lvInnersOfMaster"  Grid.Row="1" Grid.Column="1" Margin="0" FontSize="15"  SelectionChanged="LvInnersOfMaster_OnSelectionChanged" Visibility="Visible" >
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="Alu" Width="120" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Inner ITF14" Width="220" DisplayMemberBinding="{Binding Path=ITF14}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel  Margin="0 0 0 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="10 30 0 0"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock  Text="Inner ITF14" Width="250" Foreground="DarkGreen"/>
+                        <TextBlock Name="txtInnerITF142" Text="Description" Foreground="DarkGreen"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Description" Width="250"/>
+                        <TextBlock Name="txtInnerName2" Text="Description"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="250"  Text="UPC"/>
+                        <TextBlock Name="txtInnerUPC2"  Text="UPC"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="SKU" Width="250"/>
+                        <TextBlock Name="txtInnerSKU2"  Text="SKU"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock   Text="Quantity Per Inner" Width="250" VerticalAlignment="Center"/>
+                        <Border Background="DarkBlue" Width="100" CornerRadius="5">
+                            <TextBlock Name="txtInnerQuantityPerInner2"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
             </UniformGrid>
         </Grid>
 

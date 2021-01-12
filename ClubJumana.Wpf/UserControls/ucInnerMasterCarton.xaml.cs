@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClubJumana.Core.Convertors;
 using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Wpf.UserControls
@@ -148,13 +149,61 @@ namespace ClubJumana.Wpf.UserControls
             txtInnerSKU.Text = inner.ProductMaster.SKU;
             txtInnerQuantityPerInner.Text = inner.Quantity.ToString();
             lvMasterCartonInnerSearch.ItemsSource = inner.InnerMasterCartons;
+            lvMasterCartonInnerSearch.Items .Refresh();
+            MasterCartonSearch.Visibility = Visibility.Hidden;
+            InnerSearch.Visibility = Visibility.Visible;
+            //txtTypeSearch.Foreground=
+
+        }
+        public void ShowMaster(MasterCarton master)
+        {
+            txtTypeSearch.Text = "Master Carton";
+            txtPcsPerCarton.Text = master.TotalQuantity.ToString();
+            txtLenghtCTN.Text = master.Lenght.ToString();
+            txtWeightCTN.Text = master.Weight.ToString();
+            txtWidthCTN.Text = master.Width.Value.RoundNumtoStr();
+            txtHeightCTN.Text = master.Height.ToString();
+            lvInnersOfMaster.Items.Clear();
+            lvInnersOfMaster.Items.Refresh();
+            foreach (var item in master.InnerMasterCartons)
+            {
+                lvInnersOfMaster.Items.Add(item.Inner);
+            }
+            lvInnersOfMaster.Items.Refresh();
+            if(master.InnerMasterCartons.Count!=0)
+                ShowInnerOfMaster(master.InnerMasterCartons.ElementAt(0).Inner);
+            MasterCartonSearch.Visibility = Visibility.Visible;
+            InnerSearch.Visibility = Visibility.Hidden;
+            // lvInnersOfMaster.ItemsSource = master.InnerMasterCartons;
+
             //txtTypeSearch.Foreground=
 
         }
 
+        public void ShowInnerOfMaster(Inner inner)
+        {
+            txtInnerITF142.Text = inner.ITF14;
+            txtInnerName2.Text = inner.ProductMaster.Name;
+            txtInnerUPC2.Text = inner.ProductMaster.UPC;
+            txtInnerSKU2.Text = inner.ProductMaster.SKU;
+            txtInnerQuantityPerInner2.Text = inner.Quantity.ToString();
+        }
         private void LvMasterCartonInnerSearch_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void LvInnersOfMaster_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShowInnerOfMaster(lvInnersOfMaster.SelectedItem as Inner);
+        }
+
+        private void TxtSearchITF_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BtnSearch_OnClick(sender,e);
+            }
         }
     }
 }
