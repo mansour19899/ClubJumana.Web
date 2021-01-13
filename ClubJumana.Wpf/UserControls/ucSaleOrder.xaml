@@ -562,6 +562,16 @@
                                 </UniformGrid>
 
                                 <UniformGrid Columns="2" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txtName,Path=Text}" Value="Sales Order">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="Deposit" Style="{StaticResource Style1}"/>
                                         <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
@@ -785,6 +795,16 @@
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="4" Rows="1">
+                                    <UniformGrid.Style>
+                                        <Style>
+                                            <Setter Property="UIElement.Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txtName,Path=Text}" Value="Sales Order">
+                                                    <Setter Property="UIElement.Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </UniformGrid.Style>
                                     <TextBlock />
                                     <TextBlock />
                                     <Label Content="Balance Due" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="18"/>

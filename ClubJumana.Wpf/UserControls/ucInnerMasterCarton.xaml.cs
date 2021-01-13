@@ -135,6 +135,11 @@ namespace ClubJumana.Wpf.UserControls
             SearchPage.Visibility = Visibility.Hidden;
         }
 
+        public void ShowInnerPage()
+        {
+            BtnShowInnerPage_OnClick(null,null);
+        }
+
         private void BtnShowMasterPage_OnClick(object sender, RoutedEventArgs e)
         {
             txtHeader.Text = "Master Carton";

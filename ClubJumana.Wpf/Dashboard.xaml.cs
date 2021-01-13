@@ -695,6 +695,7 @@ namespace ClubJumana.Wpf
         {
             UCInnerMasterCarton.productMaster = _productService.GetProductMasterById(_dataContextVM.ProductMaster.Id);
             UCInnerMasterCarton.DataContext = UCInnerMasterCarton.productMaster;
+            UCInnerMasterCarton.ShowInnerPage();
             SecoundBordermanagement.Child = UCInnerMasterCarton;
             SecoundBordermanagement.Visibility = Visibility.Visible;
         }

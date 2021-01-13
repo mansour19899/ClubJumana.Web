@@ -19,11 +19,11 @@ namespace ClubJumana.Core.Convertors
             {
                 return str[0] + "." + str[1][0] +'0';
             }
-            else if (str[1][3] == '0')
+            else if (str[1][2] == '0')
             {
                 return str[0] + "." + str[1][0] + str[1][1];
             }
-            else if(str[1][4] == '0')
+            else if(str[1][3] == '0')
             {
                 return str[0] + "." + str[1][0] + str[1][1]+ str[1][2];
             }

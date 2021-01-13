@@ -85,7 +85,7 @@ namespace ClubJumana.Core.Services
                     Quantity = saleOrder.Quantity,
                     IsDeleted = false,
                     OpenBalance = saleOrder.OpenBalance,
-
+                    Taxes = new List<Tax>()
                 };
                 _context.saleorders.Add(So);
 
@@ -306,34 +306,32 @@ namespace ClubJumana.Core.Services
                 }
             }
 
-
-            if (saleOrder.Deposit.Id == 0 && saleOrder.AmountDeposit != 0)
+            if (saleOrder.InvoiceNumber != null)
             {
-                saleOrder.Deposit.Note = "Deposit";
-                try
+                if (saleOrder.Deposit.Id == 0 && saleOrder.AmountDeposit != 0)
                 {
-                    saleOrder.Deposit.Id = _context.payments.Max(p => p.Id) + 1;
+                    saleOrder.Deposit.Note = "Deposit";
+                    try
+                    {
+                        saleOrder.Deposit.Id = _context.payments.Max(p => p.Id) + 1;
+                    }
+                    catch (Exception e)
+                    {
+                        saleOrder.Deposit.Id = 1;
+                    }
+                    int IdInvoicePayment = 1;
+                    try
+                    {
+                        IdInvoicePayment = _context.paymentinvoices.Max(p => p.Id) + 1;
+                    }
+                    catch (Exception e)
+                    {
+                        IdInvoicePayment = 1;
+                    }
+                    saleOrder.Deposit.PaymentInvoices.Add(new PaymentInvoice() { Id = IdInvoicePayment, InvoiceFK = So.Id, PaymenteFK = saleOrder.Deposit.Id, Amount = saleOrder.AmountDeposit });
+                    _context.payments.Add(saleOrder.Deposit);
                 }
-                catch (Exception e)
-                {
-                    saleOrder.Deposit.Id = 1;
-                }
-                _context.payments.Add(saleOrder.Deposit);
-
-                int IdInvoicePayment = 1;
-                try
-                {
-                    IdInvoicePayment = _context.paymentinvoices.Max(p => p.Id) + 1;
-                }
-                catch (Exception e)
-                {
-                    IdInvoicePayment = 1;
-                }
-
-                _context.paymentinvoices.Add(new PaymentInvoice() { Id = IdInvoicePayment, InvoiceFK = So.Id, PaymenteFK = saleOrder.Deposit.Id, Amount = saleOrder.AmountDeposit });
             }
-
-
             _context.SaveChanges();
 
             return So.Id;
@@ -461,8 +459,8 @@ namespace ClubJumana.Core.Services
                 .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User)
                 .Include(p => p.Warehouse).Include(p => p.Taxes)
-                .Include(p=>p.PaymentInvoices).ThenInclude(p=>p.Payment).SingleOrDefault();
-            
+                .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).SingleOrDefault();
+
             var listSoItem = new List<SoItemVeiwModel>();
 
             foreach (var VARIABLE in saleOrder.SoItems)
@@ -486,19 +484,14 @@ namespace ClubJumana.Core.Services
                 });
             }
 
-            List<decimal> TaxRate2 = new List<decimal>();
-            TaxRate2.Add(saleOrder.TaxArea.HST.Value);
-            TaxRate2.Add(saleOrder.TaxArea.QST.Value);
-            TaxRate2.Add(saleOrder.TaxArea.GST.Value);
-
             Payment Deposit;
             if (saleOrder.HaveDeposit)
             {
-                Deposit=saleOrder.PaymentInvoices.OrderBy(p=>p.Id).ElementAt(0).Payment;
+                Deposit = saleOrder.PaymentInvoices.OrderBy(p => p.Id).ElementAt(0).Payment;
             }
             else
             {
-                Deposit=new Payment(){Id = 0,DepositToFK = 1,PaymentMethodFK = 1,AmountReceived = 0};
+                Deposit = new Payment() { Id = 0, DepositToFK = 1, PaymentMethodFK = 1, AmountReceived = 0 };
             }
 
             return new SaleOrderViewModel()

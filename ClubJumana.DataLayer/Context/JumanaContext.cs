@@ -314,7 +314,7 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.Taxes)
                     .HasForeignKey(s => s.SalesOrderFK);
                 entity.Property(e => e.Rate).HasColumnType("decimal(7,4)");
-                entity.Property(e => e.Amount).HasColumnType("decimal(7,4)");
+                entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.TaxAmount).HasColumnType("decimal(7,4)");
 
             });
