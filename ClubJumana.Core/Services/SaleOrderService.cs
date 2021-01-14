@@ -147,19 +147,18 @@ namespace ClubJumana.Core.Services
             ProductInventoryWarehouse inventoryProduct;
             int def = 0;
             int newId = 1;
-            try
-            {
-                newId = _context.soitems.Max(p => p.Id) + 1;
-            }
-            catch (Exception e)
-            {
-                newId = 1;
-            }
-
             foreach (var model in saleOrder.SoItems)
             {
                 if (model.Id == 0 && !model.IsDeleted)
                 {
+                    try
+                    {
+                        newId = _context.soitems.Max(p => p.Id) + 1;
+                    }
+                    catch (Exception e)
+                    {
+                        newId = 1;
+                    }
                     _context.soitems.Add(new SoItem()
                     {
                         Id = newId,
@@ -172,11 +171,12 @@ namespace ClubJumana.Core.Services
                         TotalPrice = model.TotalPrice,
                         TaxCode = Convert.ToByte(model.TaxCode)
                     });
-
-                    inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
-                        .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
+                    model.Id = newId;
+;
                     if (IsInvoice)
                     {
+                        inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+                            .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
                         inventoryProduct.Inventory -= model.Quantity;
                         inventoryProduct.OutCome += model.Quantity;
                         inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
@@ -187,7 +187,8 @@ namespace ClubJumana.Core.Services
                     }
                     else
                     {
-                        inventoryProduct.ProductMaster.GoodsReserved += model.Quantity;
+                        _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk).GoodsReserved +=
+                            model.Quantity;
                     }
 
 
@@ -223,11 +224,6 @@ namespace ClubJumana.Core.Services
 
                     if (soItem.Quantity != model.Quantity)
                     {
-                        soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
-                        _context.productmasters.Update(soItem.ProductMaster);
-                        soItem.Quantity = model.Quantity;
-                        soItem.ProductMaster.GoodsReserved += model.Quantity;
-
                         if (IsInvoice)
                         {
                             def = model.Quantity - soItem.Quantity;
@@ -306,32 +302,31 @@ namespace ClubJumana.Core.Services
                 }
             }
 
-            if (saleOrder.InvoiceNumber != null)
+
+            if (saleOrder.Deposit.Id == 0 && saleOrder.AmountDeposit != 0)
             {
-                if (saleOrder.Deposit.Id == 0 && saleOrder.AmountDeposit != 0)
+                saleOrder.Deposit.Note = "Deposit";
+                try
                 {
-                    saleOrder.Deposit.Note = "Deposit";
-                    try
-                    {
-                        saleOrder.Deposit.Id = _context.payments.Max(p => p.Id) + 1;
-                    }
-                    catch (Exception e)
-                    {
-                        saleOrder.Deposit.Id = 1;
-                    }
-                    int IdInvoicePayment = 1;
-                    try
-                    {
-                        IdInvoicePayment = _context.paymentinvoices.Max(p => p.Id) + 1;
-                    }
-                    catch (Exception e)
-                    {
-                        IdInvoicePayment = 1;
-                    }
-                    saleOrder.Deposit.PaymentInvoices.Add(new PaymentInvoice() { Id = IdInvoicePayment, InvoiceFK = So.Id, PaymenteFK = saleOrder.Deposit.Id, Amount = saleOrder.AmountDeposit });
-                    _context.payments.Add(saleOrder.Deposit);
+                    saleOrder.Deposit.Id = _context.payments.Max(p => p.Id) + 1;
                 }
+                catch (Exception e)
+                {
+                    saleOrder.Deposit.Id = 1;
+                }
+                int IdInvoicePayment = 1;
+                try
+                {
+                    IdInvoicePayment = _context.paymentinvoices.Max(p => p.Id) + 1;
+                }
+                catch (Exception e)
+                {
+                    IdInvoicePayment = 1;
+                }
+                saleOrder.Deposit.PaymentInvoices.Add(new PaymentInvoice() { Id = IdInvoicePayment, InvoiceFK = So.Id, PaymenteFK = saleOrder.Deposit.Id, Amount = saleOrder.AmountDeposit });
+                _context.payments.Add(saleOrder.Deposit);
             }
+
             _context.SaveChanges();
 
             return So.Id;
@@ -491,7 +486,7 @@ namespace ClubJumana.Core.Services
             }
             else
             {
-                Deposit = new Payment() { Id = 0, DepositToFK = 1, PaymentMethodFK = 1, AmountReceived = 0 };
+                Deposit = new Payment() { Id = 0, DepositToFK = 1, PaymentMethodFK = 1, AmountReceived = 0, PaymentInvoices = new List<PaymentInvoice>() };
             }
 
             return new SaleOrderViewModel()

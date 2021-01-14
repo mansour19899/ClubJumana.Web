@@ -1000,6 +1000,8 @@ namespace ClubJumana.Wpf
                     Taxes = new List<Tax>(),
                     ShippingTaxCode = 1,
                     HandlingTaxCode = 1,
+                    SoDate = DateTime.Today,
+                    Deposit = new Payment() { Id = 0, DepositToFK = 1, PaymentMethodFK = 1, AmountReceived = 0, PaymentInvoices = new List<PaymentInvoice>() }
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
                 UCSaleOrder.CollapsedTax(0);
