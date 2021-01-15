@@ -265,7 +265,16 @@ namespace ClubJumana.Core.DTOs
             }
         }
 
-        public ObservableCollection<SoItemVeiwModel> SoItems { get; set; }
+        private ObservableCollection<SoItemVeiwModel> _soItems;
+        public ObservableCollection<SoItemVeiwModel> SoItems
+        {
+            get { return _soItems; }
+            set
+            {
+                _soItems = value;
+                OnPropertyChanged();
+            }
+        }
         public List<Province> Provinces { get; set; }
 
         public User User { get; set; }
@@ -389,6 +398,7 @@ namespace ClubJumana.Core.DTOs
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 
     public class SoItemVeiwModel : INotifyPropertyChanged

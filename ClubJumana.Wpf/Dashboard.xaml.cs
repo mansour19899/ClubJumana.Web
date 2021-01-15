@@ -202,6 +202,7 @@ namespace ClubJumana.Wpf
 
             int x = UCSaleOrder.SaleOrderViewModel.Id;
             string mes = "";
+            var SalesOrderFinal = UCSaleOrder.SaleOrderViewModel.SoItems.ToList();
             foreach (var VARIABLE in UCSaleOrder.RemoveSoItemViewModel)
             {
                 UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
@@ -210,7 +211,7 @@ namespace ClubJumana.Wpf
             int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
 
             //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
-
+            UCSaleOrder.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>(SalesOrderFinal);
             if (x == 0)
             {
                 mes = "Sales Order Created";
@@ -220,7 +221,6 @@ namespace ClubJumana.Wpf
                 {
                     No = ID,
                     CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
-                    DueDate = UCSaleOrder.SaleOrderViewModel.DueDate,
                     OpenBalance = 0,
                     TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
                     Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
@@ -237,6 +237,8 @@ namespace ClubJumana.Wpf
             {
                 mes = "Sales Order Updated";
             }
+            UCSaleOrder.dgSoItems.Items.Refresh();
+            UCSaleOrder.RemoveSoItemViewModel.Clear();
             myMessageQueue.Enqueue(mes);
 
 
@@ -305,6 +307,14 @@ namespace ClubJumana.Wpf
         }
         private void BtnPostSalesOrder_OnBtnCloseSubPageOnClick(object? sender, EventArgs e)
         {
+            try
+            {
+                _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error 12343");
+            }
             int ID = _saleOrderService.CreateInvoice(UCSaleOrder.SaleOrderViewModel.Id);
             UCSaleOrder.txtNum.Text = ID.ShowInvoceNumber();
             UCSaleOrder.txtName.Text = "Invoice";
@@ -1001,6 +1011,7 @@ namespace ClubJumana.Wpf
                     ShippingTaxCode = 1,
                     HandlingTaxCode = 1,
                     SoDate = DateTime.Today,
+                    Warehouse_fk = 3,
                     Deposit = new Payment() { Id = 0, DepositToFK = 1, PaymentMethodFK = 1, AmountReceived = 0, PaymentInvoices = new List<PaymentInvoice>() }
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();

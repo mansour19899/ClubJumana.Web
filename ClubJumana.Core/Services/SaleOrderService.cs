@@ -147,18 +147,18 @@ namespace ClubJumana.Core.Services
             ProductInventoryWarehouse inventoryProduct;
             int def = 0;
             int newId = 1;
+            try
+            {
+                newId = _context.soitems.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                newId = 1;
+            }
             foreach (var model in saleOrder.SoItems)
             {
                 if (model.Id == 0 && !model.IsDeleted)
                 {
-                    try
-                    {
-                        newId = _context.soitems.Max(p => p.Id) + 1;
-                    }
-                    catch (Exception e)
-                    {
-                        newId = 1;
-                    }
                     _context.soitems.Add(new SoItem()
                     {
                         Id = newId,
@@ -171,8 +171,8 @@ namespace ClubJumana.Core.Services
                         TotalPrice = model.TotalPrice,
                         TaxCode = Convert.ToByte(model.TaxCode)
                     });
-                    model.Id = newId;
-;
+                    model.Id = newId; 
+                    newId++;
                     if (IsInvoice)
                     {
                         inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
@@ -181,7 +181,6 @@ namespace ClubJumana.Core.Services
                         inventoryProduct.OutCome += model.Quantity;
                         inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
                         inventoryProduct.ProductMaster.Outcome += model.Quantity;
-                        inventoryProduct.ProductMaster.GoodsReserved -= model.Quantity;
                         _context.productinventorywarehouses.Update(inventoryProduct);
                         _context.productmasters.Update(inventoryProduct.ProductMaster);
                     }
@@ -204,6 +203,8 @@ namespace ClubJumana.Core.Services
                         inventoryProduct.OutCome -= model.Quantity;
                         inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
                         inventoryProduct.ProductMaster.Outcome -= model.Quantity;
+                        _context.productinventorywarehouses.Update(inventoryProduct);
+                        _context.productmasters.Update(inventoryProduct.ProductMaster);
                     }
                     else
                     {
@@ -251,7 +252,7 @@ namespace ClubJumana.Core.Services
 
                 }
 
-                newId++;
+               
             }
 
             Tax tax = new Tax();
@@ -576,7 +577,6 @@ namespace ClubJumana.Core.Services
                 inventoryWarehouse.OutCome += item.Quantity;
 
             }
-
             _context.SaveChanges();
             return SalesOrder.InvoiceNumber.Value;
         }

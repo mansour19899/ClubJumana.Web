@@ -146,7 +146,9 @@ namespace ClubJumana.Wpf.UserControls
                     SaleOrderViewModel.SoItems.Remove(VARIABLE);
                     if (VARIABLE.Id == 0)
                         RemoveSoItemViewModel.Remove(VARIABLE);
-                    inventoryProducts.Remove(inventoryProducts.First(p => p.IdProduct == VARIABLE.ProductMaster_fk));
+                    var tt = inventoryProducts.FirstOrDefault(p => p.IdProduct == VARIABLE.ProductMaster_fk);
+                    if (tt != null)
+                        inventoryProducts.Remove(tt);
                 }
                 dgSoItems.Items.Refresh();
                 SumSalesOrder();
@@ -180,9 +182,19 @@ namespace ClubJumana.Wpf.UserControls
                     if (Qyt < 0)
                         Qyt = Qyt * -1;
                     SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity = Qyt;
-                    inventoryProducts.ElementAt(row_index).Reserved -= inventoryProducts.ElementAt(row_index).Quantity;
-                    inventoryProducts.ElementAt(row_index).Reserved += Qyt;
-                    inventoryProducts.ElementAt(row_index).Quantity = Qyt;
+                    if (SaleOrderViewModel.InvoiceNumber == null)
+                    {
+                        inventoryProducts.ElementAt(row_index).Reserved -= inventoryProducts.ElementAt(row_index).Quantity;
+                        inventoryProducts.ElementAt(row_index).Reserved += Qyt;
+                        inventoryProducts.ElementAt(row_index).Quantity = Qyt;
+                    }
+                    else
+                    {
+                        inventoryProducts.ElementAt(row_index).StockOnHand += inventoryProducts.ElementAt(row_index).Quantity;
+                        inventoryProducts.ElementAt(row_index).StockOnHand -= Qyt;
+                        inventoryProducts.ElementAt(row_index).Quantity = Qyt;
+                    }
+
                     break;
                 case "Discount":
                     if (SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity == 0)
@@ -225,39 +237,39 @@ namespace ClubJumana.Wpf.UserControls
         public void ShowTaxes()
         {
             int i = 0;
-            foreach (var itemTax in SaleOrderViewModel.Taxes.OrderBy(p=>p.Code))
+            foreach (var itemTax in SaleOrderViewModel.Taxes.OrderBy(p => p.Code))
             {
                 i++;
                 switch (i)
                 {
                     case 1:
                         lblTax1.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax1.Text = itemTax.TaxAmount.ToString();
+                        txtTax1.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax1.Visibility = Visibility.Visible;
                         break;
                     case 2:
                         lblTax2.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax2.Text = itemTax.TaxAmount.ToString();
+                        txtTax2.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax2.Visibility = Visibility.Visible;
                         break;
                     case 3:
                         lblTax3.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax3.Text = itemTax.TaxAmount.ToString();
+                        txtTax3.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax3.Visibility = Visibility.Visible;
                         break;
                     case 4:
                         lblTax4.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax4.Text = itemTax.TaxAmount.ToString();
+                        txtTax4.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax4.Visibility = Visibility.Visible;
                         break;
                     case 5:
                         lblTax5.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax5.Text = itemTax.TaxAmount.ToString();
+                        txtTax5.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax5.Visibility = Visibility.Visible;
                         break;
                     case 6:
                         lblTax6.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax6.Text = itemTax.TaxAmount.ToString();
+                        txtTax6.Text = itemTax.TaxAmount.RoundNumtoStr();
                         Tax6.Visibility = Visibility.Visible;
                         break;
                 }
