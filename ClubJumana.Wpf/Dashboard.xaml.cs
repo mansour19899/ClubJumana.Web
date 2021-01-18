@@ -634,7 +634,7 @@ namespace ClubJumana.Wpf
         {
             string UPCForSearch = "";
 
-            if (Mode == Mode.Sale)
+            if (Mode == Mode.Sale|| Mode == Mode.Invoice)
             {
                 UPCForSearch = UCSaleOrder.txtSearch.Text;
             }
@@ -654,6 +654,7 @@ namespace ClubJumana.Wpf
                 {
 
                     case Mode.Sale:
+                    case Mode.Invoice:
                         SoItemVeiwModel Newitem = new SoItemVeiwModel()
                         {
                             ProductMaster = SearchMasterProduct,
@@ -666,7 +667,7 @@ namespace ClubJumana.Wpf
                         };
 
                         UCSaleOrder.SaleOrderViewModel.SoItems.Add(Newitem);
-                        UCSaleOrder.AddInventoryInformation(Newitem);
+                        UCSaleOrder.AddInventoryInformation(Newitem,_dataContextVM.SaleOrderViewModel.Warehouse_fk.Value);
                         UCSaleOrder.txtSearch.Clear();
                         break;
                     case Mode.PO:

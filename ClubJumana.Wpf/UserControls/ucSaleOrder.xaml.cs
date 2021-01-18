@@ -42,7 +42,7 @@ namespace ClubJumana.Wpf.UserControls
                     RemoveSoItemViewModel.Clear();
                     foreach (var item in _saleOrderViewModel.SoItems)
                     {
-                        AddInventoryInformation(item);
+                        AddInventoryInformation(item, _saleOrderViewModel.Warehouse_fk);
                     }
                 }
 
@@ -463,15 +463,19 @@ namespace ClubJumana.Wpf.UserControls
             }
         }
 
-        public void AddInventoryInformation(SoItemVeiwModel soItem)
+        public void AddInventoryInformation(SoItemVeiwModel soItem, int? WarehouseId)
         {
+            ProductInventoryWarehouse tt=new ProductInventoryWarehouse(){Inventory = 0};
+            if (soItem.ProductMaster.ProductInventoryWarehouses != null)
+                tt = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p => p.Warehouse_fk == WarehouseId);
             inventoryProducts.Add(new InventoryProduct()
             {
                 IdProduct = soItem.ProductMaster_fk,
                 Reserved = soItem.ProductMaster.GoodsReserved,
                 StockOnHand = soItem.ProductMaster.StockOnHand,
                 Transit = soItem.ProductMaster.Transit,
-                Quantity = soItem.Quantity
+                Quantity = soItem.Quantity,
+                InventoryInWarehouse = (tt == null) ? 0 : tt.Inventory,
             });
         }
 
@@ -482,6 +486,7 @@ namespace ClubJumana.Wpf.UserControls
             public int Reserved { get; set; }
             public int Transit { get; set; }
             public int Quantity { get; set; }
+            public int? InventoryInWarehouse { get; set; }
         }
 
         public event EventHandler<EventArgs> BtnRecivePayment;

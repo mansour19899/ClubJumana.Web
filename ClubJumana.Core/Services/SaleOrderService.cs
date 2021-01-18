@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using ClubJumana.Core.DTOs;
@@ -33,6 +34,7 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             bool IsInvoice = false;
+            int? PreviousWarehouse = 0;
             if (saleOrder.InvoiceNumber != null)
                 IsInvoice = true;
             SaleOrder So = new SaleOrder();
@@ -95,6 +97,7 @@ namespace ClubJumana.Core.Services
             else
             {
                 So = _context.saleorders.Include(p => p.Taxes).Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).SingleOrDefault(p => p.Id == saleOrder.Id);
+                PreviousWarehouse = So.Warehouse_fk;
                 So.Type = saleOrder.Type;
                 So.HaveDeposit = saleOrder.HaveDeposit;
                 So.SoDate = saleOrder.SoDate;
@@ -145,6 +148,7 @@ namespace ClubJumana.Core.Services
 
             SoItem soItem = new SoItem();
             ProductInventoryWarehouse inventoryProduct;
+            ProductInventoryWarehouse OldInventoryProduct;
             int def = 0;
             int newId = 1;
             try
@@ -171,18 +175,31 @@ namespace ClubJumana.Core.Services
                         TotalPrice = model.TotalPrice,
                         TaxCode = Convert.ToByte(model.TaxCode)
                     });
-                    model.Id = newId; 
+                    model.Id = newId;
                     newId++;
                     if (IsInvoice)
                     {
                         inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
-                            .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk);
-                        inventoryProduct.Inventory -= model.Quantity;
-                        inventoryProduct.OutCome += model.Quantity;
-                        inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
-                        inventoryProduct.ProductMaster.Outcome += model.Quantity;
-                        _context.productinventorywarehouses.Update(inventoryProduct);
-                        _context.productmasters.Update(inventoryProduct.ProductMaster);
+                            .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == model.ProductMaster_fk);
+                        if (inventoryProduct == null)
+                        {
+                            AddProductInventory();
+                            var tttt = _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk);
+                            tttt.StockOnHand -= model.Quantity;
+                            tttt.Outcome += model.Quantity;
+                            _context.productmasters.Update(tttt);
+                        }
+
+                        else
+                        {
+                            inventoryProduct.Inventory -= model.Quantity;
+                            inventoryProduct.OutCome += model.Quantity;
+                            inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
+                            inventoryProduct.ProductMaster.Outcome += model.Quantity;
+                            _context.productinventorywarehouses.Update(inventoryProduct);
+                            _context.productmasters.Update(inventoryProduct.ProductMaster);
+                        }
+
                     }
                     else
                     {
@@ -223,19 +240,42 @@ namespace ClubJumana.Core.Services
                     soItem.TotalPrice = model.TotalPrice;
                     soItem.TaxCode = Convert.ToByte(model.TaxCode);
 
-                    if (soItem.Quantity != model.Quantity)
+                    if (soItem.Quantity != model.Quantity || So.Warehouse_fk != PreviousWarehouse)
                     {
+                        def = model.Quantity - soItem.Quantity;
                         if (IsInvoice)
                         {
-                            def = model.Quantity - soItem.Quantity;
+                            inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+                                  p.Warehouse_fk == saleOrder.Warehouse_fk);
+
+                            if (inventoryProduct == null)
+                            {
+                                AddProductInventory();
+                            }
+                            else if (So.Warehouse_fk != PreviousWarehouse)
+                            {
+                                OldInventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+                                    p.Warehouse_fk == PreviousWarehouse);
+                                if (OldInventoryProduct != null)
+                                {
+                                    OldInventoryProduct.Inventory += soItem.Quantity;
+                                    OldInventoryProduct.OutCome -= soItem.Quantity;
+                                    _context.productinventorywarehouses.Update(OldInventoryProduct);
+                                }
+                                inventoryProduct.Inventory -= model.Quantity;
+                                inventoryProduct.OutCome += model.Quantity;
+                                _context.productinventorywarehouses.Update(inventoryProduct);
+                            }
+                            else
+                            {
+                                inventoryProduct.Inventory -= def;
+                                inventoryProduct.OutCome += def;
+                                _context.productinventorywarehouses.Update(inventoryProduct);
+                            }
+
                             soItem.Quantity = model.Quantity;
                             soItem.ProductMaster.StockOnHand -= def;
                             soItem.ProductMaster.Outcome += def;
-                            inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
-                                p.Warehouse_fk == saleOrder.Warehouse_fk);
-                            inventoryProduct.Inventory -= def;
-                            inventoryProduct.OutCome += def;
-                            _context.productinventorywarehouses.Update(inventoryProduct);
                         }
                         else
                         {
@@ -252,7 +292,22 @@ namespace ClubJumana.Core.Services
 
                 }
 
-               
+                void AddProductInventory()
+                {
+                    int newIdd = _context.productinventorywarehouses.Max(p => p.Id) + 1;
+                    inventoryProduct = new ProductInventoryWarehouse()
+                    {
+                        Id = newIdd,
+                        Warehouse_fk = saleOrder.Warehouse_fk.Value,
+                        ProductMaster_fk = model.ProductMaster_fk,
+                        Income = 0,
+                        OutCome = model.Quantity,
+                        OnTheWayInventory = 0,
+                        RefundQuantity = 0,
+                        Inventory = -1 * model.Quantity
+                    };
+                    _context.productinventorywarehouses.Add(inventoryProduct);
+                }
             }
 
             Tax tax = new Tax();
@@ -331,6 +386,7 @@ namespace ClubJumana.Core.Services
             _context.SaveChanges();
 
             return So.Id;
+
         }
 
         public int UpdateInvoice(SaleOrderViewModel saleOrder)
@@ -452,7 +508,7 @@ namespace ClubJumana.Core.Services
         {
 
             var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term)
-                .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).Include(p => p.TaxArea)
+                .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User)
                 .Include(p => p.Warehouse).Include(p => p.Taxes)
                 .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).SingleOrDefault();
