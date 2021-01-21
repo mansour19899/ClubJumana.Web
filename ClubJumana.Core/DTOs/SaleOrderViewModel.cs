@@ -43,7 +43,7 @@ namespace ClubJumana.Core.DTOs
                 OnPropertyChanged();
             }
         }
-
+        public Refund Refund { get; set; }
 
         private decimal _amountDeposit;
 
@@ -273,6 +273,16 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _soItems = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<RefundItemsViewModel> _refundItems;
+        public ObservableCollection<RefundItemsViewModel> RefundItems
+        {
+            get { return _refundItems; }
+            set
+            {
+                _refundItems = value;
                 OnPropertyChanged();
             }
         }
@@ -538,7 +548,7 @@ namespace ClubJumana.Core.DTOs
         }
     }
 
-    public class RefundItemsViewModel
+    public class RefundItemsViewModel : INotifyPropertyChanged
     {
         public int Id { get; set; }
         public int Refund_fk { get; set; }
@@ -568,6 +578,13 @@ namespace ClubJumana.Core.DTOs
             get { return _totalPrice; }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class CustomerListview
