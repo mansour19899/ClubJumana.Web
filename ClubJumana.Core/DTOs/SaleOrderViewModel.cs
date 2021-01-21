@@ -30,6 +30,7 @@ namespace ClubJumana.Core.DTOs
         //WholeSale Is True and Retail is False
         public bool Type { get; set; }
         public bool HaveDeposit { get; set; } = false;
+        public bool IsRefund { get; set; } = false;
         private Payment _deposit;
         public Payment Deposit
         {

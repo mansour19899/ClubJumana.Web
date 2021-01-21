@@ -9,5 +9,6 @@ namespace ClubJumana.DataLayer.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<Payment> Payments { get; set; }
+        public ICollection<Refund> Refunds { get; set; }
     }
 }

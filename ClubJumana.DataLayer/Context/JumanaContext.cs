@@ -229,7 +229,7 @@ namespace ClubJumana.DataLayer.Context
             });
 
 
-            //----------------------------------- SaleOrder ---------------------------------------
+            //----------------------------------- Sale Order ---------------------------------------
             modelBuilder.Entity<SaleOrder>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -257,6 +257,25 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SaleOrders)
                     .HasForeignKey(s => s.term_fk);
             });
+            //----------------------------------- Refund ---------------------------------------
+            modelBuilder.Entity<Refund>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<SaleOrder>(s => s.SaleOrder)
+                    .WithMany(g => g.Refunds)
+                    .HasForeignKey(s => s.SaleOrderFK);
+
+                entity.HasOne<DepositTo>(s => s.RefundFrom)
+                    .WithMany(g => g.Refunds)
+                    .HasForeignKey(s => s.RefundFromFK);
+
+                entity.HasOne<PaymentMethod>(s => s.PaymentMethod)
+                    .WithMany(g => g.Refunds)
+                    .HasForeignKey(s => s.PaymentMethodFK);
+
+            });
 
             //----------------------------------- Province ---------------------------------------
             modelBuilder.Entity<Province>(entity =>
@@ -266,9 +285,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.HST).HasColumnType("decimal(7,4)");
                 entity.Property(e => e.GST).HasColumnType("decimal(7,4)");
                 entity.Property(e => e.QST).HasColumnType("decimal(7,4)");
-                //entity.Property(e => e.HST).HasColumnType("real");
-                //entity.Property(e => e.GST).HasColumnType("real");
-                //entity.Property(e => e.QST).HasColumnType("real");
             });
             //----------------------------------- Customer ---------------------------------------
             modelBuilder.Entity<Customer>(entity =>
@@ -305,6 +321,21 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SoItems)
                     .HasForeignKey(s => s.ProductMaster_fk);
             });
+            //----------------------------------- RefundItem ---------------------------------------
+            modelBuilder.Entity<RefundItem>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasOne<Refund>(s => s.Refund)
+                    .WithMany(g => g.RefundItems)
+                    .HasForeignKey(s => s.Refund_fk);
+
+                entity.HasOne<ProductMaster>(s => s.ProductMaster)
+                    .WithMany(g => g.RefundItems)
+                    .HasForeignKey(s => s.ProductMaster_fk);
+
+            });
             //----------------------------------- Tax ---------------------------------------
             modelBuilder.Entity<Tax>(entity =>
             {
@@ -313,6 +344,19 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<SaleOrder>(s => s.SaleOrder)
                     .WithMany(g => g.Taxes)
                     .HasForeignKey(s => s.SalesOrderFK);
+                entity.Property(e => e.Rate).HasColumnType("decimal(7,4)");
+                entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.TaxAmount).HasColumnType("decimal(7,4)");
+
+            });
+            //----------------------------------- Tax Refund---------------------------------------
+            modelBuilder.Entity<TaxRefund>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasOne<Refund>(s => s.Refund)
+                    .WithMany(g => g.TaxesRefunds)
+                    .HasForeignKey(s => s.RefundFK);
                 entity.Property(e => e.Rate).HasColumnType("decimal(7,4)");
                 entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.TaxAmount).HasColumnType("decimal(7,4)");
@@ -339,35 +383,7 @@ namespace ClubJumana.DataLayer.Context
                     .HasForeignKey<Invitation>(s => s.UserRegisterWithInvitation_fk);
             });
 
-            //----------------------------------- Refund ---------------------------------------
 
-            modelBuilder.Entity<Refund>(entity =>
-            {
-
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.HasOne<SaleOrder>(s => s.SaleOrder)
-                    .WithMany(g => g.Refunds)
-                    .HasForeignKey(s => s.SaleOrder_fk);
-
-
-            });
-
-            //----------------------------------- RefundItem ---------------------------------------
-            modelBuilder.Entity<RefundItem>(entity =>
-            {
-
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.HasOne<Refund>(s => s.Refund)
-                    .WithMany(g => g.RefundItems)
-                    .HasForeignKey(s => s.Refund_fk);
-
-                entity.HasOne<ProductMaster>(s => s.ProductMaster)
-                    .WithMany(g => g.RefundItems)
-                    .HasForeignKey(s => s.ProductMaster_fk);
-
-            });
 
             //----------------------------------- Product ---------------------------------------
             modelBuilder.Entity<Product>(entity =>
