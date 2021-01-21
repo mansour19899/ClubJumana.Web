@@ -1449,9 +1449,9 @@ namespace ClubJumana.Wpf
         {
 
 
-            newRefund.SaleOrder_fk = saleOrder.Id;
+            //newRefund.SaleOrder_fk = saleOrder.Id;
             newRefund.RefundTotalPrice = 0;
-            newRefund.Tax = 0;
+          //  newRefund.Tax = 0;
             newRefund.SubtotalPrice = 0;
             //Edit Code Later
             newRefund.WarehouseId = 2;
@@ -1470,7 +1470,7 @@ namespace ClubJumana.Wpf
 
             newRefund.SubtotalPrice = sum;
             lblSubtotalRefund.Text = "Subtotal : " + sum.ToString();
-            lblTaxRefund.Text = "Tax : " + newRefund.Tax.ToString();
+           // lblTaxRefund.Text = "Tax : " + newRefund.Tax.ToString();
             lblTotalPriceRefund.Text = "Total Price : " + newRefund.RefundTotalPrice.ToString();
 
 

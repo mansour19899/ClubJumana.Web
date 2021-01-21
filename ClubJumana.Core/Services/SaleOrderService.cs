@@ -645,7 +645,7 @@ namespace ClubJumana.Core.Services
             _context.refunds.Add(refund);
 
             var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
-            var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrder_fk);
+            var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrderFK);
             ProductInventoryWarehouse x;
             foreach (var model in refund.RefundItems)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using ClubJumana.DataLayer.Entities;
 
-namespace ClubJumana.DataLayer.Context
+namespace ClubJumana.DataLayer.Entities
 {
    public class TaxRefund
     {

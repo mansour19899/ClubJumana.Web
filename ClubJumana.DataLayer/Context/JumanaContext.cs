@@ -32,6 +32,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<ProductInventoryWarehouse> productinventorywarehouses { get; set; }
         public DbSet<SaleOrder> saleorders { get; set; }
         public DbSet<Tax> taxes { get; set; }
+        public DbSet<TaxRefund> taxrefunds { get; set; }
         public DbSet<TaxRate> taxrates { get; set; }
         public DbSet<SoItem> soitems { get; set; }
         public DbSet<Refund> refunds { get; set; }
