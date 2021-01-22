@@ -44,7 +44,7 @@ namespace ClubJumana.DataLayer.Entities
 
         }
         private decimal _shipping;
-        public byte ShippingTaxCode { get; set; }
+        public string ShippingTaxCode { get; set; }
         public decimal Shipping
         {
             get { return _shipping; }

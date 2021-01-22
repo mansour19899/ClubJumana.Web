@@ -1051,6 +1051,7 @@ namespace ClubJumana.Wpf
             Bordermanagement.Child = UCSaleOrder;
             UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
             UCSaleOrder.ShowTaxes();
+            UCSaleOrder.GrdRefuand.Visibility = Visibility.Hidden;
             SubPage.Visibility = Visibility.Visible;
         }
 

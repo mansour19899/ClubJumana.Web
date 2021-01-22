@@ -337,13 +337,13 @@ namespace ClubJumana.Core.DTOs
         {
             if (AllowToCalculate)
             {
-                Refund.RefundTotalPrice = Refund.SubtotalPrice + Refund.Shipping -Refund.Discount;
+                Refund.RefundTotalPrice = Refund.SubtotalPrice + Refund.Shipping - Refund.Discount;
                 foreach (var VARIABLE in Refund.TaxesRefunds)
                 {
                     Refund.RefundTotalPrice += VARIABLE.TaxAmount;
                 }
 
-                OnPropertyChanged(nameof(Refund));
+                OnPropertyChanged(nameof(Refund.RefundTotalPrice));
             }
 
         }
@@ -358,42 +358,26 @@ namespace ClubJumana.Core.DTOs
                 if (xx.Count() == 1)
                 {
                     priceTax = Math.Round(price * ratecode.Rate / 100, 2, MidpointRounding.AwayFromZero);
-                    if (IsRefund)
+                    var xxx = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
+                    if (xxx == null)
                     {
-                        var xxx = Refund.TaxesRefunds.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
-                        if (xxx == null)
-                        {
-                            Refund.TaxesRefunds.Add(new TaxRefund() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
-                        }
-                        else
-                        {
-                            xxx.Amount += price;
-                            xxx.TaxAmount += priceTax;
-                        }
+                        Taxes.Add(new Tax() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
                     }
                     else
                     {
-                        var xxx = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
-                        if (xxx == null)
-                        {
-                            Taxes.Add(new Tax() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
-                        }
-                        else
-                        {
-                            xxx.Amount += price;
-                            xxx.TaxAmount += priceTax;
-                        }
+                        xxx.Amount += price;
+                        xxx.TaxAmount += priceTax;
                     }
                 }
                 else
                 {
                     int IdRateCode;
 
-                       IdRateCode= TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[0]).ToLower().Replace(" ",""))==0).Id;
-                       CalculateTax(price, IdRateCode);
+                    IdRateCode = TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[0]).ToLower().Replace(" ", "")) == 0).Id;
+                    CalculateTax(price, IdRateCode);
 
-                       IdRateCode = TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[1] + x[1]).ToLower().Replace(" ", "")) == 0).Id;
-                       CalculateTax(price, IdRateCode);
+                    IdRateCode = TaxRates.FirstOrDefault(p => p.Code.ToLower().Replace(" ", "").CompareTo((xx[1] + x[1]).ToLower().Replace(" ", "")) == 0).Id;
+                    CalculateTax(price, IdRateCode);
 
 
                 }
@@ -401,6 +385,49 @@ namespace ClubJumana.Core.DTOs
                 //{
                 //    SaleOrderViewModel.Taxes.Add(new );
                 //}
+            }
+        }
+
+        public void CalculateRefundTax(decimal price, string taxCodeName)
+        {
+            if (AllowToCalculate)
+            {
+                var x = taxCodeName.Split(' ');
+                var xx = x[0].Split('/');
+                decimal priceTax = 0;
+                decimal rate = 0;
+                string tempcode = "";
+                foreach (var item in xx)
+                {
+                    if (x.Count() == 2)
+                    {
+                        if (xx.Count() == 2&& item.Trim().CompareTo("GST")==0)
+                            tempcode = item.Trim();
+                        else
+                            tempcode = item.Trim() + ' ' + x[1].Trim();
+                    }
+                    else if (x.Count() == 1)
+                    {
+                        tempcode = item.Trim();
+                    }
+                    else
+                    {
+
+                    }
+                    rate = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(tempcode) == 0).Rate;
+                    priceTax = Math.Round(price * rate / 100, 2, MidpointRounding.AwayFromZero);
+                    var xxx = Refund.TaxesRefunds.FirstOrDefault(p => p.Code.Trim().CompareTo(tempcode) == 0);
+                    if (xxx == null)
+                    {
+                        Refund.TaxesRefunds.Add(new TaxRefund() { Rate = rate, Amount = price, TaxAmount = priceTax, Code = tempcode});
+                    }
+                    else
+                    {
+                        xxx.Amount += price;
+                        xxx.TaxAmount += priceTax;
+                    }
+
+                }
             }
         }
 
@@ -440,10 +467,10 @@ namespace ClubJumana.Core.DTOs
                 {
                     Refund.SubtotalPrice += item.TotalPrice;
                     if (item.TaxCode != 0)
-                        CalculateTax(item.TotalPrice, item.TaxCode);
+                        CalculateRefundTax(item.TotalPrice, item.TaxCodeName);
                 }
-                if (_Shipping != 0)
-                    CalculateTax(Refund.Shipping, Refund.ShippingTaxCode);
+                if (!String.IsNullOrWhiteSpace(Refund.ShippingTaxCode))
+                    CalculateRefundTax(Refund.Shipping, Refund.ShippingTaxCode);
                 CalculateTotalRefundPrice();
             }
 
