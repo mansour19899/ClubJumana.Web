@@ -96,6 +96,9 @@
 
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20 10 0 10" Stroke="Black" />
                     <TextBlock Text="More options" />
+                    <Border Background="Purple" Name="btnRefund" Margin="0 10 0 10" CornerRadius="10,10,10,10" MouseDown="BtnRefund_OnMouseDown">
+                        <TextBlock Text="  Refund"  Foreground="White"/>
+                    </Border>
 
                 </StackPanel>
                 <Border Name="btnShowImageOfVendor" Grid.Column="1" Style="{StaticResource BorderMouseOver}">
@@ -484,7 +487,7 @@
                     </Border>
                     <StackPanel Grid.Row="3" >
                         <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgSoItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgSoItems_OnCellEditEnding" SelectionChanged="dgSoItems_SelectionChanged" LostFocus="dgSoItems_LostFocus"    >
+                            <DataGrid  Name="dgSoItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow"  CellEditEnding="DgSoItems_OnCellEditEnding" SelectionChanged="dgSoItems_SelectionChanged" LostFocus="dgSoItems_LostFocus"    >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="170" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="170" IsReadOnly="False"/>
@@ -934,7 +937,7 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
-        <Grid Name="GrdRefuand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Visibility="Visible" Background="White">
+        <Grid Name="GrdRefuand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Visibility="Hidden" Background="White">
             <ScrollViewer Margin="0 0 40 0" >
                 <Grid Margin="0 0 30 100">
                     <Grid.RowDefinitions>
@@ -1099,24 +1102,16 @@
                     </UniformGrid>
                     <StackPanel Grid.Row="2" >
                         <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgRefundItems" ItemsSource="{Binding SoItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgSoItems_OnCellEditEnding" SelectionChanged="dgSoItems_SelectionChanged" LostFocus="dgSoItems_LostFocus"    >
+                            <DataGrid  Name="dgRefundItems" ItemsSource="{Binding RefundItems}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" SelectionMode="Single" CellEditEnding="DgRefundItems_OnCellEditEnding"  >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="170" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="170" IsReadOnly="False"/>
                                     <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="200" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="150" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-                                    <DataGridTextColumn Header="Price With Term" Binding="{Binding PriceTerm,StringFormat=N2}" IsReadOnly="True" Width="140"/>
+                                    <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2}" Width="100" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Tax" Binding="{Binding TaxCodeName}" Width="150" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Able To Return" Binding="{Binding AbleReturn}" Width="160" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-                                    <DataGridTextColumn Header="Discount" Binding="{Binding Discount}" Width="100" IsReadOnly="False"/>
-                                    <DataGridComboBoxColumn Header="Tax"
-                                                            x:Name="CmbTaxCodee"
-                                                            SelectedValueBinding="{Binding Path=TaxCode,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                            SelectedValuePath="Id"
-                                                            DisplayMemberPath="Name" 
-                                                            Width="200">
-
-                                    </DataGridComboBoxColumn>
                                     <DataGridTextColumn Header="TotalPrice" Binding="{Binding TotalPrice,StringFormat=N2}" Width="100" IsReadOnly="True"/>
                                 </DataGrid.Columns>
                             </DataGrid>

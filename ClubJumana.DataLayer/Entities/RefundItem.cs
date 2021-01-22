@@ -13,7 +13,7 @@ namespace ClubJumana.DataLayer.Entities
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
-
+        public string TaxCodeName { get; set; }
         public Refund Refund { get; set; }
         public ProductMaster ProductMaster { get; set; }
         [Timestamp]

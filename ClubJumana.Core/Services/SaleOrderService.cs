@@ -670,7 +670,7 @@ namespace ClubJumana.Core.Services
             {
                 refundItems.Add(new RefundItem()
                 {
-                    ProductMaster_fk = model.ProductMaster_fk,
+                    ProductMaster = model.ProductMaster,
                     Quantity = model.Quantity,
                     Price = model.Price,
                     TotalPrice = model.TotalPrice

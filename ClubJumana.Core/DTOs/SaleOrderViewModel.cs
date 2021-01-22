@@ -333,6 +333,20 @@ namespace ClubJumana.Core.DTOs
             }
 
         }
+        public void CalculateTotalRefundPrice()
+        {
+            if (AllowToCalculate)
+            {
+                Refund.RefundTotalPrice = Refund.SubtotalPrice + Refund.Shipping -Refund.Discount;
+                foreach (var VARIABLE in Refund.TaxesRefunds)
+                {
+                    Refund.RefundTotalPrice += VARIABLE.TaxAmount;
+                }
+
+                OnPropertyChanged(nameof(Refund));
+            }
+
+        }
         public void CalculateTax(decimal price, int taxCode)
         {
             if (AllowToCalculate)
@@ -344,15 +358,31 @@ namespace ClubJumana.Core.DTOs
                 if (xx.Count() == 1)
                 {
                     priceTax = Math.Round(price * ratecode.Rate / 100, 2, MidpointRounding.AwayFromZero);
-                    var xxx = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
-                    if (xxx == null)
+                    if (IsRefund)
                     {
-                        Taxes.Add(new Tax() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
+                        var xxx = Refund.TaxesRefunds.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
+                        if (xxx == null)
+                        {
+                            Refund.TaxesRefunds.Add(new TaxRefund() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
+                        }
+                        else
+                        {
+                            xxx.Amount += price;
+                            xxx.TaxAmount += priceTax;
+                        }
                     }
                     else
                     {
-                        xxx.Amount += price;
-                        xxx.TaxAmount += priceTax;
+                        var xxx = Taxes.FirstOrDefault(p => p.Code.Trim().CompareTo(ratecode.Code.Trim()) == 0);
+                        if (xxx == null)
+                        {
+                            Taxes.Add(new Tax() { Rate = ratecode.Rate, Amount = price, TaxAmount = priceTax, Code = ratecode.Code });
+                        }
+                        else
+                        {
+                            xxx.Amount += price;
+                            xxx.TaxAmount += priceTax;
+                        }
                     }
                 }
                 else
@@ -396,6 +426,25 @@ namespace ClubJumana.Core.DTOs
                 OnPropertyChanged(nameof(Subtotal));
                 OnPropertyChanged(nameof(TotalDiscount));
                 CalculateTotalPrice();
+            }
+
+        }
+        public void SumRefundPrice()
+        {
+            if (AllowToCalculate)
+            {
+                Refund.SubtotalPrice = 0;
+                Refund.RefundTotalPrice = 0;
+                Refund.TaxesRefunds.Clear();
+                foreach (var item in RefundItems)
+                {
+                    Refund.SubtotalPrice += item.TotalPrice;
+                    if (item.TaxCode != 0)
+                        CalculateTax(item.TotalPrice, item.TaxCode);
+                }
+                if (_Shipping != 0)
+                    CalculateTax(Refund.Shipping, Refund.ShippingTaxCode);
+                CalculateTotalRefundPrice();
             }
 
         }
@@ -552,9 +601,7 @@ namespace ClubJumana.Core.DTOs
     {
         public int Id { get; set; }
         public int Refund_fk { get; set; }
-        public string StyleNumber { get; set; }
-        public string UPC { get; set; }
-        public int ProductMaster_fk { get; set; }
+        public ProductMaster ProductMaster { get; set; }
         public int? AbleReturn { get; set; }
         private int _quantity;
 
@@ -567,7 +614,8 @@ namespace ClubJumana.Core.DTOs
                 _totalPrice = Math.Round(value * Price, 2, MidpointRounding.ToEven);
             }
         }
-
+        public int TaxCode { get; set; }
+        public string TaxCodeName { get; set; }
         public decimal Cost { get; set; }
         public decimal Price { get; set; }
 

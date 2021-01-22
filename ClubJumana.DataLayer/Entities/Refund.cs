@@ -43,6 +43,35 @@ namespace ClubJumana.DataLayer.Entities
             }
 
         }
+        private decimal _shipping;
+        public byte ShippingTaxCode { get; set; }
+        public decimal Shipping
+        {
+            get { return _shipping; }
+            set
+            {
+                _shipping = value;
+                //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
+                //_refundTotalPrice = _subtotalPrice + _tax;
+            }
+
+        }
+        private decimal _discount=0;
+
+        public decimal Discount
+        {
+            get { return _discount; }
+            set
+            {
+                _discount = value;
+                //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
+                //_refundTotalPrice = _subtotalPrice + _tax;
+            }
+
+        }
+
+        //Persntage True Value False
+        public bool TypeOfDiscount { get; set; } = false;
 
         public ICollection<TaxRefund> TaxesRefunds { get; set; }
 

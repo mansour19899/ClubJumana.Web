@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -519,6 +520,54 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (SaleOrderViewModel.AllowToCalculate)
                 ShowTaxes();
+        }
+
+        private void BtnRefund_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var SelectedForRefund = dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList();
+            SaleOrderViewModel.Refund=new Refund();
+            SaleOrderViewModel.Refund.TaxesRefunds =new List<TaxRefund>();
+           SaleOrderViewModel.RefundItems= new ObservableCollection<RefundItemsViewModel>();
+            foreach (var model in SelectedForRefund)
+            {
+                SaleOrderViewModel.RefundItems.Add(new RefundItemsViewModel()
+                {   
+                    ProductMaster = model.ProductMaster,
+                    AbleReturn = model.Quantity - model.QuantityRefunded,
+                    TaxCode = model.TaxCode,
+                    TaxCodeName = SaleOrderViewModel.TaxRates.FirstOrDefault(p=>p.Id== model.TaxCode).Name,
+                    Cost = model.Cost,
+                    Price = model.Price
+                });
+            }
+
+            SaleOrderViewModel.IsRefund = true;
+            GrdRefuand.Visibility = Visibility.Visible;
+        }
+
+        private void DgRefundItems_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
+        {
+            DataGridColumn col1 = e.Column;
+            DataGridRow row1 = e.Row;
+            // SoItem t = e.Row.DataContext as SoItem;
+            string header = col1.Header as string;
+
+            int row_index = ((DataGrid)sender).ItemContainerGenerator.IndexFromContainer(row1);
+            int col_index = col1.DisplayIndex;
+
+
+            var qytStr = ((TextBox)e.EditingElement).Text;
+            if (qytStr.Count(x => x == '.') > 0)
+            {
+                MessageBox.Show("Enter Integer Number Please");
+                SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity = 0;
+            }
+            int Qyt = (!string.IsNullOrWhiteSpace(qytStr)) ? Convert.ToInt32(qytStr) : 0;
+            if (Qyt < 0)
+                Qyt = Qyt * -1;
+            SaleOrderViewModel.RefundItems.ElementAt(row_index).Quantity = Qyt;
+
+            SumSalesOrder();
         }
     }
 }

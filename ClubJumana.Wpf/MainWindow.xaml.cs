@@ -668,9 +668,9 @@ namespace ClubJumana.Wpf
             {
                 refundItemsList.Add(new RefundItemsViewModel()
                 {
-                    StyleNumber = model.ProductMaster.StyleNumber,
-                    UPC = model.ProductMaster.UPC,
-                    ProductMaster_fk = model.ProductMaster_fk,
+                    //StyleNumber = model.ProductMaster.StyleNumber,
+                    //UPC = model.ProductMaster.UPC,
+
                     AbleReturn = model.Quantity - model.QuantityRefunded,
                     Cost = model.Cost,
                     Price = model.Price
