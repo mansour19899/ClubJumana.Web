@@ -637,11 +637,51 @@ namespace ClubJumana.Core.Services
             return SalesOrder.InvoiceNumber.Value;
         }
 
-        public bool AddRefund(Refund refund)
+        public int AddRefund(Refund refund,List<RefundItemsViewModel> refundItemsViewModel)
         {
             DetachedAllEntries();
-            refund.RefundDate = DateTime.Now;
-            refund.RefundNumber = 1368;
+            int Id = 0;
+            int RefundId = 0;
+            int TaxRefundId = 0;
+            try
+            {
+                Id = _context.refunds.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                Id = 1;
+            }
+            refund.RefundNumber = Id;
+            try
+            {
+                RefundId = _context.refunds.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                RefundId = 1;
+            }
+            try
+            {
+                TaxRefundId = _context.taxrefunds.Max(p => p.Id) + 1;
+            }
+            catch (Exception e)
+            {
+                TaxRefundId = 1;
+            }
+            refund.RefundItems=new List<RefundItem>();
+            foreach (var item in refundItemsViewModel)
+            {
+                refund.RefundItems.Add(new RefundItem(){Id = RefundId,Refund_fk = Id,ProductMaster_fk = item.ProductMaster.Id,
+                    Quantity = item.Quantity,Price = item.Price,TotalPrice = item.TotalPrice,TaxCodeName = item.TaxCodeName});
+                RefundId++;
+            }
+
+            foreach (var item in refund.TaxesRefunds)
+            {
+                item.Id = TaxRefundId;
+                TaxRefundId++;
+            }
+
             _context.refunds.Add(refund);
 
             var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
@@ -659,7 +699,7 @@ namespace ClubJumana.Core.Services
                 x.RefundQuantity += model.Quantity;
             }
             _context.SaveChanges();
-            return true;
+            return 1;
         }
 
         public List<RefundItem> CovertToRefundItem(ObservableCollection<RefundItemsViewModel> refundItemsViewModel)

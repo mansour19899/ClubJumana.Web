@@ -199,49 +199,55 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveSalesOrder_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-
-            int x = UCSaleOrder.SaleOrderViewModel.Id;
-            string mes = "";
-            var SalesOrderFinal = UCSaleOrder.SaleOrderViewModel.SoItems.ToList();
-            foreach (var VARIABLE in UCSaleOrder.RemoveSoItemViewModel)
+            if (UCSaleOrder.SaleOrderViewModel.IsRefund)
             {
-                UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
-            }
-
-            int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
-
-            //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
-            UCSaleOrder.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>(SalesOrderFinal);
-            if (x == 0)
-            {
-                mes = "Sales Order Created";
-                UCSaleOrder.txtNum.Text = ID.ShowSaleOrderNumber();
-
-                salesOrderListview.Add(new SalesOrderListview()
-                {
-                    No = ID,
-                    CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
-                    OpenBalance = 0,
-                    TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
-                    Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
-                });
-                lvSalesOrder.ItemsSource = salesOrderListview;
-                lvSalesOrder.Items.Refresh();
-                UCSaleOrder.SaleOrderViewModel.Id = ID;
-            }
-            else if (UCSaleOrder.SaleOrderViewModel.InvoiceNumber != null)
-            {
-                mes = "Invoice Updated.";
+                int IDd = _saleOrderService.AddRefund(UCSaleOrder.SaleOrderViewModel.Refund,UCSaleOrder.SaleOrderViewModel.RefundItems.ToList());
+                myMessageQueue.Enqueue("Refund Receipt Created.");
             }
             else
             {
-                mes = "Sales Order Updated";
+                int x = UCSaleOrder.SaleOrderViewModel.Id;
+                string mes = "";
+                var SalesOrderFinal = UCSaleOrder.SaleOrderViewModel.SoItems.ToList();
+                foreach (var VARIABLE in UCSaleOrder.RemoveSoItemViewModel)
+                {
+                    UCSaleOrder.SaleOrderViewModel.SoItems.Add(VARIABLE);
+                }
+
+                int ID = _saleOrderService.SaveAndUpdateSaleOrder(UCSaleOrder.SaleOrderViewModel);
+
+                //mes = (x == 0) ? "Sales Order Created" : "Sales Order Updated";
+                UCSaleOrder.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>(SalesOrderFinal);
+                if (x == 0)
+                {
+                    mes = "Sales Order Created";
+                    UCSaleOrder.txtNum.Text = ID.ShowSaleOrderNumber();
+
+                    salesOrderListview.Add(new SalesOrderListview()
+                    {
+                        No = ID,
+                        CustomerName = UCSaleOrder.SaleOrderViewModel.Customer.CompanyName,
+                        OpenBalance = 0,
+                        TotalBeforeTax = UCSaleOrder.SaleOrderViewModel.Subtotal,
+                        Total = UCSaleOrder.SaleOrderViewModel.SoTotalPrice
+                    });
+                    lvSalesOrder.ItemsSource = salesOrderListview;
+                    lvSalesOrder.Items.Refresh();
+                    UCSaleOrder.SaleOrderViewModel.Id = ID;
+                }
+                else if (UCSaleOrder.SaleOrderViewModel.InvoiceNumber != null)
+                {
+                    mes = "Invoice Updated.";
+                }
+                else
+                {
+                    mes = "Sales Order Updated";
+                }
+                UCSaleOrder.dgSoItems.Items.Refresh();
+                UCSaleOrder.RemoveSoItemViewModel.Clear();
+                myMessageQueue.Enqueue(mes);
             }
-            UCSaleOrder.dgSoItems.Items.Refresh();
-            UCSaleOrder.RemoveSoItemViewModel.Clear();
-            myMessageQueue.Enqueue(mes);
-
-
+            
         }
 
         private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
@@ -1031,7 +1037,9 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbTaxHandling.SelectedValue = _dataContextVM.SaleOrderViewModel.HandlingTaxCode;
             UCSaleOrder.CmbTaxCode.ItemsSource = taxRates;
             UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
+            UCSaleOrder.cmbRefundFrom.ItemsSource = depositTos;
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
+            UCSaleOrder.cmbPaymentMethodRefund.ItemsSource = paymentMethods;
             UCSaleOrder.cmbShipFrom.ItemsSource = warehouses;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {

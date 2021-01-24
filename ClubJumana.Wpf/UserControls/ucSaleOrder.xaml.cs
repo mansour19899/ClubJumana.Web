@@ -81,10 +81,19 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> BtnCloseSubPage;
         private void BtnCloseSubPage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            AllowSearch = false;
-            e.Handled = true;
-            if (BtnCloseSubPage != null)
-                BtnCloseSubPage(sender, e);
+            if (GrdRefuand.Visibility == Visibility.Visible)
+            {
+                GrdRefuand.Visibility = Visibility.Hidden;
+                SaleOrderViewModel.IsRefund = false;
+            }
+            else
+            {
+                AllowSearch = false;
+                e.Handled = true;
+                if (BtnCloseSubPage != null)
+                    BtnCloseSubPage(sender, e);
+            }
+            
         }
 
         public event EventHandler<EventArgs> BtnPostSalesOrder;
@@ -237,14 +246,14 @@ namespace ClubJumana.Wpf.UserControls
         private void SumRefund()
         {
             SaleOrderViewModel.SumRefundPrice();
-            ShowTaxes();
+            ShowRefundTaxes();
 
         }
 
         public void ShowTaxes()
         {
             int i = 0;
-            foreach (var itemTax in SaleOrderViewModel.Taxes.OrderBy(p => p.Code))
+            foreach (var itemTax in SaleOrderViewModel.Taxes.Where(p => p.Amount != 0).OrderBy(p => p.Code))
             {
                 i++;
                 switch (i)
@@ -302,40 +311,40 @@ namespace ClubJumana.Wpf.UserControls
         public void ShowRefundTaxes()
         {
             int i = 0;
-            foreach (var itemTax in SaleOrderViewModel.Taxes.OrderBy(p => p.Code))
+            foreach (var itemTax in SaleOrderViewModel.Refund.TaxesRefunds.Where(p => p.Amount != 0).OrderBy(p => p.Code))
             {
                 i++;
                 switch (i)
                 {
                     case 1:
-                        lblTax1.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax1.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax1.Visibility = Visibility.Visible;
+                        lblTax1Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax1Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax1Refund.Visibility = Visibility.Visible;
                         break;
                     case 2:
-                        lblTax2.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax2.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax2.Visibility = Visibility.Visible;
+                        lblTax2Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax2Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax2Refund.Visibility = Visibility.Visible;
                         break;
                     case 3:
-                        lblTax3.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax3.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax3.Visibility = Visibility.Visible;
+                        lblTax3Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax3Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax3Refund.Visibility = Visibility.Visible;
                         break;
                     case 4:
-                        lblTax4.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax4.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax4.Visibility = Visibility.Visible;
+                        lblTax4Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax4Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax4Refund.Visibility = Visibility.Visible;
                         break;
                     case 5:
-                        lblTax5.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax5.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax5.Visibility = Visibility.Visible;
+                        lblTax5Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax5Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax5Refund.Visibility = Visibility.Visible;
                         break;
                     case 6:
-                        lblTax6.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
-                        txtTax6.Text = itemTax.TaxAmount.RoundNumtoStr();
-                        Tax6.Visibility = Visibility.Visible;
+                        lblTax6Refund.Content = itemTax.Code + " @ " + itemTax.Rate.RoundNumtoStr() + "% on " + itemTax.Amount.RoundNumtoStr();
+                        txtTax6Refund.Text = itemTax.TaxAmount.RoundNumtoStr();
+                        Tax6Refund.Visibility = Visibility.Visible;
                         break;
                 }
 
@@ -345,17 +354,17 @@ namespace ClubJumana.Wpf.UserControls
         public void CollapsedRefundTax(int i)
         {
             if (i == 0)
-                Tax1.Visibility = Visibility.Collapsed;
+                Tax1Refund.Visibility = Visibility.Collapsed;
             if (i < 2)
-                Tax2.Visibility = Visibility.Collapsed;
+                Tax2Refund.Visibility = Visibility.Collapsed;
             if (i < 3)
-                Tax3.Visibility = Visibility.Collapsed;
+                Tax3Refund.Visibility = Visibility.Collapsed;
             if (i < 4)
-                Tax4.Visibility = Visibility.Collapsed;
+                Tax4Refund.Visibility = Visibility.Collapsed;
             if (i < 5)
-                Tax5.Visibility = Visibility.Collapsed;
+                Tax5Refund.Visibility = Visibility.Collapsed;
             if (i < 6)
-                Tax6.Visibility = Visibility.Collapsed;
+                Tax6Refund.Visibility = Visibility.Collapsed;
         }
         private void CmbTaxAreaSo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -499,7 +508,7 @@ namespace ClubJumana.Wpf.UserControls
 
         public void AddInventoryInformation(SoItemVeiwModel soItem, int? WarehouseId)
         {
-            ProductInventoryWarehouse tt=new ProductInventoryWarehouse(){Inventory = 0};
+            ProductInventoryWarehouse tt = new ProductInventoryWarehouse() { Inventory = 0 };
             if (soItem.ProductMaster.ProductInventoryWarehouses != null)
                 tt = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p => p.Warehouse_fk == WarehouseId);
             inventoryProducts.Add(new InventoryProduct()
@@ -558,22 +567,29 @@ namespace ClubJumana.Wpf.UserControls
         private void BtnRefund_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var SelectedForRefund = dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList();
-            SaleOrderViewModel.Refund=new Refund(){Shipping = 0,RefundDate = DateTime.Now,};
-            SaleOrderViewModel.Refund.TaxesRefunds =new List<TaxRefund>();
-           SaleOrderViewModel.RefundItems= new ObservableCollection<RefundItemsViewModel>();
+            SaleOrderViewModel.Refund = new Refund() { Shipping = 0, RefundDate = DateTime.Now,TypeOfDiscount = false,DiscountAmount = 0};
+            SaleOrderViewModel.Refund.TaxesRefunds = new List<TaxRefund>();
+            SaleOrderViewModel.RefundItems = new ObservableCollection<RefundItemsViewModel>();
             foreach (var model in SelectedForRefund)
             {
                 SaleOrderViewModel.RefundItems.Add(new RefundItemsViewModel()
-                {   
+                {
                     ProductMaster = model.ProductMaster,
                     AbleReturn = model.Quantity - model.QuantityRefunded,
                     TaxCode = model.TaxCode,
-                    TaxCodeName = SaleOrderViewModel.TaxRates.FirstOrDefault(p=>p.Id== model.TaxCode).Name,
+                    TaxCodeName = SaleOrderViewModel.TaxRates.FirstOrDefault(p => p.Id == model.TaxCode).Name,
                     Cost = model.Cost,
                     Price = model.Price
                 });
             }
-
+            cmbDiscountType.ItemsSource = new[]
+            {
+                new { Id = 1, Name = "Value" },
+                new { Id = 2, Name = "Percent" }
+            }.ToList();
+            cmbPaymentMethodRefund.SelectedIndex = 1;
+            cmbRefundFrom.SelectedIndex = 0;
+            cmbDiscountType.SelectedIndex = 0;
             SaleOrderViewModel.IsRefund = true;
             GrdRefuand.Visibility = Visibility.Visible;
         }
@@ -588,19 +604,59 @@ namespace ClubJumana.Wpf.UserControls
             int row_index = ((DataGrid)sender).ItemContainerGenerator.IndexFromContainer(row1);
             int col_index = col1.DisplayIndex;
 
+            var ableToreturn = SaleOrderViewModel.RefundItems.ElementAt(row_index).AbleReturn;
 
             var qytStr = ((TextBox)e.EditingElement).Text;
             if (qytStr.Count(x => x == '.') > 0)
             {
                 MessageBox.Show("Enter Integer Number Please");
-                SaleOrderViewModel.SoItems.ElementAt(row_index).Quantity = 0;
+                SaleOrderViewModel.RefundItems.ElementAt(row_index).Quantity = 0;
             }
             int Qyt = (!string.IsNullOrWhiteSpace(qytStr)) ? Convert.ToInt32(qytStr) : 0;
-            if (Qyt < 0)
-                Qyt = Qyt * -1;
-            SaleOrderViewModel.RefundItems.ElementAt(row_index).Quantity = Qyt;
+            if (ableToreturn < Qyt)
+            {
+                MessageBox.Show("It is more than Able to return");
+                SaleOrderViewModel.RefundItems.ElementAt(row_index).Quantity=0;
+            }
+            else
+            {
+                if (Qyt < 0)
+                    Qyt = Qyt * -1;
 
-            SumRefund();
+                SaleOrderViewModel.RefundItems.ElementAt(row_index).Quantity = Qyt;
+
+                SumRefund();
+            }
+
+        }
+
+        private void CmbDiscountType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate)
+            {
+                if (cmbDiscountType.SelectedIndex == 0)
+                {
+                    SaleOrderViewModel.Refund.TypeOfDiscount = false;
+                }
+                else
+                {
+                    SaleOrderViewModel.Refund.TypeOfDiscount = true;
+                }
+
+                SaleOrderViewModel.Refund.Discount = 0;
+                SaleOrderViewModel.Refund.DiscountAmount = 0;
+                SaleOrderViewModel.SumRefundPrice();
+                ShowRefundTaxes();
+            }
+        }
+
+        private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SaleOrderViewModel.AllowToCalculate && SaleOrderViewModel.Refund.DiscountAmount!=0)
+            {
+                SaleOrderViewModel.SumRefundPrice();
+                ShowRefundTaxes();
+            }
         }
     }
 }

@@ -43,7 +43,20 @@ namespace ClubJumana.Core.DTOs
                 OnPropertyChanged();
             }
         }
-        public Refund Refund { get; set; }
+        private Refund _refund { get; set; }
+        public Refund Refund
+        {
+            get
+            {
+                return _refund;
+
+            }
+            set
+            {
+                _refund = value;
+                OnPropertyChanged();
+            }
+        }
 
         private decimal _amountDeposit;
 
@@ -337,7 +350,7 @@ namespace ClubJumana.Core.DTOs
         {
             if (AllowToCalculate)
             {
-                Refund.RefundTotalPrice = Refund.SubtotalPrice + Refund.Shipping - Refund.Discount;
+                Refund.RefundTotalPrice = Refund.SubtotalPrice + Refund.Shipping - Refund.DiscountAmount;
                 foreach (var VARIABLE in Refund.TaxesRefunds)
                 {
                     Refund.RefundTotalPrice += VARIABLE.TaxAmount;
@@ -469,6 +482,16 @@ namespace ClubJumana.Core.DTOs
                     if (item.TaxCode != 0)
                         CalculateRefundTax(item.TotalPrice, item.TaxCodeName);
                 }
+
+                if (Refund.DiscountAmount != 0)
+                {
+                    foreach (var item in Refund.TaxesRefunds)
+                    {
+                        item.Amount = item.Amount-(item.Amount / Refund.SubtotalPrice * Refund.DiscountAmount);
+                        item.TaxAmount = item.Amount * item.Rate/100;
+                    }
+                }
+
                 if (!String.IsNullOrWhiteSpace(Refund.ShippingTaxCode))
                     CalculateRefundTax(Refund.Shipping, Refund.ShippingTaxCode);
                 CalculateTotalRefundPrice();
@@ -638,7 +661,9 @@ namespace ClubJumana.Core.DTOs
             set
             {
                 _quantity = value;
-                _totalPrice = Math.Round(value * Price, 2, MidpointRounding.ToEven);
+                _totalPrice = Math.Round(value * Price, 2, MidpointRounding.AwayFromZero);
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalPrice));
             }
         }
         public int TaxCode { get; set; }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ClubJumana.DataLayer.Context;
+using JetBrains.Annotations;
 
 namespace ClubJumana.DataLayer.Entities
 {
-   public class Refund
+   public class Refund : INotifyPropertyChanged
     {
         
         public int Id { get; set; }
@@ -27,7 +30,11 @@ namespace ClubJumana.DataLayer.Entities
         public decimal RefundTotalPrice
         {
             get { return _refundTotalPrice; }
-            set { _refundTotalPrice = value; }
+            set
+            {
+                _refundTotalPrice = value;
+                OnPropertyChanged();
+            }
         }
 
         private decimal _subtotalPrice;
@@ -40,6 +47,7 @@ namespace ClubJumana.DataLayer.Entities
                 _subtotalPrice = value;
                 //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
                 //_refundTotalPrice = _subtotalPrice + _tax;
+                OnPropertyChanged();
             }
 
         }
@@ -53,6 +61,21 @@ namespace ClubJumana.DataLayer.Entities
                 _shipping = value;
                 //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
                 //_refundTotalPrice = _subtotalPrice + _tax;
+                OnPropertyChanged();
+            }
+
+        }
+        private decimal _discountAmount = 0;
+
+        public decimal DiscountAmount
+        {
+            get { return _discountAmount; }
+            set
+            {
+                _discountAmount = value;
+                //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
+                //_refundTotalPrice = _subtotalPrice + _tax;
+                OnPropertyChanged();
             }
 
         }
@@ -64,8 +87,16 @@ namespace ClubJumana.DataLayer.Entities
             set
             {
                 _discount = value;
-                //_tax = Math.Round(_subtotalPrice * 0.13m, 2, MidpointRounding.ToEven);
-                //_refundTotalPrice = _subtotalPrice + _tax;
+                if (TypeOfDiscount)
+                {
+                    _discountAmount = Math.Round(_discount * _subtotalPrice / 100m, 2, MidpointRounding.AwayFromZero);;
+                }
+                else
+                {
+                    _discountAmount = _discount;
+                }
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DiscountAmount));
             }
 
         }
@@ -82,5 +113,12 @@ namespace ClubJumana.DataLayer.Entities
         [Timestamp]
         public DateTime RowVersion { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

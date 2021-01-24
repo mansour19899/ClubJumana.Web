@@ -12,8 +12,30 @@ namespace ClubJumana.DataLayer.Entities
         [StringLength(15)]
         public string Code { get; set; }
         public decimal Rate { get; set; }
-        public decimal Amount { get; set; }
-        public decimal TaxAmount { get; set; }
+        private decimal _amount;
+        public decimal Amount
+        {
+            get
+            {
+                return Math.Round(_amount, 2, MidpointRounding.AwayFromZero);
+            }
+            set
+            {
+                _amount = value;
+            }
+        }
+        private decimal _taxAmount;
+        public decimal TaxAmount
+        {
+            get
+            {
+                return Math.Round(_taxAmount, 2, MidpointRounding.AwayFromZero);
+            }
+            set
+            {
+                _taxAmount = value;
+            }
+        }
         public int RefundFK { get; set; }
         public Refund Refund { get; set; }
         public DateTime RowVersion { get; set; }
