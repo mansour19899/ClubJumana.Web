@@ -1068,7 +1068,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
             UCSaleOrder.ShowTaxes();
             UCSaleOrder.GrdRefuand.Visibility = Visibility.Hidden;
-            if(_dataContextVM.SaleOrderViewModel.)
+           
             UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Visible;
             SubPage.Visibility = Visibility.Visible;
         }
