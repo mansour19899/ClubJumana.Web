@@ -511,7 +511,7 @@ namespace ClubJumana.Core.Services
                 .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses).Include(p => p.TaxArea)
                   .Include(p => p.Customer).Include(p => p.User)
                 .Include(p => p.Warehouse).Include(p => p.Taxes)
-                .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).SingleOrDefault();
+                .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).Include(p=>p.Refunds).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
 
@@ -586,7 +586,8 @@ namespace ClubJumana.Core.Services
                 SoItems = new ObservableCollection<SoItemVeiwModel>(listSoItem),
                 User = saleOrder.User,
                 OpenBalance = saleOrder.OpenBalance,
-                Deposit = Deposit
+                Deposit = Deposit,
+                Refunds = saleOrder.Refunds
             };
         }
 
@@ -641,7 +642,7 @@ namespace ClubJumana.Core.Services
         {
             DetachedAllEntries();
             int Id = 0;
-            int RefundId = 0;
+            int RefundItemId = 0;
             int TaxRefundId = 0;
             try
             {
@@ -651,14 +652,14 @@ namespace ClubJumana.Core.Services
             {
                 Id = 1;
             }
-            refund.RefundNumber = Id;
+            refund.Id = Id;
             try
             {
-                RefundId = _context.refunds.Max(p => p.Id) + 1;
+                RefundItemId = _context.refunditems.Max(p => p.Id) + 1;
             }
             catch (Exception e)
             {
-                RefundId = 1;
+                RefundItemId = 1;
             }
             try
             {
@@ -671,9 +672,9 @@ namespace ClubJumana.Core.Services
             refund.RefundItems=new List<RefundItem>();
             foreach (var item in refundItemsViewModel)
             {
-                refund.RefundItems.Add(new RefundItem(){Id = RefundId,Refund_fk = Id,ProductMaster_fk = item.ProductMaster.Id,
+                refund.RefundItems.Add(new RefundItem(){Id = RefundItemId, Refund_fk = Id,ProductMaster_fk = item.ProductMaster.Id,
                     Quantity = item.Quantity,Price = item.Price,TotalPrice = item.TotalPrice,TaxCodeName = item.TaxCodeName});
-                RefundId++;
+                RefundItemId++;
             }
 
             foreach (var item in refund.TaxesRefunds)
@@ -683,21 +684,33 @@ namespace ClubJumana.Core.Services
             }
 
             _context.refunds.Add(refund);
-
-            var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value).ToList();
-            var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrderFK);
             ProductInventoryWarehouse x;
-            foreach (var model in refund.RefundItems)
+            foreach (var item in refund.RefundItems)
             {
-                model.ProductMaster.StockOnHand += model.Quantity;
-                model.ProductMaster.RefundQuantity += model.Quantity;
+                var SoItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p=>p.ProductInventoryWarehouses).FirstOrDefault(p=>p.So_fk==item.Refund.SaleOrderFK&&p.ProductMaster_fk==item.ProductMaster_fk);
+                SoItem.QuantityRefunded += item.Quantity;
+                item.ProductMaster.StockOnHand += item.Quantity;
+                item.ProductMaster.RefundQuantity += item.Quantity;
 
-                x = inventorys.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk);
-                SoItems.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk).QuantityRefunded +=
-                    model.Quantity;
-                x.Inventory += model.Quantity;
-                x.RefundQuantity += model.Quantity;
+                x = SoItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+                    p.Warehouse_fk== refund.WarehouseId.Value);
+                x.Inventory += item.Quantity;
+                x.RefundQuantity += item.Quantity;
             }
+            //var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value);
+            //var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrderFK);
+
+            //foreach (var model in refund.RefundItems)
+            //{
+            //    model.ProductMaster.StockOnHand += model.Quantity;
+            //    model.ProductMaster.RefundQuantity += model.Quantity;
+
+            //    x = inventorys.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk);
+            //    SoItems.SingleOrDefault(p => p.ProductMaster_fk == model.ProductMaster_fk).QuantityRefunded +=
+            //        model.Quantity;
+            //    x.Inventory += model.Quantity;
+            //    x.RefundQuantity += model.Quantity;
+            //}
             _context.SaveChanges();
             return 1;
         }
@@ -716,7 +729,6 @@ namespace ClubJumana.Core.Services
                     TotalPrice = model.TotalPrice
                 });
             }
-
             return refundItems;
         }
 

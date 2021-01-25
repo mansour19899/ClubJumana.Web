@@ -203,6 +203,7 @@ namespace ClubJumana.Wpf
             {
                 int IDd = _saleOrderService.AddRefund(UCSaleOrder.SaleOrderViewModel.Refund,UCSaleOrder.SaleOrderViewModel.RefundItems.ToList());
                 myMessageQueue.Enqueue("Refund Receipt Created.");
+                UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -1023,6 +1024,7 @@ namespace ClubJumana.Wpf
                 };
                 _dataContextVM.SaleOrderViewModel.SoItems = new ObservableCollection<SoItemVeiwModel>();
                 UCSaleOrder.CollapsedTax(0);
+                UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Visible;
             }
             else
                 _dataContextVM.SaleOrderViewModel = _saleOrderService.GiveSaleOrderById(Id);
@@ -1041,6 +1043,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
             UCSaleOrder.cmbPaymentMethodRefund.ItemsSource = paymentMethods;
             UCSaleOrder.cmbShipFrom.ItemsSource = warehouses;
+            UCSaleOrder.cmbRefundToWarehouse.ItemsSource = warehouses;
             if (_dataContextVM.SaleOrderViewModel.InvoiceNumber == null)
             {
                 UCSaleOrder.txtNum.Text = _dataContextVM.SaleOrderViewModel.Id.ShowSaleOrderNumber();
@@ -1048,6 +1051,7 @@ namespace ClubJumana.Wpf
                 UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Visible;
                 UCSaleOrder.btnRecivePayment.Visibility = Visibility.Collapsed;
                 UCSaleOrder.btnDeposited.Visibility = Visibility.Collapsed;
+                UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Visible;
             }
             else
             {
@@ -1055,11 +1059,17 @@ namespace ClubJumana.Wpf
                 UCSaleOrder.txtName.Text = "Invoice";
                 UCSaleOrder.btnPostSalesOrder.Visibility = Visibility.Collapsed;
                 UCSaleOrder.btnRecivePayment.Visibility = Visibility.Visible;
+                if (_dataContextVM.SaleOrderViewModel.Refunds.Count != 0)
+                    UCSaleOrder.txtbtnRefund.Text = "Refund (" + _dataContextVM.SaleOrderViewModel.Refunds.Count + ")";
+                else
+                    UCSaleOrder.txtbtnRefund.Text = "Refund";
             }
             Bordermanagement.Child = UCSaleOrder;
             UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
             UCSaleOrder.ShowTaxes();
             UCSaleOrder.GrdRefuand.Visibility = Visibility.Hidden;
+            if(_dataContextVM.SaleOrderViewModel.)
+            UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Visible;
             SubPage.Visibility = Visibility.Visible;
         }
 

@@ -14,7 +14,6 @@ namespace ClubJumana.DataLayer.Entities
         
         public int Id { get; set; }
         public DateTime? RefundDate { get; set; }
-        public int? RefundNumber { get; set; }
         public string Email { get; set; }
         public string ChequeNo { get; set; }
         public string BillingAddress { get; set; }

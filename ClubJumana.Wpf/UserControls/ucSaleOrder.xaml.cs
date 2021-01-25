@@ -69,6 +69,10 @@ namespace ClubJumana.Wpf.UserControls
             {
                 MessageBox.Show("You need to specify an account to credit the deposit to.");
             }
+            else if (SaleOrderViewModel.RefundItems.Any(p=>p.Quantity==0))
+            {
+                MessageBox.Show(SaleOrderViewModel.RefundItems.FirstOrDefault(p=>p.Quantity==0).ProductMaster.UPC +"  Quantity is Zero");
+            }
             else
             {
                 e.Handled = true;
@@ -567,7 +571,9 @@ namespace ClubJumana.Wpf.UserControls
         private void BtnRefund_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var SelectedForRefund = dgSoItems.SelectedItems.Cast<SoItemVeiwModel>().ToList();
-            SaleOrderViewModel.Refund = new Refund() { Shipping = 0, RefundDate = DateTime.Now,TypeOfDiscount = false,DiscountAmount = 0};
+            SaleOrderViewModel.Refund = new Refund() { Shipping = 0, RefundDate = DateTime.Now,TypeOfDiscount = false,
+                Email = SaleOrderViewModel.Customer.Email,BillingAddress = SaleOrderViewModel.BillingAddress,
+                DiscountAmount = 0,WarehouseId = 3,SaleOrderFK = SaleOrderViewModel.Id};
             SaleOrderViewModel.Refund.TaxesRefunds = new List<TaxRefund>();
             SaleOrderViewModel.RefundItems = new ObservableCollection<RefundItemsViewModel>();
             foreach (var model in SelectedForRefund)
@@ -657,6 +663,16 @@ namespace ClubJumana.Wpf.UserControls
                 SaleOrderViewModel.SumRefundPrice();
                 ShowRefundTaxes();
             }
+        }
+
+        private void BtnDeleteRefundItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var SelectedForDeleteRefund = dgRefundItems.SelectedItems.Cast<RefundItemsViewModel>().ToList();
+            foreach (var item in SelectedForDeleteRefund)
+            {
+                SaleOrderViewModel.RefundItems.Remove(item);
+            }
+            dgRefundItems.Items.Refresh();
         }
     }
 }

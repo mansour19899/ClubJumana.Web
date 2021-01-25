@@ -59,7 +59,7 @@ namespace ClubJumana.Core.DTOs
         }
 
         private decimal _amountDeposit;
-
+        public ICollection<Refund> Refunds { get; set; }
         public decimal AmountDeposit
         {
             get
