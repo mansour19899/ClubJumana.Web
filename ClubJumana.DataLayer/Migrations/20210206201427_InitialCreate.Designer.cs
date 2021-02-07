@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    [Migration("20200910145108_InitialCreate")]
+    [Migration("20210206201427_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -345,6 +345,19 @@ namespace ClubJumana.DataLayer.Migrations
                     b.ToTable("customers");
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.DepositTo", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("deposittos");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -367,6 +380,60 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasIndex("VariantFK");
 
                     b.ToTable("images");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Inner", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ITF14")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductMasterFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductMasterFK");
+
+                    b.ToTable("inners");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.InnerMasterCarton", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InnerFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InnerQuntity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MasterCartonFK")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InnerFK");
+
+                    b.HasIndex("MasterCartonFK");
+
+                    b.ToTable("innermastercartons");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>
@@ -451,6 +518,39 @@ namespace ClubJumana.DataLayer.Migrations
                     b.ToTable("items");
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.MasterCarton", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Height")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("ITF14")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("Lenght")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal?>("Width")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("mastercartons");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -467,6 +567,83 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("materials");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("AmountReceived")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Attachments")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DepositToFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("OpenBalance")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("PaymentMethodFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RowVersion")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepositToFK");
+
+                    b.HasIndex("PaymentMethodFK");
+
+                    b.ToTable("payments");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.PaymentInvoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("InvoiceFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymenteFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceFK");
+
+                    b.HasIndex("PaymenteFK");
+
+                    b.ToTable("paymentinvoices");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.PaymentMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("paymentmethods");
                 });
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Product", b =>
@@ -903,13 +1080,36 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Refund", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("BillingAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChequeNo")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageOnRefund")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageOnStatement")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PaymentMethodFK")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RefundDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("RefundNumber")
+                    b.Property<int?>("RefundFromFK")
                         .HasColumnType("int");
 
                     b.Property<decimal>("RefundTotalPrice")
@@ -920,21 +1120,31 @@ namespace ClubJumana.DataLayer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
 
-                    b.Property<int>("SaleOrder_fk")
+                    b.Property<int>("SaleOrderFK")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Shipping")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("ShippingTaxCode")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("SubtotalPrice")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<bool>("TypeOfDiscount")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("WarehouseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SaleOrder_fk");
+                    b.HasIndex("PaymentMethodFK");
+
+                    b.HasIndex("RefundFromFK");
+
+                    b.HasIndex("SaleOrderFK");
 
                     b.ToTable("refunds");
                 });
@@ -942,7 +1152,6 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.RefundItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -962,6 +1171,9 @@ namespace ClubJumana.DataLayer.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
 
+                    b.Property<string>("TaxCodeName")
+                        .HasColumnType("text");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 2)");
 
@@ -977,7 +1189,6 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SaleOrder", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("BillingAddress")
@@ -995,11 +1206,14 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<DateTime?>("ExpriationDate")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("Freight")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<decimal>("Handling")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<byte>("HandlingTaxCode")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("HaveDeposit")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("InvoiceDate")
                         .HasColumnType("datetime");
@@ -1010,6 +1224,9 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MessageOnInvoice")
                         .HasColumnType("text");
 
@@ -1018,6 +1235,9 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("OpenBalance")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("PoNumber")
                         .HasColumnType("varchar(100)")
@@ -1040,8 +1260,14 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("ShipVia")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Shipping")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("text");
+
+                    b.Property<byte>("ShippingTaxCode")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("SoDate")
                         .HasColumnType("datetime");
@@ -1050,9 +1276,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("Tax")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<int?>("TaxArea_fk")
@@ -1094,7 +1317,6 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.SoItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
@@ -1132,6 +1354,9 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<int>("So_fk")
                         .HasColumnType("int");
+
+                    b.Property<byte>("TaxCode")
+                        .HasColumnType("tinyint");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -1279,6 +1504,99 @@ namespace ClubJumana.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Tax", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("SalesOrderFK")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesOrderFK");
+
+                    b.ToTable("taxes");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.TaxRate", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("taxrates");
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.TaxRefund", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<int>("RefundFK")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .HasColumnType("datetime");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(7,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefundFK");
+
+                    b.ToTable("taxrefunds");
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Term", b =>
                 {
                     b.Property<int>("Id")
@@ -1303,7 +1621,6 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.User.Invitation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("ActiveCode")
@@ -1361,7 +1678,6 @@ namespace ClubJumana.DataLayer.Migrations
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Users.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("ActiveCode")
@@ -1701,6 +2017,30 @@ namespace ClubJumana.DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Inner", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.ProductMaster", "ProductMaster")
+                        .WithMany("Inners")
+                        .HasForeignKey("ProductMasterFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.InnerMasterCarton", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Inner", "Inner")
+                        .WithMany("InnerMasterCartons")
+                        .HasForeignKey("InnerFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.MasterCarton", "MasterCarton")
+                        .WithMany("InnerMasterCartons")
+                        .HasForeignKey("MasterCartonFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Item", b =>
                 {
                     b.HasOne("ClubJumana.DataLayer.Entities.PurchaseOrder", "PurchaseOrder")
@@ -1712,6 +2052,36 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.ProductMaster", "ProductMaster")
                         .WithMany("Items")
                         .HasForeignKey("ProductMaster_fk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Payment", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.DepositTo", "DepositTo")
+                        .WithMany("Payments")
+                        .HasForeignKey("DepositToFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Payments")
+                        .HasForeignKey("PaymentMethodFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.PaymentInvoice", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "Invoice")
+                        .WithMany("PaymentInvoices")
+                        .HasForeignKey("InvoiceFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Payment", "Payment")
+                        .WithMany("PaymentInvoices")
+                        .HasForeignKey("PaymenteFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1797,9 +2167,17 @@ namespace ClubJumana.DataLayer.Migrations
 
             modelBuilder.Entity("ClubJumana.DataLayer.Entities.Refund", b =>
                 {
+                    b.HasOne("ClubJumana.DataLayer.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Refunds")
+                        .HasForeignKey("PaymentMethodFK");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.DepositTo", "RefundFrom")
+                        .WithMany("Refunds")
+                        .HasForeignKey("RefundFromFK");
+
                     b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
                         .WithMany("Refunds")
-                        .HasForeignKey("SaleOrder_fk")
+                        .HasForeignKey("SaleOrderFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1853,6 +2231,24 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
                         .WithMany("SoItems")
                         .HasForeignKey("So_fk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.Tax", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.SaleOrder", "SaleOrder")
+                        .WithMany("Taxes")
+                        .HasForeignKey("SalesOrderFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ClubJumana.DataLayer.Entities.TaxRefund", b =>
+                {
+                    b.HasOne("ClubJumana.DataLayer.Entities.Refund", "Refund")
+                        .WithMany("TaxesRefunds")
+                        .HasForeignKey("RefundFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

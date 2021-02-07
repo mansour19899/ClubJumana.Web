@@ -694,8 +694,25 @@ namespace ClubJumana.Core.Services
 
                 x = SoItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
                     p.Warehouse_fk== refund.WarehouseId.Value);
-                x.Inventory += item.Quantity;
-                x.RefundQuantity += item.Quantity;
+                if (x != null)
+                {
+                    x.Inventory += item.Quantity;
+                    x.RefundQuantity += item.Quantity;
+                }
+                else
+                {
+                    ProductInventoryWarehouse newProductInventory=new ProductInventoryWarehouse();
+                    newProductInventory.Id = _context.productinventorywarehouses.Max(p => p.Id) +1;
+                    newProductInventory.ProductMaster_fk = item.ProductMaster_fk;
+                    newProductInventory.Warehouse_fk = refund.WarehouseId.Value;
+                    newProductInventory.Inventory = item.Quantity;
+                    newProductInventory.RefundQuantity = item.Quantity;
+                    newProductInventory.Income = 0;
+                    newProductInventory.OutCome = 0;
+                    newProductInventory.OnTheWayInventory = 0;
+                    _context.productinventorywarehouses.Add(newProductInventory);
+                }
+
             }
             //var inventorys = _context.productinventorywarehouses.Where(p => p.Warehouse_fk == refund.WarehouseId.Value);
             //var SoItems = _context.soitems.Where(p => p.So_fk == refund.SaleOrderFK);

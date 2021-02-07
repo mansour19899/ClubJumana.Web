@@ -47,6 +47,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<Country> countries { get; set; }
         public DbSet<Barcode> barcodes { get; set; }
         public DbSet<Brand> brands { get; set; }
+        public DbSet<UOM> uoms { get; set; }
         public DbSet<Material> materials { get; set; }
         public DbSet<Image> images { get; set; }
         public DbSet<ProductType> producttypes { get; set; }
@@ -143,6 +144,9 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.HasOne<UOM>(s => s.Uom)
+                    .WithMany(g => g.ProductMasters)
+                    .HasForeignKey(s => s.UOMFK);
 
             });
 
@@ -422,6 +426,9 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasOne<Colour>(s => s.Colour)
                     .WithMany(g => g.Variants)
                     .HasForeignKey(s => s.ColourFK);
+                entity.HasOne<UOM>(s => s.Uom)
+                    .WithMany(g => g.Variants)
+                    .HasForeignKey(s => s.UOMFK);
 
                 entity.HasOne<Product>(s => s.Product)
                     .WithMany(g => g.Variants)
@@ -490,6 +497,16 @@ namespace ClubJumana.DataLayer.Context
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+
+            });
+            //----------------------------------- UOM ---------------------------------------
+            modelBuilder.Entity<UOM>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasData(new Vendor { Id = 1, Name = "Pcs" });
+                entity.HasData(new Vendor { Id = 2, Name = "Pack4" });
 
             });
             //----------------------------------- Material ---------------------------------------
@@ -664,7 +681,7 @@ namespace ClubJumana.DataLayer.Context
             //optionsBuilder.UseMySQL("server=localhost;database=Test86;user=root;password=SmmRey2018");
            optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicPro;user=mansour1989;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Man1989sour");
-             //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
+          //   optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=Test2020;user=root;password=SmmRey2018");
 
 

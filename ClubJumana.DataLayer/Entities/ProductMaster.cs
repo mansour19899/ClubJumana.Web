@@ -18,6 +18,7 @@ namespace ClubJumana.DataLayer.Entities
         [StringLength(16)]
         public string StyleNumber { get; set; }
         public int VariantFK { get; set; }
+        public int? UOMFK { get; set; } 
         [StringLength(16)]
         public string SKU { get; set; }
         [StringLength(12)]
@@ -67,6 +68,7 @@ namespace ClubJumana.DataLayer.Entities
         public ICollection<ProductInventoryWarehouse> ProductInventoryWarehouses { get; set; }
         public ICollection<Inner> Inners { get; set; }
         public Variant Variant { get; set; }
+        public UOM Uom { get; set; }
 
     }
 }

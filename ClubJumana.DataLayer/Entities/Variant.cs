@@ -13,6 +13,7 @@ namespace ClubJumana.DataLayer.Entities
         public int? ProductFK { get; set; }
         public int? ColourFK { get; set; }
         public int? BarcodeFK { get; set; }
+        public int? UOMFK { get; set; }
         public int? ProductTypeFK { get; set; }
 
         public decimal? FobPrice { get; set; }
@@ -46,6 +47,7 @@ namespace ClubJumana.DataLayer.Entities
         public Barcode Barcode { get; set; }
         public ProductMaster ProductMaster { get; set; }
         public ProductType ProductType { get; set; }
+        public UOM Uom { get; set; }
         public virtual ICollection<Image> Images { get; set; }
 
     }

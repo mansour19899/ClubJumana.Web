@@ -20,6 +20,7 @@ namespace ClubJumana.DataLayer.Entities
         [Timestamp]
         public DateTime RowVersion { get; set; }
         public  Brand Brand { get; set; }
+
         public  Company Company { get; set; }
         public  Country CountryOfOrgin { get; set; }
         public Material Material { get; set; }
