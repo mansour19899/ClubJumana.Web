@@ -798,7 +798,20 @@ namespace ClubJumana.Core.Services
         }
         #endregion
 
-
+        private void DetachedAllEntries()
+        {
+            if (!Consts.Consts.OnlineModeOnly)
+            {
+                foreach (var entry in _context.ChangeTracker.Entries().ToList())
+                {
+                    _context.Entry(entry.Entity).State = EntityState.Detached;
+                }
+            }
+            foreach (var entry in onlineDb.ChangeTracker.Entries().ToList())
+            {
+                onlineDb.Entry(entry.Entity).State = EntityState.Detached;
+            }
+        }
 
 
 
@@ -981,6 +994,14 @@ namespace ClubJumana.Core.Services
                 return _context.deposittos.OrderBy(p => p.Id);
         }
 
+        public IQueryable<UOM> AllUoms()
+        {
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.uoms.OrderBy(p => p.Id);
+            else
+                return _context.uoms.OrderBy(p => p.Id);
+        }
+
         public Country GiveMeCountryByID(int Id)
         {
             if (Consts.Consts.OnlineModeOnly)
@@ -1016,6 +1037,7 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<Warehouse> AllWarehouse()
         {
+            DetachedAllEntries();
             if (Consts.Consts.OnlineModeOnly)
                 return onlineDb.warehouses;
             else
@@ -1024,6 +1046,7 @@ namespace ClubJumana.Core.Services
 
         public int AddAndUpdateCustomer(Customer customer)
         {
+            DetachedAllEntries();
             if (customer.Id == 0)
             {
                 customer.Id = onlineDb.customers.Max(p => p.Id) + 1;
@@ -1041,6 +1064,7 @@ namespace ClubJumana.Core.Services
 
         public int AddAndUpdateVendor(Vendor vendor)
         {
+            DetachedAllEntries();
             if (vendor.Id == 0)
             {
                 vendor.Id = onlineDb.vendors.Max(p => p.Id) + 1;
@@ -1056,18 +1080,6 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
-        public int AddAndUpdateItem(ProductMaster productMaster)
-        {
-            if (productMaster.Id == 0)
-                onlineDb.productmasters.Add(productMaster);
-            else
-            {
-                onlineDb.Update(productMaster);
-            }
-
-            onlineDb.SaveChanges();
-            return 1;
-        }
 
         public string UploadFileToFTP(string fileName, string UploadDirectory)
         {

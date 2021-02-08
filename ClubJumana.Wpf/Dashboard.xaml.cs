@@ -52,6 +52,7 @@ namespace ClubJumana.Wpf
         private List<Country> countries;
         private List<PaymentMethod> paymentMethods;
         private List<DepositTo> depositTos;
+        private List<UOM> uoms;
 
         public Mode Mode = Mode.Nothong;
         public static User user;
@@ -109,7 +110,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.BtnAddItemOnClick += BtnAddItem_OnClick;
             itemCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             itemCard.BtnCreateInner += BtnCreateInner_OnClick;
-            itemCard.BtnCreateInner += BtnCreateInner_OnClick;
+            UCInnerMasterCarton.BtnFindProductForInner += BtnFindProductForInner_OnClick;
             UCInnerMasterCarton.BtnAddInner += BtnAddInner_OnClick;
             UCInnerMasterCarton.BtnAddMaster += BtnAddMaster_OnClick;
             UCInnerMasterCarton.BtnCloseInnerPage += BtnCloseInnerPage_OnClick;
@@ -135,6 +136,7 @@ namespace ClubJumana.Wpf
             taxRates = _repositoryService.AlltaTaxRates().ToList();
             paymentMethods = _repositoryService.AllPaymentMethods().ToList();
             depositTos = _repositoryService.AllDepositTos().ToList();
+            uoms = _repositoryService.AllUoms().ToList();
             UCCustomer.cmbCountries.ItemsSource = countries;
             UCCustomer.cmbProvinces.ItemsSource = provinces;
 
@@ -148,6 +150,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbTerms.ItemsSource = _repositoryService.AllTerms().ToList();
             UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;
+            itemCard.cmbUOM.ItemsSource = uoms;
             myMessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(4000));
             SnackbarResult.MessageQueue = myMessageQueue;
         }
@@ -262,7 +265,7 @@ namespace ClubJumana.Wpf
         }
         private void BtnSaveForItem_OnBtnSaveOnClick(object? sender, EventArgs e)
         {
-            _repositoryService.AddAndUpdateItem(_dataContextVM.ProductMaster);
+            _productService.AddOrUpdateProduct(_dataContextVM.ProductMaster);
             myMessageQueue.Enqueue("Product Updated");
         }
 
@@ -716,6 +719,20 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.ShowInnerPage();
             SecoundBordermanagement.Child = UCInnerMasterCarton;
             SecoundBordermanagement.Visibility = Visibility.Visible;
+        }
+        private void BtnFindProductForInner_OnClick(object? sender, EventArgs e)
+        {
+            var tt = _productService.GetProductMasterByUPC(UCInnerMasterCarton.txtProductFind.Text);
+            if (tt == null)
+            {
+                myMessageQueue.Enqueue("Product Not Find");
+            }
+            else
+            {
+                UCInnerMasterCarton.productMaster = _productService.GetProductMasterByUPC(UCInnerMasterCarton.txtProductFind.Text);
+                UCInnerMasterCarton.DataContext = UCInnerMasterCarton.productMaster;
+            }
+
         }
 
         private void BtnAddInner_OnClick(object? sender, EventArgs e)
@@ -1197,9 +1214,9 @@ namespace ClubJumana.Wpf
             if (dep == null)
                 return;
 
-            _dataContextVM.ProductMaster = (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
+            var itemSelected = (ProductMaster) lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
+            _dataContextVM.ProductMaster = _productService.GetProductMasterById(itemSelected.Id);
             itemCard.DataContext = _dataContextVM.ProductMaster;
-
             Bordermanagement.Child = itemCard;
             SubPage.Visibility = Visibility.Visible;
         }

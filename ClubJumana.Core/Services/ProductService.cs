@@ -19,6 +19,7 @@ namespace ClubJumana.Core.Services
         }
         public int AddOrUpdateProduct(ProductMaster product)
         {
+            DetachedAllEntries();
             _context.Update(product);
             _context.SaveChanges();
             return 0;
@@ -72,14 +73,34 @@ namespace ClubJumana.Core.Services
 
             return dic;
         }
+        private void DetachedAllEntries()
+        {
+            if (!Consts.Consts.OnlineModeOnly)
+            {
+                foreach (var entry in _context.ChangeTracker.Entries().ToList())
+                {
+                    _context.Entry(entry.Entity).State = EntityState.Detached;
+                }
+            }
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+        }
 
         public ProductMaster GetProductMasterById(int Id)
         {
-            return _context.productmasters.Include(p=>p.Inners).ThenInclude(p=>p.InnerMasterCartons).ThenInclude(p=>p.MasterCarton).FirstOrDefault(p => p.Id == Id);
+            return _context.productmasters.Include(p=>p.Uom).Include(p=>p.Inners).ThenInclude(p=>p.InnerMasterCartons).ThenInclude(p=>p.MasterCarton).FirstOrDefault(p => p.Id == Id);
+        }
+
+        public ProductMaster GetProductMasterByUPC(string upc)
+        {
+            return _context.productmasters.Include(p => p.Uom).Include(p => p.Inners).ThenInclude(p => p.InnerMasterCartons).ThenInclude(p => p.MasterCarton).FirstOrDefault(p => p.UPC.Trim() == upc.Trim());
         }
 
         public int AddInner(Inner inner)
         {
+            DetachedAllEntries();
             try
             {
                 inner.Id = _context.inners.Max(p => p.Id) + 1;
@@ -95,8 +116,9 @@ namespace ClubJumana.Core.Services
 
         public int AddMaster(MasterCarton masterCarton)
         {
-            var temp = masterCarton.InnerMasterCartons.ToList();
-            int newIdInnerMaster = 1;
+            DetachedAllEntries();
+
+            int newIdInnerMaster = 0;
             int totalQuantity = 0;
             try
             {
@@ -114,16 +136,16 @@ namespace ClubJumana.Core.Services
             }
             catch (Exception e)
             {
-                newIdInnerMaster = 1;
+                newIdInnerMaster = 0;
             }
             foreach (var item in masterCarton.InnerMasterCartons)
             {
+                newIdInnerMaster++;
                 item.Id = newIdInnerMaster;
                 item.MasterCartonFK = masterCarton.Id;
                 totalQuantity += item.InnerQuntity*item.Inner.Quantity;
-                 newIdInnerMaster++;
+                item.Inner = null;
             }
-
             masterCarton.TotalQuantity = totalQuantity;
             _context.mastercartons.Add(masterCarton);
             _context.SaveChanges();
@@ -153,13 +175,13 @@ namespace ClubJumana.Core.Services
 
         public Inner GetInnerByITF(string itf14)
         {
-            return _context.inners.Include(p=>p.ProductMaster).FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
+            return _context.inners.Include(p=>p.ProductMaster).ThenInclude(p=>p.Uom).FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
 
         public MasterCarton GetMasterByITF(string itf14)
         {
             return _context.mastercartons.Include(p=>p.InnerMasterCartons)
-                .ThenInclude(p=>p.Inner).ThenInclude(p=>p.ProductMaster)
+                .ThenInclude(p=>p.Inner).ThenInclude(p=>p.ProductMaster).ThenInclude(p=>p.Uom)
                 .FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
     }

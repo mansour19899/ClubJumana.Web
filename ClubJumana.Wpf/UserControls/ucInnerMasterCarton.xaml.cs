@@ -167,6 +167,7 @@ namespace ClubJumana.Wpf.UserControls
             txtInnerUPC.Text = inner.ProductMaster.UPC;
             txtInnerSKU.Text = inner.ProductMaster.SKU;
             txtInnerQuantityPerInner.Text = inner.Quantity.ToString();
+            txtUom.Text = inner.ProductMaster.Uom.Name;
             lvMasterCartonInnerSearch.ItemsSource = inner.InnerMasterCartons;
             lvMasterCartonInnerSearch.Items.Refresh();
             MasterCartonSearch.Visibility = Visibility.Hidden;
@@ -210,6 +211,7 @@ namespace ClubJumana.Wpf.UserControls
             txtInnerUPC2.Text = inner.ProductMaster.UPC;
             txtInnerSKU2.Text = inner.ProductMaster.SKU;
             txtInnerQuantityPerInner2.Text = inner.Quantity.ToString();
+            txtUom2.Text = inner.ProductMaster.Uom.Name;
             int QuantityInnerinMaster = inner.InnerMasterCartons
                 .FirstOrDefault(p => p.MasterCartonFK == MasterSelected.Id).InnerQuntity;
             txtPackMaster.Text =QuantityInnerinMaster+"/"+MasterSelected.TotalQuantity ;
@@ -264,6 +266,19 @@ namespace ClubJumana.Wpf.UserControls
             txtSearchITF.Text = wer.ITF14.Trim();
             BtnSearch_OnClick(sender, e);
 
+        }
+        public event EventHandler<EventArgs> BtnFindProductForInner;
+        private void BtnFindProductForInner_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnFindProductForInner != null)
+                BtnFindProductForInner(sender, e);
+        }
+
+        private void Button1_Click(object sender, RoutedEventArgs e)
+        {
+            var row = (Inner) dgInners.SelectedItem;
+            Clipboard.SetText(row.ITF14.Trim());
         }
     }
 }

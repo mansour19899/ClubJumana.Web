@@ -39,8 +39,8 @@
                 <StackPanel Margin="20 20">
                     <TextBlock Text="Barcode" FontSize="20" Margin="10 0 0 0"/>
                     <StackPanel Orientation="Horizontal" Height="70">
-                        <TextBox Width="250" Text="{Binding UPC}" />
-                        <Button Content="Find" FontSize="18" Foreground="White" Background="Purple" Width="150" />
+                        <TextBox Name="txtProductFind" Width="250" Text="{Binding UPC,Mode=OneWay}" />
+                        <Button Name="btnFindProductForInner" Content="Find" FontSize="18" Foreground="White" Background="Purple" Width="150" Click="BtnFindProductForInner_OnClick" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="20 20">
@@ -72,11 +72,20 @@
             </UniformGrid>
             <TextBlock Name="txtDescription" Margin="40 0 0 0" Grid.Row="1" FontSize="20" Text="{Binding Name}"/>
             <UniformGrid Columns="2" Grid.Row="2">
-                <DataGrid  Name="dgInners" ItemsSource="{Binding Inners}"  Margin="50"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" >
+                <DataGrid  Name="dgInners" ItemsSource="{Binding Inners}"  Margin="50"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue"  >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="150" IsReadOnly="True"/>
                         <DataGridTextColumn Header="ITF14" Binding="{Binding ITF14}" Width="200" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="200" IsReadOnly="True"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="Button1_Click"
+                                            Content="{Binding ITF14}"
+                                            Tag="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </UniformGrid>
@@ -185,8 +194,11 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock   Text="Quantity Per Inner" Width="250" VerticalAlignment="Center"/>
-                        <Border Background="DarkBlue" Width="100" CornerRadius="5">
-                            <TextBlock Name="txtInnerQuantityPerInner"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        <Border Background="DarkBlue" Width="150" Height="50" CornerRadius="5" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0">
+                                <TextBlock Name="txtInnerQuantityPerInner"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Name="txtUom"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 0 0" />
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </StackPanel>
@@ -231,14 +243,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock   Text="Pack" Width="250" VerticalAlignment="Center"/>
-                        <Border Background="DarkCyan" Width="100" CornerRadius="5">
-                            <TextBlock Name="txtPackMaster"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        <Border Background="DarkCyan" Width="150" Height="50" CornerRadius="5">
+                            <TextBlock Name="txtPackMaster"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock   Text="Pcs Per Carton" Width="250" VerticalAlignment="Center"/>
-                        <Border Background="DarkSlateBlue" Width="100" CornerRadius="5">
-                            <TextBlock Name="txtPcsPerCarton"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        <Border Background="DarkSlateBlue" Width="150" Height="50" CornerRadius="5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0">
+                                <TextBlock Name="txtPcsPerCarton"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock Name="txtUom1"  Text="{Binding ElementName=txtUom2,Path=Text}" Foreground="White" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 0 0" />
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </StackPanel>
@@ -277,8 +292,11 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock   Text="Quantity Per Inner" Width="250" VerticalAlignment="Center"/>
-                        <Border Background="DarkBlue" Width="100" CornerRadius="5">
-                            <TextBlock Name="txtInnerQuantityPerInner2"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center" />
+                        <Border Background="DarkBlue" Width="150" Height="50" CornerRadius="5">
+                            <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+                                <TextBlock Name="txtInnerQuantityPerInner2"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Name="txtUom2"  Text="Quantity Per Inner" Foreground="White" FontWeight="Bold" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 0 0" />
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </StackPanel>

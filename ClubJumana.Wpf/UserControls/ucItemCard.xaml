@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClubJumana.Wpf.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1750" Background="White">
     <Grid Margin="0 40 0 0">
@@ -417,10 +418,16 @@
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="Pack" Style="{StaticResource Style1}"/>
+                                    <TextBlock Text="UOM" Style="{StaticResource Style1}"/>
                                     <TextBlock Style="{StaticResource Styledot}" Text="  . . . . . . . . . . . . . . . . . . . . . . . . . . . . " />
                                 </StackPanel>
-                                <TextBox Text="{Binding PackCount}" />
+                                <ComboBox Name="cmbUOM" FontSize="16"
+                                          Margin="10 0"
+                                          materialDesign:TextFieldAssist.HasClearButton="True"
+                                          IsEditable="False"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          materialDesign:TextFieldAssist.SuffixText="sw"
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"   SelectedValue="{Binding  UOMFK}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal" >
@@ -443,7 +450,7 @@
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="5/3/2020" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding  RowVersion}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                         </UniformGrid>

@@ -33,6 +33,7 @@ namespace ClubJumana.Core.Services.Interfaces
         IQueryable<Term> AllTerms();
         IQueryable<PaymentMethod> AllPaymentMethods();
         IQueryable<DepositTo> AllDepositTos();
+        IQueryable<UOM> AllUoms();
 
         Country GiveMeCountryByID(int Id);
         ProductMaster GiveMeProductMasterByUPC(string UPC);
@@ -41,7 +42,6 @@ namespace ClubJumana.Core.Services.Interfaces
 
         public int AddAndUpdateCustomer(Customer customer);
         public int AddAndUpdateVendor(Vendor vendor);
-        public int AddAndUpdateItem(ProductMaster productMaster);
 
         public string UploadFileToFTP( string fileName, string UploadDirectory);
         public string DownloadFileFromFTP( string fileName, string UploadDirectory);
