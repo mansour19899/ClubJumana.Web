@@ -4,110 +4,109 @@
     ViewData["Title"] = "salam";
 }
 
+<div id="app">
+    <input v-model="message">
 
+    <input v-bind:value="message" v-on:input="message = $event.target.value">
 
-<p id="result">@Model.ElementAt(2).UPC</p>
-<div class="row">
-    <div class="col-lg-6 col-md-12" style="background-color: lavender;">
-        <div class="row" style="background-color: white; padding-top: 30px;">
-            <div class="col-6" style="background-image: url('@Url.Content("~/images/TowelImages/DSC_5759.jpg")'); background-repeat: no-repeat;  ">
+    {{message}}
 
-            </div>
-            <div class="col-6">
-                <p style="font-size: 20px;"> Bath Towel 500</p>
-                <p>Ultra Low Twist Bath Towel</p>
-                <p>100% Cotton, 500 GSM</p>
-                <p>Size: 27″ X 54″/ 69 X 137 CM</p>
-                <p style="font-size: 20px; font-weight: bold; color: goldenrod; ">@Model.ElementAt(3).WholesalePrice.ToString() $</p>
-                <p style="margin-bottom: 0px;">Bright White</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Aqua Glass</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Deep Taupe</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Charcoal Gray</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 30px;" />
-
-
-            </div>
-
-        </div>
+    <div>
+        <input v-model="loginForm.username">
+        <input v-model="loginForm.password">
+        <button v-on:click="submitForm">Submit</button>
     </div>
-    <div class="col-lg-6 col-md-12" style="background-color:white;"> 
-        <div class="row" style="background-color: white; padding-top: 30px;">
-        <div class="col-6" style="background-image: url('@Url.Content("~/images/TowelImages/DSC_5578.jpg")'); background-repeat: no-repeat;  ">
+    <p>
+        {{filterList}}
+    </p>
 
-        </div>
-        <div class="col-6">
-            <p style="font-size: 20px;"> Bath Towel 400</p>
-            <p>Zero Twist Bath Towel</p>
-            <p>100% Cotton, 400 GSM</p>
-            <p>Size: 27″ X 54″/ 69 X 137 CM</p>
-            <p style="font-size: 20px; font-weight: bold; color: goldenrod; ">@Model.ElementAt(2).WholesalePrice.ToString() $</p>
-            <p style="margin-bottom: 0px;">Bright White</p>
-            <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-            <p>Aqua Glass</p>
-            <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-            <p>Deep Taupe</p>
-            <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-            <p>Charcoal Gray</p>
-            <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 30px;" />
+    <p>
+        <button v-on:click="show = !show">Toggle</button>
 
-
-        </div>
-
-    </div></div>
-</div>
-<div class="row">
-    <div class="col-lg-6 col-md-12" style="background-color: lavender;">
-        <div class="row" style="background-color: white; padding-top: 30px;">
-            <div class="col-6" style="background-image: url('@Url.Content("~/images/TowelImages/DSC_6633.jpg")'); background-repeat: no-repeat;  ">
-
-            </div>
-            <div class="col-6">
-                <p style="font-size: 20px;"> Bath Towel 350</p>
-                <p>100% Cotton, 350 GSM</p>
-                <p>Size: 27″ X 54″/ 69 X 137 CM</p>
-                <p style="font-size: 20px; font-weight: bold; color: goldenrod; ">@Model.ElementAt(4).WholesalePrice.ToString() $</p>
-                <p style="margin-bottom: 0px;">Bright White</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Aqua Glass</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Silver Lining</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Charcoal Gray</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 30px;" />
-
-
-            </div>
-
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-12" style="background-color:white;">
-        <div class="row" style="background-color: white; padding-top: 30px;">
-            <div class="col-6" style="background-image: url('@Url.Content("~/images/TowelImages/DSC_7577.jpg")'); background-repeat: no-repeat;  ">
-
-            </div>
-            <div class="col-6">
-                <p style="font-size: 20px;"> Hand Towel 500</p>
-                <p>Ultra Low Twist Bath Towel</p>
-                <p>100% Cotton, 500 GSM</p>
-                <p>Size: 16″ X 28″/ 40 X 70 CM</p>
-                <p style="font-size: 20px; font-weight: bold; color: goldenrod; ">@Model.ElementAt(5).WholesalePrice.ToString() $</p>
-                <p style="margin-bottom: 0px;">Bright White</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Aqua Glass</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Deep Taupe</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 1rem;" />
-                <p>Charcoal Gray</p>
-                <input class="form-control" type="text" name="[0].Title" style="max-width: 80px; margin-bottom: 30px;" />
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="row">
+        <span v-if="user">
+            {{user.name}}
+        </span>
+    </p>
+    <p v-if="show">
+        <span v-for="(item, index) in list">
+            <span-component v-bind:item="item" v-bind:index="index" v-on:shout="log"></span-component>
+        </span>
+    </p>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+
+        Vue.component('span-component', {
+            props: ['item', 'index'],
+            created(){
+                console.log("component created")
+            },
+            beforeDestroy(){
+                console.log("component destroyed")
+            },
+            methods: {
+                shout(v) {
+                    this.$emit('shout', { value: v })
+                }
+            },
+            template: "<span v-on:click=\"shout(index)\" v-bind:class=\"{'text-red': item.color === 'red', 'text-green': item.color === 'green'}\">{{index + 1}}. {{item.name}},</span>"
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: "Hello World",
+                loginForm: {
+                    username: "",
+                    password: ""
+                },
+                list: [
+                    { name: "a - foo", color: 'red' },
+                    { name: "a - john", color: 'red' },
+                    { name: "b - doe", color: 'green' }
+                ],
+                show: true,
+                user: null
+            },
+            created(){
+                console.log("Main created")
+            },
+            mounted(){
+                console.log("Main mounted")
+            },
+            methods: {
+                submitForm() {
+                    console.log("Submitting login form", this.loginForm)
+
+                    var callLog = () => {
+                        this.log(this.formInfo)
+                    }
+
+                    callLog();
+
+                },
+                log(v) {
+                    var { value } = v
+                    console.log(v.value);
+                }
+            },
+            computed: {
+                formInfo: function () {
+                    return this.loginForm.username + " " + this.loginForm.password;
+                },
+                filterList: function () {
+                    return this.list.filter(x => {
+                        return x.name.indexOf("a") === 0
+                    })
+                }
+            }
+        })
+
+</script>
+
+
+
 

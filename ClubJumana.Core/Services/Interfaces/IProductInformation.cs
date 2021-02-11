@@ -6,7 +6,7 @@ using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Core.Services.Interfaces
 {
-    interface IProductInformationService
+   public interface IProductInformationService
     {
         public int AddTowel(AddVariantInformationViewModel product);
         public string GiveMeStyleNumber(int Category, int SubCategory);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClubJumana.Core.Convertors;
+using ClubJumana.Core.Services;
 using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -58,6 +59,7 @@ namespace ClubJumana.Web
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IViewRenderService, RenderViewToString>();
+            services.AddTransient<IProductInformationService, ProductInformationService>();
 
 
             #endregion
