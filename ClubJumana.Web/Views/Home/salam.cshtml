@@ -4,107 +4,21 @@
     ViewData["Title"] = "salam";
 }
 
+<h1>Hello, Vue 3</h1>
+
 <div id="app">
-    <input v-model="message">
-
-    <input v-bind:value="message" v-on:input="message = $event.target.value">
-
-    {{message}}
-
-    <div>
-        <input v-model="loginForm.username">
-        <input v-model="loginForm.password">
-        <button v-on:click="submitForm">Submit</button>
-    </div>
-    <p>
-        {{filterList}}
-    </p>
-
-    <p>
-        <button v-on:click="show = !show">Toggle</button>
-
-        <span v-if="user">
-            {{user.name}}
-        </span>
-    </p>
-    <p v-if="show">
-        <span v-for="(item, index) in list">
-            <span-component v-bind:item="item" v-bind:index="index" v-on:shout="log"></span-component>
-        </span>
-    </p>
-
+    <p>salam</p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue@3.0.2"></script>
 
 <script>
-
-        Vue.component('span-component', {
-            props: ['item', 'index'],
-            created(){
-                console.log("component created")
-            },
-            beforeDestroy(){
-                console.log("component destroyed")
-            },
-            methods: {
-                shout(v) {
-                    this.$emit('shout', { value: v })
-                }
-            },
-            template: "<span v-on:click=\"shout(index)\" v-bind:class=\"{'text-red': item.color === 'red', 'text-green': item.color === 'green'}\">{{index + 1}}. {{item.name}},</span>"
+    const app = Vue.createApp(
+        {
+            template: '<h2>I am Mansour</h2>'
         })
 
-        var app = new Vue({
-            el: '#app',
-            data: {
-                message: "Hello World",
-                loginForm: {
-                    username: "",
-                    password: ""
-                },
-                list: [
-                    { name: "a - foo", color: 'red' },
-                    { name: "a - john", color: 'red' },
-                    { name: "b - doe", color: 'green' }
-                ],
-                show: true,
-                user: null
-            },
-            created(){
-                console.log("Main created")
-            },
-            mounted(){
-                console.log("Main mounted")
-            },
-            methods: {
-                submitForm() {
-                    console.log("Submitting login form", this.loginForm)
-
-                    var callLog = () => {
-                        this.log(this.formInfo)
-                    }
-
-                    callLog();
-
-                },
-                log(v) {
-                    var { value } = v
-                    console.log(v.value);
-                }
-            },
-            computed: {
-                formInfo: function () {
-                    return this.loginForm.username + " " + this.loginForm.password;
-                },
-                filterList: function () {
-                    return this.list.filter(x => {
-                        return x.name.indexOf("a") === 0
-                    })
-                }
-            }
-        })
-
+    app.mount('#app')
 </script>
 
 
