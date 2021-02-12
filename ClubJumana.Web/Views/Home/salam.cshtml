@@ -7,7 +7,7 @@
 <h1>Hello, Vue 3</h1>
 
 <div id="app">
-    <p>salam</p>
+    <p> {{ age }}</p>
 </div>
 
 <script src="https://unpkg.com/vue@3.0.2"></script>
@@ -15,7 +15,20 @@
 <script>
     const app = Vue.createApp(
         {
-            template: '<h2>I am Mansour</h2>'
+            data(){
+                return{
+                    title:'SMM 2020',
+                    age:'31'
+                }
+            },
+            mounted() {
+                fetch('https://localhost:44374/api/ProductInformation/5')
+                    .then(res => res.json())
+                    .then(data => this.age = data.styleNumber)
+                .catch(err=>console.log(err.message))
+            }
+
+
         })
 
     app.mount('#app')

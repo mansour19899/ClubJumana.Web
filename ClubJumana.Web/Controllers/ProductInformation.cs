@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClubJumana.Core.DTOs;
+using ClubJumana.DataLayer.Entities;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,18 +29,19 @@ namespace ClubJumana.Web.Controllers
 
         // GET: api/<ProductInformation>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<VariantViewModel> Get()
         {
             var tt = _productInformationService.AllVariantList().ToList();
-            return new string[] { "value1", tt.ElementAt(0).SKU };
+            return tt.Take(10).ToList();
         }
 
         // GET api/<ProductInformation>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+
+        public Product Get(int id)
         {
             var tt = _productInformationService.GiveMeProductWithId(id);
-            return tt.StyleNumber;
+            return tt;
         }
 
         // POST api/<ProductInformation>

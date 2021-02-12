@@ -21,7 +21,7 @@ namespace ClubJumana.Web
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -63,6 +63,21 @@ namespace ClubJumana.Web
 
 
             #endregion
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +91,7 @@ namespace ClubJumana.Web
             app.UseStaticFiles();
             app.UseDefaultFiles();
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -83,6 +99,7 @@ namespace ClubJumana.Web
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
 
         }
     }
