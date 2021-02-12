@@ -731,6 +731,9 @@ namespace ClubJumana.Wpf
             {
                 UCInnerMasterCarton.productMaster = _productService.GetProductMasterByUPC(UCInnerMasterCarton.txtProductFind.Text);
                 UCInnerMasterCarton.DataContext = UCInnerMasterCarton.productMaster;
+                UCInnerMasterCarton.innerMasterCartons.Clear();
+                UCInnerMasterCarton.dgInnersForMaster.ItemsSource = UCInnerMasterCarton.innerMasterCartons;
+                UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
             }
 
         }
@@ -783,6 +786,7 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.txtWeightMaster.Clear();
             UCInnerMasterCarton.txtLengthMaster.Clear();
             UCInnerMasterCarton.txtHeightMaster.Clear();
+            UCInnerMasterCarton.innerMasterCartons.Clear();
             UCInnerMasterCarton.dgInnersForMaster.ItemsSource = null;
             UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
         }

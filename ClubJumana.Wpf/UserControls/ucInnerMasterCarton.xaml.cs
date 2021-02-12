@@ -69,7 +69,7 @@ namespace ClubJumana.Wpf.UserControls
             imgApproval.Visibility = Visibility.Collapsed;
         }
 
-        public bool SetNumeric(object sender, KeyEventArgs e)
+        public bool SetNumeric(object sender, KeyEventArgs e,bool CanHaveOemPeriod =false)
         {
             bool result = false;
 
@@ -80,7 +80,7 @@ namespace ClubJumana.Wpf.UserControls
             else
             { result = true; }
 
-            if (e.Key == Key.OemPeriod)
+            if (e.Key == Key.OemPeriod&&!CanHaveOemPeriod)
             {
                 result = true;
             }
@@ -279,6 +279,39 @@ namespace ClubJumana.Wpf.UserControls
         {
             var row = (Inner) dgInners.SelectedItem;
             Clipboard.SetText(row.ITF14.Trim());
+        }
+
+        private void ConvertCmToInech_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(txtWeightMaster.Text))
+                txtWeightMaster.Text = (Math.Round(Convert.ToDouble(txtWeightMaster.Text) * 2.205, 1, MidpointRounding.AwayFromZero)).ToString();
+            if (!String.IsNullOrWhiteSpace(txtLengthMaster.Text))
+                txtLengthMaster.Text = (Math.Round(Convert.ToDouble(txtLengthMaster.Text) / 2.54,1, MidpointRounding.AwayFromZero)).ToString();
+            if (!String.IsNullOrWhiteSpace(txtWidthMaster.Text))
+                txtWidthMaster.Text = (Math.Round(Convert.ToDouble(txtWidthMaster.Text) / 2.54,1, MidpointRounding.AwayFromZero)).ToString();
+            if (!String.IsNullOrWhiteSpace(txtHeightMaster.Text))
+                txtHeightMaster.Text = (Math.Round(Convert.ToDouble(txtHeightMaster.Text) / 2.54,1, MidpointRounding.AwayFromZero)).ToString();
+
+        }
+
+        private void TxtWeightMaster_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e,true);
+        }
+
+        private void TxtLengthMaster_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e,true);
+        }
+
+        private void TxtWidthMaster_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e,true);
+        }
+
+        private void TxtHeightMaster_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = SetNumeric(sender, e,true);
         }
     }
 }

@@ -122,20 +122,23 @@
             </StackPanel>
             <UniformGrid Columns="1" Rows="6" Grid.Row="1" Grid.Column="2" Margin="0 50 0 0">
                 <StackPanel HorizontalAlignment="Left">
-                    <TextBlock Text="Weight (LB)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Name="txtWeightMaster" Width="300"/>
+                    <UniformGrid Rows="1" Columns="2">
+                        <TextBlock Text="Weight (LB)" FontSize="20" Margin="10 0 0 10"/>
+                        <Button Name="ConvertCmToInech" Content="Convert Cm To Inch" FontSize="12" Background="Purple" Foreground="White" Height="26" Width="140" Click="ConvertCmToInech_OnClick"/>
+                    </UniformGrid>
+                    <TextBox Name="txtWeightMaster" Width="300" KeyDown="TxtWeightMaster_OnKeyDown"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Length (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Name="txtLengthMaster" Width="300"/>
+                    <TextBox Name="txtLengthMaster" Width="300" KeyDown="TxtLengthMaster_OnKeyDown"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Width (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Name="txtWidthMaster" Width="300"/>
+                    <TextBox Name="txtWidthMaster" Width="300" KeyDown="TxtWidthMaster_OnKeyDown"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left">
                     <TextBlock Text="Height (IN)" FontSize="20" Margin="10 0 0 10"/>
-                    <TextBox Name="txtHeightMaster" Width="300"/>
+                    <TextBox Name="txtHeightMaster" Width="300" KeyDown="TxtHeightMaster_OnKeyDown"/>
                 </StackPanel>
                 <TextBlock/>
                 <Button Name="btnAddMaster" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0" Click="BtnAddMaster_OnClick"  >
