@@ -69,15 +69,15 @@ namespace ClubJumana.Web
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin();
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //        builder =>
+            //        {
+            //            builder.AllowAnyOrigin();
 
-                    });
-            });
+            //        });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +91,7 @@ namespace ClubJumana.Web
             app.UseStaticFiles();
             app.UseDefaultFiles();
             app.UseRouting();
-            app.UseCors(MyAllowSpecificOrigins);
+            //app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
 
