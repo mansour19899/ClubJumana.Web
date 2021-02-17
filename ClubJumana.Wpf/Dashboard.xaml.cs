@@ -64,6 +64,7 @@ namespace ClubJumana.Wpf
         private ucCustomerCard UCCustomer;
         private ucVendorCard UCVendorCard;
         private ucPayment UCPayment;
+        private ucStockTake UCStockTake;
         private ucInnerMasterCarton UCInnerMasterCarton;
 
 
@@ -1310,6 +1311,13 @@ namespace ClubJumana.Wpf
             txtMode.Text = "Sales Invoice";
             HideListview();
             lvSalesOrder.Visibility = Visibility.Visible;
+        }
+
+        private void BtnStockTake_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UCStockTake = new ucStockTake();
+            Bordermanagement.Child = UCStockTake;
+            SubPage.Visibility = Visibility.Visible;
         }
     }
 

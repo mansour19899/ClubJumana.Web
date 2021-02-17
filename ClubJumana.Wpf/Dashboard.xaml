@@ -308,7 +308,7 @@
                 <TextBlock  Text="Blancket  Sales Orders" />
                 <TextBlock  Text="Sales Credit Memos" />
                 <TextBlock  Text="Reminders" />
-                <TextBlock  Text="Posted Sales Invoices" />
+                <TextBlock Name="btnStockTake" Text="Stock Take" MouseDown="BtnStockTake_OnMouseDown" />
                 <!--<TextBlock  Text="Posted Sales Return Receipts" />
                 <TextBlock  Text="Issued Finance Charge Memos" />-->
             </UniformGrid>
