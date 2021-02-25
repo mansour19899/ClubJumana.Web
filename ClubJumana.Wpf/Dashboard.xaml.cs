@@ -119,6 +119,8 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.CheckExistITF14Master += CheckExistMasterITF14;
             UCInnerMasterCarton.BtnAddInnerForMaster += BtnAddInnerForMaster_OnClick;
             UCInnerMasterCarton.SearchITF += BtnSearchITF_OnClick;
+            UCInnerMasterCarton.LoadMasterCarton += LoadMasterCaarton_OnClick;
+            UCInnerMasterCarton.UpdateMasterCarton += UpdateMasterCaarton_OnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
@@ -205,7 +207,7 @@ namespace ClubJumana.Wpf
         {
             if (UCSaleOrder.SaleOrderViewModel.IsRefund)
             {
-                int IDd = _saleOrderService.AddRefund(UCSaleOrder.SaleOrderViewModel.Refund,UCSaleOrder.SaleOrderViewModel.RefundItems.ToList());
+                int IDd = _saleOrderService.AddRefund(UCSaleOrder.SaleOrderViewModel.Refund, UCSaleOrder.SaleOrderViewModel.RefundItems.ToList());
                 myMessageQueue.Enqueue("Refund Receipt Created.");
                 UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Hidden;
             }
@@ -252,7 +254,7 @@ namespace ClubJumana.Wpf
                 UCSaleOrder.RemoveSoItemViewModel.Clear();
                 myMessageQueue.Enqueue(mes);
             }
-            
+
         }
 
         private void BtnSaveForVendor_OnBtnSaveOnClick(object? sender, EventArgs e)
@@ -645,7 +647,7 @@ namespace ClubJumana.Wpf
         {
             string UPCForSearch = "";
 
-            if (Mode == Mode.Sale|| Mode == Mode.Invoice)
+            if (Mode == Mode.Sale || Mode == Mode.Invoice)
             {
                 UPCForSearch = UCSaleOrder.txtSearch.Text;
             }
@@ -678,7 +680,7 @@ namespace ClubJumana.Wpf
                         };
 
                         UCSaleOrder.SaleOrderViewModel.SoItems.Add(Newitem);
-                        UCSaleOrder.AddInventoryInformation(Newitem,_dataContextVM.SaleOrderViewModel.Warehouse_fk.Value);
+                        UCSaleOrder.AddInventoryInformation(Newitem, _dataContextVM.SaleOrderViewModel.Warehouse_fk.Value);
                         UCSaleOrder.txtSearch.Clear();
                         break;
                     case Mode.PO:
@@ -843,6 +845,39 @@ namespace ClubJumana.Wpf
             //UCInnerMasterCarton.txtHeightMaster.Clear();
             //UCInnerMasterCarton.dgInnersForMaster.ItemsSource = null;
             //UCInnerMasterCarton.dgInnersForMaster.Items.Refresh();
+        }
+        private void LoadMasterCaarton_OnClick(object? sender, EventArgs e)
+        {
+            var master = _productService.GetMasterByITF(UCInnerMasterCarton.txtMasterITF14.Text);
+            if (master != null)
+            {
+                UCInnerMasterCarton.txtLengthMaster.Text = master.Lenght.ToString();
+                UCInnerMasterCarton.txtWidthMaster.Text = master.Width.ToString();
+                UCInnerMasterCarton.txtHeightMaster.Text = master.Height.ToString();
+                UCInnerMasterCarton.txtWeightMaster.Text = master.Weight.ToString();
+                if (UCInnerMasterCarton.btnUpdateMasterCarton.Visibility == Visibility.Hidden)
+                {
+                    UCInnerMasterCarton.btnUpdateMasterCarton.Visibility = Visibility.Visible;
+                    UCInnerMasterCarton.btnUpdateMasterCarton.IsEnabled = true;
+                }
+                else
+                    UCInnerMasterCarton.btnUpdateMasterCarton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("It is Inner's ITF14");
+            }
+        }
+        private void UpdateMasterCaarton_OnClick(object? sender, EventArgs e)
+        {
+            var master = _productService.GetMasterByITF(UCInnerMasterCarton.txtMasterITF14.Text);
+            master.Lenght = Convert.ToDecimal(UCInnerMasterCarton.txtLengthMaster.Text);
+            master.Width = Convert.ToDecimal(UCInnerMasterCarton.txtWidthMaster.Text);
+            master.Height = Convert.ToDecimal(UCInnerMasterCarton.txtHeightMaster.Text);
+            master.Weight = Convert.ToDecimal(UCInnerMasterCarton.txtWeightMaster.Text);
+            _productService.UpdateMasterCarton(master);
+            UCInnerMasterCarton.btnUpdateMasterCarton.IsEnabled = false;
+            myMessageQueue.Enqueue(UCInnerMasterCarton.txtMasterITF14.Text + " updated.");
         }
         private void CheckExistInnerITF14(object? sender, EventArgs e)
         {
@@ -1090,7 +1125,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.SaleOrderViewModel.AllowToCalculate = true;
             UCSaleOrder.ShowTaxes();
             UCSaleOrder.GrdRefuand.Visibility = Visibility.Hidden;
-           
+
             UCSaleOrder.btnSaveSalesOrder.Visibility = Visibility.Visible;
             SubPage.Visibility = Visibility.Visible;
         }
@@ -1219,7 +1254,7 @@ namespace ClubJumana.Wpf
             if (dep == null)
                 return;
 
-            var itemSelected = (ProductMaster) lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
+            var itemSelected = (ProductMaster)lvProductMaster.ItemContainerGenerator.ItemFromContainer(dep);
             _dataContextVM.ProductMaster = _productService.GetProductMasterById(itemSelected.Id);
             itemCard.DataContext = _dataContextVM.ProductMaster;
             Bordermanagement.Child = itemCard;

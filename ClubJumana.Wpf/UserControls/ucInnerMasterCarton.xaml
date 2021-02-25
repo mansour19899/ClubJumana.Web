@@ -118,7 +118,7 @@
                 <TextBlock Text="Master ITF-14" FontSize="25" VerticalAlignment="Center" Margin="0 0 20 0"/>
                 <TextBox Name="txtMasterITF14" Width="250"  MaxLength="14" LostFocus="TxtMasterITF14_OnLostFocus" TextChanged="TxtMasterITF14_OnTextChanged" KeyDown="TxtMasterITF14_OnKeyDown"/>
                 <Image Name="imgApprovalMaster"  Margin="10"  Source="../Content/Icon/approval.png" Height="30" Visibility="Collapsed" />
-                <Image Name="imgDuplicateITFMaster"  Margin="10"  Source="../Content/Icon/minus.png" Height="30" Visibility="Collapsed" />
+                <Image Name="imgDuplicateITFMaster"  Margin="10"  Source="../Content/Icon/minus.png" Height="30" Visibility="Collapsed" MouseRightButtonDown="ImgDuplicateITFMaster_OnMouseRightButtonDown" />
             </StackPanel>
             <UniformGrid Columns="1" Rows="6" Grid.Row="1" Grid.Column="2" Margin="0 50 0 0">
                 <StackPanel HorizontalAlignment="Left">
@@ -141,18 +141,22 @@
                     <TextBox Name="txtHeightMaster" Width="300" KeyDown="TxtHeightMaster_OnKeyDown"/>
                 </StackPanel>
                 <TextBlock/>
-                <Button Name="btnAddMaster" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0" Click="BtnAddMaster_OnClick"  >
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="IsEnabled" Value="False"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=imgApprovalMaster,Path=Visibility}" Value="Visible">
-                                    <Setter Property="IsEnabled" Value="True"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btnUpdateMasterCarton" Content="Update Master Carton" FontSize="18" Foreground="White" Background="OrangeRed" Width="250" Height="40" Margin="50 0 0 0" Click="BtnUpdateMasterCarton_OnClick" Visibility="Hidden"/>
+                    <Button Name="btnAddMaster" Content="Submit" FontSize="18" Foreground="White" Background="Green" Width="150" Height="40" Margin="50 0 0 0" Click="BtnAddMaster_OnClick"  >
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=imgApprovalMaster,Path=Visibility}" Value="Visible">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+                
 
             </UniformGrid>
 

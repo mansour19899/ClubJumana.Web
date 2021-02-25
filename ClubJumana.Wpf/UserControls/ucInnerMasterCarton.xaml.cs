@@ -117,14 +117,32 @@ namespace ClubJumana.Wpf.UserControls
         public event EventHandler<EventArgs> CheckExistITF14Master;
         private void TxtMasterITF14_OnLostFocus(object sender, RoutedEventArgs e)
         {
+            ClearDimensionMaserCarton();
             e.Handled = true;
             if (CheckExistITF14Master != null)
                 CheckExistITF14Master(sender, e);
         }
 
+        private void ClearDimensionMaserCarton()
+        {
+            txtLengthMaster.Clear();
+            txtWidthMaster.Clear();
+            txtHeightMaster.Clear();
+            txtWeightMaster.Clear();
+            btnUpdateMasterCarton.IsEnabled = false;
+        }
+
         private void TxtMasterITF14_OnKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = SetNumeric(sender, e);
+            if (e.Key == Key.Enter)
+            {
+                txtWeightMaster.Focus();
+            }
+            else
+            {
+                e.Handled = SetNumeric(sender, e);
+            }
+
         }
 
         private void BtnShowInnerPage_OnClick(object sender, RoutedEventArgs e)
@@ -312,6 +330,22 @@ namespace ClubJumana.Wpf.UserControls
         private void TxtHeightMaster_OnKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = SetNumeric(sender, e,true);
+        }
+
+        public event EventHandler<EventArgs> LoadMasterCarton;
+        private void ImgDuplicateITFMaster_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (LoadMasterCarton != null)
+                LoadMasterCarton(sender, e);
+        }
+
+        public event EventHandler<EventArgs> UpdateMasterCarton;
+        private void BtnUpdateMasterCarton_OnClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (UpdateMasterCarton != null)
+                UpdateMasterCarton(sender, e);
         }
     }
 }

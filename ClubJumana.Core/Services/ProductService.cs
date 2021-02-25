@@ -184,5 +184,13 @@ namespace ClubJumana.Core.Services
                 .ThenInclude(p=>p.Inner).ThenInclude(p=>p.ProductMaster).ThenInclude(p=>p.Uom)
                 .FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
+
+        public int UpdateMasterCarton(MasterCarton master)
+        {
+            DetachedAllEntries();
+            _context.mastercartons.Update(master);
+            _context.SaveChanges();
+            return 1;
+        }
     }
 }
