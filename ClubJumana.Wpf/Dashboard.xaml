@@ -145,7 +145,7 @@
                             <GridViewColumn Header="Buy For Vendor" Width="300" DisplayMemberBinding="{Binding Path=ProductType.Name}" />
                             <GridViewColumn Header="Vendor Invoice NO." Width="320" DisplayMemberBinding="{Binding Path=TotalPricee}"/>
                             <GridViewColumn Header="Amount" Width="300" DisplayMemberBinding="{Binding Path=TotalPrice}" />
-                            <GridViewColumn Header="Last Modified" Width="200" DisplayMemberBinding="{Binding Path=LastModified}" />
+                            <GridViewColumn Header="Last Modified" Width="200" DisplayMemberBinding="{Binding Path=LastModified, StringFormat='MMM dd, yyyy'}" />
                         </GridView>
                     </ListView.View>
                 </ListView>

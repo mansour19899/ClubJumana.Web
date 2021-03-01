@@ -386,7 +386,7 @@
                                 </StackPanel>
                                 <Grid>
                                     <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Style="{StaticResource StyleReadOnly}" FontSize="{StaticResource Font1}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='dd MMM yyyy , HH : mm  '}" Grid.Row="0" Grid.Column="1"  />
+                                    <TextBlock Style="{StaticResource StyleReadOnly}" FontSize="{StaticResource Font1}" HorizontalAlignment="Center" Text="{Binding LastEdit, StringFormat='MMM dd, yyyy -- HH : mm'}" Grid.Row="0" Grid.Column="1"  />
                                 </Grid>
                             </UniformGrid>
                         </UniformGrid>
@@ -523,7 +523,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalPrice}" FontSize="28" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalPrice,StringFormat=N2}" FontSize="28" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
 
