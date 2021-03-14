@@ -24,11 +24,13 @@ namespace ClubJumana.Wpf.UserControls
     public partial class ucStockTake : UserControl
     {
         private ObservableCollection<ItemStockViewMode> itemsStockList;
+        private List<ItemStockViewMode> NewItemsStockList;
         private int count = 0;
         public ucStockTake()
         {
             InitializeComponent();
             itemsStockList=new ObservableCollection<ItemStockViewMode>();
+            NewItemsStockList=new List<ItemStockViewMode>();
         }
 
         private void Button1_Click(object sender, RoutedEventArgs e)
@@ -54,6 +56,16 @@ namespace ClubJumana.Wpf.UserControls
         }
 
 
+        private void BtnExport_OnClick(object sender, RoutedEventArgs e)
+        {
+            var res = itemsStockList.GroupBy(x => x.Barcode);
+            int Id = 0;
+            foreach (var item in res)
+            {
+                Id++;
+                NewItemsStockList.Add(new ItemStockViewMode(){Id =Id,Barcode = item.Key,Quantity = item.Count()});
+            }
+        }
     }
 
     public class ItemStockViewMode : INotifyPropertyChanged
