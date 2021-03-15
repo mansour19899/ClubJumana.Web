@@ -670,25 +670,24 @@ namespace ClubJumana.Wpf
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
-                MessageBox.Show(dlg.FileName);
-            }
 
-            FileInfo existingFile = new FileInfo(dlg.FileName);
-            using (ExcelPackage package = new ExcelPackage(existingFile))
-            {
-                //get the first worksheet in the workbook
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                int colCount = worksheet.Dimension.End.Column;  //get Column Count
-                int rowCount = worksheet.Dimension.End.Row;     //get row count
-                List<string> rrr=new List<string>();
-                for (int row = 1; row <= rowCount; row++)
+                FileInfo existingFile = new FileInfo(dlg.FileName);
+                using (ExcelPackage package = new ExcelPackage(existingFile))
                 {
-                    //for (int col = 1; col <= colCount; col++)
-                    //{
-                    //   rrr.Add(" Row:" + row + " column:" + col + " Value:" + worksheet.Cells[row, col].Value.ToString().Trim());
+                    //get the first worksheet in the workbook
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    int colCount = worksheet.Dimension.End.Column;  //get Column Count
+                    int rowCount = worksheet.Dimension.End.Row;     //get row count
+                    List<string> rrr = new List<string>();
+                    for (int row = 1; row <= rowCount; row++)
+                    {
+                        //for (int col = 1; col <= colCount; col++)
+                        //{
+                        //   rrr.Add(" Row:" + row + " column:" + col + " Value:" + worksheet.Cells[row, col].Value.ToString().Trim());
 
-                    //}
-                    AddItem(worksheet.Cells[row, 1].Value.ToString().Trim(), worksheet.Cells[row, 2].Value.ToString().Trim(), worksheet.Cells[row, 3].Value.ToString().Trim());
+                        //}
+                        AddItem(worksheet.Cells[row, 1].Value.ToString().Trim(), worksheet.Cells[row, 2].Value.ToString().Trim(), worksheet.Cells[row, 3].Value.ToString().Trim());
+                    }
                 }
             }
 
