@@ -21,6 +21,7 @@ using ClubJumana.Core.Services.Interfaces;
 using ClubJumana.DataLayer.Entities;
 using ClubJumana.DataLayer.Entities.Users;
 using ClubJumana.Wpf.UserControls;
+using JetBrains.Annotations;
 using MaterialDesignThemes.Wpf;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -105,6 +106,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.BtnSaveOnClick += BtnSaveSalesOrder_OnBtnSaveOnClick;
             Purchasing.BtnSaveOnClick += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnAddItemOnClick += BtnAddItem_OnClick;
+            Purchasing.BtnImportItem += BtnImportItem_OnClick;
             Purchasing.BtnPostPurchasing += BtnSavePurchasing_OnBtnSaveOnClick;
             Purchasing.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             Purchasing.BtnPrintOrSend += BtnPrintOrSend_OnBtnPrintOrSendOnClick;
@@ -656,7 +658,45 @@ namespace ClubJumana.Wpf
                 UPCForSearch = Purchasing.txtSearch.Text;
             }
 
-            var SearchMasterProduct = _repositoryService.GiveMeProductMasterByUPC(UPCForSearch);
+            AddItem(UPCForSearch,null,null);
+
+
+        }
+        private void BtnImportItem_OnClick(object? sender, EventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".png";
+            dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                MessageBox.Show(dlg.FileName);
+            }
+
+            FileInfo existingFile = new FileInfo(dlg.FileName);
+            using (ExcelPackage package = new ExcelPackage(existingFile))
+            {
+                //get the first worksheet in the workbook
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                int colCount = worksheet.Dimension.End.Column;  //get Column Count
+                int rowCount = worksheet.Dimension.End.Row;     //get row count
+                List<string> rrr=new List<string>();
+                for (int row = 1; row <= rowCount; row++)
+                {
+                    //for (int col = 1; col <= colCount; col++)
+                    //{
+                    //   rrr.Add(" Row:" + row + " column:" + col + " Value:" + worksheet.Cells[row, col].Value.ToString().Trim());
+
+                    //}
+                    AddItem(worksheet.Cells[row, 1].Value.ToString().Trim(), worksheet.Cells[row, 2].Value.ToString().Trim(), worksheet.Cells[row, 3].Value.ToString().Trim());
+                }
+            }
+
+        }
+
+        private void AddItem(string Barcode, [CanBeNull] string Quantity,[CanBeNull] string Rate)
+        {
+            var SearchMasterProduct = _repositoryService.GiveMeProductMasterByUPC(Barcode);
             if (SearchMasterProduct == null)
             {
                 MessageBox.Show("Item Not Found");
@@ -673,9 +713,9 @@ namespace ClubJumana.Wpf
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id,
                             Discount = 0,
-                            Quantity = 0,
+                            Quantity = (Quantity == null) ? 0 : Convert.ToInt32(Quantity.Replace(",", "")),
                             TotalPrice = 0m,
-                            Price = SearchMasterProduct.WholesalePrice.Value,
+                            Price = (Rate == null) ? SearchMasterProduct.WholesalePrice.Value : Convert.ToDecimal(Rate.Replace(",", "")),
                             Cost = SearchMasterProduct.Cost.Value
                         };
 
@@ -686,7 +726,8 @@ namespace ClubJumana.Wpf
                     case Mode.PO:
                         SelectedPo.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
                         {
-                            Price = SearchMasterProduct.FobPrice.Value,
+                            Price =(Rate==null) ? SearchMasterProduct.FobPrice.Value : Convert.ToDecimal(Rate.Replace(",", "")),
+                            Quantity = (Quantity==null)?0: Convert.ToInt32(Quantity.Replace(",","")),
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id
                         });
@@ -695,7 +736,8 @@ namespace ClubJumana.Wpf
                     case Mode.Asn:
                         SelectedAsn.ItemsOfPurchaseOrderViewModels.Add(new ItemsOfPurchaseOrderViewModel()
                         {
-                            Price = SearchMasterProduct.FobPrice.Value,
+                            Price = (Rate == null) ? SearchMasterProduct.FobPrice.Value : Convert.ToDecimal(Rate.Replace(",", "")),
+                            Quantity = (Quantity == null) ? 0 : Convert.ToInt32(Quantity.Replace(",", "")),
                             ProductMaster = SearchMasterProduct,
                             ProductMaster_fk = SearchMasterProduct.Id
                         });
@@ -711,10 +753,7 @@ namespace ClubJumana.Wpf
                 }
 
             }
-
-
         }
-
         private void BtnCreateInner_OnClick(object? sender, EventArgs e)
         {
             UCInnerMasterCarton.productMaster = _productService.GetProductMasterById(_dataContextVM.ProductMaster.Id);

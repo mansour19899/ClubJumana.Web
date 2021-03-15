@@ -330,5 +330,12 @@ namespace ClubJumana.Wpf.UserControls
                 BtnAddItemOnClick(sender, e);
             }
         }
+        public event EventHandler<EventArgs> BtnImportItem;
+        private void BtnImportItems_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (BtnImportItem != null)
+                BtnImportItem(sender, e);
+        }
     }
 }
