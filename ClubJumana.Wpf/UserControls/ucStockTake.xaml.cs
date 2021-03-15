@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using JetBrains.Annotations;
+using OfficeOpenXml;
 
 namespace ClubJumana.Wpf.UserControls
 {
@@ -60,10 +62,41 @@ namespace ClubJumana.Wpf.UserControls
         {
             var res = itemsStockList.GroupBy(x => x.Barcode);
             int Id = 0;
+            NewItemsStockList.Clear();
             foreach (var item in res)
             {
                 Id++;
                 NewItemsStockList.Add(new ItemStockViewMode(){Id =Id,Barcode = item.Key,Quantity = item.Count()});
+            }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".png";
+            dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+
+                FileInfo existingFile = new FileInfo(dlg.FileName);
+                using (ExcelPackage package = new ExcelPackage(existingFile))
+                {
+                    //get the first worksheet in the workbook
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    int colCount = worksheet.Dimension.End.Column;  //get Column Count
+                    int rowCount = worksheet.Dimension.End.Row;     //get row count
+                    List<string> rrr = new List<string>();
+                    int Id = 0;
+                    for (int row = 1; row <= rowCount; row++)
+                    {
+                        Id++;
+
+                        itemsStockList.Add(new ItemStockViewMode() { Id = Id, Barcode = worksheet.Cells[row, 1].Value.ToString().Trim() });
+                        dgItems.ItemsSource = itemsStockList.Reverse();
+                        dgItems.Items.Refresh();
+                    }
+                }
             }
         }
     }

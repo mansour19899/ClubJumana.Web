@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <TextBlock Text="Stock Take" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="Navy" FontWeight="Bold"/>
         <UniformGrid Grid.Row="1" Rows="1" Columns="3">
-            <Button Content="Import" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="150" Height="60" Background="DarkGreen" Foreground="White" FontSize="23" />
+            <Button Content="Import" Click="ButtonBase_OnClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="150" Height="60" Background="DarkGreen" Foreground="White" FontSize="23" />
             <TextBox Name="txtInsertBarcode"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="400" Height="60" KeyDown="TxtInsertBarcode_OnKeyDown" />
             <Button Name="btnExport" Click="BtnExport_OnClick" Content="Export" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="150" Height="60" Background="DarkSlateBlue" Foreground="White" FontSize="23" />
         </UniformGrid>
