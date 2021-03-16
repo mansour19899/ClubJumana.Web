@@ -234,10 +234,19 @@ namespace ClubJumana.Wpf2
                         viewModel.LvProductItemSource = ListForLvProduct;
                         break;
                     case 4:
-
-                        var ttt = VaraintList.Where(p => p.Product.ProductTittle != null)
-                            .Where(p => p.Product.ProductTittle.ToLower().Trim().Contains(txtSearch.Text.ToLower().Trim())).ToList();
-                        ListForLvProduct = new ObservableCollection<VariantViewModel>(ttt);
+                        var SearchWords = txtSearch.Text.Trim().ToLower().Split(' ');
+                        List<VariantViewModel> tr=VaraintList.ToList();
+                        List<VariantViewModel> trr=new List<VariantViewModel>();
+                        foreach (var word in SearchWords)
+                        {
+                            trr = tr.Where(p => p.Product.ProductTittle != null)
+                                .Where(p => p.Product.ProductTittle.ToLower().Trim().Contains(word.Trim())).ToList();
+                            tr.Clear();
+                            tr = trr.ToList();
+                        }
+                        //var ttt = VaraintList.Where(p => p.Product.ProductTittle != null)
+                        //    .Where(p => p.Product.ProductTittle.ToLower().Trim().Contains(txtSearch.Text.ToLower().Trim())).ToList();
+                        ListForLvProduct = new ObservableCollection<VariantViewModel>(tr);
                         viewModel.LvProductItemSource = ListForLvProduct;
 
                         break;
