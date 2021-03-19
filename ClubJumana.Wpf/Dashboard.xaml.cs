@@ -715,7 +715,7 @@ namespace ClubJumana.Wpf
                             Quantity = (Quantity == null) ? 0 : Convert.ToInt32(Quantity.Replace(",", "")),
                             TotalPrice = 0m,
                             Price = (Rate == null) ? SearchMasterProduct.WholesalePrice.Value : Convert.ToDecimal(Rate.Replace(",", "")),
-                            Cost = SearchMasterProduct.Cost.Value
+                            Cost = (SearchMasterProduct.Cost.Value == null) ? SearchMasterProduct.FobPrice.Value : SearchMasterProduct.Cost.Value,
                         };
 
                         UCSaleOrder.SaleOrderViewModel.SoItems.Add(Newitem);

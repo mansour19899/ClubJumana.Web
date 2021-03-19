@@ -503,7 +503,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalPrice}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding SubtotalPrice,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Name="TotalChargePart6" Columns="2" Rows="1">
@@ -513,7 +513,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <Rectangle  Style="{StaticResource StyleReadOnlyRec}"  Grid.Row="0" Grid.Column="1"/>
-                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalCharges}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
+                                        <TextBlock Style="{StaticResource StyleReadOnly}" Text="{Binding TotalCharges,StringFormat=N2}" FontSize="20" Grid.Row="0" Grid.Column="1"  />
                                     </Grid>
                                 </UniformGrid>
                                 <UniformGrid Columns="2" Rows="1">
