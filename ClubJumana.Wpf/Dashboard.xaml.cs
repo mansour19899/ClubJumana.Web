@@ -1284,6 +1284,8 @@ namespace ClubJumana.Wpf
         private void BtnItem_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             HideListview();
+            txtMode.Text = "Product Master";
+            btnExportInventory.Visibility = Visibility.Visible;
             lvProductMaster.Visibility = Visibility.Visible;
             lvProductMaster.ItemsSource = _repositoryService.AllProductMasterList().ToList();
 
@@ -1400,6 +1402,73 @@ namespace ClubJumana.Wpf
             UCStockTake = new ucStockTake();
             Bordermanagement.Child = UCStockTake;
             SubPage.Visibility = Visibility.Visible;
+        }
+
+        private void BtnExportInventory_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".xlsx";
+            dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+            string filename="";
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                filename = dlg.FileName;
+                ExportInv();
+                
+            }
+
+            void ExportInv()
+            {
+                var list = _repositoryService.AllProductMasterList().ToList();
+
+
+                var Path = AppDomain.CurrentDomain.BaseDirectory;
+                FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "InvExort.xlsx");
+
+                string filee = filename;
+                FileInfo newFilee = new FileInfo(filee);
+                try
+                {
+                    if (newFilee.Exists)
+                        newFilee.Delete();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error in Export");
+                }
+
+                ExcelPackage excel = new ExcelPackage(newFilee, newFile);
+
+                var wss = excel.Workbook.Worksheets;
+                var ws = excel.Workbook.Worksheets.ElementAt(0);
+                int i = 2;
+                StringBuilder Description;
+                foreach (var item in list)
+                {
+                    ws.Cells[i, 1].Value = item.Id;
+                    ws.Cells[i, 2].Value = item.Name;
+                    ws.Cells[i, 3].Value = item.UPC;
+                    ws.Cells[i, 4].Value = item.SKU;
+                    ws.Cells[i, 5].Value = item.StockOnHand;
+                    ws.Cells[i, 6].Value = item.GoodsReserved.ToString();
+                    ws.Row(i).Height = 66;
+                    ++i;
+                }
+
+                FileStream objFileStrm = File.Create(filee);
+                objFileStrm.Close();
+
+                // Write content to excel file  
+                File.WriteAllBytes(filee, excel.GetAsByteArray());
+            }
+            myMessageQueue.Enqueue("Inventory Excel Created.");
+
         }
     }
 

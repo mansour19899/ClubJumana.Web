@@ -130,6 +130,46 @@
                         <TextBlock Text="More Options" FontSize="{StaticResource Font}" VerticalAlignment="Center" Foreground="#FF505C6D"/>
                         <Image  Source="Content/Icon/ExpandArrowIcon.png"  Margin="5 5 0 0"  />
                     </StackPanel>
+                    <Menu
+                        IsMainMenu="True">
+                        <MenuItem
+                            Header="More Options">
+                            <MenuItem Name="btnExportInventory" Visibility="Collapsed" Click="BtnExportInventory_OnClick"
+                                Header="Export Inventory">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon
+                                        Kind="DatabaseExport" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem
+                            Header="_Edit">
+                            <MenuItem
+                                Header="_Cut"
+                                Command="Cut">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon
+                                        Kind="ContentCut" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Header="_Copy"
+                                Command="Copy">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon
+                                        Kind="ContentCopy" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem
+                                Header="_Paste"
+                                Command="Paste">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon
+                                        Kind="ContentPaste" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
                 </StackPanel>
             </Border>
             <Grid Grid.Row="1">
