@@ -125,6 +125,7 @@ namespace ClubJumana.Wpf
             UCInnerMasterCarton.UpdateMasterCarton += UpdateMasterCaarton_OnClick;
             UCSaleOrder.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnPostSalesOrder += BtnPostSalesOrder_OnBtnCloseSubPageOnClick;
+            UCSaleOrder.BtnImportItem += BtnImportItem_OnClick;
             UCCustomer.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCVendorCard.BtnCloseSubPage += BtnCloseSubPage_OnBtnCloseSubPageOnClick;
             UCSaleOrder.BtnRecivePayment += BtnbtnRecivePayment_OnbtnRecivePaymentOnClick;
@@ -686,7 +687,15 @@ namespace ClubJumana.Wpf
                         //   rrr.Add(" Row:" + row + " column:" + col + " Value:" + worksheet.Cells[row, col].Value.ToString().Trim());
 
                         //}
-                        AddItem(worksheet.Cells[row, 1].Value.ToString().Trim(), worksheet.Cells[row, 2].Value.ToString().Trim(), worksheet.Cells[row, 3].Value.ToString().Trim());
+                        try
+                        {
+                            AddItem(worksheet.Cells[row, 1].Value.ToString().Trim(), worksheet.Cells[row, 2].Value.ToString().Trim(), worksheet.Cells[row, 3].Value.ToString().Trim());
+                        }
+                        catch (Exception exception)
+                        {
+                            MessageBox.Show("Row " + row + " is Null");
+                        }
+                      
                     }
                 }
             }
