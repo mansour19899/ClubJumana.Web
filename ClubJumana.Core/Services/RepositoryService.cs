@@ -1140,6 +1140,10 @@ namespace ClubJumana.Core.Services
             return ResponseDescription;
         }
 
-
+        public IQueryable<ProductMaster> AllProductMasterWithInventoryList()
+        {
+                return onlineDb.productmasters.OrderBy(p => p.Id).Include(p=>p.ProductInventoryWarehouses)
+                    .ThenInclude(p=>p.Warehouse).AsNoTracking();
+        }
     }
 }

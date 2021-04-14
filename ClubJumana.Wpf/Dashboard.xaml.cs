@@ -1407,7 +1407,7 @@ namespace ClubJumana.Wpf
         private void BtnExportInventory_OnClick(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Document"; // Default file name
+            dlg.FileName = "Inv "+DateTime.Today.ToShortDateString(); // Default file name
             dlg.DefaultExt = ".xlsx";
             dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
 
@@ -1425,7 +1425,7 @@ namespace ClubJumana.Wpf
 
             void ExportInv()
             {
-                var list = _repositoryService.AllProductMasterList().ToList();
+                var list = _repositoryService.AllProductMasterWithInventoryList().ToList();
 
 
                 var Path = AppDomain.CurrentDomain.BaseDirectory;
@@ -1447,8 +1447,12 @@ namespace ClubJumana.Wpf
 
                 var wss = excel.Workbook.Worksheets;
                 var ws = excel.Workbook.Worksheets.ElementAt(0);
+                var ws2 = excel.Workbook.Worksheets.ElementAt(1);
+                var ws3 = excel.Workbook.Worksheets.ElementAt(2);
                 int i = 2;
                 StringBuilder Description;
+                ProductInventoryWarehouse OfficItem;
+                ProductInventoryWarehouse BenchmarkItem;
                 foreach (var item in list)
                 {
                     ws.Cells[i, 1].Value = item.Id;
@@ -1457,7 +1461,59 @@ namespace ClubJumana.Wpf
                     ws.Cells[i, 4].Value = item.SKU;
                     ws.Cells[i, 5].Value = item.StockOnHand;
                     ws.Cells[i, 6].Value = item.GoodsReserved.ToString();
+                    ws.Cells[i, 7].Value = item.Transit.ToString();
+                    ws.Cells[i, 8].Value = item.RefundQuantity.ToString();
+                    ws.Cells[i, 9].Value = item.Income.ToString();
+                    ws.Cells[i, 10].Value = item.Outcome.ToString();
                     ws.Row(i).Height = 66;
+
+                    OfficItem = item.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 3);
+                    ws2.Cells[i, 1].Value = item.Id;
+                    ws2.Cells[i, 2].Value = item.Name;
+                    ws2.Cells[i, 3].Value = item.UPC;
+                    ws2.Cells[i, 4].Value = item.SKU;
+                    ws2.Row(i).Height = 66;
+                    if (OfficItem!=null)
+                    {
+                        ws2.Cells[i, 5].Value = OfficItem.Inventory;
+                        ws2.Cells[i, 6].Value = OfficItem.OnTheWayInventory.ToString();
+                        ws2.Cells[i, 7].Value = OfficItem.RefundQuantity.ToString();
+                        ws2.Cells[i, 8].Value = OfficItem.Income.ToString();
+                        ws2.Cells[i, 9].Value = OfficItem.OutCome.ToString();
+                    }
+                    else
+                    {
+                        ws2.Cells[i, 5].Value = 0;
+                        ws2.Cells[i, 6].Value = 0;
+                        ws2.Cells[i, 7].Value = 0;
+                        ws2.Cells[i, 8].Value = 0;
+                        ws2.Cells[i, 9].Value = 0;
+                    }
+
+                    BenchmarkItem = item.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 2);
+                    ws3.Cells[i, 1].Value = item.Id;
+                    ws3.Cells[i, 2].Value = item.Name;
+                    ws3.Cells[i, 3].Value = item.UPC;
+                    ws3.Cells[i, 4].Value = item.SKU;
+                    ws3.Row(i).Height = 66;
+                    if (BenchmarkItem != null)
+                    {
+                        ws3.Cells[i, 5].Value = BenchmarkItem.Inventory;
+                        ws3.Cells[i, 6].Value = BenchmarkItem.OnTheWayInventory.ToString();
+                        ws3.Cells[i, 7].Value = BenchmarkItem.RefundQuantity.ToString();
+                        ws3.Cells[i, 8].Value = BenchmarkItem.Income.ToString();
+                        ws3.Cells[i, 9].Value = BenchmarkItem.OutCome.ToString();
+                    }
+                    else
+                    {
+                        ws3.Cells[i, 5].Value = 0;
+                        ws3.Cells[i, 6].Value = 0;
+                        ws3.Cells[i, 7].Value = 0;
+                        ws3.Cells[i, 8].Value = 0;
+                        ws3.Cells[i, 9].Value = 0;
+                    }     
+
+
                     ++i;
                 }
 

@@ -11,6 +11,7 @@ namespace ClubJumana.Core.Services.Interfaces
     {
         void UpdateLocalDb();
         IQueryable<ProductMaster> AllProductMasterList();
+        IQueryable<ProductMaster> AllProductMasterWithInventoryList();
         IQueryable<PurchaseOrder> AllPurchaseOrder();
         IQueryable<SaleOrder> AllOrders();
         IQueryable<Warehouse> AllWarehouse();
