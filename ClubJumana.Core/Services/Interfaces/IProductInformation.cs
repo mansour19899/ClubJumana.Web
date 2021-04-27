@@ -18,6 +18,7 @@ namespace ClubJumana.Core.Services.Interfaces
         public List<VariantViewModel> AllStarVariantList();
         public Product GiveMeProductWithId(int Id);
         public Variant GiveMeVariantWithId(int Id);
+        public Variant GiveMeVariantWithSkuUpc(string txtSearch);
         public int AddSku(int Id, string Sku);
         public int AddBarcode(int Id);
         public int AddOrUpdateVariant(Variant variant, int ProductId,bool UpdateSameVariant);

@@ -925,5 +925,28 @@ namespace ClubJumana.Core.Services
 
 
         }
+
+        public Variant GiveMeVariantWithSkuUpc(string txtSearch)
+        {
+            Variant variant;
+            if (Consts.Consts.OnlineModeOnly)
+            {
+                variant = _onlineContext.variants.AsNoTracking().Include(p => p.Product).Include(p => p.Images).Include(p => p.Barcode).Include(p => p.Colour).Include(p => p.Product).ThenInclude(p => p.Material)
+                    .Include(p => p.Product).ThenInclude(p => p.Brand).Include(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).FirstOrDefault(p => p.Sku.Trim().CompareTo(txtSearch.Trim())==0|| p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Trim()) == 0);
+
+            }
+            else
+            {
+                variant = _onlineContext.variants.AsNoTracking().Include(p => p.Product).Include(p => p.Images).Include(p => p.Barcode).Include(p => p.Colour).Include(p => p.Product).ThenInclude(p => p.Material)
+                    .Include(p => p.Product).ThenInclude(p => p.Brand).Include(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.Category).Include(p => p.ProductType)
+                    .ThenInclude(p => p.CategoriesSubCategory).ThenInclude(p => p.SubCategory).Include(p => p.Product).ThenInclude(p => p.CountryOfOrgin).FirstOrDefault(p => p.Sku.Trim().CompareTo(txtSearch.Trim()) == 0 || p.Barcode.BarcodeNumber.Trim().CompareTo(txtSearch.Trim()) == 0);
+
+            }
+
+            return variant;
+        }
     }
 }

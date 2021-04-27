@@ -38,10 +38,18 @@ namespace ClubJumana.Web.Controllers
         // GET api/<ProductInformation>/5
         [HttpGet("{id}")]
 
-        public Variant Get(int id)
+        public Variant Get(string id)
         {
-            var tt = _productInformationService.GiveMeVariantById(id);
-            return tt;
+            var tt = _productInformationService.GiveMeVariantWithSkuUpc(id);
+            if(tt==null)
+            {
+                return new Variant() {Id=-1, Sku="Not Find"};
+            }
+            else
+            {
+                return tt;
+            }
+            
         }
 
         // POST api/<ProductInformation>
