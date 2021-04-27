@@ -35,6 +35,27 @@
                     <div class="card-body gradient-4">
                         <div class="media">
                             <div class="media-body">
+                                <h2 class="card-widget__title">{{ age.productType.name }}</h2>
+                                <h5 class="card-widget__subtitle">Product Type</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <div class="card card-widget">
+                    <div class="card-body gradient-4">
+                        <div class="media">
+                            <div class="media-body">
                                 <h2 class="card-widget__title">{{ age.sku }}</h2>
                                 <h5 class="card-widget__subtitle">Sku</h5>
                             </div>
@@ -69,6 +90,27 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                <div class="card card-widget">
+                    <div class="card-body gradient-4">
+                        <div class="media">
+                            <div class="media-body">
+                                <h2 class="card-widget__title">{{ age.note}}</h2>
+                                <h5 class="card-widget__subtitle">NOTE</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+
+            </div>
+        </div>
+        <div class="row">
             <div class="col-3">
                 <div class="card card-widget">
                     <div class="card-body gradient-3">
@@ -82,7 +124,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-3">
                 <div class="card card-widget">
                     <div class="card-body gradient-4">
@@ -96,7 +137,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-3">
                 <div class="card card-widget">
                     <div class="card-body gradient-4">
@@ -110,7 +150,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-3">
                 <div class="card card-widget">
                     <div class="card-body gradient-9">
@@ -119,6 +158,32 @@
                             <div class="media-body">
                                 <h2 class="card-widget__title">{{ age.size }}</h2>
                                 <h5 class="card-widget__subtitle">Size</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-widget">
+                    <div class="card-body gradient-9">
+                        <div class="media">
+                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
+                            <div class="media-body">
+                                <h2 class="card-widget__title">{{ age.wholesaleB }}</h2>
+                                <h5 class="card-widget__subtitle">WholeSaleB</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-widget">
+                    <div class="card-body gradient-9">
+                        <div class="media">
+                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
+                            <div class="media-body">
+                                <h2 class="card-widget__title">{{ age.retailPrice }}</h2>
+                                <h5 class="card-widget__subtitle">Retail Price</h5>
                             </div>
                         </div>
                     </div>
@@ -144,6 +209,7 @@
                     idd: '6',
                     search:'',
                     add: 'https://localhost:44374/api/ProductInformation/',
+                    aded: 'https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' ,
                     addd:"hhh"
                     
                 }
@@ -151,7 +217,7 @@
             methods: {
                 getSearch() {
                     this.idd = this.search,
-                    fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
+                        fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
                         .then(res => res.json())
                         .then(data => this.age = data)
                         .catch(err => console.log(err.message))
