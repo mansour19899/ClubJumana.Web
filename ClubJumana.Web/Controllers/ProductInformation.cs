@@ -38,9 +38,9 @@ namespace ClubJumana.Web.Controllers
         // GET api/<ProductInformation>/5
         [HttpGet("{id}")]
 
-        public Product Get(int id)
+        public Variant Get(int id)
         {
-            var tt = _productInformationService.GiveMeProductWithId(id);
+            var tt = _productInformationService.GiveMeVariantById(id);
             return tt;
         }
 
