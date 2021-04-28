@@ -43,13 +43,26 @@ namespace ClubJumana.Web.Controllers
             var tt = _productInformationService.GiveMeVariantWithSkuUpc(id);
             if(tt==null)
             {
-                return new Variant() {Id=-1, Sku="Not Find"};
+                tt= new Variant() {Id=-1};
             }
-            else
+            if (tt.ProductType == null)
+                tt.ProductType = new ProductType() { Name = "-" };
+            if (tt.Sku == null || tt.Sku == "")
+                tt.Sku = "-";
+            if (tt.Product == null)
+                tt.Product = new Product() { ProductTittle = "-" ,StyleNumber="-"};
+            else if(tt.Product.ProductTittle=="")
+                tt.Product.ProductTittle = "-";
+            else { 
+            }
+            if(tt.Barcode==null)
             {
-                return tt;
+                tt.Barcode = new Barcode() { BarcodeNumber = "-" };
             }
+            if (tt.Colour == null)
+                tt.Colour = new Colour() { Name = "-" };
             
+            return tt;
         }
 
         // POST api/<ProductInformation>

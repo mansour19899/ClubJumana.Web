@@ -8,189 +8,160 @@
 
 <div id="app">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-xl-3 col-lg-2 col-md-12">
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-xl-6 col-lg-8 col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title"></h4>
-                    <div class="form-inline">
+                    <div class="form-inline" style="justify-content: center;">
                         <div class="form-group mx-sm-3 mb-2">
-                            <input class="form-control" v-model="search" placeholder="Type Here" style="min-width: 300px">
+                            <input class="form-control" v-model="search"  v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
                         </div>
                         <button class="btn btn-dark mb-2" v-on:click="getSearch">Search</button>
                     </div>
                 </div>
             </div>
-        </div>
+            <div v-if="age">
+                <div v-if="age.sku=='-'" class="alert alert-danger">Product Not Found</div>
+            </div>
+            </div>
     </div>
     <div v-if="age">
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-4">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.productType.name }}</h2>
-                                <h5 class="card-widget__subtitle">Product Type</h5>
+        <div v-if="age.sku!='-'">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-6">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.productType.name }}</h2>
+                                    <h5 class="card-widget__subtitle">Product Type</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-4">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.sku }}</h2>
+                                    <h5 class="card-widget__subtitle">Sku</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-7">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.product.productTittle}}</h2>
+                                    <h5 class="card-widget__subtitle">Tittle</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-4">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-4">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.sku }}</h2>
-                                <h5 class="card-widget__subtitle">Sku</h5>
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-1">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.product.styleNumber }}</h2>
+                                    <h5 class="card-widget__subtitle">Style Number</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-9">
+                            <div class="media">
+                                <span class="card-widget__icon"><i class="icon-tag"></i></span>
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.barcode.barcodeNumber }}</h2>
+                                    <h5 class="card-widget__subtitle">Barcode</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-6">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.colour.name }}</h2>
+                                    <h5 class="card-widget__subtitle">Color</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-4">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.size }}</h2>
+                                    <h5 class="card-widget__subtitle">Size</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-7">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.wholesaleB }}</h2>
+                                    <h5 class="card-widget__subtitle">WholeSaleB</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-6">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.retailPrice }}</h2>
+                                    <h5 class="card-widget__subtitle">Retail Price</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-4">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-4">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.product.productTittle}}</h2>
-                                <h5 class="card-widget__subtitle">Tittle</h5>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-widget">
+                        <div class="card-body gradient-4">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h2 class="card-widget__title">{{ age.note}}</h2>
+                                    <h5 class="card-widget__subtitle">NOTE</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-4">
+                <div class="col-4">
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-4">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.note}}</h2>
-                                <h5 class="card-widget__subtitle">NOTE</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-4">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-3">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-home"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.product.styleNumber }}</h2>
-                                <h5 class="card-widget__subtitle">Style Number</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-tag"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.barcode.barcodeNumber }}</h2>
-                                <h5 class="card-widget__subtitle">Barcode</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-4">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-emotsmile"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.colour.name }}</h2>
-                                <h5 class="card-widget__subtitle">Color</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-9">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.size }}</h2>
-                                <h5 class="card-widget__subtitle">Size</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-9">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.wholesaleB }}</h2>
-                                <h5 class="card-widget__subtitle">WholeSaleB</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-widget">
-                    <div class="card-body gradient-9">
-                        <div class="media">
-                            <span class="card-widget__icon"><i class="icon-ghost"></i></span>
-                            <div class="media-body">
-                                <h2 class="card-widget__title">{{ age.retailPrice }}</h2>
-                                <h5 class="card-widget__subtitle">Retail Price</h5>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-
     </div>
     <div v-else>
         <p></p>
@@ -217,7 +188,7 @@
             methods: {
                 getSearch() {
                     this.idd = this.search,
-                        fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
+                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + this.idd)
                         .then(res => res.json())
                         .then(data => this.age = data)
                         .catch(err => console.log(err.message))
