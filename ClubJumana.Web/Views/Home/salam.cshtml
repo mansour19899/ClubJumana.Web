@@ -188,15 +188,24 @@
             methods: {
                 getSearch() {
                     this.idd = this.search,
-                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + this.idd)
+                        fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
                         .then(res => res.json())
                         .then(data => this.age = data)
                         .catch(err => console.log(err.message))
 
+                },
+                getList() {
+                    this.idd = this.search,
+                        fetch('https://localhost:44374/api/ProductInformationList/' + this.idd)
+                            .then(res => res.json())
+                            .then(data => this.age = data)
+                            .catch(err => console.log(err.message))
+
                 }
             },
             mounted() {
-                this.getSearch()
+                this.getSearch(),
+                this.getList()
             }
 
 

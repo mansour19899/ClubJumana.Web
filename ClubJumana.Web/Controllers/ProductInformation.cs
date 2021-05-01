@@ -28,12 +28,12 @@ namespace ClubJumana.Web.Controllers
 
 
         // GET: api/<ProductInformation>
-        [HttpGet]
-        public List<VariantViewModel> Get()
-        {
-            var tt = _productInformationService.AllVariantList().ToList();
-            return tt.Take(10).ToList();
-        }
+        //[HttpGet]
+        //public List<VariantViewModel> Get()
+        //{
+        //    var tt = _productInformationService.AllVariantList().Take(4).ToList();
+        //    return tt;
+        //}
 
         // GET api/<ProductInformation>/5
         [HttpGet("{id}")]
@@ -62,6 +62,56 @@ namespace ClubJumana.Web.Controllers
             if (tt.Colour == null)
                 tt.Colour = new Colour() { Name = "-" };
             
+            return tt;
+        }
+
+        // POST api/<ProductInformation>
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+
+        // PUT api/<ProductInformation>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<ProductInformation>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductInformationList : ControllerBase
+    {
+        private IProductInformationService _productInformationService;
+        private IViewRenderService _viewRender;
+        public ProductInformationList(IProductInformationService productInformationService, IViewRenderService viewRender)
+        {
+            _productInformationService = productInformationService;
+            _viewRender = viewRender;
+        }
+
+
+        // GET: api/<ProductInformationList>
+        [HttpGet]
+        public List<VariantViewModel> Get()
+        {
+            var tt = _productInformationService.AllVariantList().Take(4).ToList();
+            return tt;
+        }
+
+        // GET api/<ProductInformationList>/5
+        [HttpGet("{id}")]
+
+        public List<VariantViewModel> Get(string id)
+        {
+            var tt = _productInformationService.AllVariantList().Take(4).ToList();
+
             return tt;
         }
 
