@@ -17,7 +17,7 @@
                     <h4 class="card-title"></h4>
                     <div class="form-inline" style="justify-content: center;">
                         <div class="form-group mx-sm-3 mb-2">
-                            <input class="form-control" v-model="search"  v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
+                            <input class="form-control" v-model="search" v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
                         </div>
                         <button class="btn btn-dark mb-2" v-on:click="getSearch">Search</button>
                     </div>
@@ -26,7 +26,28 @@
             <div v-if="age">
                 <div v-if="age.sku=='-'" class="alert alert-danger">Product Not Found</div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-2 col-md-12">
+
+        </div>
+        <div class="col-xl-6 col-lg-8 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"></h4>
+                    <div class="form-inline" style="justify-content: center;">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input class="form-control" v-model="search" v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
+                        </div>
+                        <button class="btn btn-dark mb-2" v-on:click="getList">Get List</button>
+                    </div>
+                </div>
             </div>
+            <div v-if="age">
+                <div v-if="age.sku=='-'" class="alert alert-danger">Product Not Found</div>
+            </div>
+        </div>
     </div>
     <div v-if="age">
         <div v-if="age.sku!='-'">
@@ -166,6 +187,41 @@
     <div v-else>
         <p></p>
     </div>
+    <ul>
+        <li>salam</li>
+        <li v-for="item in listt"><h3>{{item.id}}</h3></li>
+    </ul>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped verticle-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Alu</th>
+                    <th scope="col">Product Type</th>
+                    <th scope="col">Style Number</th>
+                    <th scope="col">Colour</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Sku</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in listt">
+                    <td><button v-on:click="callFunction" data-id={{item.id}} class="btn btn-success mb-2" style="width: 100%;">{{item.id}}</button></td>
+                    <td>{{item.productType}}</td>
+                    <td>{{item.styleNumber}}</td>
+                    <td>{{item.color}}</td>
+                    <td>{{item.size}}</td>
+                    <td>{{item.sku}}</td>
+                    <td>{{item.upc}}</td>
+                    <td>{{item.title}}</td>             
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
 
 </div>
 <script src="https://unpkg.com/vue@3.0.2"></script>
@@ -177,11 +233,12 @@
             data(){
                 return{
                     age: null,
+                    listt:null,
                     idd: '6',
                     search:'',
                     add: 'https://localhost:44374/api/ProductInformation/',
                     aded: 'https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' ,
-                    addd:"hhh"
+                    addd: "hhh",
                     
                 }
             },
@@ -198,14 +255,27 @@
                     this.idd = this.search,
                         fetch('https://localhost:44374/api/ProductInformationList/' + this.idd)
                             .then(res => res.json())
+                            .then(data => this.listt = data)
+                            .catch(err => console.log(err.message))
+
+                }
+                , getvariant() {
+                    this.idd = this.search,
+                        fetch('https://localhost:44374/api/ProductInformationById/' + this.idd)
+                            .then(res => res.json())
                             .then(data => this.age = data)
                             .catch(err => console.log(err.message))
+                },
+                callFunction: function (event) {
+                    var id = event.target.getAttribute('data-id');
+                    console.log(id);
 
                 }
             },
             mounted() {
                 this.getSearch(),
-                this.getList()
+                    this.getList(),
+                    this.getvariant()
             }
 
 

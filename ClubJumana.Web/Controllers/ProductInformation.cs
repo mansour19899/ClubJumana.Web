@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ClubJumana.Core.DTOs;
 using ClubJumana.DataLayer.Entities;
 using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,12 +29,12 @@ namespace ClubJumana.Web.Controllers
 
 
         // GET: api/<ProductInformation>
-        //[HttpGet]
-        //public List<VariantViewModel> Get()
-        //{
-        //    var tt = _productInformationService.AllVariantList().Take(4).ToList();
-        //    return tt;
-        //}
+        [HttpGet]
+        public List<VariantViewModel> Get()
+        {
+            //var tt = _productInformationService.AllVariantList().Take(4).ToList();
+            return null;
+        }
 
         // GET api/<ProductInformation>/5
         [HttpGet("{id}")]
@@ -101,18 +102,19 @@ namespace ClubJumana.Web.Controllers
         [HttpGet]
         public List<VariantViewModel> Get()
         {
-            var tt = _productInformationService.AllVariantList().Take(4).ToList();
-            return tt;
+            //var tt = _productInformationService.AllVariantList().Take(4).ToList();
+            return null;
         }
 
         // GET api/<ProductInformationList>/5
         [HttpGet("{id}")]
 
-        public List<VariantViewModel> Get(string id)
+        public string Get(int id)
         {
-            var tt = _productInformationService.AllVariantList().Take(4).ToList();
-
-            return tt;
+            var ttr = _productInformationService.AllVariantList().Select(p=> new {id=p.Id,productType=p.ProductType.Name,upc=p.Barcode.BarcodeNumber
+                ,size=p.Size,title=p.Product.ProductTittle,sku=p.SKU,styleNumber=p.Product.StyleNumber,color=p.Colour.Name }).Take(5).ToList();
+           var tyy=  Newtonsoft.Json.JsonConvert.SerializeObject(ttr);
+            return tyy;
         }
 
         // POST api/<ProductInformation>
@@ -133,4 +135,54 @@ namespace ClubJumana.Web.Controllers
         {
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductInformationById : ControllerBase
+    {
+        private IProductInformationService _productInformationService;
+        private IViewRenderService _viewRender;
+        public ProductInformationById(IProductInformationService productInformationService, IViewRenderService viewRender)
+        {
+            _productInformationService = productInformationService;
+            _viewRender = viewRender;
+        }
+
+
+        // GET: api/<ProductInformationById>
+        [HttpGet]
+        public List<VariantViewModel> Get()
+        {
+            //var tt = _productInformationService.AllVariantList().Take(4).ToList();
+            return null;
+        }
+
+        // GET api/<ProductInformationById>/5
+        [HttpGet("{id}")]
+
+        public Variant Get(int id)
+        {
+            var tt = _productInformationService.GiveMeVariantById(id);
+            return tt;
+        }
+
+        // POST api/<ProductInformationById>
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+
+        // PUT api/<ProductInformationById>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<ProductInformationById>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
+
 }
