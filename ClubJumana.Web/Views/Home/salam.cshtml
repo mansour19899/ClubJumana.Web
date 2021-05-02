@@ -4,9 +4,9 @@
     ViewData["Title"] = "salam";
 }
 
-<h1>Search Product</h1>
-
 <div id="app">
+    <a href="#" v-on:click="allow=true"><h1>Search Product {{allow}}</h1></a>
+    <p>{{keySearch}}</p>
     <div class="row">
         <div class="col-xl-3 col-lg-2 col-md-12">
 
@@ -14,33 +14,51 @@
         <div class="col-xl-6 col-lg-8 col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"></h4>
-                    <div class="form-inline" style="justify-content: center;">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <input class="form-control" v-model="search" v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
-                        </div>
-                        <button class="btn btn-dark mb-2" v-on:click="getSearch">Search</button>
-                    </div>
-                </div>
-            </div>
-            <div v-if="age">
-                <div v-if="age.sku=='-'" class="alert alert-danger">Product Not Found</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-3 col-lg-2 col-md-12">
+                    <h4 class="card-title">Club Jummana Corp</h4>
+                    <!-- Nav tabs -->
+                    <div class="custom-tab-1">
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link active show" data-toggle="tab" v-on:click="showlist=false , age=null" href="#home1">Single Search</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" v-on:click="getList" href="#profile1">List</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="home1" role="tabpanel">
+                                <div class="p-t-15">
+                                    <div class="form-inline" style="justify-content: center;">
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input class="form-control" v-model="search" v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
+                                        </div>
+                                        <button class="btn btn-dark mb-2" v-on:click="getSearch">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile1">
+                                <div class="p-t-15">
+                                    <div class="form-inline" style="justify-content: center;">
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input class="form-control" v-model="searchValue" v-on:keyup.enter="searchResult" placeholder="Type Here" style="min-width:300px;">
+                                        </div>
+                                        <div style="margin-right: 10px;">
+                                            <select class="form-control" id="selectedSearch" v-model="keySearch" v-on:change="searchValue=''">
+                                                <option value="1">Title</option>
+                                                <option value="2">SKU</option>
+                                                <option value="3">UPC</option>
+                                                <option value="4">Style Number</option>
+                                                <option value="5">Favorite List</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-dark mb-2" v-on:click="searchResult">Filter</button>
+                                        </div>
 
-        </div>
-        <div class="col-xl-6 col-lg-8 col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"></h4>
-                    <div class="form-inline" style="justify-content: center;">
-                        <div class="form-group mx-sm-3 mb-2">
-                            <input class="form-control" v-model="search" v-on:keyup.enter="getSearch" placeholder="Type Here" style="min-width:300px;">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-dark mb-2" v-on:click="getList">Get List</button>
                     </div>
                 </div>
             </div>
@@ -51,6 +69,11 @@
     </div>
     <div v-if="age">
         <div v-if="age.sku!='-'">
+            <div class="row">
+                <div class="col-4">
+                    <button class="btn btn-dark mb-2" style="padding: 10px 50px;" v-on:click="backtolist" v-show="btnBack">Back</button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xl-4 col-lg-6 col-md-12">
                     <div class="card card-widget">
@@ -187,40 +210,42 @@
     <div v-else>
         <p></p>
     </div>
-    <ul>
-        <li>salam</li>
-        <li v-for="item in listt"><h3>{{item.id}}</h3></li>
-    </ul>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped verticle-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Alu</th>
-                    <th scope="col">Product Type</th>
-                    <th scope="col">Style Number</th>
-                    <th scope="col">Colour</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Sku</th>
-                    <th scope="col">Barcode</th>
-                    <th scope="col">Title</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in listt">
-                    <td><button v-on:click="callFunction" data-id={{item.id}} class="btn btn-success mb-2" style="width: 100%;">{{item.id}}</button></td>
-                    <td>{{item.productType}}</td>
-                    <td>{{item.styleNumber}}</td>
-                    <td>{{item.color}}</td>
-                    <td>{{item.size}}</td>
-                    <td>{{item.sku}}</td>
-                    <td>{{item.upc}}</td>
-                    <td>{{item.title}}</td>             
-                </tr>
+    <div class="card" v-show="showlist">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped verticle-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Alu</th>
+                            <th scope="col">Product Type</th>
+                            <th scope="col">Style Number</th>
+                            <th scope="col">Colour</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Sku</th>
+                            <th scope="col">Barcode</th>
+                            <th scope="col">Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in searchResult">
+                            <td><button v-on:click="getvariant" v-bind:data-id=item.id class="btn btn-success mb-2" style="width: 100%;">{{item.id}}</button></td>
+                            <td>{{item.productType}}</td>
+                            <td>{{item.styleNumber}}</td>
+                            <td>{{item.color}}</td>
+                            <td>{{item.size}}</td>
+                            <td>{{item.sku}}</td>
+                            <td>{{item.upc}}</td>
+                            <td>{{item.title}}</td>
+                        </tr>
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+
 
 
 </div>
@@ -229,52 +254,132 @@
 <script>
     const app = Vue.createApp(
         {
-            props:['id'],
-            data(){
-                return{
+            props: ['id'],
+            data() {
+                return {
                     age: null,
-                    listt:null,
+                    listt: null,
+                    showlist: false,
                     idd: '6',
-                    search:'',
+                    search: '',
                     add: 'https://localhost:44374/api/ProductInformation/',
-                    aded: 'https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' ,
+                    aded: 'https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/',
                     addd: "hhh",
-                    
+                    allow: false,
+                    btnBack: false,
+                    searchValue: "",
+                    keySearch: "1"
+
                 }
             },
             methods: {
                 getSearch() {
-                    this.idd = this.search,
-                        fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
-                        .then(res => res.json())
-                        .then(data => this.age = data)
-                        .catch(err => console.log(err.message))
-
+                    if (this.allow) {
+                        this.btnBack = false,
+                            this.idd = this.search,
+                            fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
+                                .then(res => res.json())
+                                .then(data => this.age = data)
+                                .catch(err => console.log(err.message))
+                    }
                 },
                 getList() {
-                    this.idd = this.search,
-                        fetch('https://localhost:44374/api/ProductInformationList/' + this.idd)
-                            .then(res => res.json())
-                            .then(data => this.listt = data)
-                            .catch(err => console.log(err.message))
+                    if (this.allow) {
+                        if (this.listt == null) {
+                            fetch('https://localhost:44374/api/ProductInformationList/3')
+                                .then(res => res.json())
+                                .then(data => this.listt = data)
+                                .catch(err => console.log(err.message))
+                        }
+                        this.age = null,
+                            this.showlist = true
+                    }
 
-                }
-                , getvariant() {
-                    this.idd = this.search,
-                        fetch('https://localhost:44374/api/ProductInformationById/' + this.idd)
+                },
+                backtolist() {
+                    this.age = null,
+                        this.showlist = true
+                },
+                getvariant: function (event) {
+                    if (this.allow) {
+                        var id = event.target.getAttribute('data-id');
+                        fetch('https://localhost:44374/api/ProductInformationById/' + id)
                             .then(res => res.json())
                             .then(data => this.age = data)
                             .catch(err => console.log(err.message))
-                },
-                callFunction: function (event) {
-                    var id = event.target.getAttribute('data-id');
-                    console.log(id);
+                    }
+                    this.showlist = false,
+                        this.btnBack = true
+                }
+            },
+            computed: {
+                searchResult() {
+                    if (this.allow) {
+                        let templist = this.listt
 
+                        if (this.keySearch == 1) {
+                            if (this.searchValue != '' && this.searchValue) {
+                                templist = templist.filter((item) => {
+                                    return item.title
+                                        .toUpperCase()
+                                        .includes(this.searchValue.toUpperCase())
+                                })
+                            }
+
+                        }
+                        else if (this.keySearch == 2) {
+                            if (this.searchValue != '' && this.searchValue) {
+                                templist = templist.filter((item) => {
+                                    return item.sku
+                                        .toUpperCase()
+                                        .includes(this.searchValue.toUpperCase())
+                                })
+                            }
+
+                        }
+                        else if (this.keySearch == 3) {
+                            if (this.searchValue != '' && this.searchValue) {
+                                templist = templist.filter((item) => {
+                                    return item.upc
+                                        .toUpperCase()
+                                        .includes(this.searchValue.toUpperCase())
+                                })
+                            }
+
+                        }
+                        else if (this.keySearch == 4) {
+                            if (this.searchValue != '' && this.searchValue) {
+                                templist = templist.filter((item) => {
+                                    return item.styleNumber
+                                        .toUpperCase()
+                                        .includes(this.searchValue.toUpperCase())
+                                })
+                            }
+
+                        }
+                        else if (this.keySearch == 5) {
+                            if (this.searchValue != '' && this.searchValue) {
+                                templist = templist.filter((item) => {
+                                    return item.sku
+                                        .toUpperCase()
+                                        .includes(this.searchValue.toUpperCase())
+                                })
+                            }
+
+                        }
+                        else
+                        {
+
+                        }
+
+                        return templist
+                    }
                 }
             },
             mounted() {
                 this.getSearch(),
                     this.getList(),
+                    this.backtolist(),
                     this.getvariant()
             }
 

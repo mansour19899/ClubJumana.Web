@@ -111,8 +111,8 @@ namespace ClubJumana.Web.Controllers
 
         public string Get(int id)
         {
-            var ttr = _productInformationService.AllVariantList().Select(p=> new {id=p.Id,productType=p.ProductType.Name,upc=p.Barcode.BarcodeNumber
-                ,size=p.Size,title=p.Product.ProductTittle,sku=p.SKU,styleNumber=p.Product.StyleNumber,color=p.Colour.Name }).Take(5).ToList();
+            var ttr = _productInformationService.AllVariantList().Where(p=>p.Barcode!=null).Select(p=> new {id=p.Id,productType=p.ProductType.Name,upc=p.Barcode.BarcodeNumber
+                ,size=p.Size,title=p.Product.ProductTittle.Trim(),sku=p.SKU,styleNumber=p.Product.StyleNumber,color=p.Colour.Name }).ToList();
            var tyy=  Newtonsoft.Json.JsonConvert.SerializeObject(ttr);
             return tyy;
         }
