@@ -213,6 +213,39 @@
 
     <div class="card" v-show="showlist">
         <div class="card-body">
+            <div class="bootstrap-pagination">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item ">
+                            <a class="page-link" href="#" tabindex="-1" v-on:click="previousPage">Previous</a>
+                        </li>
+                        <li class="page-item disabled" v-show="currentPage>2">
+                            <a class="page-link" href="#">...</a>
+                        </li>
+                        <li class="page-item" v-show="currentPage==pages">
+                            <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-2 }}</a>
+                        </li>
+                        <li class="page-item" v-show="currentPage>1" v-bind:id=parseInt(currentPage)-1 >
+                            <a class="page-link" href="#"  v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-1 }}</a>
+                        </li>
+                        <li class="page-item active"  v-bind:id=currentPage >
+                            <a class="page-link" href="#" v-bind:data-id=currentPage v-on:click="getpage">{{ currentPage }}</a>
+                        </li>
+                        <li class="page-item" v-show="currentPage<pages" v-bind:id=parseInt(currentPage)+1 >
+                            <a class="page-link" href="#"  v-bind:data-id=parseInt(currentPage)+1 v-on:click="getpage">{{ parseInt(currentPage)+1 }}</a>
+                        </li>
+                        <li class="page-item" v-show="currentPage==1">
+                            <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)+2 v-on:click="getpage">{{ parseInt(currentPage)+2 }}</a>
+                        </li>
+                        <li class="page-item disabled" v-show="currentPage< parseInt(pages)-1">
+                            <a class="page-link" href="#" v-show="currentPage!=pages">...</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" v-on:click="nextPage">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped verticle-middle">
                     <thead>
@@ -268,7 +301,11 @@
                     allow: false,
                     btnBack: false,
                     searchValue: "",
-                    keySearch: "1"
+                    keySearch: "1",
+                    pages: "1",
+                    currentPage: "1",
+                    perPage: "50",
+                    countList:0
 
                 }
             },
@@ -277,7 +314,7 @@
                     if (this.allow) {
                         this.btnBack = false,
                             this.idd = this.search,
-                            fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
+                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + this.idd)
                                 .then(res => res.json())
                                 .then(data => this.age = data)
                                 .catch(err => console.log(err.message))
@@ -286,13 +323,13 @@
                 getList() {
                     if (this.allow) {
                         if (this.listt == null) {
-                            fetch('https://localhost:44374/api/ProductInformationList/3')
+                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/')
                                 .then(res => res.json())
                                 .then(data => this.listt = data)
                                 .catch(err => console.log(err.message))
                         }
                         this.age = null,
-                            this.showlist = true
+                        this.showlist = true
                     }
 
                 },
@@ -303,13 +340,30 @@
                 getvariant: function (event) {
                     if (this.allow) {
                         var id = event.target.getAttribute('data-id');
-                        fetch('https://localhost:44374/api/ProductInformationById/' + id)
+                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + id)
                             .then(res => res.json())
                             .then(data => this.age = data)
                             .catch(err => console.log(err.message))
                     }
                     this.showlist = false,
                         this.btnBack = true
+                },
+                getpage: function (event) {
+                    if (this.allow) {
+                        this.currentPage = event.target.getAttribute('data-id');
+                    }
+                },
+                nextPage() {
+                    if (this.currentPage < this.pages) {
+                        this.currentPage = parseInt(this.currentPage) + 1;
+                    }                    
+
+                },
+                previousPage() {
+                    if (this.currentPage >1) {
+                        this.currentPage = parseInt(this.currentPage) - 1;
+                    } 
+
                 }
             },
             computed: {
@@ -372,7 +426,14 @@
 
                         }
 
-                        return templist
+                        if (templist == null) {
+                            return templist
+                        }
+                        else {
+                            this.pages = Math.ceil(templist.length / this.perPage);
+                            return templist.slice(this.perPage * (parseInt(this.currentPage) - 1), this.perPage * (parseInt(this.currentPage) - 1) + parseInt(this.perPage))
+                        }
+                        
                     }
                 }
             },
@@ -380,7 +441,10 @@
                 this.getSearch(),
                     this.getList(),
                     this.backtolist(),
-                    this.getvariant()
+                    this.getvariant(),
+                    this.getpage(),
+                    this.previousPage(),
+                    this.nextPage()
             }
 
 
