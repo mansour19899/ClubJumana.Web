@@ -5,8 +5,28 @@
 }
 
 <div id="app">
-    <a href="#" v-on:click="allow=true"><h1>Search Product {{allow}}</h1></a>
-    <p>{{keySearch}}</p>
+    <div id="unlockp" class="login-form-bg h-100" style="position:fixed;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:1000;background-color:#F3F3F9;">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-xl-6">
+                    <div class="form-input-content">
+                        <div class="card login-form mb-0">
+                            <div class="card-body pt-5">
+                                <img src="~/images/logo-jummana.jpg" class="img-thumbnail mx-auto d-block" alt="Cinque Terre" width="304" height="236">
+                                <div class="mt-5 mb-3 login-input">
+                                    <div class="form-group">
+                                        <input type="password" v-model="pass" class="form-control" v-on:keyup.enter="unlockPage" placeholder="Password" required="">
+                                    </div>
+                                    <button class="btn login-form__btn submit w-100" v-on:click="unlockPage">Unlock</button>
+                                    <div id="mgpass"  class="alert alert-danger my-4 invisible">Incorrect password. try again</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xl-3 col-lg-2 col-md-12">
 
@@ -225,14 +245,14 @@
                         <li class="page-item" v-show="currentPage==pages">
                             <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-2 }}</a>
                         </li>
-                        <li class="page-item" v-show="currentPage>1" v-bind:id=parseInt(currentPage)-1 >
-                            <a class="page-link" href="#"  v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-1 }}</a>
+                        <li class="page-item" v-show="currentPage>1" v-bind:id=parseInt(currentPage)-1>
+                            <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-1 }}</a>
                         </li>
-                        <li class="page-item active"  v-bind:id=currentPage >
+                        <li class="page-item active" v-bind:id=currentPage>
                             <a class="page-link" href="#" v-bind:data-id=currentPage v-on:click="getpage">{{ currentPage }}</a>
                         </li>
-                        <li class="page-item" v-show="currentPage<pages" v-bind:id=parseInt(currentPage)+1 >
-                            <a class="page-link" href="#"  v-bind:data-id=parseInt(currentPage)+1 v-on:click="getpage">{{ parseInt(currentPage)+1 }}</a>
+                        <li class="page-item" v-show="currentPage<pages" v-bind:id=parseInt(currentPage)+1>
+                            <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)+1 v-on:click="getpage">{{ parseInt(currentPage)+1 }}</a>
                         </li>
                         <li class="page-item" v-show="currentPage==1">
                             <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)+2 v-on:click="getpage">{{ parseInt(currentPage)+2 }}</a>
@@ -305,7 +325,8 @@
                     pages: "1",
                     currentPage: "1",
                     perPage: "50",
-                    countList:0
+                    countList: 0,
+                    pass:""
 
                 }
             },
@@ -323,7 +344,7 @@
                 getList() {
                     if (this.allow) {
                         if (this.listt == null) {
-                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/')
+                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformationList/3')
                                 .then(res => res.json())
                                 .then(data => this.listt = data)
                                 .catch(err => console.log(err.message))
@@ -340,7 +361,7 @@
                 getvariant: function (event) {
                     if (this.allow) {
                         var id = event.target.getAttribute('data-id');
-                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + id)
+                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformationById/' + id)
                             .then(res => res.json())
                             .then(data => this.age = data)
                             .catch(err => console.log(err.message))
@@ -363,6 +384,17 @@
                     if (this.currentPage >1) {
                         this.currentPage = parseInt(this.currentPage) - 1;
                     } 
+
+                },
+                unlockPage() {
+                    if (this.pass == "2014") {
+                        this.allow = true;
+                        document.getElementById("unlockp").style.display = "none";
+                    }
+                    else {
+                        var element = document.getElementById("mgpass");
+                        element.classList.remove("invisible");
+                    }
 
                 }
             },
