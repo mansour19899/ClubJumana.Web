@@ -18,7 +18,7 @@
                                         <input type="password" v-model="pass" class="form-control" v-on:keyup.enter="unlockPage" placeholder="Password" required="">
                                     </div>
                                     <button class="btn login-form__btn submit w-100" v-on:click="unlockPage">Unlock</button>
-                                    <div id="mgpass"  class="alert alert-danger my-4 invisible">Incorrect password. try again</div>
+                                    <div id="mgpass" class="alert alert-danger my-4 invisible">Incorrect password. try again</div>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                         <div class="form-group mx-sm-3 mb-2">
                                             <input class="form-control" v-model="searchValue" v-on:keyup.enter="searchResult" placeholder="Type Here" style="min-width:300px;">
                                         </div>
-                                        <div style="margin-right: 10px;">
+                                        <div class="mx-sm-3 mb-2" style="margin-right: 10px;">
                                             <select class="form-control" id="selectedSearch" v-model="keySearch" v-on:change="searchValue=''">
                                                 <option value="1">Title</option>
                                                 <option value="2">SKU</option>
@@ -71,8 +71,8 @@
                                                 <option value="5">Favorite List</option>
                                             </select>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-dark mb-2" v-on:click="searchResult">Filter</button>
+                                        <div class="mx-sm-3 mb-2">
+                                            <button class="btn btn-dark" v-on:click="searchResult">Filter</button>
                                         </div>
 
                                     </div>
@@ -111,8 +111,9 @@
                     <div class="card card-widget">
                         <div class="card-body gradient-4">
                             <div class="media">
+                                <span onClick="copyToClipboard('sku1','SKU Copied.')" class="card-widget__icon"><i class="icon-note"></i></span>
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.sku }}</h2>
+                                    <h2 id="sku1" class="card-widget__title">{{ age.sku }}</h2>
                                     <h5 class="card-widget__subtitle">Sku</h5>
                                 </div>
                             </div>
@@ -137,8 +138,9 @@
                     <div class="card card-widget">
                         <div class="card-body gradient-1">
                             <div class="media">
+                                <span onClick="copyToClipboard('stylenumber1','Style Number Copied.')" class="card-widget__icon"><i class="icon-note"></i></span>
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.product.styleNumber }}</h2>
+                                    <h2 id="stylenumber1" class="card-widget__title">{{ age.product.styleNumber }}</h2>
                                     <h5 class="card-widget__subtitle">Style Number</h5>
                                 </div>
                             </div>
@@ -149,9 +151,9 @@
                     <div class="card card-widget">
                         <div class="card-body gradient-9">
                             <div class="media">
-                                <span class="card-widget__icon"><i class="icon-tag"></i></span>
+                                <span onClick="copyToClipboard('upc1','Barcode Copied.')" class="card-widget__icon"><i class="icon-note"></i></span>
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.barcode.barcodeNumber }}</h2>
+                                    <h2 id="upc1" class="card-widget__title">{{ age.barcode.barcodeNumber }}</h2>
                                     <h5 class="card-widget__subtitle">Barcode</h5>
                                 </div>
                             </div>
@@ -186,8 +188,9 @@
                     <div class="card card-widget">
                         <div class="card-body gradient-7">
                             <div class="media">
+                                <span onClick="copyToClipboard('wholesale','Wholesale B Copied.')" class="card-widget__icon"><i class="icon-star"></i></span>
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.wholesaleB }}</h2>
+                                    <h2 id="wholesale" class="card-widget__title">{{ age.wholesaleB }}</h2>
                                     <h5 class="card-widget__subtitle">WholeSaleB</h5>
                                 </div>
                             </div>
@@ -198,8 +201,9 @@
                     <div class="card card-widget">
                         <div class="card-body gradient-6">
                             <div class="media">
+                                <span onClick="copyToClipboard('retail','Retail Price Copied.')" class="card-widget__icon"><i class="icon-flag"></i></span>
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.retailPrice }}</h2>
+                                    <h2 id="retail" class="card-widget__title">{{ age.retailPrice }}</h2>
                                     <h5 class="card-widget__subtitle">Retail Price</h5>
                                 </div>
                             </div>
@@ -298,6 +302,7 @@
         </div>
     </div>
 
+    <div id="snackbar">Some text some message..</div>
 
 
 
@@ -305,6 +310,16 @@
 <script src="https://unpkg.com/vue@3.0.2"></script>
 
 <script>
+    function copyToClipboard(id,message) {
+        var from = document.getElementById(id);
+        var range = document.createRange();
+        window.getSelection().removeAllRanges();
+        range.selectNode(from);
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        mymessage(message);
+    }
     const app = Vue.createApp(
         {
             props: ['id'],
@@ -356,7 +371,7 @@
                 },
                 backtolist() {
                     this.age = null,
-                        this.showlist = true
+                    this.showlist = true
                 },
                 getvariant: function (event) {
                     if (this.allow) {
