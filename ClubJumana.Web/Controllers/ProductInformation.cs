@@ -9,6 +9,7 @@ using ClubJumana.Core.DTOs;
 using ClubJumana.DataLayer.Entities;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -164,6 +165,8 @@ namespace ClubJumana.Web.Controllers
         public Variant Get(int id)
         {
             var tt = _productInformationService.GiveMeVariantById(id);
+            if (tt.Note != null)
+                tt.Note = Regex.Replace(tt.Note, @"\r\n?|\n", "<br>");
             return tt;
         }
 

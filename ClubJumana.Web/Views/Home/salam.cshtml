@@ -213,7 +213,7 @@
                         <div class="card-body gradient-4">
                             <div class="media">
                                 <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.note}}</h2>
+                                    <h2 class="card-widget__title" v-html="age.note"></h2>
                                     <h5 class="card-widget__subtitle">NOTE</h5>
                                 </div>
                             </div>
@@ -335,7 +335,7 @@
                     if (this.allow) {
                         this.btnBack = false,
                             this.idd = this.search,
-                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformation/' + this.idd)
+                            fetch('https://localhost:44374/api/ProductInformation/' + this.idd)
                                 .then(res => res.json())
                                 .then(data => this.age = data)
                                 .catch(err => console.log(err.message))
@@ -344,7 +344,7 @@
                 getList() {
                     if (this.allow) {
                         if (this.listt == null) {
-                            fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformationList/3')
+                            fetch('https://localhost:44374/api/ProductInformationList/3')
                                 .then(res => res.json())
                                 .then(data => this.listt = data)
                                 .catch(err => console.log(err.message))
@@ -361,7 +361,7 @@
                 getvariant: function (event) {
                     if (this.allow) {
                         var id = event.target.getAttribute('data-id');
-                        fetch('https://clubjumanaweb20200711093516.azurewebsites.net/api/ProductInformationById/' + id)
+                        fetch('https://localhost:44374/api/ProductInformationById/' + id)
                             .then(res => res.json())
                             .then(data => this.age = data)
                             .catch(err => console.log(err.message))
