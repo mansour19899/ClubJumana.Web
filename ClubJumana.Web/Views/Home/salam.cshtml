@@ -60,7 +60,7 @@
                                 <div class="p-t-15">
                                     <div class="form-inline" style="justify-content: center;">
                                         <div class="form-group mx-sm-3 mb-2">
-                                            <input class="form-control" v-model="searchValue" v-on:keyup.enter="searchResult" placeholder="Type Here" style="min-width:300px;">
+                                            <input class="form-control" type="text" v-model="searchValue" v-on:keyup="searchUpdate" placeholder="Type Here" style="min-width:300px;">
                                         </div>
                                         <div class="mx-sm-3 mb-2" style="margin-right: 10px;">
                                             <select class="form-control" id="selectedSearch" v-model="keySearch" v-on:change="searchValue=''">
@@ -238,7 +238,8 @@
     <div class="card" v-show="showlist">
         <div class="card-body">
             <div class="bootstrap-pagination">
-                <nav>
+                <h5 class="card-title">Resualt: {{countList}}</h5>
+                <nav  v-show="parseInt(pages)>1">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ">
                             <a class="page-link" href="#" tabindex="-1" v-on:click="previousPage">Previous</a>
@@ -246,7 +247,7 @@
                         <li class="page-item disabled" v-show="currentPage>2">
                             <a class="page-link" href="#">...</a>
                         </li>
-                        <li class="page-item" v-show="currentPage==pages">
+                        <li class="page-item" v-show="currentPage==pages1&& parseInt(pages)>2">
                             <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)-1 v-on:click="getpage">{{ parseInt(currentPage)-2 }}</a>
                         </li>
                         <li class="page-item" v-show="currentPage>1" v-bind:id=parseInt(currentPage)-1>
@@ -258,7 +259,7 @@
                         <li class="page-item" v-show="currentPage<pages" v-bind:id=parseInt(currentPage)+1>
                             <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)+1 v-on:click="getpage">{{ parseInt(currentPage)+1 }}</a>
                         </li>
-                        <li class="page-item" v-show="currentPage==1">
+                        <li class="page-item" v-show="currentPage==1&& parseInt(pages)>2">
                             <a class="page-link" href="#" v-bind:data-id=parseInt(currentPage)+2 v-on:click="getpage">{{ parseInt(currentPage)+2 }}</a>
                         </li>
                         <li class="page-item disabled" v-show="currentPage< parseInt(pages)-1">
@@ -341,7 +342,7 @@
                     currentPage: "1",
                     perPage: "50",
                     countList: 0,
-                    pass:""
+                    pass: "",
 
                 }
             },
@@ -411,6 +412,16 @@
                         element.classList.remove("invisible");
                     }
 
+                },
+                searchUpdate: function (event) {
+                    if (this.allow) {
+                        this.age = null;
+                        this.currentPage = 1;
+                        this.showlist = true;
+                        //if (event.key == "Enter") {
+                        //    console.log("enter key was pressed!");
+                        //}
+                    }
                 }
             },
             computed: {
@@ -477,7 +488,8 @@
                             return templist
                         }
                         else {
-                            this.pages = Math.ceil(templist.length / this.perPage);
+                            this.countList = templist.length;
+                            this.pages = Math.ceil(this.countList / this.perPage);
                             return templist.slice(this.perPage * (parseInt(this.currentPage) - 1), this.perPage * (parseInt(this.currentPage) - 1) + parseInt(this.perPage))
                         }
                         
@@ -491,7 +503,8 @@
                     this.getvariant(),
                     this.getpage(),
                     this.previousPage(),
-                    this.nextPage()
+                    this.nextPage(),
+                    this.searchUpdate()
             }
 
 
