@@ -67,3 +67,10 @@
         opacity: 0;
     }
 }
+
+
+.SelectedClass {
+    font-weight: bold;
+    color: black;
+}
+

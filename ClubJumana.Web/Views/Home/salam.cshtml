@@ -27,6 +27,27 @@
             </div>
         </div>
     </div>
+    <div class="bootstrap-modal">
+        <!-- Button trigger modal -->
+        <button id="btnsessionExpird" style="display:none;"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal">Basic modal</button>
+        <!-- Modal -->
+        <div v-if="allow" class="modal fade" id="basicModal" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Session Expired</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Please refresh page</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="location.reload()">Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xl-3 col-lg-2 col-md-12">
 
@@ -214,7 +235,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card card-widget">
-                        <div class="card-body gradient-4">
+                        <div class="card-body" style="background: #333333;">
                             <div class="media">
                                 <div class="media-body">
                                     <h2 class="card-widget__title" v-html="age.note"></h2>
@@ -239,7 +260,7 @@
         <div class="card-body">
             <div class="bootstrap-pagination">
                 <h5 class="card-title">Resualt: {{countList}}</h5>
-                <nav  v-show="parseInt(pages)>1">
+                <nav v-show="parseInt(pages)>1">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ">
                             <a class="page-link" href="#" tabindex="-1" v-on:click="previousPage">Previous</a>
@@ -288,13 +309,13 @@
                     <tbody>
                         <tr v-for="item in searchResult">
                             <td><button v-on:click="getvariant" v-bind:data-id=item.id class="btn btn-success mb-2" style="width: 100%;">{{item.id}}</button></td>
-                            <td>{{item.productType}}</td>
-                            <td>{{item.styleNumber}}</td>
-                            <td>{{item.color}}</td>
-                            <td>{{item.size}}</td>
-                            <td>{{item.sku}}</td>
-                            <td>{{item.upc}}</td>
-                            <td>{{item.title}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.productType}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.styleNumber}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.color}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.size}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.sku}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.upc}}</td>
+                            <td v-bind:class="item.id==SelectedId && 'SelectedClass'">{{item.title}}</td>
                         </tr>
 
                     </tbody>
@@ -343,6 +364,7 @@
                     perPage: "50",
                     countList: 0,
                     pass: "",
+                    SelectedId:0
 
                 }
             },
@@ -383,7 +405,8 @@
                             .catch(err => console.log(err.message))
                     }
                     this.showlist = false,
-                        this.btnBack = true
+                        this.btnBack = true,
+                        this.SelectedId=id
                 },
                 getpage: function (event) {
                     if (this.allow) {
@@ -418,6 +441,7 @@
                         this.age = null;
                         this.currentPage = 1;
                         this.showlist = true;
+                        this.SelectedId = 0;
                         //if (event.key == "Enter") {
                         //    console.log("enter key was pressed!");
                         //}
