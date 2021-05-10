@@ -63,7 +63,8 @@ namespace ClubJumana.Web.Controllers
             }
             if (tt.Colour == null)
                 tt.Colour = new Colour() { Name = "-" };
-            
+            if (tt.Note != null)
+                tt.Note = Regex.Replace(tt.Note, @"\r\n?|\n", "<br>");
             return tt;
         }
 
