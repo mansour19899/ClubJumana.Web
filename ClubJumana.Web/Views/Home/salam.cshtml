@@ -451,15 +451,25 @@
             computed: {
                 searchResult() {
                     if (this.allow) {
-                        let templist = this.listt
+                        let templist = this.listt;
 
                         if (this.keySearch == 1) {
                             if (this.searchValue != '' && this.searchValue) {
-                                templist = templist.filter((item) => {
-                                    return item.title
-                                        .toUpperCase()
-                                        .includes(this.searchValue.toUpperCase())
-                                })
+                                let templist2 = templist.slice(1,3);
+                                let xxx = this.searchValue.toUpperCase().split(" ");
+
+                                for (i = 0; i < xxx.length; i++) {
+                                    templist2 = [];
+                                    templist2 = templist.filter((item) => {
+                                        return item.title
+                                            .toUpperCase()
+                                            .includes(xxx[i].toUpperCase())
+                                    });
+                                    templist = [];
+                                    templist = templist2;
+                                }
+
+                               
                             }
 
                         }
