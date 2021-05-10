@@ -7,7 +7,7 @@ using ClubJumana.DataLayer.Entities;
 
 namespace ClubJumana.Core.Services.Interfaces
 {
-    interface IRepositoryService
+   public interface IRepositoryService
     {
         void UpdateLocalDb();
         IQueryable<ProductMaster> AllProductMasterList();

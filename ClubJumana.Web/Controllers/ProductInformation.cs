@@ -2,6 +2,7 @@
 using ClubJumana.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using ClubJumana.DataLayer.Entities;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -144,11 +146,15 @@ namespace ClubJumana.Web.Controllers
     public class ProductInformationById : ControllerBase
     {
         private IProductInformationService _productInformationService;
+        private IRepositoryService _repositoryService; 
         private IViewRenderService _viewRender;
-        public ProductInformationById(IProductInformationService productInformationService, IViewRenderService viewRender)
+        public static IWebHostEnvironment _enviroment;
+        public ProductInformationById(IProductInformationService productInformationService, IRepositoryService repositoryService, IViewRenderService viewRender,IWebHostEnvironment environment)
         {
             _productInformationService = productInformationService;
+            _repositoryService = repositoryService;
             _viewRender = viewRender;
+            _enviroment = environment;
         }
 
 
@@ -166,6 +172,23 @@ namespace ClubJumana.Web.Controllers
         public Variant Get(int id)
         {
             var tt = _productInformationService.GiveMeVariantById(id);
+            string imagesPath = _enviroment.WebRootPath + "\\images\\ProductImages";
+            if (!Directory.Exists(_enviroment.WebRootPath+ "\\images\\ProductImages"))
+            {
+                Directory.CreateDirectory(_enviroment.WebRootPath + "\\images\\ProductImages");
+            }
+            else
+            {
+                if(tt.Images.Count>0)
+                {
+                    if (!System.IO.File.Exists(Path.Combine(imagesPath, tt.Images.FirstOrDefault().ImageName)))
+                    {
+                        _repositoryService.DownloadFileFromFTP(Path.Combine(imagesPath, tt.Images.FirstOrDefault().ImageName), "/VariantsImage");
+                    }
+                    tt.Data6 = tt.Images.FirstOrDefault().ImageName;
+                }
+            }
+
             if (tt.Note != null)
                 tt.Note = Regex.Replace(tt.Note, @"\r\n?|\n", "<br>");
             return tt;

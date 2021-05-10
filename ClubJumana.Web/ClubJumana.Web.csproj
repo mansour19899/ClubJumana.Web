@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\ProductImages\" />
     <Folder Include="wwwroot\images\TowelImages\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\plugins\jqvmap\js\maps\" />
