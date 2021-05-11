@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\images\TowelImages\**" />
+    <Content Remove="wwwroot\images\TowelImages\**" />
+    <EmbeddedResource Remove="wwwroot\images\TowelImages\**" />
+    <None Remove="wwwroot\images\TowelImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
@@ -22,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\ProductImages\" />
-    <Folder Include="wwwroot\images\TowelImages\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\plugins\jqvmap\js\maps\" />
     <Folder Include="wwwroot\plugins\summernote\css\" />

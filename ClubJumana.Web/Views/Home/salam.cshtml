@@ -250,16 +250,16 @@
 
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 col-lg-3">                  
+            <div class="row" v-show="age.data6!=null">
+                <div class="col-lg-2 col-xl-3 ">                  
                 </div>
                 <!-- End Col -->
-                <div class="col-md-6 col-lg-3">
+                <div class="col-lg-8 col-xl-6">
                     <div class="card">
                         <img class="img-fluid" v-bind:src="'../images/ProductImages/'+ age.data6" alt="">
                         <div class="card-body">
-                            <h5 class="card-title">Colour</h5>
-                            <p class="card-text">{{ age.colour.name}}</p>
+                            <h5  style="font-size:30px;">{{ age.colour.name}}</h5>
+                            <p class="card-text" style="font-size:20px;">Colour</p>
                         </div>
                     </div>
                 </div>
