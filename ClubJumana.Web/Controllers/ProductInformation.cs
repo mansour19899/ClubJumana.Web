@@ -23,11 +23,15 @@ namespace ClubJumana.Web.Controllers
     public class ProductInformation : ControllerBase
     {
         private IProductInformationService _productInformationService;
+        private IRepositoryService _repositoryService;
         private IViewRenderService _viewRender;
-        public ProductInformation(IProductInformationService productInformationService, IViewRenderService viewRender)
+        public static IWebHostEnvironment _enviroment;
+        public ProductInformation(IProductInformationService productInformationService, IRepositoryService repositoryService, IViewRenderService viewRender, IWebHostEnvironment environment)
         {
             _productInformationService = productInformationService;
+            _repositoryService = repositoryService;
             _viewRender = viewRender;
+            _enviroment = environment;
         }
 
 
@@ -67,6 +71,22 @@ namespace ClubJumana.Web.Controllers
                 tt.Colour = new Colour() { Name = "-" };
             if (tt.Note != null)
                 tt.Note = Regex.Replace(tt.Note, @"\r\n?|\n", "<br>");
+            string imagesPath = _enviroment.WebRootPath + "\\images\\ProductImages";
+            if (!Directory.Exists(_enviroment.WebRootPath + "\\images\\ProductImages"))
+            {
+                Directory.CreateDirectory(_enviroment.WebRootPath + "\\images\\ProductImages");
+            }
+            else
+            {
+                if (tt.Images.Count > 0)
+                {
+                    if (!System.IO.File.Exists(Path.Combine(imagesPath, tt.Images.FirstOrDefault().ImageName)))
+                    {
+                        _repositoryService.DownloadFileFromFTP(Path.Combine(imagesPath, tt.Images.FirstOrDefault().ImageName), "/VariantsImage");
+                    }
+                    tt.Data6 = tt.Images.FirstOrDefault().ImageName;
+                }
+            }
             return tt;
         }
 

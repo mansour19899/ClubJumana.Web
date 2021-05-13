@@ -258,8 +258,20 @@
                     <div class="card">
                         <img class="img-fluid" v-bind:src="'../images/ProductImages/'+ age.data6" alt="">
                         <div class="card-body">
-                            <h5  style="font-size:30px;">{{ age.colour.name}}</h5>
-                            <p class="card-text" style="font-size:20px;">Colour</p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-12">
+                                    <h5 style="font-size:30px;">{{ age.productType.name }}</h5>
+                                    <p class="card-text" style="font-size:20px;">Colour</p>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <h5 style="font-size:30px;">{{ age.colour.name}}</h5>
+                                    <p class="card-text" style="font-size:20px;">Colour</p>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <h5 style="font-size:30px;">{{ age.size}}</h5>
+                                    <p class="card-text" style="font-size:20px;">Size</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
