@@ -10,12 +10,14 @@ namespace ClubJumana.Web.Controllers
 {
     public class HomeController : Controller
     {
-
+        [Authorize]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
-        //[Authorize]
+
+        [Authorize]
         [HttpGet]
         public IActionResult hi()
         {
