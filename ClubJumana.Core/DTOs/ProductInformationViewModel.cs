@@ -92,6 +92,7 @@ namespace ClubJumana.Core.DTOs
         public decimal? FobPrice { get; set; }
         public decimal? WholesaleA { get; set; }
         public decimal? WholesaleB { get; set; }
+        public decimal? PublishRate { get; set; }
         public decimal? RetailPrice { get; set; }
         private string _size;
         public string Data1 { get; set; }

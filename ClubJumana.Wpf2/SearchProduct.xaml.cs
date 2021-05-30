@@ -618,6 +618,7 @@ namespace ClubJumana.Wpf2
                 cost.FobPrice = Convert.ToDecimal(variantSelected.FobPrice);
                 cost.WholeSaleA = variantSelected.WholesaleA.ToString();
                 cost.WholeSaleB = variantSelected.WholesaleB.ToString();
+                cost.PublishRate = variantSelected.PublishRate.ToString();
                 cost.RetailPrice = variantSelected.RetailPrice.ToString();
                 InfoProduct.CostCenter = cost;
                 InfoProduct.CostCenterAnalyze = costAnalyze;
@@ -919,6 +920,7 @@ namespace ClubJumana.Wpf2
                             {
                                 variant.WholesaleA = InfoProduct.List[IndexOfVariantt].WholesaleA;
                                 variant.WholesaleB = InfoProduct.List[IndexOfVariantt].WholesaleB;
+                                variant.PublishRate = InfoProduct.List[IndexOfVariantt].PublishRate;
                                 variant.FobPrice = InfoProduct.List[IndexOfVariantt].FobPrice;
                                 variant.RetailPrice = InfoProduct.List[IndexOfVariantt].RetailPrice;
                             }

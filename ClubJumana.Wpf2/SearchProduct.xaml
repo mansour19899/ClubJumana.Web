@@ -303,6 +303,7 @@
                                 </GridViewColumn>
                                 <GridViewColumn Header="Wholesale A" Width="160" DisplayMemberBinding="{Binding Path=WholesaleA}" />
                                 <GridViewColumn Header="Wholesale B" Width="160" DisplayMemberBinding="{Binding Path=WholesaleB}" />
+                                <GridViewColumn Header="Publish Rate" Width="160" DisplayMemberBinding="{Binding Path=PublishRate}" />
                                 <GridViewColumn Header="Retail Price" Width="160" DisplayMemberBinding="{Binding Path=RetailPrice}" />
                                 <GridViewColumn Header="" Width="200">
                                     <GridViewColumn.CellTemplate>
@@ -341,7 +342,7 @@
                                     <RowDefinition />
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <UniformGrid Columns="3" MinHeight="200" Margin="0 90 0 30">
+                                <UniformGrid Columns="4" MinHeight="200" Margin="0 90 0 30">
                                     <materialDesign:Card
                                         Background="{DynamicResource PrimaryHueDarkBrush}"
                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
@@ -352,6 +353,7 @@
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
+                                                HorizontalAlignment="Center"
                                                 FontSize="25">
                                                Whole Sale A
                                             </TextBlock>
@@ -371,12 +373,32 @@
                                         <StackPanel>
                                             <TextBlock
                                                 Margin="16 16 12 8"
+                                                HorizontalAlignment="Center"
                                                 FontSize="25">
                                                 Whole Sale B
                                             </TextBlock>
                                             <Separator
                                                 Style="{StaticResource MaterialDesignLightSeparator}" />
                                             <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding Info.CostCenter.WholeSaleB}"/>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                    <materialDesign:Card
+                                        Background="{DynamicResource PrimaryHueDarkBrush}"
+                                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                        Width="200"
+                                        Padding="8"
+                                        Margin="0 20"
+                                        ToolTip="{Binding Info.CostCenter.MarginPublishRate}">
+                                        <StackPanel>
+                                            <TextBlock
+                                                Margin="16 16 12 8"
+                                                HorizontalAlignment="Center"
+                                                FontSize="25">
+                                                Publish Rate
+                                            </TextBlock>
+                                            <Separator
+                                                Style="{StaticResource MaterialDesignLightSeparator}" />
+                                            <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Text="{Binding Info.CostCenter.PublishRate}"/>
                                         </StackPanel>
                                     </materialDesign:Card>
                                     <materialDesign:Card
@@ -638,6 +660,10 @@
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Wholesale B"/>
                             <TextBox Text="{Binding Info.VariantSelected.WholesaleB}"/>
+                        </UniformGrid>
+                        <UniformGrid Rows="1" Columns="3">
+                            <TextBlock Text=" Publish Rate"/>
+                            <TextBox Text="{Binding Info.VariantSelected.PublishRate}"/>
                         </UniformGrid>
                         <UniformGrid Rows="1" Columns="3">
                             <TextBlock Text=" Retail Price"/>

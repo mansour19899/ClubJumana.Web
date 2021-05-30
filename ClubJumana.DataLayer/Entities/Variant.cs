@@ -19,6 +19,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal? FobPrice { get; set; }
         public decimal? WholesaleA { get; set; }
         public decimal? WholesaleB { get; set; }
+        public decimal? PublishRate { get; set; }
         public decimal? RetailPrice { get; set; }
         public decimal? Width { get; set; }
         public decimal? length { get; set; }

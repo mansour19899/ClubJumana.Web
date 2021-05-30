@@ -94,6 +94,7 @@ namespace ClubJumana.Core.Services
                     FobPrice = VARIABLE.FobPrice,
                     WholesaleA = VARIABLE.WholesaleA,
                     WholesaleB = VARIABLE.WholesaleB,
+                    PublishRate = VARIABLE.PublishRate,
                     RetailPrice = VARIABLE.RetailPrice,
                     Width = VARIABLE.Width,
                     length = VARIABLE.length,
@@ -114,6 +115,7 @@ namespace ClubJumana.Core.Services
                         FobPrice = VARIABLE.FobPrice,
                         WholesaleA = VARIABLE.WholesaleA,
                         WholesaleB = VARIABLE.WholesaleB,
+                        PublishRate = VARIABLE.PublishRate,
                         RetailPrice = VARIABLE.RetailPrice,
                         Width = VARIABLE.Width,
                         length = VARIABLE.length,
@@ -247,6 +249,7 @@ namespace ClubJumana.Core.Services
                     FobPrice = VARIABLE.FobPrice,
                     WholesaleA = VARIABLE.WholesaleA,
                     WholesaleB = VARIABLE.WholesaleB,
+                    PublishRate = VARIABLE.PublishRate,
                     RetailPrice = VARIABLE.RetailPrice,
                     Size = VARIABLE.Size,
                     Product = VARIABLE.Product,
@@ -292,6 +295,7 @@ namespace ClubJumana.Core.Services
                     FobPrice = VARIABLE.FobPrice,
                     WholesaleA = VARIABLE.WholesaleA,
                     WholesaleB = VARIABLE.WholesaleB,
+                    PublishRate = VARIABLE.PublishRate,
                     RetailPrice = VARIABLE.RetailPrice,
                     Size = VARIABLE.Size,
                     Product = VARIABLE.Product,
@@ -455,6 +459,7 @@ namespace ClubJumana.Core.Services
                     FobPrice = variant.FobPrice,
                     WholesaleA = variant.WholesaleA,
                     WholesaleB = variant.WholesaleB,
+                    PublishRate = variant.PublishRate,
                     RetailPrice = variant.RetailPrice,
                     Width = variant.Width,
                     length = variant.length,
@@ -481,6 +486,7 @@ namespace ClubJumana.Core.Services
                         FobPrice = variant.FobPrice,
                         WholesaleA = variant.WholesaleA,
                         WholesaleB = variant.WholesaleB,
+                        PublishRate = variant.PublishRate,
                         RetailPrice = variant.RetailPrice,
                         Width = variant.Width,
                         length = variant.length,
@@ -521,6 +527,7 @@ namespace ClubJumana.Core.Services
                             {
                                 item.WholesaleA = variant.WholesaleA;
                                 item.WholesaleB = variant.WholesaleB;
+                                item.PublishRate = variant.PublishRate;
                                 item.RetailPrice = variant.RetailPrice;
                                 item.FobPrice = variant.FobPrice;
                                 item.length = variant.length;
@@ -536,6 +543,7 @@ namespace ClubJumana.Core.Services
 
                         variantdb.WholesaleA = variant.WholesaleA;
                         variantdb.WholesaleB = variant.WholesaleB;
+                        variantdb.PublishRate = variant.PublishRate;
                         variantdb.RetailPrice = variant.RetailPrice;
                         variantdb.FobPrice = variant.FobPrice;
                         variantdb.ColourFK = variant.ColourFK;
@@ -550,6 +558,7 @@ namespace ClubJumana.Core.Services
                             variantdbb = _context.variants.SingleOrDefault(p => p.Id == variant.Id);
                             variantdbb.WholesaleA = variant.WholesaleA;
                             variantdbb.WholesaleB = variant.WholesaleB;
+                            variantdbb.PublishRate = variant.PublishRate;
                             variantdbb.RetailPrice = variant.RetailPrice;
                             variantdbb.FobPrice = variant.FobPrice;
                             variantdbb.ColourFK = variant.ColourFK;
@@ -883,8 +892,9 @@ namespace ClubJumana.Core.Services
                 ws.Cells[i, 10].Value = item.FobPrice.ToString();
                 ws.Cells[i, 11].Value = item.WholesaleA.ToString();
                 ws.Cells[i, 12].Value = item.WholesaleB.ToString();
-                ws.Cells[i, 13].Value = item.RetailPrice.ToString();
-                ws.Cells[i, 14].Value = item.LastDateEdited.ToString();
+                ws.Cells[i, 13].Value = item.PublishRate.ToString();
+                ws.Cells[i, 14].Value = item.RetailPrice.ToString();
+                ws.Cells[i, 15].Value = item.LastDateEdited.ToString();
                 ++i;
             }
 

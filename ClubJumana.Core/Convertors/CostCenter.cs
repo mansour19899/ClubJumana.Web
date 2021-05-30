@@ -255,6 +255,18 @@ namespace ClubJumana.Core.Convertors
                     MarginWholeSaleB = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
             }
         }
+        private string _publishRate;
+
+        public string PublishRate
+        {
+            get { return _publishRate; }
+            set
+            {
+                _publishRate = value;
+                if (value != "" & value != "0" & value != "0.00")
+                    MarginPublishRate = "Margin : " + Math.Round((Convert.ToDecimal(value) - _landedCostD) / Convert.ToDecimal(value) * 100, 2, MidpointRounding.AwayFromZero) + " %";
+            }
+        }
         private string _retailPrice;
         public string RetailPrice
         {
@@ -272,6 +284,7 @@ namespace ClubJumana.Core.Convertors
         public string MarginWholeSaleB { get; set; }
 
         public string MarginRetailPrice { get; set; }
+        public string MarginPublishRate { get; set; }
         public void Calculate()
         {
             _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);

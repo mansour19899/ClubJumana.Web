@@ -156,6 +156,7 @@ namespace ClubJumana.Wpf2
                     FobPrice = addVariant.Variant.FobPrice,
                     WholesaleA = addVariant.Variant.WholesaleA,
                     WholesaleB = addVariant.Variant.WholesaleB,
+                    PublishRate = addVariant.Variant.PublishRate,
                     RetailPrice = addVariant.Variant.RetailPrice,
                     Width = addVariant.Variant.Width,
                     length = addVariant.Variant.length,
