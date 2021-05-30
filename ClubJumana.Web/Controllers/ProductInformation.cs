@@ -51,7 +51,7 @@ namespace ClubJumana.Web.Controllers
             var tt = _productInformationService.GiveMeVariantWithSkuUpc(id);
             if(tt==null)
             {
-                tt= new Variant() {Id=-1};
+                tt= new Variant() {Id=-1,Images = new List<Image>()};
             }
             if (tt.ProductType == null)
                 tt.ProductType = new ProductType() { Name = "-" };
