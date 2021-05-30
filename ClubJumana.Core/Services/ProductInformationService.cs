@@ -829,7 +829,7 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
-        public int ExportAllDataBase(List<VariantViewModel> list)
+        public int ExportAllDataBase(List<VariantViewModel> list, string path)
         {
             List<Variant> variants = new List<Variant>();
 
@@ -852,8 +852,8 @@ namespace ClubJumana.Core.Services
             var Path = AppDomain.CurrentDomain.BaseDirectory;
             FileInfo newFile = new FileInfo(Path + "ExcelTemplate\\" + "ExportFromDataBase.xlsx");
 
-            string filee = Path + "Results" + @"\" + "Database-" + DateTime.Today.ToShortDateString() + ".xlsx";
-            FileInfo newFilee = new FileInfo(filee);
+            //string filee = Path + "Results" + @"\" + "Database-" + DateTime.Today.ToShortDateString() + ".xlsx";
+            FileInfo newFilee = new FileInfo(path);
             try
             {
                 if (newFilee.Exists)
@@ -884,11 +884,11 @@ namespace ClubJumana.Core.Services
                     ws.Cells[i, 4].Value = item.Sku;
                 else
                     ws.Cells[i, 4].Value = "-";
-                ws.Cells[i, 5].Value = item.Product.ProductTittle;
-                ws.Cells[i, 6].Value = item.ProductType.Name;
-                ws.Cells[i, 7].Value = item.Colour.Name;
-                ws.Cells[i, 8].Value = item.Data1;
-                ws.Cells[i, 9].Value = item.Size;
+                ws.Cells[i, 5].Value = item.Product.ProductTittle.Trim();
+                ws.Cells[i, 6].Value = item.ProductType.Name.Trim();
+                ws.Cells[i, 7].Value = item.Colour.Name.Trim();
+                ws.Cells[i, 8].Value = item.Data1.Trim();
+                ws.Cells[i, 9].Value = item.Size.Trim();
                 ws.Cells[i, 10].Value = item.FobPrice.ToString();
                 ws.Cells[i, 11].Value = item.WholesaleA.ToString();
                 ws.Cells[i, 12].Value = item.WholesaleB.ToString();
@@ -898,11 +898,11 @@ namespace ClubJumana.Core.Services
                 ++i;
             }
 
-            FileStream objFileStrm = File.Create(filee);
+            FileStream objFileStrm = File.Create(path);
             objFileStrm.Close();
 
             // Write content to excel file  
-            File.WriteAllBytes(filee, excel.GetAsByteArray());
+            File.WriteAllBytes(path, excel.GetAsByteArray());
             return 1;
         }
 

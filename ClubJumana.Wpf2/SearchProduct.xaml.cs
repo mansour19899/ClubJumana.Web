@@ -1313,18 +1313,34 @@ namespace ClubJumana.Wpf2
                 MessageBox.Show("Selected List is empty");
             else
             {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "DataBase-" + DateTime.Today.ToShortDateString(); // Default file name
+                dlg.DefaultExt = ".xlsx";
+                dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+
+                // Show save file dialog box
+                Nullable<bool> result = dlg.ShowDialog();
+                string filename = "";
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    // Save document
+                    filename = dlg.FileName;
+                }
+
+
                 btnExportAll.IsEnabled = false;
-                ExportSelectList();
+                ExportSelectList(filename);
             }
 
 
         }
 
-        private async Task ExportSelectList()
+        private async Task ExportSelectList(string fileName)
         {
             await Task.Run(() =>
             {
-                int res = _productInformationService.ExportAllDataBase(SelectedList);
+                int res = _productInformationService.ExportAllDataBase(SelectedList,fileName);
                 if (res == -10)
                     MessageBox.Show("Please Close Excel File");
                 else if (res == -1)

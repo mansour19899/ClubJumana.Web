@@ -287,7 +287,7 @@ namespace ClubJumana.Core.Convertors
         public string MarginPublishRate { get; set; }
         public void Calculate()
         {
-            _landedCostUSD = Math.Round((_fobPrice * 1.15m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);
+            _landedCostUSD = Math.Round((_fobPrice * 1.2m * 1.05m)*(1m+_duty/100), 2, MidpointRounding.AwayFromZero);
             _wholesaleUSD = Math.Round(_landedCostUSD * 1.55m, 2, MidpointRounding.AwayFromZero);
             _sales5USD = Math.Round(_wholesaleUSD * 0.1m, 2, MidpointRounding.AwayFromZero);
             _creditIN10USD = Math.Round(_wholesaleUSD * 0.1m + _sales5USD, 2, MidpointRounding.AwayFromZero);
