@@ -468,8 +468,10 @@
                     this.showlist = true
                 },
                 getvariant: function (event) {
+                    var preload = document.getElementById('preloaderSub');
                     if (this.allow) {
                         var id = event.target.getAttribute('data-id');
+                        preload.style.display = "block";
                         fetch('https://localhost:44374/api/ProductInformationById/' + id)
                             .then(res => res.json())
                             .then(data => this.age = data)
@@ -477,7 +479,9 @@
                     }
                     this.showlist = false,
                         this.btnBack = true,
-                        this.SelectedId=id
+                        this.SelectedId = id,
+                        setTimeout(function () { preload.style.display = "none"; }, 1000);
+                        
                 },
                 getpage: function (event) {
                     if (this.allow) {
