@@ -1345,6 +1345,8 @@ namespace ClubJumana.Wpf2
                     MessageBox.Show("Please Close Excel File");
                 else if (res == -1)
                     MessageBox.Show("Please Check Barcodes");
+                else if (res == -11)
+                    MessageBox.Show("Error");
                 else
                 {
                     this.Dispatcher.Invoke(() => myMessageQueue.Enqueue("Excel File Created."));

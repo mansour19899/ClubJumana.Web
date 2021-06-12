@@ -871,31 +871,54 @@ namespace ClubJumana.Core.Services
             int i = 2;
             StringBuilder Description;
 
-
-            foreach (var item in variants.OrderBy(p => p.ProductFK))
+            try
             {
-                ws.Cells[i, 1].Value = item.Id;
-                ws.Cells[i, 2].Value = item.Product.StyleNumber;
-                if (item.Barcode != null)
-                    ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber;
-                else
-                    ws.Cells[i, 3].Value = "-";
-                if (item.Sku != null)
-                    ws.Cells[i, 4].Value = item.Sku;
-                else
-                    ws.Cells[i, 4].Value = "-";
-                ws.Cells[i, 5].Value = item.Product.ProductTittle.Trim();
-                ws.Cells[i, 6].Value = item.ProductType.Name.Trim();
-                ws.Cells[i, 7].Value = item.Colour.Name.Trim();
-                ws.Cells[i, 8].Value = item.Data1.Trim();
-                ws.Cells[i, 9].Value = item.Size.Trim();
-                ws.Cells[i, 10].Value = item.FobPrice.ToString();
-                ws.Cells[i, 11].Value = item.WholesaleA.ToString();
-                ws.Cells[i, 12].Value = item.WholesaleB.ToString();
-                ws.Cells[i, 13].Value = item.PublishRate.ToString();
-                ws.Cells[i, 14].Value = item.RetailPrice.ToString();
-                ws.Cells[i, 15].Value = item.LastDateEdited.ToString();
-                ++i;
+                foreach (var item in variants.OrderBy(p => p.ProductFK))
+                {
+                    ws.Cells[i, 1].Value = item.Id;
+                    ws.Cells[i, 2].Value = item.Product.StyleNumber.Trim();
+                    if (item.Barcode != null)
+                        ws.Cells[i, 3].Value = item.Barcode.BarcodeNumber.Trim();
+                    else
+                        ws.Cells[i, 3].Value = "-";
+                    if (item.Sku != null)
+                        ws.Cells[i, 4].Value = item.Sku.Trim();
+                    else
+                        ws.Cells[i, 4].Value = "-";
+                    if (item.Product.ProductTittle != null)
+                        ws.Cells[i, 5].Value = item.Product.ProductTittle.Trim();
+                    else
+                        ws.Cells[i, 5].Value = "-";
+                    if (item.ProductType.Name != null)
+                        ws.Cells[i, 6].Value = item.ProductType.Name.Trim();
+                    else
+                        ws.Cells[i, 6].Value = "-";
+                    if (item.Colour.Name != null)
+                        ws.Cells[i, 7].Value = item.Colour.Name.Trim();
+                    else
+                        ws.Cells[i, 7].Value = "-";
+                    if (item.Data1 != null)
+                        ws.Cells[i, 8].Value = item.Data1.Trim();
+                    else
+                        ws.Cells[i, 8].Value = "-";
+                    if (item.Size != null)
+                        ws.Cells[i, 9].Value = item.Size.Trim();
+                    else
+                        ws.Cells[i, 9].Value = "-";
+
+                    ws.Cells[i, 10].Value = item.FobPrice.ToString();
+                    ws.Cells[i, 11].Value = item.WholesaleA.ToString();
+                    ws.Cells[i, 12].Value = item.WholesaleB.ToString();
+                    ws.Cells[i, 13].Value = item.PublishRate.ToString();
+                    ws.Cells[i, 14].Value = item.RetailPrice.ToString();
+                    ws.Cells[i, 15].Value = item.LastDateEdited.ToString();
+                    ++i;
+                }
+            }
+            catch (Exception)
+            {
+
+                return -11;
             }
 
             FileStream objFileStrm = File.Create(path);
