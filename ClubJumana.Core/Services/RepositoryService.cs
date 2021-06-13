@@ -909,15 +909,15 @@ namespace ClubJumana.Core.Services
         public IQueryable<Category> AllCategoriesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.categories.OrderBy(p=>p.Id);
+                return onlineDb.categories.OrderBy(p => p.Id);
             else
-                return _context.categories.OrderBy(p=>p.Id);
+                return _context.categories.OrderBy(p => p.Id);
         }
 
         public IQueryable<SubCategory> AllSubCategoriesList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.subcategories.OrderBy(p=>p.Id);
+                return onlineDb.subcategories.OrderBy(p => p.Id);
             else
                 return _context.subcategories.OrderBy(p => p.Id);
         }
@@ -933,7 +933,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<ProductType> AllProductTypeList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.producttypes.OrderBy(p=>p.Id);
+                return onlineDb.producttypes.OrderBy(p => p.Id);
             else
                 return _context.producttypes.OrderBy(p => p.Id);
         }
@@ -941,7 +941,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<Brand> AllBrandList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.brands.OrderBy(p=>p.Id);
+                return onlineDb.brands.OrderBy(p => p.Id);
             else
                 return _context.brands.OrderBy(p => p.Id);
         }
@@ -949,7 +949,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<Colour> AllColourList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.colours.OrderBy(p=>p.Name).AsNoTracking();
+                return onlineDb.colours.OrderBy(p => p.Name).AsNoTracking();
             else
                 return _context.colours.OrderBy(p => p.Name).AsNoTracking();
         }
@@ -957,7 +957,7 @@ namespace ClubJumana.Core.Services
         public IQueryable<Material> AllMaterialList()
         {
             if (Consts.Consts.OnlineModeOnly)
-                return onlineDb.materials.OrderBy(p=>p.Id);
+                return onlineDb.materials.OrderBy(p => p.Id);
             else
                 return _context.materials.OrderBy(p => p.Id);
         }
@@ -1044,13 +1044,18 @@ namespace ClubJumana.Core.Services
                 return _context.warehouses;
         }
 
-        public int AddAndUpdateCustomer(Customer customer)
+        public int AddAndUpdateCustomer(Customer customer, bool isSave = true)
         {
-            DetachedAllEntries();
+            if (isSave)
+                DetachedAllEntries();
             if (customer.Id == 0)
             {
                 customer.Id = onlineDb.customers.Max(p => p.Id) + 1;
-                _context.customers.Add(customer);
+                onlineDb.customers.Add(customer);
+            }
+            else if (!isSave)
+            {
+                onlineDb.customers.Add(customer);
             }
 
             else
@@ -1058,7 +1063,8 @@ namespace ClubJumana.Core.Services
                 onlineDb.Update(customer);
             }
 
-            onlineDb.SaveChanges();
+            if (isSave)
+                onlineDb.SaveChanges();
             return 1;
         }
 
@@ -1142,8 +1148,22 @@ namespace ClubJumana.Core.Services
 
         public IQueryable<ProductMaster> AllProductMasterWithInventoryList()
         {
-                return onlineDb.productmasters.OrderBy(p => p.Id).Include(p=>p.ProductInventoryWarehouses)
-                    .ThenInclude(p=>p.Warehouse).AsNoTracking();
+            return onlineDb.productmasters.OrderBy(p => p.Id).Include(p => p.ProductInventoryWarehouses)
+                .ThenInclude(p => p.Warehouse).AsNoTracking();
+        }
+
+        public bool SaveDatabase()
+        {
+            try
+            {
+                onlineDb.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

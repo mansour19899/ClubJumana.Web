@@ -41,11 +41,11 @@ namespace ClubJumana.Core.Services.Interfaces
         Customer GiveMeCustomerById(int Id);
         Vendor GiveMeVendorById(int Id);
 
-        public int AddAndUpdateCustomer(Customer customer);
+        public int AddAndUpdateCustomer(Customer customer, bool isSave = true);
         public int AddAndUpdateVendor(Vendor vendor);
 
         public string UploadFileToFTP( string fileName, string UploadDirectory);
         public string DownloadFileFromFTP( string fileName, string UploadDirectory);
-
+        public bool SaveDatabase();
     }
 }
