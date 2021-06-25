@@ -49,9 +49,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-3 col-lg-2 col-md-12">
+        @*<div class="col-xl-3 col-lg-2 col-md-12">
 
-        </div>
+        </div>*@
         <div class="col-xl-6 col-lg-8 col-md-12">
             <div class="card">
                 <div class="card-body">
@@ -119,148 +119,116 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-4 col-lg-6 col-md-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-6">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.productType.name }}</h2>
-                                    <h5 class="card-widget__subtitle">Product Type</h5>
-                                </div>
+                @*<div class="col-xl-3 col-lg-2 col-md-12">
+
+        </div>*@
+                <div class="col-xl-6 col-lg-8 col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="font-size: 1rem;">
+                            <div class="card-title">
+                                <h4>{{ age.product.styleNumber}}</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Product Type</th>
+                                            <td>{{ age.productType.name }}</td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Sku</th>
+                                            <td id="sku1">{{ age.sku }}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('sku1','SKU Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Title</th>
+                                            <td>{{ age.product.productTittle }}</td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Style Number</th>
+                                            <td id="stylenumber1">{{ age.product.styleNumber}}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('stylenumber1','Style Number Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Barcode</th>
+                                            <td id="upc1">{{ age.barcode.barcodeNumber }}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('upc1','Barcode Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Colour</th>
+                                            <td>{{ age.colour.name }}</td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Size</th>
+                                            <td>{{ age.size  }}</td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>WholeSale A</th>
+                                            <td id="wholesalea">{{ age.wholesaleA  }}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('wholesalea','Wholesale A Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>WholeSale B</th>
+                                            <td id="wholesale">{{ age.wholesaleB }}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('wholesale','Wholesale B Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Publish Rate</th>
+                                            <td id="publishrate">{{ age.publishRate}}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('publishrate','Publish Rate Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Retail Price</th>
+                                            <td id="retail" >{{ age.retailPrice }}</td>
+                                            <td>
+                                                <span onClick="copyToClipboard('retail','Retail Price Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note" style="color: navy;font-size: 20px;"></i></span>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-6 col-md-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-4">
-                            <div class="media">
-                                <span onClick="copyToClipboard('sku1','SKU Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note"></i></span>
-                                <div class="media-body">
-                                    <h2 id="sku1" class="card-widget__title">{{ age.sku }}</h2>
-                                    <h5 class="card-widget__subtitle">Sku</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-7">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.product.productTittle}}</h2>
-                                    <h5 class="card-widget__subtitle">Tittle</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-1">
-                            <div class="media">
-                                <span onClick="copyToClipboard('stylenumber1','Style Number Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note"></i></span>
-                                <div class="media-body">
-                                    <h2 id="stylenumber1" class="card-widget__title">{{ age.product.styleNumber }}</h2>
-                                    <h5 class="card-widget__subtitle">Style Number</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-9">
-                            <div class="media">
-                                <span onClick="copyToClipboard('upc1','Barcode Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-note"></i></span>
-                                <div class="media-body">
-                                    <h2 id="upc1" class="card-widget__title">{{ age.barcode.barcodeNumber }}</h2>
-                                    <h5 class="card-widget__subtitle">Barcode</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-6">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.colour.name }}</h2>
-                                    <h5 class="card-widget__subtitle">Color</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-4">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h2 class="card-widget__title">{{ age.size }}</h2>
-                                    <h5 class="card-widget__subtitle">Size</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-8">
-                            <div class="media">
-                                <span onClick="copyToClipboard('wholesalea','Wholesale a Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-star"></i></span>
-                                <div class="media-body">
-                                    <h2 id="wholesalea" class="card-widget__title">{{ age.wholesaleA }}</h2>
-                                    <h5 class="card-widget__subtitle">WholeSale A</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-7">
-                            <div class="media">
-                                <span onClick="copyToClipboard('wholesale','Wholesale B Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-star"></i></span>
-                                <div class="media-body">
-                                    <h2 id="wholesale" class="card-widget__title">{{ age.wholesaleB }}</h2>
-                                    <h5 class="card-widget__subtitle">WholeSale B</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-3">
-                            <div class="media">
-                                <span onClick="copyToClipboard('publishrate','Publish Rate Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-star"></i></span>
-                                <div class="media-body">
-                                    <h2 id="publishrate" class="card-widget__title" style="color: black;">{{ age.publishRate }}</h2>
-                                    <h5 style="color: black;" class="card-widget__subtitle">Publish Rate</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="card card-widget">
-                        <div class="card-body gradient-6">
-                            <div class="media">
-                                <span onClick="copyToClipboard('retail','Retail Price Copied.')" class="card-widget__icon" style="cursor:pointer" data-toggle="tooltip" data-placement="top" title="Copy"><i class="icon-flag"></i></span>
-                                <div class="media-body">
-                                    <h2 id="retail" class="card-widget__title">{{ age.retailPrice }}</h2>
-                                    <h5 class="card-widget__subtitle">Retail Price</h5>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-5" v-show="age.data6!=null">
+                    <div class="card">
+                        <img class="img-fluid" v-bind:src="'../images/ProductImages/'+ age.data6" alt="" style="max-height: 660px;">                       
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-12">
                     <div class="card card-widget">
@@ -278,34 +246,7 @@
                 <div class="col-4">
 
                 </div>
-            </div>
-            <div class="row" v-show="age.data6!=null">
-                <div class="col-lg-2 col-xl-3 ">                  
-                </div>
-                <!-- End Col -->
-                <div class="col-lg-8 col-xl-6">
-                    <div class="card">
-                        <img class="img-fluid" v-bind:src="'../images/ProductImages/'+ age.data6" alt="">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-12">
-                                    <h5 style="font-size:20px;">{{ age.productType.name }}</h5>
-                                    <p class="card-text" style="font-size:14px;">Colour</p>
-                                </div>
-                                <div class="col-lg-4 col-md-12">
-                                    <h5 style="font-size:20px;">{{ age.colour.name}}</h5>
-                                    <p class="card-text" style="font-size:14px;">Colour</p>
-                                </div>
-                                <div class="col-lg-4 col-md-12">
-                                    <h5 style="font-size:20px;">{{ age.size}}</h5>
-                                    <p class="card-text" style="font-size:14px;">Size</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            </div>         
         </div>
     </div>
     <div v-else>
