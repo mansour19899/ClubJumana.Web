@@ -29,42 +29,36 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <ProgressBar Minimum="0" Maximum="100" Name="pbStatus" Grid.Column="0" Height="39" Width="300" Grid.ColumnSpan="2" Foreground="Navy"/>
-            <Button Name="btnImportProduct" Content="Import Products"  Style="{StaticResource MaterialDesignRaisedButton}"
-                    Height="50"
-                    materialDesign:ButtonAssist.CornerRadius="10"
-                    ToolTip="MaterialDesignRaisedButton with Round Corners"
-                    Click="BtnImportProduct_OnClick"
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Width="250"/>
-            <Button
-                Name="btnImportCustomer"
-                Style="{StaticResource MaterialDesignRaisedButton}"
-                Height="50"
-                materialDesign:ButtonAssist.CornerRadius="10"
-                ToolTip="MaterialDesignRaisedButton with Round Corners"
+            <ComboBox
+                materialDesign:HintAssist.Hint="Search"
+                IsEditable="True"
                 Grid.Column="0"
                 Grid.Row="1"
-                Width="250"
-                Click="BtnImportCustomer_OnClick">
-                <TextBlock
-                    Text="Import Customers" />
-            </Button>
-            <Button
-                Name="btnImportInvoice"
-                Style="{StaticResource MaterialDesignRaisedButton}"
-                Height="50"
-                materialDesign:ButtonAssist.CornerRadius="10"
-                ToolTip="MaterialDesignRaisedButton with Round Corners"
-                Grid.Column="0"
-                Grid.Row="2"
-                Width="250"
-                Click="BtnImportCustomer_OnClick">
-                <TextBlock
-                    Text="Import Invoices" />
-            </Button>
-          
-
+                Grid.ColumnSpan="2"
+                Width="300"
+                materialDesign:HintAssist.HintOpacity=".26">
+                <ComboBoxItem>
+                    Item
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Customer
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Invoice
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Orange
+                </ComboBoxItem>
+            </ComboBox>
+            <Button Name="btnImportProduct" Content="Import"  Style="{StaticResource MaterialDesignRaisedButton}"
+                    Height="50"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    ToolTip="Import"
+                    Click="BtnImportProduct_OnClick"
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Width="250"/>
         </Grid>
     </Grid>
 
