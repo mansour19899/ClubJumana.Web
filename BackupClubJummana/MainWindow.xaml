@@ -30,31 +30,23 @@
             </Grid.RowDefinitions>
             <ProgressBar Minimum="0" Maximum="100" Name="pbStatus" Grid.Column="0" Height="39" Width="300" Grid.ColumnSpan="2" Foreground="Navy"/>
             <ComboBox
-                materialDesign:HintAssist.Hint="Search"
-                IsEditable="True"
+                materialDesign:HintAssist.Hint="Select Type"
+                Name="cmbImport"
+                IsEditable="False"
                 Grid.Column="0"
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
                 Width="300"
                 materialDesign:HintAssist.HintOpacity=".26">
-                <ComboBoxItem>
-                    Item
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Customer
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Invoice
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    Orange
-                </ComboBoxItem>
+                <ComboBoxItem Content="Item" Tag="1"/>
+                <ComboBoxItem Content="Customer" Tag="2"/>
+                <ComboBoxItem Content="Invoice" Tag="3"/>
             </ComboBox>
-            <Button Name="btnImportProduct" Content="Import"  Style="{StaticResource MaterialDesignRaisedButton}"
+            <Button Name="btnImport" Content="Import"  Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="50"
                     materialDesign:ButtonAssist.CornerRadius="10"
                     ToolTip="Import"
-                    Click="BtnImportProduct_OnClick"
+                    Click="BtnImport_OnClick"
                     Grid.Column="0"
                     Grid.Row="2"
                     Grid.ColumnSpan="2"

@@ -10,6 +10,7 @@ namespace ClubJumana.Core.Services.Interfaces
    public interface IRepositoryService
     {
         void UpdateLocalDb();
+        IQueryable<Variant> allVariants();
         IQueryable<ProductMaster> AllProductMasterList();
         IQueryable<ProductMaster> AllProductMasterWithInventoryList();
         IQueryable<PurchaseOrder> AllPurchaseOrder();

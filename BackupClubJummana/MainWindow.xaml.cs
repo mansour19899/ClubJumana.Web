@@ -44,7 +44,7 @@ namespace BackupClubJummana
             MessageBox.Show("Finish");
         }
 
-        private void BtnImportProduct_OnClick(object sender, RoutedEventArgs e)
+        private void BtnImport_OnClick(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             // dlg.DefaultExt = ".png";
@@ -52,7 +52,20 @@ namespace BackupClubJummana
             bool? result = dlg.ShowDialog();
             if (result == true)
             {
-                ImportCustomerList(dlg.FileName);
+                switch (cmbImport.SelectedIndex)
+                {
+                    case 0:
+                        ImportItemList(dlg.FileName);
+                        break;
+                    case 1:
+                        // ImportCustomerList(dlg.FileName);
+                        break;
+                    default:
+                        MessageBox.Show("khariyat");
+                        break;
+                }
+
+
             }
         }
 
@@ -118,18 +131,75 @@ namespace BackupClubJummana
             });
 
         }
-
-        private void BtnImportCustomer_OnClick(object sender, RoutedEventArgs e)
+        private async Task ImportItemList(string fileName)
         {
-                        Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            // dlg.DefaultExt = ".png";
-            // dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
-
-            bool? result = dlg.ShowDialog();
-            if (result == true)
+            await Task.Run(() =>
             {
-                ImportCustomerList(dlg.FileName);
-            }
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+                var variants = _repositoryService.allVariants().Where(p=>p.Barcode!=null).ToList();
+                Variant findProduct;
+                QbItem mm = JsonConvert.DeserializeObject<QbItem>(jsonString);
+                List<ProductMaster> ProductList = new List<ProductMaster>();
+                if (mm.QueryResponse.Item.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    var step = 100 / (mm.QueryResponse.Item.Count + 4);
+                    int i = 0;
+                    
+                    foreach (var item in mm.QueryResponse.Item)
+                    {
+                        findProduct = variants.FirstOrDefault(p => p.Barcode.BarcodeNumber.CompareTo(item.Name) == 0);
+                        if (findProduct == null)
+                        {
+                            ProductList.Add(new ProductMaster()
+                            {
+                                Id = Convert.ToInt32(item.Id),
+                                Name = item.Description.Trim(),
+                                UPC = item.Name.Trim(),
+                                WholesalePrice = 0,
+                                Active = item.Active,
+                            });
+                        }
+                        else
+                        {
+                            ProductList.Add(new ProductMaster()
+                            {
+                                Id = Convert.ToInt32(item.Id),
+                                Name = item.Description.Trim(),
+                                UPC = item.Name.Trim(),
+                                SKU = findProduct.Sku.Trim(),
+                                VariantFK = findProduct.Id,
+                                WholesalePrice = Convert.ToDecimal(item.UnitPrice),
+                                RetailPrice = findProduct.RetailPrice,
+                                Size = findProduct.Size.Trim(),
+                                Active = item.Active,
+                                Color = findProduct.Colour == null ? "" : findProduct.Colour.Name.Trim(),
+                                StyleNumber = findProduct.Product.StyleNumber.Trim(),
+                                Image = findProduct.Images.Count == 0 ? "" : findProduct.Images.FirstOrDefault().ImageName.Trim()
+                            });
+                        }
+                       
+                    }
+
+                    foreach (var product in ProductList.OrderBy(p => p.Id))
+                    {
+                       // _repositoryService.AddAndUpdateCustomer(product, false);
+                        i += step;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+                    bool res = _repositoryService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = 100);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
+
+                }
+
+            });
+
         }
+
     }
 }

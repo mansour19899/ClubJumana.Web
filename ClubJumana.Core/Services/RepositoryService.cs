@@ -69,6 +69,14 @@ namespace ClubJumana.Core.Services
 
         }
 
+        public IQueryable<Variant> allVariants()
+        {
+            if (Consts.Consts.OnlineModeOnly)
+                return onlineDb.variants.Include(p=>p.Images).Include(p=>p.Product).Include(p=>p.Barcode).OrderBy(p => p.Id).AsNoTracking();
+            else
+                return _context.variants;
+        }
+
         #region Update Function
 
 
