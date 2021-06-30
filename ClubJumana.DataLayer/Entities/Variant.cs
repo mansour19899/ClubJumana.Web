@@ -40,6 +40,9 @@ namespace ClubJumana.DataLayer.Entities
         public string Data6 { get; set; }
 
         public bool IsStar { get; set; } = false;
+        public bool IsWholesale { get; set; } = false;
+        public bool IsRetail{ get; set; } = false;
+        public string Bundle { get; set; }
         public DateTime LastDateEdited { get; set; }
         [Timestamp]
         public DateTime RowVersion { get; set; }

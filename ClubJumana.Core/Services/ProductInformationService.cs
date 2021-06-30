@@ -534,6 +534,9 @@ namespace ClubJumana.Core.Services
                                 item.Width = variant.Width;
                                 item.Size = variant.Size;
                                 item.LastDateEdited = DateTime.Now;
+                                item.IsRetail = variant.IsRetail;
+                                item.IsWholesale = variant.IsWholesale;
+                                item.Bundle = variant.Bundle;
                             }
                         }
 
@@ -551,6 +554,9 @@ namespace ClubJumana.Core.Services
                         variantdb.Width = variant.Width;
                         variantdb.Size = variant.Size;
                         variantdb.LastDateEdited = DateTime.Now;
+                        variantdb.IsRetail = variant.IsRetail;
+                        variantdb.IsWholesale = variant.IsWholesale;
+                        variantdb.Bundle = variant.Bundle;
 
                         if (!Consts.Consts.OnlineModeOnly)
                         {

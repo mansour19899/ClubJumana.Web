@@ -58,7 +58,12 @@ namespace ClubJumana.DataLayer.Entities
             set=>_imageName=value;
         }
         public Nullable<bool> Active { get; set; }
-
+        public bool IsWholesale { get; set; } = false;
+        public bool IsRetail { get; set; } = false;
+        public bool Taxable { get; set; } = false;
+        public string Bundle { get; set; }
+        public DateTime LastUpdateTime { get; set; }
+        public DateTime CreatedTime { get; set; }
         public string Note { get; set; }
         [Timestamp]
         public DateTime RowVersion { get; set; }

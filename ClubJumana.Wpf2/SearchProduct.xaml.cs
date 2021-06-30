@@ -929,6 +929,7 @@ namespace ClubJumana.Wpf2
 
                     cmbEditVariantColor.ItemsSource = _repositoryService.AllColourList().ToList();
                     cmbEditVariantColor.Items.Refresh();
+                    ShowNoteVariant();
                     GrdEditVariant.Visibility = Visibility.Hidden;
                 }
 
@@ -1049,6 +1050,15 @@ namespace ClubJumana.Wpf2
         private void ShowNoteVariant()
         {
             txtRemarksVariant.Text = InfoProduct.List[SelectedIndexVariant].Note;
+            if(InfoProduct.List[SelectedIndexVariant].IsRetail)
+                btnShowRetail.Visibility = Visibility.Visible;
+            else
+                btnShowRetail.Visibility = Visibility.Collapsed;
+            if (InfoProduct.List[SelectedIndexVariant].IsWholesale)
+                btnShowWholeSale.Visibility = Visibility.Visible;
+            else
+                btnShowWholeSale.Visibility = Visibility.Collapsed;
+           
         }
         private void ShowStateStarOfVariant()
         {

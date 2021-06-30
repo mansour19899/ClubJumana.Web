@@ -156,7 +156,7 @@ namespace BackupClubJummana
                             ProductList.Add(new ProductMaster()
                             {
                                 Id = Convert.ToInt32(item.Id),
-                                Name = item.Description.Trim(),
+                                Name = item.Description == null ? "" : item.Description.Trim(),
                                 UPC = item.Name.Trim(),
                                 WholesalePrice = 0,
                                 Active = item.Active,

@@ -230,6 +230,8 @@
                                         Height="24"
                                         Width="24"/>
                                 </Button>
+                                <Button Name="btnShowWholeSale" Content="WholeSale" Width="100" HorizontalAlignment="Left" Margin="20 0 0 0" Background="DarkGreen" />
+                                <Button Name="btnShowRetail" Content="Retail" Width="100" HorizontalAlignment="Left"  Margin="20 0 0 0" Background="DarkGreen" />
                             </StackPanel>
                             <TextBox Grid.Row="1" Name="txtRemarksVariant" Style="{StaticResource txtSelectAble}"  />
                         </Grid>
@@ -639,15 +641,15 @@
             </Grid>
             <Grid   Name="GrdEditVariant" Background="#80B9ADAD" RowSpan="3" ColumnSpan="2" Visibility="Hidden" >
                 <Border  Width="600" Height="800"  VerticalAlignment="Center" Background="White" CornerRadius="20" Padding="60 60 20 0">
-                    <UniformGrid Rows="15" Columns="1"  >
+                    <UniformGrid Rows="18" Columns="1"  >
                         <UniformGrid.Resources>
                             <Style TargetType="TextBlock">
-                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="FontSize" Value="18"/>
                                 <Setter Property="VerticalAlignment" Value="Center"></Setter>
                             </Style>
                             <Style TargetType="TextBox">
-                                <Setter Property="FontSize" Value="20"/>
-                                <Setter Property="MaxHeight" Value="40"/>
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="MaxHeight" Value="30"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                                 <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             </Style>
@@ -705,6 +707,29 @@
                             <TextBlock Name="btnSizeEditProduct" Text=" Size" MouseDown="BtnSizeEditProduct_OnMouseDown" />
                             <TextBox Text="{Binding Info.VariantSelected.Size}"/>
                         </UniformGrid>
+                        <UniformGrid Rows="1" Columns="3">
+                            <TextBlock Name="btnBundleEditProduct" Text=" Bundle" MouseDown="BtnSizeEditProduct_OnMouseDown" />
+                            <TextBox Text="{Binding Info.VariantSelected.Bundle}"/>
+                        </UniformGrid>
+                        <TextBlock></TextBlock>
+                        <UniformGrid Rows="1" Columns="3">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="btnIsWholesaleEditProduct" Text=" Wholesale" MouseDown="BtnSizeEditProduct_OnMouseDown" />
+                                <TextBlock Text="     "/>
+                                <CheckBox IsChecked="{Binding Info.VariantSelected.IsWholesale}"
+                                          Name="CheckBoxIswholesale"
+                                          Content="X"
+                                          Style="{StaticResource MaterialDesignActionDarkCheckBox}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="btnIsRetailEditProduct" Text=" Retail" MouseDown="BtnSizeEditProduct_OnMouseDown" />
+                                <TextBlock Text="     "/>
+                                <CheckBox IsChecked="{Binding Info.VariantSelected.IsRetail}"
+                                          Name="CheckBoxIsRetail"
+                                          Content="X"
+                                          Style="{StaticResource MaterialDesignActionDarkCheckBox}"/>
+                            </StackPanel>
+                        </UniformGrid>
                         <TextBlock></TextBlock>
                         <UniformGrid Rows="1" Columns="4" Margin="0 10 0 0">
                             <TextBlock/>
@@ -718,8 +743,7 @@
                             <CheckBox IsChecked="False"
                                       Name="CheckBoxUpdateSameVariants"
                                 Content="X"
-                                Style="{StaticResource MaterialDesignActionDarkCheckBox}"
-                                ToolTip="MaterialDesignActionDarkCheckBox" />
+                                Style="{StaticResource MaterialDesignActionDarkCheckBox}"/>
                             <TextBlock Margin="20 0 0 0"> Update  Same Variants</TextBlock>
                         </StackPanel>
 
