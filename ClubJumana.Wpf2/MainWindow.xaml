@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ClubJumana.Wpf2"
         mc:Ignorable="d"
         Icon="Content/Icon/VanmeIcon.ico"
-        Title="Magic Style Ver 1.50" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized" ShowInTaskbar="True" Loaded="MainWindow_OnLoaded">
+        Title="Magic Style Ver 1.60" Height="900" Width="1800" WindowStartupLocation="CenterScreen" WindowState="Maximized" ShowInTaskbar="True" Loaded="MainWindow_OnLoaded">
     <Grid>
         <Image Source="Content/Images/LOGO-GOLD_WHITE_BLACK.jpg" Margin="0 0 0 400"></Image>
         <UniformGrid Columns="2" Rows="2">
