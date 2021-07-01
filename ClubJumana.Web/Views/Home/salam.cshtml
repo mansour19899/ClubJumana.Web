@@ -126,7 +126,8 @@
                     <div class="card">
                         <div class="card-body" style="font-size: 1rem;">
                             <div class="card-title">
-                                <h4>{{ age.product.styleNumber}}</h4>
+                                <h4 style="display: inline;">{{ age.product.styleNumber}}</h4><span class="label label-info ml-3" v-show="age.isWholesale" style="background-color: navy;" >Wholesale</span>
+                                <span class="label label-success  ml-3" style="background-color: darkgreen;" v-show="age.isRetail">Retail</span>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -255,8 +256,7 @@
 
     <div class="card" v-show="showlist">
         <div class="card-body">
-            <div class="bootstrap-pagination">
-                <h5 class="card-title">Resualt: {{countList}}</h5>
+            @*<div class="bootstrap-pagination">
                 <nav v-show="parseInt(pages)>1">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ">
@@ -288,6 +288,18 @@
                         </li>
                     </ul>
                 </nav>
+            </div>*@
+            <h5 class="card-title">Resualt: {{countList}}</h5>
+            <div class="row">
+                <div class="w-30 mx-auto mb-4">
+                    <button type="button" class="btn mb-1 btn-outline-dark mr-3" v-on:click="previousPage">Previous</button>
+                    <span class="mr-3">Page</span>
+                    <div style="display: inline-block;" class="mr-3">
+                        <input class="form-control" v-model="currentPage" type="text"  style="width: 60px;">
+                    </div>
+                    <span class="mr-3">of {{pages}}</span>
+                    <button type="button" class="btn mb-1 btn-outline-dark" v-on:click="nextPage" >Next</button>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped verticle-middle">
