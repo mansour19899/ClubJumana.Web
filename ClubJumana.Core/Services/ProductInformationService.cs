@@ -530,13 +530,9 @@ namespace ClubJumana.Core.Services
                                 item.PublishRate = variant.PublishRate;
                                 item.RetailPrice = variant.RetailPrice;
                                 item.FobPrice = variant.FobPrice;
-                                item.length = variant.length;
-                                item.Width = variant.Width;
-                                item.Size = variant.Size;
                                 item.LastDateEdited = DateTime.Now;
                                 item.IsRetail = variant.IsRetail;
                                 item.IsWholesale = variant.IsWholesale;
-                                item.Bundle = variant.Bundle;
                             }
                         }
 
