@@ -30,11 +30,13 @@ namespace BackupClubJummana
     {
         private RepositoryService _repositoryService;
         private ProductInformationService _productInformationService;
+        private ProductService _productService;
         public MainWindow()
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
             _productInformationService = new ProductInformationService();
+            _productService = new ProductService();
         }
 
         private void BtnStartBackup_OnClick(object sender, RoutedEventArgs e)
@@ -168,28 +170,52 @@ namespace BackupClubJummana
                             {
                                 Id = Convert.ToInt32(item.Id),
                                 Name = item.Description.Trim(),
-                                UPC = item.Name.Trim(),
+                                UPC = findProduct.Barcode.BarcodeNumber.Trim(),
                                 SKU = findProduct.Sku.Trim(),
                                 VariantFK = findProduct.Id,
                                 WholesalePrice = Convert.ToDecimal(item.UnitPrice),
                                 RetailPrice = findProduct.RetailPrice,
                                 Size = findProduct.Size.Trim(),
                                 Active = item.Active,
-                                Color = findProduct.Colour == null ? "" : findProduct.Colour.Name.Trim(),
+                                Color = findProduct.Colour?.Name.Trim(),
                                 StyleNumber = findProduct.Product.StyleNumber.Trim(),
+                                Bundle = findProduct.Bundle?.Trim(),
+                                Taxable = item.Taxable,
+                                UOMFK = 1,
+                                LastUpdateTime = item.MetaData.LastUpdatedTime,
+                                CreatedTime = item.MetaData.CreateTime,
+                                IsRetail = findProduct.IsRetail,
+                                IsWholesale = findProduct.IsWholesale,
                                 Image = findProduct.Images.Count == 0 ? "" : findProduct.Images.FirstOrDefault().ImageName.Trim()
                             });
                         }
                        
                     }
 
+                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
+                    ProductMaster CheckItem = new ProductMaster();
+                    List<ProductMaster> removList = new List<ProductMaster>();
+                    foreach (var itemMaster in ProductList)
+                    {
+                        CheckItem = ExistProduct.FirstOrDefault(p => p.Id == itemMaster.Id);
+                        if (CheckItem.LastUpdateTime == itemMaster.LastUpdateTime)
+                        {
+                            removList.Add(itemMaster);
+                        }
+                    }
+
+                    foreach (var VARIABLE in removList)
+                    {
+                        ProductList.Remove(VARIABLE);
+                    }
+
                     foreach (var product in ProductList.OrderBy(p => p.Id))
                     {
-                       // _repositoryService.AddAndUpdateCustomer(product, false);
+                        _productService.AddOrUpdateProduct(product, false);
                         i += step;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
-                    bool res = _repositoryService.SaveDatabase();
+                    bool res = _productService.SaveDatabase();
                     this.Dispatcher.Invoke(() => pbStatus.Value = 100);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)

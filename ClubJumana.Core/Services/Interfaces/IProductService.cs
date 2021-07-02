@@ -7,7 +7,7 @@ namespace ClubJumana.Core.Services.Interfaces
 {
     interface IProductService
     {
-        public int AddOrUpdateProduct(ProductMaster product);
+        public int AddOrUpdateProduct(ProductMaster product, bool isSave = true);
 
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id);
 
@@ -20,5 +20,6 @@ namespace ClubJumana.Core.Services.Interfaces
         public Inner GetInnerByITF(string itf14);
         public MasterCarton GetMasterByITF(string itf14);
         public int UpdateMasterCarton(MasterCarton master);
+        public bool SaveDatabase();
     }
 }

@@ -17,12 +17,29 @@ namespace ClubJumana.Core.Services
         {
             _context = new OnlineContext();
         }
-        public int AddOrUpdateProduct(ProductMaster product)
+        public int AddOrUpdateProduct(ProductMaster product, bool isSave = true)
         {
-            DetachedAllEntries();
-            _context.Update(product);
-            _context.SaveChanges();
-            return 0;
+
+            if (isSave)
+                DetachedAllEntries();
+            if (product.Id == 0)
+            {
+                product.Id = _context.customers.Max(p => p.Id) + 1;
+                _context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                _context.productmasters.Add(product);
+            }
+
+            else
+            {
+                _context.Update(product);
+            }
+
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
         }
 
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id)
@@ -191,6 +208,21 @@ namespace ClubJumana.Core.Services
             _context.mastercartons.Update(master);
             _context.SaveChanges();
             return 1;
+        }
+
+        public bool SaveDatabase()
+        {
+            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
