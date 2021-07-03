@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BackupClubJummana.ComparerQB;
 using BackupClubJummana.QuickBookModel;
 using ClubJumana.Core.Services;
 using ClubJumana.DataLayer.Entities;
@@ -149,7 +150,7 @@ namespace BackupClubJummana
                 {
                     var step = 100 / (mm.QueryResponse.Item.Count + 4);
                     int i = 0;
-                    
+
                     foreach (var item in mm.QueryResponse.Item)
                     {
                         findProduct = variants.FirstOrDefault(p => p.Barcode.BarcodeNumber.CompareTo(item.Name) == 0);
@@ -186,41 +187,63 @@ namespace BackupClubJummana
                                 CreatedTime = item.MetaData.CreateTime,
                                 IsRetail = findProduct.IsRetail,
                                 IsWholesale = findProduct.IsWholesale,
-                                Image = findProduct.Images.Count == 0 ? "" : findProduct.Images.FirstOrDefault().ImageName.Trim()
+                                Image = findProduct.Images.Count == 0
+                                    ? ""
+                                    : findProduct.Images.FirstOrDefault().ImageName.Trim()
                             });
                         }
-                       
+
                     }
 
                     var ExistProduct = _repositoryService.AllProductMasterList().ToList();
                     ProductMaster CheckItem = new ProductMaster();
                     List<ProductMaster> removList = new List<ProductMaster>();
-                    foreach (var itemMaster in ProductList)
+
+
+                    var comparer = new ProductMasterComparerQB();
+                    var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
+
+                    var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
+
+                    ProductMaster w;
+                    ProductMaster ww;
+                    foreach (var VARIABLE in DiffrentItems)
                     {
-                        CheckItem = ExistProduct.FirstOrDefault(p => p.Id == itemMaster.Id);
-                        if (CheckItem.LastUpdateTime == itemMaster.LastUpdateTime)
+                        w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                        ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                        if (IdForAdd.Contains(VARIABLE.Id))
                         {
-                            removList.Add(itemMaster);
+                            _productService.AddProductMaster(VARIABLE,false);
+
                         }
-                    }
+                        else
+                        {
+                            ww.Name = w.Name;
+                            ww.WholesalePrice = w.WholesalePrice;
+                            ww.RetailPrice = w.RetailPrice;
+                            ww.Active = w.Active;
+                            ww.Size = w.Size;
+                            ww.Color = w.Color;
+                            ww.Bundle = w.Bundle;
+                            ww.Taxable = w.Taxable;
+                            ww.LastUpdateTime = w.LastUpdateTime;
+                            ww.IsRetail = w.IsRetail;
+                            ww.IsWholesale = w.IsWholesale;
+                            ww.Image = w.Image;
 
-                    foreach (var VARIABLE in removList)
-                    {
-                        ProductList.Remove(VARIABLE);
-                    }
+                            _productService.UpdateProductMaster(ww,false);
+                        }
 
-                    foreach (var product in ProductList.OrderBy(p => p.Id))
-                    {
-                        _productService.AddOrUpdateProduct(product, false);
                         i += step;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
+
                     bool res = _productService.SaveDatabase();
                     this.Dispatcher.Invoke(() => pbStatus.Value = 100);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)
                         MessageBox.Show("Error");
-
                 }
 
             });

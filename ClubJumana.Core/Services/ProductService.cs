@@ -42,6 +42,52 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
+        public int AddProductMaster(ProductMaster product, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (product.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                _context.productmasters.Add(product);
+            }
+
+            else
+            {
+               
+            }
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
+        }
+
+        public int UpdateProductMaster(ProductMaster product, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (product.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                _context.productmasters.Update(product);
+            }
+
+            else
+            {
+
+            }
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
+        }
+
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id)
         {
             IDictionary<string, string> dic=new Dictionary<string, string>();

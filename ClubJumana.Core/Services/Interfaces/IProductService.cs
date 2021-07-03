@@ -8,6 +8,8 @@ namespace ClubJumana.Core.Services.Interfaces
     interface IProductService
     {
         public int AddOrUpdateProduct(ProductMaster product, bool isSave = true);
+        public int AddProductMaster(ProductMaster product, bool isSave = true);
+        public int UpdateProductMaster(ProductMaster product, bool isSave = true);
 
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id);
 
