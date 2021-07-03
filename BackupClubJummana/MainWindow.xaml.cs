@@ -61,7 +61,10 @@ namespace BackupClubJummana
                         ImportItemList(dlg.FileName);
                         break;
                     case 1:
-                        // ImportCustomerList(dlg.FileName);
+                         ImportCustomerList(dlg.FileName);
+                        break;
+                    case 2:
+                        ImportInvoiceList(dlg.FileName);
                         break;
                     default:
                         MessageBox.Show("khariyat");
@@ -84,15 +87,15 @@ namespace BackupClubJummana
             {
                 StreamReader r = new StreamReader(fileName);
                 string jsonString = r.ReadToEnd();
-                // QBInvoice m = JsonConvert.DeserializeObject<QBInvoice>(jsonString);
-
                 QBCustomer mm = JsonConvert.DeserializeObject<QBCustomer>(jsonString);
                 List<Customer> customerList = new List<Customer>();
+
                 if (mm.QueryResponse.Customer.Count == 0)
                     MessageBox.Show("List Empty");
                 else
                 {
-                    var step = 100 / (mm.QueryResponse.Customer.Count+4);
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum =0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Customer.Count*2);
                     int i = 0;
 
                     foreach (var item in mm.QueryResponse.Customer)
@@ -107,7 +110,9 @@ namespace BackupClubJummana
                             City = item.BillAddr == null ? "" : item.BillAddr.City,
                             CompanyName = item.CompanyName == null ? "" : item.CompanyName,
                             PostalCode = item.BillAddr == null ? "" : item.BillAddr.PostalCode,
-                            DisplayShipAddress = item.BillAddr == null ? "" : item.GivenName + " " + item.FamilyName + "\n" + item.BillAddr.Line1 + "\n" + item.BillAddr.City + ", " + item.BillAddr.CountrySubDivisionCode + " " +
+                            DisplayBillAddress = item.BillAddr == null ? "" : item.GivenName + " " + item.FamilyName + "\n" + item.BillAddr.Line1 + "\n" + item.BillAddr.City + ", " + item.BillAddr.CountrySubDivisionCode + " " +
+                                                                              item.BillAddr.PostalCode + "\n" + item.BillAddr.Country,
+                            DisplayShipAddress = item.ShipAddr == null ? "" : item.GivenName + " " + item.FamilyName + "\n" + item.BillAddr.Line1 + "\n" + item.BillAddr.City + ", " + item.BillAddr.CountrySubDivisionCode + " " +
                                                                               item.BillAddr.PostalCode + "\n" + item.BillAddr.Country,
                             BalanceDueLCY = Convert.ToDecimal(item.Balance),
                             BalanceLCY = Convert.ToDecimal(item.BalanceWithJobs),
@@ -115,16 +120,17 @@ namespace BackupClubJummana
                             Note = item.Notes,
                             CreatedBy_fk = 1
                         });
+                        i ++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
-
                     foreach (var customer in customerList.OrderBy(p => p.Id))
                     {
                         _repositoryService.AddAndUpdateCustomer(customer, false);
-                        i += step;
+                        i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
                     bool res = _repositoryService.SaveDatabase();
-                    this.Dispatcher.Invoke(() => pbStatus.Value = 100);
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)
                         MessageBox.Show("Error");
@@ -148,7 +154,8 @@ namespace BackupClubJummana
                     MessageBox.Show("List Empty");
                 else
                 {
-                    var step = 100 / (mm.QueryResponse.Item.Count + 4);
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Item.Count * 2);
                     int i = 0;
 
                     foreach (var item in mm.QueryResponse.Item)
@@ -192,6 +199,8 @@ namespace BackupClubJummana
                                     : findProduct.Images.FirstOrDefault().ImageName.Trim()
                             });
                         }
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
 
                     }
 
@@ -235,12 +244,114 @@ namespace BackupClubJummana
                             _productService.UpdateProductMaster(ww,false);
                         }
 
-                        i += step;
+                        i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
 
                     bool res = _productService.SaveDatabase();
-                    this.Dispatcher.Invoke(() => pbStatus.Value = 100);
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
+                }
+
+            });
+
+        }
+        private async Task ImportInvoiceList(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+               QBInvoice mm = JsonConvert.DeserializeObject<QBInvoice>(jsonString);
+                List<ProductMaster> ProductList = new List<ProductMaster>();
+                if (mm.QueryResponse.Invoice.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Invoice.Count * 2);
+                    int i = 0;
+
+                    foreach (var item in mm.QueryResponse.Invoice)
+                    {
+
+                        //ProductList.Add(new ProductMaster()
+                        //{
+                        //    Id = Convert.ToInt32(item.Id),
+                        //    Name = item.Description.Trim(),
+                        //    UPC = findProduct.Barcode.BarcodeNumber.Trim(),
+                        //    SKU = findProduct.Sku.Trim(),
+                        //    VariantFK = findProduct.Id,
+                        //    WholesalePrice = Convert.ToDecimal(item.UnitPrice),
+                        //    RetailPrice = findProduct.RetailPrice,
+                        //    Size = findProduct.Size.Trim(),
+                        //    Active = item.Active,
+                        //    Color = findProduct.Colour?.Name.Trim(),
+                        //    StyleNumber = findProduct.Product.StyleNumber.Trim(),
+                        //    Bundle = findProduct.Bundle?.Trim(),
+                        //    Taxable = item.Taxable,
+                        //    UOMFK = 1,
+                        //    LastUpdateTime = item.MetaData.LastUpdatedTime,
+                        //    CreatedTime = item.MetaData.CreateTime,
+                        //    IsRetail = findProduct.IsRetail,
+                        //    IsWholesale = findProduct.IsWholesale,
+                        //    Image = findProduct.Images.Count == 0
+                        //        ? ""
+                        //        : findProduct.Images.FirstOrDefault().ImageName.Trim()
+                        //});
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+
+                    }
+
+                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
+                    ProductMaster CheckItem = new ProductMaster();
+                    List<ProductMaster> removList = new List<ProductMaster>();
+
+
+                    var comparer = new ProductMasterComparerQB();
+                    var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
+
+                    var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
+
+                    ProductMaster w;
+                    ProductMaster ww;
+                    foreach (var VARIABLE in DiffrentItems)
+                    {
+                        w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                        ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                        if (IdForAdd.Contains(VARIABLE.Id))
+                        {
+                            _productService.AddProductMaster(VARIABLE, false);
+
+                        }
+                        else
+                        {
+                            ww.Name = w.Name;
+                            ww.WholesalePrice = w.WholesalePrice;
+                            ww.RetailPrice = w.RetailPrice;
+                            ww.Active = w.Active;
+                            ww.Size = w.Size;
+                            ww.Color = w.Color;
+                            ww.Bundle = w.Bundle;
+                            ww.Taxable = w.Taxable;
+                            ww.LastUpdateTime = w.LastUpdateTime;
+                            ww.IsRetail = w.IsRetail;
+                            ww.IsWholesale = w.IsWholesale;
+                            ww.Image = w.Image;
+
+                            _productService.UpdateProductMaster(ww, false);
+                        }
+
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    bool res = _productService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)
                         MessageBox.Show("Error");

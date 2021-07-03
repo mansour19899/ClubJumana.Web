@@ -10,16 +10,27 @@ namespace BackupClubJummana.QuickBookModel
         public DateTime LastUpdatedTime { get; set; }
     }
 
+    public class CustomField
+    {
+        public string DefinitionId { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string StringValue { get; set; }
+    }
+
+    public class DepartmentRef
+    {
+        public string value { get; set; }
+        public string name { get; set; }
+    }
+
     public class CurrencyRef
     {
         public string value { get; set; }
         public string name { get; set; }
     }
-    public class LinkedTxn
-    {
-        public string TxnId { get; set; }
-        public string TxnType { get; set; }
-    }
+
+
 
     public class ItemRef
     {
@@ -41,7 +52,7 @@ namespace BackupClubJummana.QuickBookModel
     public class SalesItemLineDetail
     {
         public ItemRef ItemRef { get; set; }
-        public int UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
         public int Qty { get; set; }
         public ItemAccountRef ItemAccountRef { get; set; }
         public TaxCodeRef TaxCodeRef { get; set; }
@@ -51,14 +62,37 @@ namespace BackupClubJummana.QuickBookModel
     {
     }
 
+    public class LinkedTxn
+    {
+        public string TxnId { get; set; }
+        public string TxnType { get; set; }
+        public string TxnLineId { get; set; }
+    }
+
+    public class DiscountAccountRef
+    {
+        public string value { get; set; }
+        public string name { get; set; }
+    }
+
+    public class DiscountLineDetail
+    {
+        public bool PercentBased { get; set; }
+        public int DiscountPercent { get; set; }
+        public DiscountAccountRef DiscountAccountRef { get; set; }
+    }
+
     public class Line
     {
         public string Id { get; set; }
         public int LineNum { get; set; }
+        public string Description { get; set; }
         public double Amount { get; set; }
         public string DetailType { get; set; }
         public SalesItemLineDetail SalesItemLineDetail { get; set; }
         public SubTotalLineDetail SubTotalLineDetail { get; set; }
+        public IList<LinkedTxn> LinkedTxn { get; set; }
+        public DiscountLineDetail DiscountLineDetail { get; set; }
     }
 
     public class TaxRateRef
@@ -70,7 +104,7 @@ namespace BackupClubJummana.QuickBookModel
     {
         public TaxRateRef TaxRateRef { get; set; }
         public bool PercentBased { get; set; }
-        public int TaxPercent { get; set; }
+        public double TaxPercent { get; set; }
         public double NetAmountTaxable { get; set; }
     }
 
@@ -93,27 +127,49 @@ namespace BackupClubJummana.QuickBookModel
         public string name { get; set; }
     }
 
-    public class BillAddr
+    public class CustomerMemo
     {
-        public string Id { get; set; }
-        public string City { get; set; }
-        public string CountrySubDivisionCode { get; set; }
-        public string PostalCode { get; set; }
-        public string Line1 { get; set; }
-        public string Country { get; set; }
+        public string value { get; set; }
     }
 
     public class ShipAddr
     {
         public string Id { get; set; }
+        public string Line1 { get; set; }
         public string City { get; set; }
+        public string Country { get; set; }
         public string CountrySubDivisionCode { get; set; }
         public string PostalCode { get; set; }
+        public string Line2 { get; set; }
+        public string Line3 { get; set; }
+        public string Line4 { get; set; }
+        public string Line5 { get; set; }
     }
 
     public class SalesTermRef
     {
         public string value { get; set; }
+    }
+
+    public class ShipMethodRef
+    {
+        public string value { get; set; }
+        public string name { get; set; }
+    }
+
+    public class BillAddr
+    {
+        public string Id { get; set; }
+        public string Line1 { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string CountrySubDivisionCode { get; set; }
+        public string PostalCode { get; set; }
+    }
+
+    public class BillEmail
+    {
+        public string Address { get; set; }
     }
 
     public class Invoice
@@ -127,24 +183,33 @@ namespace BackupClubJummana.QuickBookModel
         public string Id { get; set; }
         public string SyncToken { get; set; }
         public MetaData MetaData { get; set; }
-        public IList<object> CustomField { get; set; }
+        public IList<CustomField> CustomField { get; set; }
         public string DocNumber { get; set; }
         public string TxnDate { get; set; }
+        public DepartmentRef DepartmentRef { get; set; }
         public CurrencyRef CurrencyRef { get; set; }
+        public double ExchangeRate { get; set; }
         public IList<LinkedTxn> LinkedTxn { get; set; }
         public IList<Line> Line { get; set; }
         public TxnTaxDetail TxnTaxDetail { get; set; }
         public CustomerRef CustomerRef { get; set; }
-        public BillAddr BillAddr { get; set; }
+        public CustomerMemo CustomerMemo { get; set; }
         public ShipAddr ShipAddr { get; set; }
         public bool FreeFormAddress { get; set; }
         public SalesTermRef SalesTermRef { get; set; }
         public string DueDate { get; set; }
+        public ShipMethodRef ShipMethodRef { get; set; }
+        public string ShipDate { get; set; }
+        public string TrackingNum { get; set; }
         public string GlobalTaxCalculation { get; set; }
         public double TotalAmt { get; set; }
+        public double HomeTotalAmt { get; set; }
         public string PrintStatus { get; set; }
         public string EmailStatus { get; set; }
-        public int Balance { get; set; }
+        public double Balance { get; set; }
+        public double HomeBalance { get; set; }
+        public BillAddr BillAddr { get; set; }
+        public BillEmail BillEmail { get; set; }
     }
 
     public class QueryResponseInvoice
