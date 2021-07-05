@@ -20,6 +20,8 @@ using ClubJumana.DataLayer.Entities;
 using OfficeOpenXml;
 using Newtonsoft.Json;
 using Customer = ClubJumana.DataLayer.Entities.Customer;
+using PurchaseOrder = ClubJumana.DataLayer.Entities.PurchaseOrder;
+using Vendor = ClubJumana.DataLayer.Entities.Vendor;
 
 
 namespace BackupClubJummana
@@ -61,10 +63,16 @@ namespace BackupClubJummana
                         ImportItemList(dlg.FileName);
                         break;
                     case 1:
-                         ImportCustomerList(dlg.FileName);
+                         ImportVendorList(dlg.FileName);
                         break;
                     case 2:
+                        ImportCustomerList(dlg.FileName);
+                        break;
+                    case 3:
                         ImportInvoiceList(dlg.FileName);
+                        break;
+                    case 4:
+                        ImportPurchaseOrder(dlg.FileName);
                         break;
                     default:
                         MessageBox.Show("khariyat");
@@ -81,6 +89,51 @@ namespace BackupClubJummana
 
         }
 
+        private async Task ImportVendorList(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+                QBVendor mm = JsonConvert.DeserializeObject<QBVendor>(jsonString);
+                List<Vendor> VendorsList = new List<Vendor>();
+
+                if (mm.QueryResponse.Vendor.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Vendor.Count * 2);
+                    int i = 0;
+
+                    foreach (var item in mm.QueryResponse.Vendor)
+                    {
+                        VendorsList.Add(new Vendor()
+                        {
+                            Id = Convert.ToInt32(item.Id),
+                        });
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    var tte = mm.QueryResponse.Vendor.OrderBy(p => p.Id).ToList();
+                    foreach (var customer in VendorsList.OrderBy(p => p.Id))
+                    {
+                       // _repositoryService.AddAndUpdateCustomer(customer, false);
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+                    bool res = _repositoryService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
+
+                }
+
+            });
+
+        }
         private async Task ImportCustomerList(string fileName)
         {
             await Task.Run(() =>
@@ -359,6 +412,39 @@ namespace BackupClubJummana
 
             });
 
+        }
+        private async Task ImportPurchaseOrder(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+                var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
+                Variant findProduct;
+                QBPurchaseOrder mm = JsonConvert.DeserializeObject<QBPurchaseOrder>(jsonString);
+
+                List<PurchaseOrder> PurchaseOrderList = new List<PurchaseOrder>();
+
+                if (mm.QueryResponse.PurchaseOrder.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.PurchaseOrder.Count * 2);
+                    int i = 0;
+
+                    foreach (var purchaseOrder in mm.QueryResponse.PurchaseOrder)
+                    {
+                        PurchaseOrderList.Add(new PurchaseOrder()
+                        {
+                            Id = Convert.ToInt32(purchaseOrder.Id),
+                        });
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+                }
+
+            });
         }
 
     }

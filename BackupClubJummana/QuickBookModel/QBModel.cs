@@ -82,7 +82,7 @@ namespace BackupClubJummana.QuickBookModel
         public DiscountAccountRef DiscountAccountRef { get; set; }
     }
 
-    public class Line
+    public partial class Line
     {
         public string Id { get; set; }
         public int LineNum { get; set; }
@@ -379,6 +379,119 @@ namespace BackupClubJummana.QuickBookModel
         public DateTime time { get; set; }
     }
 
+
+    //--------------------------------- Purchase Order -----------------------------------------
+
+
+    public class ItemBasedExpenseLineDetail
+    {
+        public string BillableStatus { get; set; }
+        public ItemRef ItemRef { get; set; }
+        public double UnitPrice { get; set; }
+        public int Qty { get; set; }
+        public TaxCodeRef TaxCodeRef { get; set; }
+    }
+
+    public partial class Line
+    {
+        public int Received { get; set; }
+        public ItemBasedExpenseLineDetail ItemBasedExpenseLineDetail { get; set; }
+    }
+
+    public class VendorRef
+    {
+        public string value { get; set; }
+        public string name { get; set; }
+    }
+
+    public class APAccountRef
+    {
+        public string value { get; set; }
+        public string name { get; set; }
+    }
+
+    public class PurchaseOrder
+    {
+        public ShipAddr ShipAddr { get; set; }
+        public string POStatus { get; set; }
+        public string domain { get; set; }
+        public bool sparse { get; set; }
+        public string Id { get; set; }
+        public string SyncToken { get; set; }
+        public MetaData MetaData { get; set; }
+        public IList<object> CustomField { get; set; }
+        public string DocNumber { get; set; }
+        public string TxnDate { get; set; }
+        public DepartmentRef DepartmentRef { get; set; }
+        public CurrencyRef CurrencyRef { get; set; }
+        public int ExchangeRate { get; set; }
+        public IList<LinkedTxn> LinkedTxn { get; set; }
+        public IList<Line> Line { get; set; }
+        public VendorRef VendorRef { get; set; }
+        public APAccountRef APAccountRef { get; set; }
+        public double TotalAmt { get; set; }
+        public string Memo { get; set; }
+        public string GlobalTaxCalculation { get; set; }
+        public string PrivateNote { get; set; }
+    }
+
+    public class QueryResponsePurchaseOrder
+    {
+        public IList<PurchaseOrder> PurchaseOrder { get; set; }
+        public int startPosition { get; set; }
+        public int maxResults { get; set; }
+        public int totalCount { get; set; }
+    }
+
+    public class QBPurchaseOrder
+    {
+        public QueryResponsePurchaseOrder QueryResponse { get; set; }
+        public DateTime time { get; set; }
+    }
+
+    //--------------------------------- Vendor -----------------------------------------
+    public class Mobile
+    {
+        public string FreeFormNumber { get; set; }
+    }
+    public class Vendor
+    {
+        public BillAddr BillAddr { get; set; }
+        public string TaxIdentifier { get; set; }
+        public double Balance { get; set; }
+        public bool Vendor1099 { get; set; }
+        public bool T4AEligible { get; set; }
+        public bool T5018Eligible { get; set; }
+        public CurrencyRef CurrencyRef { get; set; }
+        public string domain { get; set; }
+        public bool sparse { get; set; }
+        public string Id { get; set; }
+        public string SyncToken { get; set; }
+        public MetaData MetaData { get; set; }
+        public string GivenName { get; set; }
+        public string FamilyName { get; set; }
+        public string CompanyName { get; set; }
+        public string DisplayName { get; set; }
+        public string PrintOnCheckName { get; set; }
+        public bool Active { get; set; }
+        public string V4IDPseudonym { get; set; }
+        public Mobile Mobile { get; set; }
+        public PrimaryEmailAddr PrimaryEmailAddr { get; set; }
+        public string MiddleName { get; set; }
+    }
+
+    public class QueryResponseVendor
+    {
+        public IList<Vendor> Vendor { get; set; }
+        public int startPosition { get; set; }
+        public int maxResults { get; set; }
+    }
+
+    public class QBVendor
+    {
+        public QueryResponseVendor QueryResponse { get; set; }
+        public DateTime time { get; set; }
+    }
 
 
 
