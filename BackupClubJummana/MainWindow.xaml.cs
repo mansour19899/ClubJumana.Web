@@ -111,15 +111,28 @@ namespace BackupClubJummana
                         VendorsList.Add(new Vendor()
                         {
                             Id = Convert.ToInt32(item.Id),
+                            FirstName = item.GivenName,
+                            LastName = item.FamilyName,
+                            DisplayName = item.DisplayName,
+                            MiddleName = item.MiddleName,
+                            PrintOnCheckName = item.PrintOnCheckName,
+                            Balance = item.Balance,
+                            Active = item.Active,
+                            CompanyName = item.CompanyName,
+                            Currency = item.CurrencyRef.value,
+                            CreateTime = item.MetaData.CreateTime,
+                            LastUpDateTime = item.MetaData.LastUpdatedTime,
+                            Email = item.PrimaryEmailAddr?.Address,
+                            PostalCode = item.BillAddr?.PostalCode,
+                            Phone1 = item.Mobile?.FreeFormNumber,
                         });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
-
-                    var tte = mm.QueryResponse.Vendor.OrderBy(p => p.Id).ToList();
-                    foreach (var customer in VendorsList.OrderBy(p => p.Id))
+                    
+                    foreach (var vendor in VendorsList.OrderBy(p => p.Id))
                     {
-                       // _repositoryService.AddAndUpdateCustomer(customer, false);
+                        _repositoryService.AddAndUpdateVendor(vendor, false);
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
@@ -161,7 +174,7 @@ namespace BackupClubJummana
                             Phone1 = item.PrimaryPhone == null ? "" : item.PrimaryPhone.FreeFormNumber,
                             Email = item.PrimaryEmailAddr == null ? "" : item.PrimaryEmailAddr.Address,
                             City = item.BillAddr == null ? "" : item.BillAddr.City,
-                            CompanyName = item.CompanyName == null ? "" : item.CompanyName,
+                            CompanyName = item.CompanyName ?? "",
                             PostalCode = item.BillAddr == null ? "" : item.BillAddr.PostalCode,
                             DisplayBillAddress = item.BillAddr == null ? "" : item.GivenName + " " + item.FamilyName + "\n" + item.BillAddr.Line1 + "\n" + item.BillAddr.City + ", " + item.BillAddr.CountrySubDivisionCode + " " +
                                                                               item.BillAddr.PostalCode + "\n" + item.BillAddr.Country,
@@ -438,6 +451,18 @@ namespace BackupClubJummana
                         PurchaseOrderList.Add(new PurchaseOrder()
                         {
                             Id = Convert.ToInt32(purchaseOrder.Id),
+                            FromWarehouse_fk = 1,
+                            ToWarehouse_fk = Convert.ToInt32(purchaseOrder.DepartmentRef.value),
+                            DocNumber = purchaseOrder.DocNumber,
+                            Asnumber = Convert.ToInt32(purchaseOrder.DocNumber),
+                            Grnumber = Convert.ToInt32(purchaseOrder.DocNumber),
+                            AsnTotal =Convert.ToDecimal(purchaseOrder.TotalAmt),
+                            PrivateNote = purchaseOrder.PrivateNote,
+                            Note = purchaseOrder.Memo,
+                            PoStatus = purchaseOrder.POStatus,
+                            Vendor_fk = Convert.ToInt32(purchaseOrder.VendorRef.value),
+                            ///-----later fusma
+
                         });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);

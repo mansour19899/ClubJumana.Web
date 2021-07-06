@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20210706015911_EditPurchaseOrder")]
+    partial class EditPurchaseOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -982,9 +984,6 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<decimal>("DiscountPercent")
                         .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("DocNumber")
-                        .HasColumnType("text");
 
                     b.Property<decimal?>("ExchangeRate")
                         .HasColumnType("decimal(18, 2)");

@@ -15,12 +15,17 @@ namespace ClubJumana.DataLayer.Entities
         public int PoNumber { get; set; }
         public int Asnumber { get; set; }
         public int Grnumber { get; set; }
+        public string DocNumber { get; set; }
         public int? Vendor_fk { get; set; }
         public string PoType { get; set; }
         public string Associate { get; set; }
         public string PoTerms { get; set; }
         public string Account { get; set; }
         public string FormSO { get; set; }
+        public string Note { get; set; }
+        public string PrivateNote { get; set; }
+        public string PoStatus { get; set; }
+        public string ShipAddress { get; set; }
         public DateTime? OrderDate { get; set; }
         public DateTime? AsnDate { get; set; }
         public DateTime? GrnDate { get; set; }
@@ -45,6 +50,7 @@ namespace ClubJumana.DataLayer.Entities
         public decimal? PoTotal { get; set; } = 0;
         public decimal? AsnTotal { get; set; } = 0;
         public decimal? GrnTotal { get; set; } = 0;
+        public decimal? ExchangeRate { get; set; } = 0;
         public  bool CreatedPO { get; set; }
         public  bool CreatedAsn { get; set; }
         public  bool CreatedGrn { get; set; }
@@ -58,7 +64,8 @@ namespace ClubJumana.DataLayer.Entities
         public int? ApproveGrnUser_fk { get; set; }
         [Timestamp]
         public DateTime RowVersion { get; set; }
-
+        public DateTime? CreateTime { get; set; }
+        public DateTime? LastUpdateTime { get; set; }
 
         public ICollection<Item> Items { get; set; }
         public Vendor Vendor { get; set; }

@@ -43,7 +43,7 @@ namespace ClubJumana.Core.Services.Interfaces
         Vendor GiveMeVendorById(int Id);
 
         public int AddAndUpdateCustomer(Customer customer, bool isSave = true);
-        public int AddAndUpdateVendor(Vendor vendor);
+        public int AddAndUpdateVendor(Vendor vendor, bool isSave = true);
 
         public string UploadFileToFTP( string fileName, string UploadDirectory);
         public string DownloadFileFromFTP( string fileName, string UploadDirectory);

@@ -74,10 +74,10 @@ namespace ClubJumana.DataLayer.Context
             //var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
             //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=localhost;database=Test202103;user=root;password=SmmRey2018");
+            optionsBuilder.UseMySQL("server=localhost;database=Test202103;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
-            optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicPro;user=mansour1989;password=SmmRey2018");
+            //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicPro;user=mansour1989;password=SmmRey2018");
 
             //Update-Database -Context JummanaContext
         }
@@ -158,9 +158,6 @@ namespace ClubJumana.DataLayer.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Note).HasColumnName("Note");
                 entity.Property(e => e.Id).HasColumnName("ID");
-                entity.HasData(new Vendor { Id = 1, Name = "ClubJummana" });
-                entity.HasData(new Vendor { Id = 2, Name = "Anzir" });
-                entity.HasData(new Vendor { Id = 3, Name = "Noman" });
 
             });
 
@@ -505,8 +502,8 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
-                entity.HasData(new Vendor { Id = 1, Name = "Pcs" });
-                entity.HasData(new Vendor { Id = 2, Name = "Pack4" });
+                entity.HasData(new UOM { Id = 1, Name = "Pcs" });
+                entity.HasData(new UOM { Id = 2, Name = "Pack4" });
 
             });
             //----------------------------------- Material ---------------------------------------

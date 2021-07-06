@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20210706004252_EditVendor")]
+    partial class EditVendor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -962,9 +964,6 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<DateTime?>("CreateOrder")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("CreateTime")
-                        .HasColumnType("datetime");
-
                     b.Property<bool>("CreatedAsn")
                         .HasColumnType("bit");
 
@@ -981,12 +980,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("DiscountPercent")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("DocNumber")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("ExchangeRate")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("FormSO")
@@ -1034,12 +1027,6 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<DateTime?>("LastEditDate")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("LastUpdateTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime");
 
@@ -1051,9 +1038,6 @@ namespace ClubJumana.DataLayer.Migrations
 
                     b.Property<int>("PoNumber")
                         .HasColumnType("int");
-
-                    b.Property<string>("PoStatus")
-                        .HasColumnType("text");
 
                     b.Property<decimal?>("PoSubtotal")
                         .HasColumnType("decimal(18, 2)");
@@ -1067,16 +1051,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.Property<string>("PoType")
                         .HasColumnType("text");
 
-                    b.Property<string>("PrivateNote")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    b.Property<string>("ShipAddress")
-                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("datetime");

@@ -1076,12 +1076,17 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
-        public int AddAndUpdateVendor(Vendor vendor)
+        public int AddAndUpdateVendor(Vendor vendor, bool isSave = true)
         {
-            DetachedAllEntries();
+            if (isSave)
+                DetachedAllEntries();
             if (vendor.Id == 0)
             {
                 vendor.Id = onlineDb.vendors.Max(p => p.Id) + 1;
+                onlineDb.vendors.Add(vendor);
+            }
+            else if (!isSave)
+            {
                 onlineDb.vendors.Add(vendor);
             }
 
@@ -1090,7 +1095,8 @@ namespace ClubJumana.Core.Services
                 onlineDb.Update(vendor);
             }
 
-            onlineDb.SaveChanges();
+            if (isSave)
+                onlineDb.SaveChanges();
             return 1;
         }
 

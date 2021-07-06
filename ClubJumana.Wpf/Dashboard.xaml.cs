@@ -1365,7 +1365,7 @@ namespace ClubJumana.Wpf
 
         private void BtnVendor_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            lvVendors.ItemsSource = _repositoryService.AllVendor().Select(p => new VendorListview() { No = p.Id, Name = p.Name, PhoneNo = p.Phone1, Contact = p.LastName }).ToList();
+            lvVendors.ItemsSource = _repositoryService.AllVendor().Select(p => new VendorListview() { No = p.Id, Name = p.DisplayName, PhoneNo = p.Phone1, Contact = p.LastName }).ToList();
             Mode = Mode.Customer;
             txtMode.Text = "Vendors";
             HideListview();

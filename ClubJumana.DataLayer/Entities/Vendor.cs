@@ -11,8 +11,6 @@ namespace ClubJumana.DataLayer.Entities
     {
         public int Id { get; set; }
 
-        [StringLength(40)]
-        public  string Name { get; set; }
         [StringLength(100)]
         public  string Address1 { get; set; }
         [StringLength(100)]
@@ -29,6 +27,11 @@ namespace ClubJumana.DataLayer.Entities
         public  string FirstName { get; set; }
         [StringLength(40)]
         public  string LastName { get; set; }
+        [StringLength(40)]
+        public string MiddleName { get; set; }
+        public string DisplayName { get; set; }
+        public string CompanyName { get; set; }
+        public string PrintOnCheckName { get; set; }
         [StringLength(20)]
         public  string Phone1 { get; set; }
         [StringLength(20)]
@@ -44,8 +47,13 @@ namespace ClubJumana.DataLayer.Entities
         public  string Info1 { get; set; }
         public  string Info2 { get; set; }
         public  string Note { get; set; }
+        public  bool Active { get; set; }
+        public  double? Balance { get; set; }
+
         [Timestamp]
         public DateTime RowVersion { get; set; }
+        public DateTime CreateTime { get; set; }
+        public DateTime LastUpDateTime { get; set; }
         public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
 
     }
