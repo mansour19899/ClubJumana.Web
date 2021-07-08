@@ -451,6 +451,7 @@ namespace BackupClubJummana
                     List<Item> temp = new List<Item>();
                     foreach (var purchaseOrder in mm.QueryResponse.PurchaseOrder)
                     {
+                        temp.Clear();
                         foreach (var VARIABLE in purchaseOrder.Line)
                         {
                             temp.Add(new Item(){AsnQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,GrnQuantity = VARIABLE.Received

@@ -615,11 +615,41 @@ namespace ClubJumana.Core.Services
                 int itemId = 0;
                 if(_context.items.Count()!=0)
                    itemId= _context.items.Max(p => p.Id);
+                var deletitem = new List<Item>();
+                var duplicate = new List<Item>();
+                deletitem.Clear();
+                //Check Later 
                 foreach (var VARIABLE in purchaseOrder.Items)
                 {
-                    itemId++;
-                    VARIABLE.Id = itemId;
+
+                    if (_context.productmasters.FirstOrDefault(p => p.Id == VARIABLE.ProductMaster_fk) == null)
+                        deletitem.Add(VARIABLE);
+                    if(purchaseOrder.Items.Where(p=>p.ProductMaster_fk==VARIABLE.ProductMaster_fk).ToList().Count>1)
+                        duplicate.Add(VARIABLE);
+                    else
+                    {
+                        itemId++;
+                        VARIABLE.Id = itemId;
+                    }
                 }
+
+                if (deletitem.Count > 0)
+                {
+                    foreach (var VARIABLE in deletitem)
+                    {
+                        purchaseOrder.Items.Remove(VARIABLE);
+                    }
+                   
+                }
+
+                if (duplicate.Count > 0)
+                {
+                    foreach (var VARIABLE in duplicate)
+                    {
+                        purchaseOrder.Items.Remove(VARIABLE);
+                    }
+                }
+
                 _context.purchaseorders.Add(purchaseOrder);
             }
             if (isSave)
