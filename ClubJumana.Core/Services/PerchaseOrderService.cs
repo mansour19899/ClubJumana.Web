@@ -588,6 +588,83 @@ namespace ClubJumana.Core.Services
 
         }
 
+        public int AddPurchaseOrder(PurchaseOrder purchaseOrder, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (purchaseOrder.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                
+                int itemId = _context.items.Max(p => p.Id);
+                foreach (var VARIABLE in purchaseOrder.Items)
+                {
+                    itemId++;
+                    VARIABLE.Id = itemId;
+                }
+                _context.purchaseorders.Add(purchaseOrder);
+            }
+
+            else
+            {
+
+                int itemId = 0;
+                if(_context.items.Count()!=0)
+                   itemId= _context.items.Max(p => p.Id);
+                foreach (var VARIABLE in purchaseOrder.Items)
+                {
+                    itemId++;
+                    VARIABLE.Id = itemId;
+                }
+                _context.purchaseorders.Add(purchaseOrder);
+            }
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
+        }
+
+        public int UpdatePurchaseOrder(PurchaseOrder purchaseOrder, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (purchaseOrder.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                _context.purchaseorders.Update(purchaseOrder);
+            }
+
+            else
+            {
+
+            }
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
+        }
+
+
+        public bool SaveDatabase()
+        {
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public IQueryable<AsnViewModel> AsnList()
         {
             var AsnViewModels = _context.purchaseorders.Select(p => new AsnViewModel()

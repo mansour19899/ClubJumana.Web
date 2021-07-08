@@ -20,6 +20,7 @@ using ClubJumana.DataLayer.Entities;
 using OfficeOpenXml;
 using Newtonsoft.Json;
 using Customer = ClubJumana.DataLayer.Entities.Customer;
+using Item = ClubJumana.DataLayer.Entities.Item;
 using PurchaseOrder = ClubJumana.DataLayer.Entities.PurchaseOrder;
 using Vendor = ClubJumana.DataLayer.Entities.Vendor;
 
@@ -32,12 +33,14 @@ namespace BackupClubJummana
     public partial class MainWindow : Window
     {
         private RepositoryService _repositoryService;
+        private PerchaseOrderService _purchaseOrderService;
         private ProductInformationService _productInformationService;
         private ProductService _productService;
         public MainWindow()
         {
             InitializeComponent();
             _repositoryService = new RepositoryService();
+            _purchaseOrderService = new PerchaseOrderService();
             _productInformationService = new ProductInformationService();
             _productService = new ProductService();
         }
@@ -445,9 +448,18 @@ namespace BackupClubJummana
                     this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
                     this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.PurchaseOrder.Count * 2);
                     int i = 0;
-
+                    List<Item> temp = new List<Item>();
                     foreach (var purchaseOrder in mm.QueryResponse.PurchaseOrder)
                     {
+                        foreach (var VARIABLE in purchaseOrder.Line)
+                        {
+                            temp.Add(new Item(){AsnQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,GrnQuantity = VARIABLE.Received
+                                ,AsnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),GrnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
+                                AsnItemsPrice = Convert.ToDecimal(VARIABLE.Amount),ProductMaster_fk = Convert.ToInt32(VARIABLE.ItemBasedExpenseLineDetail.ItemRef.value),
+                                Alert = VARIABLE.Received!=VARIABLE.ItemBasedExpenseLineDetail.Qty,Checked = false,Diffrent = VARIABLE.ItemBasedExpenseLineDetail.Qty-VARIABLE.Received,
+                                GrnItemsPrice = Convert.ToDecimal(Math.Round(VARIABLE.Received * VARIABLE.ItemBasedExpenseLineDetail.UnitPrice,2,MidpointRounding.ToEven))
+                            });
+                        }
                         PurchaseOrderList.Add(new PurchaseOrder()
                         {
                             Id = Convert.ToInt32(purchaseOrder.Id),
@@ -461,12 +473,66 @@ namespace BackupClubJummana
                             Note = purchaseOrder.Memo,
                             PoStatus = purchaseOrder.POStatus,
                             Vendor_fk = Convert.ToInt32(purchaseOrder.VendorRef.value),
-                            ///-----later fusma
-
+                            CreateTime = purchaseOrder.MetaData.CreateTime,
+                            LastUpdateTime = purchaseOrder.MetaData.LastUpdatedTime,
+                            ShipAddress = purchaseOrder.ShipAddr?.Line1+purchaseOrder.ShipAddr?.City+purchaseOrder.ShipAddr?.Country,
+                            Items = temp.ToList()
+                            
                         });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
+
+                    var ExistPurchaseOrder = _repositoryService.AllPurchaseOrder().ToList();
+                    ProductMaster CheckItem = new ProductMaster();
+                    List<ProductMaster> removList = new List<ProductMaster>();
+
+
+                    var comparer = new PurchaseOrderComparerQB();
+                    var DiffrentItems = PurchaseOrderList.Except(ExistPurchaseOrder, comparer).ToList();
+
+                    var IdForAdd = PurchaseOrderList.Select(p => p.Id).Except(ExistPurchaseOrder.Select(p => p.Id));
+
+                    PurchaseOrder w;
+                    PurchaseOrder ww;
+                    foreach (var VARIABLE in DiffrentItems)
+                    {
+                        w = PurchaseOrderList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                        ww = ExistPurchaseOrder.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                        if (IdForAdd.Contains(VARIABLE.Id))
+                        {
+                            _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
+
+                        }
+                        else
+                        {
+                            ww.DocNumber = w.DocNumber;
+                            ww.FromWarehouse_fk = w.FromWarehouse_fk;
+                            ww.ToWarehouse_fk = w.ToWarehouse_fk;
+                            ww.Asnumber = w.Asnumber;
+                            ww.Grnumber = w.Grnumber;
+                            ww.AsnTotal = w.AsnTotal;
+                            ww.PrivateNote = w.PrivateNote;
+                            ww.Note = w.Note;
+                            ww.LastUpdateTime = w.LastUpdateTime;
+                            ww.PoStatus = w.PoStatus;
+                            ww.Vendor_fk = w.Vendor_fk;
+                            ww.LastUpdateTime = w.LastUpdateTime;
+                            ww.ShipAddress = w.ShipAddress;
+                            
+                            _purchaseOrderService.UpdatePurchaseOrder(ww, false);
+                        }
+
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    bool res = _productService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
                 }
 
             });

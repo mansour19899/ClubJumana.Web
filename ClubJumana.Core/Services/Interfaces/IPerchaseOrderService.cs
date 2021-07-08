@@ -21,6 +21,9 @@ namespace ClubJumana.Core.Services.Interfaces
        int AddOrUpdatePoViewModel(PoViewModel poViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
        int AddOrUpdateAsnViewModel(AsnViewModel asnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
        int AddOrUpdateGrnViewModel(GrnViewModel grnViewModel,IEnumerable<ItemsOfPurchaseOrderViewModel> items,bool done);
+       public int AddPurchaseOrder(PurchaseOrder purchaseOrder, bool isSave = true);
+       public int UpdatePurchaseOrder(PurchaseOrder purchaseOrder, bool isSave = true);
+       public bool SaveDatabase();
 
-   }
+    }
 }

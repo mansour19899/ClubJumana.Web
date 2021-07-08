@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubJumana.Core.Services
 {
-   public class ProductService: IProductService
+    public class ProductService : IProductService
     {
         private OnlineContext _context;
 
@@ -58,7 +58,7 @@ namespace ClubJumana.Core.Services
 
             else
             {
-               
+
             }
             if (isSave)
                 _context.SaveChanges();
@@ -90,14 +90,14 @@ namespace ClubJumana.Core.Services
 
         public IDictionary<string, string> GetAllInformationInventoryProduct(int Id)
         {
-            IDictionary<string, string> dic=new Dictionary<string, string>();
+            IDictionary<string, string> dic = new Dictionary<string, string>();
 
             int InventoryCount = 0;
 
             //var InventoryDetail = _context.ProductInventoryWarehouses.Where(p => p.ProductMaster_fk == Id).AsNoTracking().ToList();
-            var InventoryDetail = _context.productmasters.Include(p=>p.ProductInventoryWarehouses).AsNoTracking().SingleOrDefault(p => p.Id == Id);
+            var InventoryDetail = _context.productmasters.Include(p => p.ProductInventoryWarehouses).AsNoTracking().SingleOrDefault(p => p.Id == Id);
 
-            var MainWarehouseCount = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p=>p.Warehouse_fk==2);
+            var MainWarehouseCount = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 2);
             var Store1Count = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 3);
             var Store2Count = InventoryDetail.ProductInventoryWarehouses.SingleOrDefault(p => p.Warehouse_fk == 4);
 
@@ -111,10 +111,10 @@ namespace ClubJumana.Core.Services
             dic.Add("Sale", InventoryDetail.Outcome.ToString());
             dic.Add("Reserved", InventoryDetail.GoodsReserved.ToString());
 
-            dic.Add("TempBalance",(InventoryDetail.StockOnHand -InventoryDetail.GoodsReserved).ToString());
+            dic.Add("TempBalance", (InventoryDetail.StockOnHand - InventoryDetail.GoodsReserved).ToString());
 
             if (MainWarehouseCount != null)
-                dic.Add("MainWarehouse", $"{MainWarehouseCount.Inventory} -------Transit : {MainWarehouseCount.OnTheWayInventory}"); 
+                dic.Add("MainWarehouse", $"{MainWarehouseCount.Inventory} -------Transit : {MainWarehouseCount.OnTheWayInventory}");
             else
             {
                 dic.Add("MainWarehouse", "---------------");
@@ -153,7 +153,7 @@ namespace ClubJumana.Core.Services
 
         public ProductMaster GetProductMasterById(int Id)
         {
-            return _context.productmasters.Include(p=>p.Uom).Include(p=>p.Inners).ThenInclude(p=>p.InnerMasterCartons).ThenInclude(p=>p.MasterCarton).FirstOrDefault(p => p.Id == Id);
+            return _context.productmasters.Include(p => p.Uom).Include(p => p.Inners).ThenInclude(p => p.InnerMasterCartons).ThenInclude(p => p.MasterCarton).FirstOrDefault(p => p.Id == Id);
         }
 
         public ProductMaster GetProductMasterByUPC(string upc)
@@ -195,7 +195,7 @@ namespace ClubJumana.Core.Services
 
             try
             {
-                 newIdInnerMaster = _context.innermastercartons.Max(p=>p.Id)+1;
+                newIdInnerMaster = _context.innermastercartons.Max(p => p.Id) + 1;
             }
             catch (Exception e)
             {
@@ -206,7 +206,7 @@ namespace ClubJumana.Core.Services
                 newIdInnerMaster++;
                 item.Id = newIdInnerMaster;
                 item.MasterCartonFK = masterCarton.Id;
-                totalQuantity += item.InnerQuntity*item.Inner.Quantity;
+                totalQuantity += item.InnerQuntity * item.Inner.Quantity;
                 item.Inner = null;
             }
             masterCarton.TotalQuantity = totalQuantity;
@@ -238,13 +238,13 @@ namespace ClubJumana.Core.Services
 
         public Inner GetInnerByITF(string itf14)
         {
-            return _context.inners.Include(p=>p.ProductMaster).ThenInclude(p=>p.Uom).FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
+            return _context.inners.Include(p => p.ProductMaster).ThenInclude(p => p.Uom).FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
 
         public MasterCarton GetMasterByITF(string itf14)
         {
-            return _context.mastercartons.Include(p=>p.InnerMasterCartons)
-                .ThenInclude(p=>p.Inner).ThenInclude(p=>p.ProductMaster).ThenInclude(p=>p.Uom)
+            return _context.mastercartons.Include(p => p.InnerMasterCartons)
+                .ThenInclude(p => p.Inner).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.Uom)
                 .FirstOrDefault(p => p.ITF14.Trim().CompareTo(itf14.Trim()) == 0);
         }
 
@@ -258,7 +258,6 @@ namespace ClubJumana.Core.Services
 
         public bool SaveDatabase()
         {
-            _context.SaveChanges();
             try
             {
                 _context.SaveChanges();
