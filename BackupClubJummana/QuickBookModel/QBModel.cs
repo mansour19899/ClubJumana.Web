@@ -95,7 +95,7 @@ namespace BackupClubJummana.QuickBookModel
         public DiscountLineDetail DiscountLineDetail { get; set; }
     }
 
-    public class TaxRateRef
+    public partial class TaxRateRef
     {
         public string value { get; set; }
     }
@@ -493,6 +493,116 @@ namespace BackupClubJummana.QuickBookModel
         public DateTime time { get; set; }
     }
 
+    //--------------------------------- Tax Rate -----------------------------------------
+
+    public class AgencyRef
+    {
+        public string value { get; set; }
+    }
+
+    public class TaxReturnLineRef
+    {
+        public string value { get; set; }
+    }
+
+    public class EffectiveTaxRate
+    {
+        public double RateValue { get; set; }
+        public DateTime EffectiveDate { get; set; }
+        public DateTime? EndDate { get; set; }
+    }
+
+
+    public class TaxRate
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool Active { get; set; }
+        public double RateValue { get; set; }
+        public AgencyRef AgencyRef { get; set; }
+        public TaxReturnLineRef TaxReturnLineRef { get; set; }
+        public IList<EffectiveTaxRate> EffectiveTaxRate { get; set; }
+        public string SpecialTaxType { get; set; }
+        public string DisplayType { get; set; }
+        public string domain { get; set; }
+        public bool sparse { get; set; }
+        public string Id { get; set; }
+        public string SyncToken { get; set; }
+        public MetaData MetaData { get; set; }
+    }
+
+    public class QueryResponseTaxRate
+    {
+        public IList<TaxRate> TaxRate { get; set; }
+        public int startPosition { get; set; }
+        public int maxResults { get; set; }
+        public int totalCount { get; set; }
+    }
+
+    public class QBTaxRate
+    {
+        public QueryResponseTaxRate QueryResponse { get; set; }
+        public DateTime time { get; set; }
+    }
+
+    //--------------------------------- Tax Code -----------------------------------------
+    public partial class TaxRateRef
+    {
+        public string name { get; set; }
+    }
+
+    public class TaxRateDetail
+    {
+        public TaxRateRef TaxRateRef { get; set; }
+        public string TaxTypeApplicable { get; set; }
+        public int TaxOrder { get; set; }
+        public int? TaxOnTaxOrder { get; set; }
+    }
+
+    public class SalesTaxRateList
+    {
+        public IList<TaxRateDetail> TaxRateDetail { get; set; }
+    }
+
+
+    public class PurchaseTaxRateList
+    {
+        public IList<TaxRateDetail> TaxRateDetail { get; set; }
+    }
+
+
+
+    public class TaxCode
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool Active { get; set; }
+        public bool Hidden { get; set; }
+        public bool Taxable { get; set; }
+        public bool TaxGroup { get; set; }
+        public SalesTaxRateList SalesTaxRateList { get; set; }
+        public PurchaseTaxRateList PurchaseTaxRateList { get; set; }
+        public string TaxCodeConfigType { get; set; }
+        public string domain { get; set; }
+        public bool sparse { get; set; }
+        public string Id { get; set; }
+        public string SyncToken { get; set; }
+        public MetaData MetaData { get; set; }
+    }
+
+    public class QueryResponseTaxCode
+    {
+        public IList<TaxCode> TaxCode { get; set; }
+        public int startPosition { get; set; }
+        public int maxResults { get; set; }
+        public int totalCount { get; set; }
+    }
+
+    public class QBTaxCode
+    {
+        public QueryResponseTaxCode QueryResponse { get; set; }
+        public DateTime time { get; set; }
+    }
 
 
 }

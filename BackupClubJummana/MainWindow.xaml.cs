@@ -77,8 +77,11 @@ namespace BackupClubJummana
                     case 4:
                         ImportPurchaseOrder(dlg.FileName);
                         break;
+                    case 5:
+                        ImportTaxRate(dlg.FileName);
+                        break;
                     default:
-                        MessageBox.Show("khariyat");
+                        MessageBox.Show("Fusma");
                         break;
                 }
 
@@ -105,6 +108,7 @@ namespace BackupClubJummana
                     MessageBox.Show("List Empty");
                 else
                 {
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
                     this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
                     this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Vendor.Count * 2);
                     int i = 0;
@@ -150,6 +154,7 @@ namespace BackupClubJummana
             });
 
         }
+
         private async Task ImportCustomerList(string fileName)
         {
             await Task.Run(() =>
@@ -163,6 +168,7 @@ namespace BackupClubJummana
                     MessageBox.Show("List Empty");
                 else
                 {
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
                     this.Dispatcher.Invoke(() => pbStatus.Minimum =0);
                     this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Customer.Count*2);
                     int i = 0;
@@ -223,6 +229,7 @@ namespace BackupClubJummana
                     MessageBox.Show("List Empty");
                 else
                 {
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
                     this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
                     this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Item.Count * 2);
                     int i = 0;
@@ -448,6 +455,7 @@ namespace BackupClubJummana
                 else
                 {
                     this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
                     this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.PurchaseOrder.Count * 2);
                     int i = 0;
                     List<Item> temp = new List<Item>();
@@ -533,6 +541,128 @@ namespace BackupClubJummana
 
             });
         }
+        private async Task ImportTaxRate(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+                var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
+                Variant findProduct;
+                QBTaxCode mm = JsonConvert.DeserializeObject<QBTaxCode>(jsonString);
+                List<ProductMaster> ProductList = new List<ProductMaster>();
+                if (mm.QueryResponse.TaxCode.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.TaxCode.Count * 2);
+                    int i = 0;
+
+                    foreach (var item in mm.QueryResponse.TaxCode)
+                    {
+                        findProduct = variants.FirstOrDefault(p => p.Barcode.BarcodeNumber.CompareTo(item.Name) == 0);
+                        if (findProduct == null)
+                        {
+                            ProductList.Add(new ProductMaster()
+                            {
+                                Id = Convert.ToInt32(item.Id),
+                                Name = item.Description == null ? "" : item.Description.Trim(),
+                                UPC = item.Name.Trim(),
+                                WholesalePrice = 0,
+                                Active = item.Active,
+                            });
+                        }
+                        else
+                        {
+                            ProductList.Add(new ProductMaster()
+                            {
+                                Id = Convert.ToInt32(item.Id),
+                                Name = item.Description.Trim(),
+                                //UPC = findProduct.Barcode.BarcodeNumber.Trim(),
+                                //SKU = findProduct.Sku.Trim(),
+                                //VariantFK = findProduct.Id,
+                                //WholesalePrice = Convert.ToDecimal(item.UnitPrice),
+                                //RetailPrice = findProduct.RetailPrice,
+                                //FobPrice = findProduct.FobPrice,
+                                //Size = findProduct.Size.Trim(),
+                                //Active = item.Active,
+                                //Color = findProduct.Colour?.Name.Trim(),
+                                //StyleNumber = findProduct.Product.StyleNumber.Trim(),
+                                //Bundle = findProduct.Bundle?.Trim(),
+                                //Taxable = item.Taxable,
+                                //UOMFK = 1,
+                                //LastUpdateTime = item.MetaData.LastUpdatedTime,
+                                //CreatedTime = item.MetaData.CreateTime,
+                                //IsRetail = findProduct.IsRetail,
+                                //IsWholesale = findProduct.IsWholesale,
+                                //Image = findProduct.Images.Count == 0
+                                //    ? ""
+                                //    : findProduct.Images.FirstOrDefault().ImageName.Trim()
+                            });
+                        }
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+
+                    }
+
+                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
+                    ProductMaster CheckItem = new ProductMaster();
+                    List<ProductMaster> removList = new List<ProductMaster>();
+
+
+                    var comparer = new ProductMasterComparerQB();
+                    var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
+
+                    var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
+
+                    ProductMaster w;
+                    ProductMaster ww;
+                    foreach (var VARIABLE in DiffrentItems)
+                    {
+                        w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                        ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                        if (IdForAdd.Contains(VARIABLE.Id))
+                        {
+                            _productService.AddProductMaster(VARIABLE, false);
+
+                        }
+                        else
+                        {
+                            ww.Name = w.Name;
+                            ww.WholesalePrice = w.WholesalePrice;
+                            ww.RetailPrice = w.RetailPrice;
+                            ww.FobPrice = w.FobPrice;
+                            ww.Active = w.Active;
+                            ww.Size = w.Size;
+                            ww.Color = w.Color;
+                            ww.Bundle = w.Bundle;
+                            ww.Taxable = w.Taxable;
+                            ww.LastUpdateTime = w.LastUpdateTime;
+                            ww.IsRetail = w.IsRetail;
+                            ww.IsWholesale = w.IsWholesale;
+                            ww.Image = w.Image;
+
+                            _productService.UpdateProductMaster(ww, false);
+                        }
+
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    bool res = _productService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
+                }
+
+            });
+
+        }
+
 
     }
 }

@@ -43,6 +43,7 @@
                 <ComboBoxItem Content="Customer" Tag="3"/>
                 <ComboBoxItem Content="Invoice" Tag="4"/>
                 <ComboBoxItem Content="Purchase Order" Tag="5"/>
+                <ComboBoxItem Content="Tax Rate" Tag="6"/>
             </ComboBox>
             <Button Name="btnImport" Content="Import"  Style="{StaticResource MaterialDesignRaisedButton}"
                     Height="50"
