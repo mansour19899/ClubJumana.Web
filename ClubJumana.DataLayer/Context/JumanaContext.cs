@@ -57,6 +57,7 @@ namespace ClubJumana.DataLayer.Context
         public DbSet<TablesVersion> tablesversion { get; set; }
         public DbSet<Term> terms { get; set; }
 
+        public DbSet<InventoryReport> inventoryreports { get; set; }
         public DbSet<Inner> inners { get; set; }
         public DbSet<MasterCarton> mastercartons { get; set; }
         public DbSet<InnerMasterCarton> innermastercartons { get; set; }
@@ -74,10 +75,10 @@ namespace ClubJumana.DataLayer.Context
             //var dbContextOptions = optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=magiclocaldb5;Trusted_Connection=True").EnableSensitiveDataLogging().Options;
             //optionsBuilder.UseMySQL("server=localhost;database=smm38;user=root;password=Mansour11568");
             //optionsBuilder.UseMySQL("server=localhost;database=Test3020;user=root;password=SmmRey2018");
-            optionsBuilder.UseMySQL("server=localhost;database=Test202103;user=root;password=SmmRey2018");
+              optionsBuilder.UseMySQL("server=localhost;database=Test202103;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=localhost;database=MagicLocaldb;user=root;password=SmmRey2018");
             //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicDTS;user=mansour1989;password=SmmRey2018");
-            //optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicPro;user=mansour1989;password=SmmRey2018");
+            // optionsBuilder.UseMySQL("server=132.148.182.213;database=MagicPro;user=mansour1989;password=SmmRey2018");
 
             //Update-Database -Context JummanaContext
         }
@@ -574,6 +575,18 @@ namespace ClubJumana.DataLayer.Context
 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+            });
+            //----------------------------------- Inventory Report ---------------------------------------
+            modelBuilder.Entity<InventoryReport>(entity =>
+            {
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne<ProductMaster>(s => s.ProductMaster)
+                    .WithMany(g => g.InventoryReports)
+                    .HasForeignKey(s => s.ProductMasterFK);
 
             });
 

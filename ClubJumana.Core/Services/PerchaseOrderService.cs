@@ -491,6 +491,9 @@ namespace ClubJumana.Core.Services
                 Item itemm = new Item();
                 int NewQuantityEnter = 0;
                 int DiffrentQuntity = 0;
+                int InvReportId = (_context.inventoryreports.Count() > 0)
+                    ? _context.inventoryreports.Max(p => p.Id)
+                    : 0;
                 foreach (var item in items)
                 {
                     ProductInventoryWarehouse productInventory;
@@ -530,6 +533,19 @@ namespace ClubJumana.Core.Services
                                 productInventory.OnTheWayInventory -= DiffrentQuntity;
                             if (PO.FromWarehouse_fk == 1)
                             {
+                                if (NewQuantityEnter != 0)
+                                {
+                                    InvReportId++;
+                                    _context.inventoryreports.Add(new InventoryReport()
+                                    {
+                                        Id = InvReportId,
+                                        ProductMasterFK = productInventory.ProductMaster.Id,
+                                        Description = "PO :"+PO.DocNumber,
+                                        Change = NewQuantityEnter,
+                                        OldBalance = productInventory.ProductMaster.StockOnHand,
+                                        NewBalance = productInventory.ProductMaster.StockOnHand + NewQuantityEnter
+                                    });
+                                }
                                 productInventory.ProductMaster.Income += NewQuantityEnter;
                                 productInventory.ProductMaster.StockOnHand += NewQuantityEnter;
                                 productInventory.ProductMaster.Transit -= NewQuantityEnter;
