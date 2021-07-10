@@ -319,7 +319,7 @@
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                           materialDesign:TextFieldAssist.SuffixText="sw"
-                                          DisplayMemberPath="Name" SelectedValuePath="Id" ItemsSource="{Binding VendorsList}"  SelectedValue="{Binding Vendor_fk}"/>
+                                          DisplayMemberPath="DisplayName" SelectedValuePath="Id" ItemsSource="{Binding VendorsList}"  SelectedValue="{Binding Vendor_fk}"/>
                             </UniformGrid>
                             <UniformGrid Columns="2" Rows="1">
                                 <StackPanel Orientation="Horizontal" >
@@ -413,13 +413,12 @@
 
                     </Border>
                     <StackPanel Grid.Row="3" >
-                        <Border Height="300" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
-                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="17"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"   >
+                        <Border Height="500" BorderThickness="1" BorderBrush="#505C6D" Margin="30" CornerRadius="5" >
+                            <DataGrid  Name="dgItems" ItemsSource="{Binding ItemsOfPurchaseOrderViewModels}"  Margin="2"  AutoGenerateColumns="False" CanUserAddRows="False" FontSize="13"  SelectionUnit="FullRow" AlternatingRowBackground="LightBlue" CellEditEnding="DgItems_OnCellEditEnding"   >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Style Number" Binding="{Binding ProductMaster.StyleNumber}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="UPC" Binding="{Binding ProductMaster.UPC}" Width="*" IsReadOnly="False"/>
-                                    <DataGridTextColumn Header="Color" Binding="{Binding ProductMaster.Color}" Width="*" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Size" Binding="{Binding ProductMaster.Size}" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Description" Binding="{Binding ProductMaster.Name}" Width="*" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Price" Binding="{Binding Price,StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="*"/>
                                     <DataGridTextColumn Header="Previous Quantity" Binding="{Binding PreviousQuantity}" Width="*" Foreground="#FF9C8F8F" IsReadOnly="True"/>
                                     <DataGridTextColumn Header="Quantity ( PO )" Binding="{Binding Quantity,UpdateSourceTrigger=PropertyChanged}" Width="*"/>

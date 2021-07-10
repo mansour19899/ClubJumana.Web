@@ -252,6 +252,7 @@ namespace BackupClubJummana
                                 VariantFK = findProduct.Id,
                                 WholesalePrice = Convert.ToDecimal(item.UnitPrice),
                                 RetailPrice = findProduct.RetailPrice,
+                                FobPrice = findProduct.FobPrice,
                                 Size = findProduct.Size.Trim(),
                                 Active = item.Active,
                                 Color = findProduct.Colour?.Name.Trim(),
@@ -300,6 +301,7 @@ namespace BackupClubJummana
                             ww.Name = w.Name;
                             ww.WholesalePrice = w.WholesalePrice;
                             ww.RetailPrice = w.RetailPrice;
+                            ww.FobPrice = w.FobPrice;
                             ww.Active = w.Active;
                             ww.Size = w.Size;
                             ww.Color = w.Color;
@@ -454,11 +456,13 @@ namespace BackupClubJummana
                         temp.Clear();
                         foreach (var VARIABLE in purchaseOrder.Line)
                         {
-                            temp.Add(new Item(){AsnQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,GrnQuantity = VARIABLE.Received
-                                ,AsnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),GrnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
-                                AsnItemsPrice = Convert.ToDecimal(VARIABLE.Amount),ProductMaster_fk = Convert.ToInt32(VARIABLE.ItemBasedExpenseLineDetail.ItemRef.value),
+                            temp.Add(new Item(){PoQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,AsnQuantity = VARIABLE.Received,GrnQuantity = 0
+                                ,
+                                PoPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
+                                AsnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),GrnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
+                                PoItemsPrice = Convert.ToDecimal(VARIABLE.Amount),ProductMaster_fk = Convert.ToInt32(VARIABLE.ItemBasedExpenseLineDetail.ItemRef.value),
                                 Alert = VARIABLE.Received!=VARIABLE.ItemBasedExpenseLineDetail.Qty,Checked = false,Diffrent = VARIABLE.ItemBasedExpenseLineDetail.Qty-VARIABLE.Received,
-                                GrnItemsPrice = Convert.ToDecimal(Math.Round(VARIABLE.Received * VARIABLE.ItemBasedExpenseLineDetail.UnitPrice,2,MidpointRounding.ToEven))
+                                AsnItemsPrice = Convert.ToDecimal(Math.Round(VARIABLE.Received * VARIABLE.ItemBasedExpenseLineDetail.UnitPrice,2,MidpointRounding.ToEven))
                             });
                         }
                         PurchaseOrderList.Add(new PurchaseOrder()
@@ -467,9 +471,16 @@ namespace BackupClubJummana
                             FromWarehouse_fk = 1,
                             ToWarehouse_fk = Convert.ToInt32(purchaseOrder.DepartmentRef.value),
                             DocNumber = purchaseOrder.DocNumber,
+                            PoNumber = Convert.ToInt32(purchaseOrder.DocNumber),
                             Asnumber = Convert.ToInt32(purchaseOrder.DocNumber),
                             Grnumber = Convert.ToInt32(purchaseOrder.DocNumber),
-                            AsnTotal =Convert.ToDecimal(purchaseOrder.TotalAmt),
+                            PoSubtotal = Convert.ToDecimal(purchaseOrder.TotalAmt),
+                            CreatedPO = true,
+                            CreatedAsn = false,
+                            ApprovePoUser_fk = 1,
+                            ApproveAsnUser_fk = 1,
+                            ExchangeRate = Convert.ToDecimal(purchaseOrder.ExchangeRate),
+                            AsnDate = purchaseOrder.MetaData.CreateTime,
                             PrivateNote = purchaseOrder.PrivateNote,
                             Note = purchaseOrder.Memo,
                             PoStatus = purchaseOrder.POStatus,
@@ -494,35 +505,19 @@ namespace BackupClubJummana
 
                     var IdForAdd = PurchaseOrderList.Select(p => p.Id).Except(ExistPurchaseOrder.Select(p => p.Id));
 
-                    PurchaseOrder w;
-                    PurchaseOrder ww;
+                    int resualt = 0;
                     foreach (var VARIABLE in DiffrentItems)
                     {
-                        w = PurchaseOrderList.SingleOrDefault(p => p.Id == VARIABLE.Id);
-                        ww = ExistPurchaseOrder.SingleOrDefault(p => p.Id == VARIABLE.Id);
 
                         if (IdForAdd.Contains(VARIABLE.Id))
                         {
                             _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
-
+                            if (resualt == -11)
+                                MessageBox.Show("Error Not Find Product");
                         }
                         else
                         {
-                            ww.DocNumber = w.DocNumber;
-                            ww.FromWarehouse_fk = w.FromWarehouse_fk;
-                            ww.ToWarehouse_fk = w.ToWarehouse_fk;
-                            ww.Asnumber = w.Asnumber;
-                            ww.Grnumber = w.Grnumber;
-                            ww.AsnTotal = w.AsnTotal;
-                            ww.PrivateNote = w.PrivateNote;
-                            ww.Note = w.Note;
-                            ww.LastUpdateTime = w.LastUpdateTime;
-                            ww.PoStatus = w.PoStatus;
-                            ww.Vendor_fk = w.Vendor_fk;
-                            ww.LastUpdateTime = w.LastUpdateTime;
-                            ww.ShipAddress = w.ShipAddress;
-                            
-                            _purchaseOrderService.UpdatePurchaseOrder(ww, false);
+                            _purchaseOrderService.UpdatePurchaseOrder(VARIABLE, false);
                         }
 
                         i++;

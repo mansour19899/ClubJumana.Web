@@ -238,7 +238,7 @@ namespace ClubJumana.Core.Services
                         GrnSubtotal = 0m,
                         GrnTotal = asnViewModel.TotalCharges,
                     };
-                    if (done)
+                    if (done&&PO.Asnumber==0)
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
                     _context.purchaseorders.Add(PO);
                 }
@@ -274,7 +274,7 @@ namespace ClubJumana.Core.Services
                     PO.GrnSubtotal = 0m;
                     PO.GrnTotal = asnViewModel.TotalCharges;
 
-                    if (done)
+                    if (done && PO.Asnumber == 0)
                         PO.Asnumber = _context.purchaseorders.Max(p => p.Asnumber) + 1;
 
                 }
@@ -447,7 +447,7 @@ namespace ClubJumana.Core.Services
                         GrnTotal = grnViewModel.TotalPrice,
 
                     };
-                    if (done)
+                    if (done&&PO.Grnumber==0)
                         PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
                     _context.purchaseorders.Add(PO);
                 }
@@ -482,7 +482,7 @@ namespace ClubJumana.Core.Services
                     PO.TotalCharges = grnViewModel.TotalCharges;
                     PO.GrnSubtotal = grnViewModel.SubtotalPrice;
                     PO.GrnTotal = grnViewModel.TotalPrice;
-                    if (done)
+                    if (done&&PO.Grnumber==0)
                         PO.Grnumber = _context.purchaseorders.Max(p => p.Grnumber) + 1;
 
                 }
@@ -616,16 +616,16 @@ namespace ClubJumana.Core.Services
                 if(_context.items.Count()!=0)
                    itemId= _context.items.Max(p => p.Id);
                 var deletitem = new List<Item>();
-                var duplicate = new List<Item>();
+                var duplicate = new List<int>();
                 deletitem.Clear();
                 //Check Later 
                 foreach (var VARIABLE in purchaseOrder.Items)
                 {
 
                     if (_context.productmasters.FirstOrDefault(p => p.Id == VARIABLE.ProductMaster_fk) == null)
-                        deletitem.Add(VARIABLE);
+                        return -11;
                     if(purchaseOrder.Items.Where(p=>p.ProductMaster_fk==VARIABLE.ProductMaster_fk).ToList().Count>1)
-                        duplicate.Add(VARIABLE);
+                        duplicate.Add(VARIABLE.ProductMaster_fk);
                     else
                     {
                         itemId++;
@@ -633,20 +633,24 @@ namespace ClubJumana.Core.Services
                     }
                 }
 
-                if (deletitem.Count > 0)
-                {
-                    foreach (var VARIABLE in deletitem)
-                    {
-                        purchaseOrder.Items.Remove(VARIABLE);
-                    }
-                   
-                }
-
                 if (duplicate.Count > 0)
                 {
-                    foreach (var VARIABLE in duplicate)
+                    var duplicateId = duplicate.Distinct().ToList();
+
+                    foreach (var VARIABLE in duplicateId)
                     {
-                        purchaseOrder.Items.Remove(VARIABLE);
+                        var ttr = purchaseOrder.Items.Where(p => p.ProductMaster_fk == VARIABLE).ToList();
+                        foreach (var dupi in ttr.Skip(1).ToList())
+                        {
+                            itemId++;
+                            ttr.ElementAt(0).Id += itemId;
+                            ttr.ElementAt(0).AsnQuantity += dupi.AsnQuantity;
+                            ttr.ElementAt(0).GrnQuantity += dupi.GrnQuantity;
+                            ttr.ElementAt(0).AsnItemsPrice += dupi.AsnItemsPrice;
+                            ttr.ElementAt(0).GrnItemsPrice += dupi.GrnItemsPrice;
+                            purchaseOrder.Items.Remove(dupi);
+                        }
+
                     }
                 }
 
@@ -659,6 +663,7 @@ namespace ClubJumana.Core.Services
 
         public int UpdatePurchaseOrder(PurchaseOrder purchaseOrder, bool isSave = true)
         {
+
             if (isSave)
                 DetachedAllEntries();
             if (purchaseOrder.Id == 0)
@@ -668,7 +673,27 @@ namespace ClubJumana.Core.Services
             }
             else if (!isSave)
             {
-                _context.purchaseorders.Update(purchaseOrder);
+                PurchaseOrder ww;
+                int resualt = 0;
+
+                ww = _context.purchaseorders.SingleOrDefault(p => p.Id ==purchaseOrder.Id);
+
+                ww.DocNumber = purchaseOrder.DocNumber;
+                ww.FromWarehouse_fk = purchaseOrder.FromWarehouse_fk;
+                ww.ToWarehouse_fk = purchaseOrder.ToWarehouse_fk;
+                ww.PoNumber = purchaseOrder.PoNumber;
+                ww.Asnumber = purchaseOrder.Asnumber;
+                ww.Grnumber = purchaseOrder.Grnumber;
+                ww.AsnTotal = purchaseOrder.AsnTotal;
+                ww.PrivateNote = purchaseOrder.PrivateNote;
+                ww.Note = purchaseOrder.Note;
+                ww.LastUpdateTime = purchaseOrder.LastUpdateTime;
+                ww.PoStatus = purchaseOrder.PoStatus;
+                ww.Vendor_fk = purchaseOrder.Vendor_fk;
+                ww.LastUpdateTime = purchaseOrder.LastUpdateTime;
+                ww.ShipAddress = purchaseOrder.ShipAddress;
+
+                _context.purchaseorders.Update(ww);
             }
 
             else
