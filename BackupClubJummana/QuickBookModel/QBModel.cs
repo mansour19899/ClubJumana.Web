@@ -604,5 +604,35 @@ namespace BackupClubJummana.QuickBookModel
         public DateTime time { get; set; }
     }
 
+    //--------------------------------- Term -----------------------------------------
+
+    public class Term
+    {
+        public string Name { get; set; }
+        public bool Active { get; set; }
+        public string Type { get; set; }
+        public int DiscountPercent { get; set; }
+        public int DueDays { get; set; }
+        public int DiscountDays { get; set; }
+        public string domain { get; set; }
+        public bool sparse { get; set; }
+        public string Id { get; set; }
+        public string SyncToken { get; set; }
+        public MetaData MetaData { get; set; }
+    }
+
+    public class QueryResponseTerm
+    {
+        public IList<Term> Term { get; set; }
+        public int startPosition { get; set; }
+        public int maxResults { get; set; }
+    }
+
+    public class QBTerm
+    {
+        public QueryResponseTerm QueryResponse { get; set; }
+        public DateTime time { get; set; }
+    }
+
 
 }

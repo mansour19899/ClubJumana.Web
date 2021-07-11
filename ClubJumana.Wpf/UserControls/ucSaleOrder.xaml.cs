@@ -69,10 +69,10 @@ namespace ClubJumana.Wpf.UserControls
             {
                 MessageBox.Show("You need to specify an account to credit the deposit to.");
             }
-            else if (SaleOrderViewModel.RefundItems.Any(p=>p.Quantity==0))
-            {
-                MessageBox.Show(SaleOrderViewModel.RefundItems.FirstOrDefault(p=>p.Quantity==0).ProductMaster.UPC +"  Quantity is Zero");
-            }
+            //else if (SaleOrderViewModel.RefundItems.Any(p=>p.Quantity==0))
+            //{
+            //    MessageBox.Show(SaleOrderViewModel.RefundItems.FirstOrDefault(p=>p.Quantity==0).ProductMaster.UPC +"  Quantity is Zero");
+            //}
             else
             {
                 e.Handled = true;
@@ -381,7 +381,7 @@ namespace ClubJumana.Wpf.UserControls
         {
             if (AllowSearch)
             {
-                var resalt = CustomersList.Where(p => p.CompanyName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
+                var resalt = CustomersList.Where(p=>p.ContactName!=null).Where(p => p.CompanyName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
                                                       || p.ContactName.ToLower().Contains(txtCustomerLookup.Text.ToLower())
                                                       || p.Phone1.ToLower().Contains(txtCustomerLookup.Text.ToLower()));
                 if (resalt.Count() == 0)

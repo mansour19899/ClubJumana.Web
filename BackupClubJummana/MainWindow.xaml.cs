@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Customer = ClubJumana.DataLayer.Entities.Customer;
 using Item = ClubJumana.DataLayer.Entities.Item;
 using PurchaseOrder = ClubJumana.DataLayer.Entities.PurchaseOrder;
+using Term = ClubJumana.DataLayer.Entities.Term;
 using Vendor = ClubJumana.DataLayer.Entities.Vendor;
 
 
@@ -79,6 +80,9 @@ namespace BackupClubJummana
                         break;
                     case 5:
                         ImportTaxRate(dlg.FileName);
+                        break;
+                    case 6:
+                        ImportTerm(dlg.FileName);
                         break;
                     default:
                         MessageBox.Show("Fusma");
@@ -343,7 +347,9 @@ namespace BackupClubJummana
                 StreamReader r = new StreamReader(fileName);
                 string jsonString = r.ReadToEnd();
                QBInvoice mm = JsonConvert.DeserializeObject<QBInvoice>(jsonString);
-                List<ProductMaster> ProductList = new List<ProductMaster>();
+               var tttr = mm.QueryResponse.Invoice
+                   .Where(p => p.Line?.ElementAt(0).SalesItemLineDetail?.TaxCodeRef?.value == "27").ToList();
+               List<ProductMaster> ProductList = new List<ProductMaster>();
                 if (mm.QueryResponse.Invoice.Count == 0)
                     MessageBox.Show("List Empty");
                 else
@@ -444,8 +450,6 @@ namespace BackupClubJummana
             {
                 StreamReader r = new StreamReader(fileName);
                 string jsonString = r.ReadToEnd();
-                var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
-                Variant findProduct;
                 QBPurchaseOrder mm = JsonConvert.DeserializeObject<QBPurchaseOrder>(jsonString);
 
                 List<PurchaseOrder> PurchaseOrderList = new List<PurchaseOrder>();
@@ -519,7 +523,7 @@ namespace BackupClubJummana
 
                         if (IdForAdd.Contains(VARIABLE.Id))
                         {
-                            _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
+                           resualt= _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
                             if (resualt == -11)
                                 MessageBox.Show("Error Not Find Product");
                         }
@@ -549,7 +553,27 @@ namespace BackupClubJummana
                 string jsonString = r.ReadToEnd();
                 var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
                 Variant findProduct;
+
+                MessageBox.Show("Import Tax Rate");
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                // dlg.DefaultExt = ".png";
+                // dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+                bool? result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    StreamReader rr = new StreamReader(fileName);
+                    string jsonStringg = rr.ReadToEnd();
+                    QBTaxRate mmb = JsonConvert.DeserializeObject<QBTaxRate>(jsonStringg);
+
+                }
+
+
                 QBTaxCode mm = JsonConvert.DeserializeObject<QBTaxCode>(jsonString);
+
+
+
+
+
                 List<ProductMaster> ProductList = new List<ProductMaster>();
                 if (mm.QueryResponse.TaxCode.Count == 0)
                     MessageBox.Show("List Empty");
@@ -661,6 +685,78 @@ namespace BackupClubJummana
 
             });
 
+        }
+
+        private async Task ImportTerm(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+              
+
+                QBTerm mm = JsonConvert.DeserializeObject<QBTerm>(jsonString);
+
+                List<Term> TermList = new List<Term>();
+
+                if (mm.QueryResponse.Term.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Term.Count * 2);
+                    int i = 0;
+                    foreach (var term in mm.QueryResponse.Term)
+                    {
+                        TermList.Add(new Term()
+                        {
+                            Id = Convert.ToInt32(term.Id),
+                            Name = term.Name,
+                            Active = term.Active,
+                            Description = "",
+                            DueDateCalculation = term.DueDays,
+                            CreatedTime = term.MetaData.CreateTime,
+                            LastUpdateTime = term.MetaData.LastUpdatedTime,
+
+                        });
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    var ExistTerm = _repositoryService.AllTerms().ToList();
+
+
+                    var comparer = new TermComparerQB();
+                    var DiffrentItems = TermList.Except(ExistTerm, comparer).ToList();
+
+                    var IdForAdd = TermList.Select(p => p.Id).Except(ExistTerm.Select(p => p.Id));
+
+                    int resualt = 0;
+                    foreach (var VARIABLE in DiffrentItems)
+                    {
+
+                        if (IdForAdd.Contains(VARIABLE.Id))
+                        {
+                            _repositoryService.AddTerm(VARIABLE, true);
+                        }
+                        else
+                        {
+                            _repositoryService.UpdateTerm(VARIABLE, true);
+                        }
+
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    bool res = _repositoryService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    if (!res)
+                        MessageBox.Show("Error");
+                }
+
+            });
         }
 
 

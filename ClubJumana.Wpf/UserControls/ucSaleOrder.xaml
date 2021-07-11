@@ -415,7 +415,7 @@
                                           IsEditable="True"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                           materialDesign:TextFieldAssist.SuffixText="sw"
-                                          DisplayMemberPath="Code" SelectedValuePath="Id"   SelectedValue="{Binding term_fk}"/>
+                                          DisplayMemberPath="Name" SelectedValuePath="Id"   SelectedValue="{Binding term_fk}"/>
 
                         </Grid>
                         <Grid>

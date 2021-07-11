@@ -1100,6 +1100,62 @@ namespace ClubJumana.Core.Services
             return 1;
         }
 
+        public int AddTerm(Term term, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (term.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                onlineDb.terms.Add(term);
+            }
+
+            else
+            {
+                onlineDb.terms.Add(term);
+            }
+            if (isSave)
+                onlineDb.SaveChanges();
+            return 1;
+        }
+
+        public int UpdateTerm(Term term, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (term.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+                onlineDb.terms.Update(term);
+            }
+            else
+            {
+                var tt = onlineDb.terms.FirstOrDefault(p => p.Id == term.Id);
+                if (tt != null)
+                {
+                    tt.Description = term.Description;
+                    tt.Active = term.Active;
+                    tt.LastUpdateTime = term.LastUpdateTime;
+                    tt.Name = term.Name;
+                    tt.DueDateCalculation = term.DueDateCalculation;
+
+                    onlineDb.terms.Update(tt);
+                }
+
+            }
+            if (isSave)
+                onlineDb.SaveChanges();
+            return 1;
+        }
+
 
         public string UploadFileToFTP(string fileName, string UploadDirectory)
         {
