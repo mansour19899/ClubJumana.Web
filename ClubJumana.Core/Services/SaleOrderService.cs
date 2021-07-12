@@ -71,7 +71,6 @@ namespace ClubJumana.Core.Services
                     ShipMethod_fk = saleOrder.ShipMethod_fk,
                     Subtotal = saleOrder.Subtotal,
                     SoTotalPrice = saleOrder.SoTotalPrice,
-                    TaxArea_fk = saleOrder.TaxArea_fk,
                     Handling = saleOrder.Handling,
                     HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode),
                     Shipping = saleOrder.Shipping,
@@ -113,7 +112,6 @@ namespace ClubJumana.Core.Services
                 So.ShipMethod_fk = saleOrder.ShipMethod_fk;
                 So.Subtotal = saleOrder.Subtotal;
                 So.SoTotalPrice = saleOrder.SoTotalPrice;
-                So.TaxArea_fk = saleOrder.TaxArea_fk;
                 So.Handling = saleOrder.Handling;
                 So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
                 So.Shipping = saleOrder.Shipping;
@@ -410,7 +408,6 @@ namespace ClubJumana.Core.Services
             So.ShipMethod_fk = saleOrder.ShipMethod_fk;
             So.Subtotal = saleOrder.Subtotal;
             So.SoTotalPrice = saleOrder.SoTotalPrice;
-            So.TaxArea_fk = saleOrder.TaxArea_fk;
             So.Taxes = saleOrder.Taxes;
             So.Handling = saleOrder.Handling;
             So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
@@ -508,7 +505,7 @@ namespace ClubJumana.Core.Services
         {
 
             var saleOrder = _context.saleorders.AsNoTracking().Where(p => p.Id == id).Include(p => p.Term)
-                .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses).Include(p => p.TaxArea)
+                .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses)
                   .Include(p => p.Customer).Include(p => p.User)
                 .Include(p => p.Warehouse).Include(p => p.Taxes)
                 .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).Include(p=>p.Refunds).SingleOrDefault();
@@ -566,7 +563,6 @@ namespace ClubJumana.Core.Services
                 ShipMethod_fk = saleOrder.ShipMethod_fk,
                 Subtotal = saleOrder.Subtotal,
                 SoTotalPrice = saleOrder.SoTotalPrice,
-                TaxArea_fk = saleOrder.TaxArea_fk,
                 Taxes = saleOrder.Taxes.ToList(),
                 Handling = saleOrder.Handling,
                 HandlingTaxCode = saleOrder.HandlingTaxCode,

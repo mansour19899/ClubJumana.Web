@@ -50,6 +50,7 @@ namespace ClubJumana.Wpf
         private List<Customer> customers;
         private List<Province> provinces;
         private List<TaxRate> taxRates;
+        private List<TaxRate> taxCodes;
         private List<Country> countries;
         private List<PaymentMethod> paymentMethods;
         private List<DepositTo> depositTos;
@@ -140,6 +141,7 @@ namespace ClubJumana.Wpf
             provinces = _repositoryService.AllProvinces().ToList();
             provinces = _repositoryService.AllProvinces().ToList();
             taxRates = _repositoryService.AlltaTaxRates().ToList();
+            taxCodes = _repositoryService.AlltaTaxRates().Where(p => p.Code != null && p.TaxRateId == 0).ToList();
             paymentMethods = _repositoryService.AllPaymentMethods().ToList();
             depositTos = _repositoryService.AllDepositTos().ToList();
             uoms = _repositoryService.AllUoms().ToList();
@@ -1141,7 +1143,7 @@ namespace ClubJumana.Wpf
             UCSaleOrder.cmbTaxShipping.SelectedValue = _dataContextVM.SaleOrderViewModel.ShippingTaxCode;
             UCSaleOrder.cmbTaxHandling.ItemsSource = taxRates;
             UCSaleOrder.cmbTaxHandling.SelectedValue = _dataContextVM.SaleOrderViewModel.HandlingTaxCode;
-            UCSaleOrder.CmbTaxCode.ItemsSource = taxRates;
+            UCSaleOrder.CmbTaxCode.ItemsSource = taxCodes;
             UCSaleOrder.cmbDepositTo.ItemsSource = depositTos;
             UCSaleOrder.cmbRefundFrom.ItemsSource = depositTos;
             UCSaleOrder.cmbPaymentMethod.ItemsSource = paymentMethods;

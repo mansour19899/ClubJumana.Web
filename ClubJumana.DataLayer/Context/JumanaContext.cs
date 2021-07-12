@@ -248,9 +248,6 @@ namespace ClubJumana.DataLayer.Context
                     .WithMany(g => g.SaleOrders)
                     .HasForeignKey(s => s.Customer_fk);
 
-                entity.HasOne<Province>(s => s.TaxArea)
-                    .WithMany(g => g.SaleOrders)
-                    .HasForeignKey(s => s.TaxArea_fk);
 
                 entity.HasOne<Warehouse>(s => s.Warehouse)
                     .WithMany(g => g.SaleOrders)

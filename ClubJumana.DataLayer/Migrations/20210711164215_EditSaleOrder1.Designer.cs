@@ -3,14 +3,16 @@ using System;
 using ClubJumana.DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClubJumana.DataLayer.Migrations
 {
     [DbContext(typeof(JummanaContext))]
-    partial class JummanaContextModelSnapshot : ModelSnapshot
+    [Migration("20210711164215_EditSaleOrder1")]
+    partial class EditSaleOrder1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1334,6 +1336,9 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
@@ -1392,6 +1397,8 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasIndex("Cashier_fk");
 
                     b.HasIndex("Customer_fk");
+
+                    b.HasIndex("ProvinceId");
 
                     b.HasIndex("Warehouse_fk");
 
@@ -1635,11 +1642,9 @@ namespace ClubJumana.DataLayer.Migrations
                         .HasColumnType("varchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(7,4)");
@@ -1648,12 +1653,6 @@ namespace ClubJumana.DataLayer.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime");
-
-                    b.Property<int>("TaxCodeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaxRateId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -2374,6 +2373,10 @@ namespace ClubJumana.DataLayer.Migrations
                     b.HasOne("ClubJumana.DataLayer.Entities.Customer", "Customer")
                         .WithMany("SaleOrders")
                         .HasForeignKey("Customer_fk");
+
+                    b.HasOne("ClubJumana.DataLayer.Entities.Province", null)
+                        .WithMany("SaleOrders")
+                        .HasForeignKey("ProvinceId");
 
                     b.HasOne("ClubJumana.DataLayer.Entities.Warehouse", "Warehouse")
                         .WithMany("SaleOrders")

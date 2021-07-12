@@ -845,11 +845,11 @@ namespace ClubJumana.Core.Services
         {
             if (Consts.Consts.OnlineModeOnly)
                 return onlineDb.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
-                    .Include(p => p.TaxArea)
+                    
                     .Include(p => p.Customer).OrderByDescending(p => p.Id).AsNoTracking();
             else
                 return _context.saleorders.Include(p => p.SoItems).ThenInclude(p => p.ProductMaster)
-                    .Include(p => p.TaxArea)
+                    
                     .Include(p => p.Customer).AsNoTracking();
         }
 
@@ -1093,6 +1093,26 @@ namespace ClubJumana.Core.Services
             else
             {
                 onlineDb.Update(vendor);
+            }
+
+            if (isSave)
+                onlineDb.SaveChanges();
+            return 1;
+        }
+
+        public int AddAndUpdateTaxRate(TaxRate taxRate, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (taxRate.Id == 0)
+            {
+                // Later dont Import duplicate 
+                taxRate .Id = _context.taxrates.Count()>0? onlineDb.taxrates.Max(p => p.Id) + 1:1;
+                onlineDb.taxrates.Add(taxRate);
+            }
+            else
+            {
+               // onlineDb.Update(taxRate);
             }
 
             if (isSave)

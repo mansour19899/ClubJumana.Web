@@ -21,7 +21,9 @@ using OfficeOpenXml;
 using Newtonsoft.Json;
 using Customer = ClubJumana.DataLayer.Entities.Customer;
 using Item = ClubJumana.DataLayer.Entities.Item;
+using Line = BackupClubJummana.QuickBookModel.Line;
 using PurchaseOrder = ClubJumana.DataLayer.Entities.PurchaseOrder;
+using TaxRate = ClubJumana.DataLayer.Entities.TaxRate;
 using Term = ClubJumana.DataLayer.Entities.Term;
 using Vendor = ClubJumana.DataLayer.Entities.Vendor;
 
@@ -56,8 +58,8 @@ namespace BackupClubJummana
         private void BtnImport_OnClick(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            // dlg.DefaultExt = ".png";
-            // dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json |*.json"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
             bool? result = dlg.ShowDialog();
             if (result == true)
             {
@@ -67,7 +69,7 @@ namespace BackupClubJummana
                         ImportItemList(dlg.FileName);
                         break;
                     case 1:
-                         ImportVendorList(dlg.FileName);
+                        ImportVendorList(dlg.FileName);
                         break;
                     case 2:
                         ImportCustomerList(dlg.FileName);
@@ -79,7 +81,16 @@ namespace BackupClubJummana
                         ImportPurchaseOrder(dlg.FileName);
                         break;
                     case 5:
-                        ImportTaxRate(dlg.FileName);
+                        Microsoft.Win32.OpenFileDialog dlgg = new Microsoft.Win32.OpenFileDialog();
+                        dlgg.DefaultExt = ".json";
+                        dlgg.Filter = "Json |*.json"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
+                        bool? resultt = dlgg.ShowDialog();
+                        if (resultt != true)
+                        {
+                            MessageBox.Show("Import TaxCode File");
+                            break;
+                        }
+                        ImportTaxRate(dlg.FileName, dlgg.FileName);
                         break;
                     case 6:
                         ImportTerm(dlg.FileName);
@@ -140,7 +151,7 @@ namespace BackupClubJummana
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
-                    
+
                     foreach (var vendor in VendorsList.OrderBy(p => p.Id))
                     {
                         _repositoryService.AddAndUpdateVendor(vendor, false);
@@ -173,8 +184,8 @@ namespace BackupClubJummana
                 else
                 {
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
-                    this.Dispatcher.Invoke(() => pbStatus.Minimum =0);
-                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Customer.Count*2);
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Customer.Count * 2);
                     int i = 0;
 
                     foreach (var item in mm.QueryResponse.Customer)
@@ -199,7 +210,7 @@ namespace BackupClubJummana
                             Note = item.Notes,
                             CreatedBy_fk = 1
                         });
-                        i ++;
+                        i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
                     foreach (var customer in customerList.OrderBy(p => p.Id))
@@ -225,7 +236,7 @@ namespace BackupClubJummana
             {
                 StreamReader r = new StreamReader(fileName);
                 string jsonString = r.ReadToEnd();
-                var variants = _repositoryService.allVariants().Where(p=>p.Barcode!=null).ToList();
+                var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
                 Variant findProduct;
                 QbItem mm = JsonConvert.DeserializeObject<QbItem>(jsonString);
                 List<ProductMaster> ProductList = new List<ProductMaster>();
@@ -304,111 +315,6 @@ namespace BackupClubJummana
 
                         if (IdForAdd.Contains(VARIABLE.Id))
                         {
-                            _productService.AddProductMaster(VARIABLE,false);
-
-                        }
-                        else
-                        {
-                            ww.Name = w.Name;
-                            ww.WholesalePrice = w.WholesalePrice;
-                            ww.RetailPrice = w.RetailPrice;
-                            ww.FobPrice = w.FobPrice;
-                            ww.Active = w.Active;
-                            ww.Size = w.Size;
-                            ww.Color = w.Color;
-                            ww.Bundle = w.Bundle;
-                            ww.Taxable = w.Taxable;
-                            ww.LastUpdateTime = w.LastUpdateTime;
-                            ww.IsRetail = w.IsRetail;
-                            ww.IsWholesale = w.IsWholesale;
-                            ww.Image = w.Image;
-
-                            _productService.UpdateProductMaster(ww,false);
-                        }
-
-                        i++;
-                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
-                    }
-
-                    bool res = _productService.SaveDatabase();
-                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
-                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
-                    if (!res)
-                        MessageBox.Show("Error");
-                }
-
-            });
-
-        }
-        private async Task ImportInvoiceList(string fileName)
-        {
-            await Task.Run(() =>
-            {
-                StreamReader r = new StreamReader(fileName);
-                string jsonString = r.ReadToEnd();
-               QBInvoice mm = JsonConvert.DeserializeObject<QBInvoice>(jsonString);
-               var tttr = mm.QueryResponse.Invoice
-                   .Where(p => p.Line?.ElementAt(0).SalesItemLineDetail?.TaxCodeRef?.value == "27").ToList();
-               List<ProductMaster> ProductList = new List<ProductMaster>();
-                if (mm.QueryResponse.Invoice.Count == 0)
-                    MessageBox.Show("List Empty");
-                else
-                {
-                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
-                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Invoice.Count * 2);
-                    int i = 0;
-
-                    foreach (var item in mm.QueryResponse.Invoice)
-                    {
-
-                        //ProductList.Add(new ProductMaster()
-                        //{
-                        //    Id = Convert.ToInt32(item.Id),
-                        //    Name = item.Description.Trim(),
-                        //    UPC = findProduct.Barcode.BarcodeNumber.Trim(),
-                        //    SKU = findProduct.Sku.Trim(),
-                        //    VariantFK = findProduct.Id,
-                        //    WholesalePrice = Convert.ToDecimal(item.UnitPrice),
-                        //    RetailPrice = findProduct.RetailPrice,
-                        //    Size = findProduct.Size.Trim(),
-                        //    Active = item.Active,
-                        //    Color = findProduct.Colour?.Name.Trim(),
-                        //    StyleNumber = findProduct.Product.StyleNumber.Trim(),
-                        //    Bundle = findProduct.Bundle?.Trim(),
-                        //    Taxable = item.Taxable,
-                        //    UOMFK = 1,
-                        //    LastUpdateTime = item.MetaData.LastUpdatedTime,
-                        //    CreatedTime = item.MetaData.CreateTime,
-                        //    IsRetail = findProduct.IsRetail,
-                        //    IsWholesale = findProduct.IsWholesale,
-                        //    Image = findProduct.Images.Count == 0
-                        //        ? ""
-                        //        : findProduct.Images.FirstOrDefault().ImageName.Trim()
-                        //});
-                        i++;
-                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
-
-                    }
-
-                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
-                    ProductMaster CheckItem = new ProductMaster();
-                    List<ProductMaster> removList = new List<ProductMaster>();
-
-
-                    var comparer = new ProductMasterComparerQB();
-                    var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
-
-                    var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
-
-                    ProductMaster w;
-                    ProductMaster ww;
-                    foreach (var VARIABLE in DiffrentItems)
-                    {
-                        w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
-                        ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
-
-                        if (IdForAdd.Contains(VARIABLE.Id))
-                        {
                             _productService.AddProductMaster(VARIABLE, false);
 
                         }
@@ -417,6 +323,7 @@ namespace BackupClubJummana
                             ww.Name = w.Name;
                             ww.WholesalePrice = w.WholesalePrice;
                             ww.RetailPrice = w.RetailPrice;
+                            ww.FobPrice = w.FobPrice;
                             ww.Active = w.Active;
                             ww.Size = w.Size;
                             ww.Color = w.Color;
@@ -439,6 +346,159 @@ namespace BackupClubJummana
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)
                         MessageBox.Show("Error");
+                }
+
+            });
+
+        }
+        private async Task ImportInvoiceList(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                StreamReader r = new StreamReader(fileName);
+                string jsonString = r.ReadToEnd();
+                QBInvoice mm = JsonConvert.DeserializeObject<QBInvoice>(jsonString);
+                var tttr = mm.QueryResponse.Invoice
+                    .Where(p => p.Line?.ElementAt(0).SalesItemLineDetail?.TaxCodeRef?.value == "27").ToList();
+                var ttqtr = mm.QueryResponse.Invoice
+                    .Where(p => p.Line?.ElementAt(0).SalesItemLineDetail?.TaxCodeRef?.value == "18").ToList();
+                List<SaleOrder> SalesOrderList = new List<SaleOrder>();
+                if (mm.QueryResponse.Invoice.Count == 0)
+                    MessageBox.Show("List Empty");
+                else
+                {
+                    this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.Invoice.Count * 2);
+                    int i = 0;
+                    double subAmt = 0;
+                    string PoNum = "";
+                    List<SoItem> temp = new List<SoItem>();
+                    var TaxCodeList = _repositoryService.AlltaTaxRates().ToList();
+                    foreach (var saleorder in mm.QueryResponse.Invoice)
+                    {
+
+                        temp.Clear();
+                        int TaxCodeTemp = 0;
+                        int TaxCodeShipping = 0;
+                        decimal ShippingAmt = 0m;
+                        foreach (var VARIABLE in saleorder.Line)
+                        {
+                            if (VARIABLE.DetailType.CompareTo("SalesItemLineDetail") == 0&&VARIABLE.SalesItemLineDetail.ItemRef.value.CompareTo("SHIPPING_ITEM_ID") != 0)
+                            {
+                                TaxCodeTemp = TaxCodeList.FirstOrDefault(p=>p.TaxCodeId==Convert.ToInt32(VARIABLE.SalesItemLineDetail.TaxCodeRef.value)).Id;
+                                temp.Add(new SoItem()
+                                {
+                                    ProductMaster_fk = Convert.ToInt32(VARIABLE.SalesItemLineDetail.ItemRef.value),
+                                    Quantity = Convert.ToInt32(VARIABLE.SalesItemLineDetail.Qty),
+                                    Price = Convert.ToDecimal(VARIABLE.SalesItemLineDetail.UnitPrice),
+                                    TotalPrice = Convert.ToDecimal(VARIABLE.Amount), 
+                                    TaxCode =Convert.ToByte(TaxCodeTemp),
+                                    IsAbaleToRefund = true,
+                                    So_fk = Convert.ToInt32(saleorder.Id),
+                                });
+                            }
+                            else if (VARIABLE.SalesItemLineDetail?.ItemRef.value.CompareTo("SHIPPING_ITEM_ID") == 0)
+                            {
+                                TaxCodeShipping = TaxCodeList.FirstOrDefault(p => p.TaxCodeId == Convert.ToInt32(VARIABLE.SalesItemLineDetail.TaxCodeRef.value)).Id;
+                                ShippingAmt = Convert.ToDecimal(VARIABLE.Amount);
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+
+
+
+                        subAmt = saleorder.Line.FirstOrDefault(p => p.DetailType.CompareTo("SubTotalLineDetail") == 0)
+                            .Amount;
+                        PoNum = saleorder.CustomField.FirstOrDefault(p => p.Name.CompareTo("P.O. Number") == 0)?
+                            .StringValue;
+                        SalesOrderList.Add(new SaleOrder()
+                        {
+                            Id = Convert.ToInt32(saleorder.Id),
+                            DocNumber = saleorder.DocNumber,
+                            SoDate = saleorder.MetaData.CreateTime,
+                            InvoiceDate = saleorder.TxnDate == null ? (DateTime?)null : DateTime.Parse(saleorder.TxnDate),
+                            DueDate = saleorder.DueDate == null ? (DateTime?)null : DateTime.Parse(saleorder.DueDate),
+                            ShipDate = saleorder.ShipDate == null ? (DateTime?)null : DateTime.Parse(saleorder.ShipDate),
+                            InvoiceNumber = -1,
+                            Cashier_fk = 1,
+                            Customer_fk = Convert.ToInt32(saleorder.CustomerRef.value),
+                            Warehouse_fk = Convert.ToInt32(saleorder.DepartmentRef.value),
+                            term_fk = Convert.ToInt32(saleorder.SalesTermRef.value),
+                            TermPercent = 0,
+                            Subtotal = Convert.ToDecimal(subAmt),
+                            SoTotalPrice = Convert.ToDecimal(saleorder.TotalAmt),
+                            HomeBalance = Convert.ToDecimal(saleorder.HomeBalance),
+                            OpenBalance = Convert.ToDecimal(saleorder.Balance),
+                            HomeTotalAmt = Convert.ToDecimal(saleorder.HomeTotalAmt),
+                            PoNumber = PoNum,
+                            ShipVia = saleorder.ShipMethodRef?.value,
+                            TrackingNo = saleorder.TrackingNum,
+                            CreatedTime = saleorder.MetaData.CreateTime,
+                            LastUpdateTime = saleorder.MetaData.LastUpdatedTime,
+                            Currency = saleorder.CurrencyRef?.value,
+                            CustomerMemo = saleorder.CustomerMemo?.value,
+                            ExchangeRate = Convert.ToDecimal(saleorder.ExchangeRate),
+                            Shipping = ShippingAmt,
+                            ShippingTaxCode = Convert.ToByte(TaxCodeShipping),
+                            SoItems = temp
+                        });
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+
+                    }
+
+                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
+                    ProductMaster CheckItem = new ProductMaster();
+                    List<ProductMaster> removList = new List<ProductMaster>();
+
+
+                    //var comparer = new ProductMasterComparerQB();
+                    //var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
+
+                    //var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
+
+                    //ProductMaster w;
+                    ////ProductMaster ww;
+                    //foreach (var VARIABLE in DiffrentItems)
+                    //{
+                    //    w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                    //    ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
+
+                    //    if (IdForAdd.Contains(VARIABLE.Id))
+                    //    {
+                    //        _productService.AddProductMaster(VARIABLE, false);
+
+                    //    }
+                    //    else
+                    //    {
+                    //        ww.Name = w.Name;
+                    //        ww.WholesalePrice = w.WholesalePrice;
+                    //        ww.RetailPrice = w.RetailPrice;
+                    //        ww.Active = w.Active;
+                    //        ww.Size = w.Size;
+                    //        ww.Color = w.Color;
+                    //        ww.Bundle = w.Bundle;
+                    //        ww.Taxable = w.Taxable;
+                    //        ww.LastUpdateTime = w.LastUpdateTime;
+                    //        ww.IsRetail = w.IsRetail;
+                    //        ww.IsWholesale = w.IsWholesale;
+                    //        ww.Image = w.Image;
+
+                    //        _productService.UpdateProductMaster(ww, false);
+                    //    }
+
+                    //    i++;
+                    //    this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    //}
+
+                 //   bool res = _productService.SaveDatabase();
+                    this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
+                    this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
+                    //if (!res)
+                    //    MessageBox.Show("Error");
                 }
 
             });
@@ -468,13 +528,20 @@ namespace BackupClubJummana
                         temp.Clear();
                         foreach (var VARIABLE in purchaseOrder.Line)
                         {
-                            temp.Add(new Item(){PoQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,AsnQuantity = VARIABLE.Received,GrnQuantity = 0
-                                ,
+                            temp.Add(new Item()
+                            {
+                                PoQuantity = VARIABLE.ItemBasedExpenseLineDetail.Qty,
+                                AsnQuantity = VARIABLE.Received,
+                                GrnQuantity = 0,
                                 PoPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
-                                AsnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),GrnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
-                                PoItemsPrice = Convert.ToDecimal(VARIABLE.Amount),ProductMaster_fk = Convert.ToInt32(VARIABLE.ItemBasedExpenseLineDetail.ItemRef.value),
-                                Alert = VARIABLE.Received!=VARIABLE.ItemBasedExpenseLineDetail.Qty,Checked = false,Diffrent = VARIABLE.ItemBasedExpenseLineDetail.Qty-VARIABLE.Received,
-                                AsnItemsPrice = Convert.ToDecimal(Math.Round(VARIABLE.Received * VARIABLE.ItemBasedExpenseLineDetail.UnitPrice,2,MidpointRounding.ToEven))
+                                AsnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
+                                GrnPrice = Convert.ToDecimal(VARIABLE.ItemBasedExpenseLineDetail.UnitPrice),
+                                PoItemsPrice = Convert.ToDecimal(VARIABLE.Amount),
+                                ProductMaster_fk = Convert.ToInt32(VARIABLE.ItemBasedExpenseLineDetail.ItemRef.value),
+                                Alert = VARIABLE.Received != VARIABLE.ItemBasedExpenseLineDetail.Qty,
+                                Checked = false,
+                                Diffrent = VARIABLE.ItemBasedExpenseLineDetail.Qty - VARIABLE.Received,
+                                AsnItemsPrice = Convert.ToDecimal(Math.Round(VARIABLE.Received * VARIABLE.ItemBasedExpenseLineDetail.UnitPrice, 2, MidpointRounding.ToEven))
                             });
                         }
                         PurchaseOrderList.Add(new PurchaseOrder()
@@ -499,9 +566,9 @@ namespace BackupClubJummana
                             Vendor_fk = Convert.ToInt32(purchaseOrder.VendorRef.value),
                             CreateTime = purchaseOrder.MetaData.CreateTime,
                             LastUpdateTime = purchaseOrder.MetaData.LastUpdatedTime,
-                            ShipAddress = purchaseOrder.ShipAddr?.Line1+purchaseOrder.ShipAddr?.City+purchaseOrder.ShipAddr?.Country,
+                            ShipAddress = purchaseOrder.ShipAddr?.Line1 + purchaseOrder.ShipAddr?.City + purchaseOrder.ShipAddr?.Country,
                             Items = temp.ToList()
-                            
+
                         });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
@@ -523,7 +590,7 @@ namespace BackupClubJummana
 
                         if (IdForAdd.Contains(VARIABLE.Id))
                         {
-                           resualt= _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
+                            resualt = _purchaseOrderService.AddPurchaseOrder(VARIABLE, true);
                             if (resualt == -11)
                                 MessageBox.Show("Error Not Find Product");
                         }
@@ -545,142 +612,79 @@ namespace BackupClubJummana
 
             });
         }
-        private async Task ImportTaxRate(string fileName)
+        private async Task ImportTaxRate(string fileNameTaxRate, string fileNameTaxCode)
         {
             await Task.Run(() =>
             {
-                StreamReader r = new StreamReader(fileName);
+                StreamReader r = new StreamReader(fileNameTaxRate);
                 string jsonString = r.ReadToEnd();
-                var variants = _repositoryService.allVariants().Where(p => p.Barcode != null).ToList();
-                Variant findProduct;
 
-                MessageBox.Show("Import Tax Rate");
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-                // dlg.DefaultExt = ".png";
-                // dlg.Filter = "Excel |*.xlsx"; //"Excel Files|(*.xlsx, *.xls)|*.xlsx;*.xls";
-                bool? result = dlg.ShowDialog();
-                if (result == true)
-                {
-                    StreamReader rr = new StreamReader(fileName);
-                    string jsonStringg = rr.ReadToEnd();
-                    QBTaxRate mmb = JsonConvert.DeserializeObject<QBTaxRate>(jsonStringg);
+                StreamReader rr = new StreamReader(fileNameTaxCode);
+                string jsonStringg = rr.ReadToEnd();
 
-                }
-
-
-                QBTaxCode mm = JsonConvert.DeserializeObject<QBTaxCode>(jsonString);
+                QBTaxRate mm = JsonConvert.DeserializeObject<QBTaxRate>(jsonString);
+                QBTaxCode mmm = JsonConvert.DeserializeObject<QBTaxCode>(jsonStringg);
 
 
 
 
 
-                List<ProductMaster> ProductList = new List<ProductMaster>();
-                if (mm.QueryResponse.TaxCode.Count == 0)
-                    MessageBox.Show("List Empty");
+                List<TaxRate> TaxRateList = new List<TaxRate>();
+                if (mm.QueryResponse.TaxRate.Count == 0)
+                    MessageBox.Show("List Tax Rate Empty");
+                else if (mmm.QueryResponse.TaxCode.Count == 0)
+                    MessageBox.Show("List Tax Code Empty");
                 else
                 {
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.Navy);
                     this.Dispatcher.Invoke(() => pbStatus.Minimum = 0);
-                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.TaxCode.Count * 2);
+                    this.Dispatcher.Invoke(() => pbStatus.Maximum = mm.QueryResponse.TaxRate.Count * 2 + mmm.QueryResponse.TaxCode.Count * 2);
                     int i = 0;
 
-                    foreach (var item in mm.QueryResponse.TaxCode)
+                    foreach (var taxRate in mm.QueryResponse.TaxRate)
                     {
-                        findProduct = variants.FirstOrDefault(p => p.Barcode.BarcodeNumber.CompareTo(item.Name) == 0);
-                        if (findProduct == null)
+                        TaxRateList.Add(new TaxRate()
                         {
-                            ProductList.Add(new ProductMaster()
-                            {
-                                Id = Convert.ToInt32(item.Id),
-                                Name = item.Description == null ? "" : item.Description.Trim(),
-                                UPC = item.Name.Trim(),
-                                WholesalePrice = 0,
-                                Active = item.Active,
-                            });
-                        }
-                        else
-                        {
-                            ProductList.Add(new ProductMaster()
-                            {
-                                Id = Convert.ToInt32(item.Id),
-                                Name = item.Description.Trim(),
-                                //UPC = findProduct.Barcode.BarcodeNumber.Trim(),
-                                //SKU = findProduct.Sku.Trim(),
-                                //VariantFK = findProduct.Id,
-                                //WholesalePrice = Convert.ToDecimal(item.UnitPrice),
-                                //RetailPrice = findProduct.RetailPrice,
-                                //FobPrice = findProduct.FobPrice,
-                                //Size = findProduct.Size.Trim(),
-                                //Active = item.Active,
-                                //Color = findProduct.Colour?.Name.Trim(),
-                                //StyleNumber = findProduct.Product.StyleNumber.Trim(),
-                                //Bundle = findProduct.Bundle?.Trim(),
-                                //Taxable = item.Taxable,
-                                //UOMFK = 1,
-                                //LastUpdateTime = item.MetaData.LastUpdatedTime,
-                                //CreatedTime = item.MetaData.CreateTime,
-                                //IsRetail = findProduct.IsRetail,
-                                //IsWholesale = findProduct.IsWholesale,
-                                //Image = findProduct.Images.Count == 0
-                                //    ? ""
-                                //    : findProduct.Images.FirstOrDefault().ImageName.Trim()
-                            });
-                        }
-                        i++;
-                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
-
-                    }
-
-                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
-                    ProductMaster CheckItem = new ProductMaster();
-                    List<ProductMaster> removList = new List<ProductMaster>();
-
-
-                    var comparer = new ProductMasterComparerQB();
-                    var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
-
-                    var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
-
-                    ProductMaster w;
-                    ProductMaster ww;
-                    foreach (var VARIABLE in DiffrentItems)
-                    {
-                        w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
-                        ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
-
-                        if (IdForAdd.Contains(VARIABLE.Id))
-                        {
-                            _productService.AddProductMaster(VARIABLE, false);
-
-                        }
-                        else
-                        {
-                            ww.Name = w.Name;
-                            ww.WholesalePrice = w.WholesalePrice;
-                            ww.RetailPrice = w.RetailPrice;
-                            ww.FobPrice = w.FobPrice;
-                            ww.Active = w.Active;
-                            ww.Size = w.Size;
-                            ww.Color = w.Color;
-                            ww.Bundle = w.Bundle;
-                            ww.Taxable = w.Taxable;
-                            ww.LastUpdateTime = w.LastUpdateTime;
-                            ww.IsRetail = w.IsRetail;
-                            ww.IsWholesale = w.IsWholesale;
-                            ww.Image = w.Image;
-
-                            _productService.UpdateProductMaster(ww, false);
-                        }
-
+                            Id = 0,
+                            Active = taxRate.Active,
+                            Name = taxRate.Description,
+                            Description = taxRate.Name,
+                            Rate = Convert.ToDecimal(taxRate.RateValue),
+                            TaxRateId = Convert.ToInt32(taxRate.Id),
+                            TaxCodeId = 0
+                        });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
 
-                    bool res = _productService.SaveDatabase();
+                    foreach (var taxRate in mmm.QueryResponse.TaxCode)
+                    {
+                        TaxRateList.Add(new TaxRate()
+                        {
+                            Id = 0,
+                            Active = taxRate.Active,
+                            Name = taxRate.Name,
+                            Description = taxRate.Description,
+                            Rate = 0,
+                            TaxRateId = 0,
+                            TaxCodeId = Convert.ToInt32(taxRate.Id),
+                        });
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+
+                    foreach (var tax in TaxRateList)
+                    {
+                        _repositoryService.AddAndUpdateTaxRate(tax, true);
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
+                    bool res = _repositoryService.SaveDatabase();
                     this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     if (!res)
                         MessageBox.Show("Error");
+
                 }
 
             });
@@ -693,7 +697,7 @@ namespace BackupClubJummana
             {
                 StreamReader r = new StreamReader(fileName);
                 string jsonString = r.ReadToEnd();
-              
+
 
                 QBTerm mm = JsonConvert.DeserializeObject<QBTerm>(jsonString);
 
