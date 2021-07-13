@@ -39,6 +39,7 @@ namespace BackupClubJummana
         private PerchaseOrderService _purchaseOrderService;
         private ProductInformationService _productInformationService;
         private ProductService _productService;
+        private SaleOrderService _saleOrderService;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace BackupClubJummana
             _purchaseOrderService = new PerchaseOrderService();
             _productInformationService = new ProductInformationService();
             _productService = new ProductService();
+            _saleOrderService = new SaleOrderService();
         }
 
         private void BtnStartBackup_OnClick(object sender, RoutedEventArgs e)
@@ -443,58 +445,48 @@ namespace BackupClubJummana
                             ExchangeRate = Convert.ToDecimal(saleorder.ExchangeRate),
                             Shipping = ShippingAmt,
                             ShippingTaxCode = Convert.ToByte(TaxCodeShipping),
-                            SoItems = temp
+                            SoItems = temp.ToList()
                         });
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
 
                     }
 
-                    var ExistProduct = _repositoryService.AllProductMasterList().ToList();
+                    var existSaleOrders = _repositoryService.AllOrders().ToList();
                     ProductMaster CheckItem = new ProductMaster();
                     List<ProductMaster> removList = new List<ProductMaster>();
 
 
-                    //var comparer = new ProductMasterComparerQB();
-                    //var DiffrentItems = ProductList.Except(ExistProduct, comparer).ToList();
+                    var comparer = new InvoiceComparerQB();
+                    var DiffrentItems = SalesOrderList.Except(existSaleOrders, comparer).ToList();
 
-                    //var IdForAdd = ProductList.Select(p => p.Id).Except(ExistProduct.Select(p => p.Id));
+                    var IdForAdd = SalesOrderList.Select(p => p.Id).Except(existSaleOrders.Select(p => p.Id));
 
-                    //ProductMaster w;
-                    ////ProductMaster ww;
-                    //foreach (var VARIABLE in DiffrentItems)
-                    //{
-                    //    w = ProductList.SingleOrDefault(p => p.Id == VARIABLE.Id);
-                    //    ww = ExistProduct.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                    SaleOrder w;
+                    SaleOrder ww;
+                    foreach (var VARIABLE in DiffrentItems)
+                    {
+                        w = SalesOrderList.SingleOrDefault(p => p.Id == VARIABLE.Id);
+                        ww = existSaleOrders.SingleOrDefault(p => p.Id == VARIABLE.Id);
 
-                    //    if (IdForAdd.Contains(VARIABLE.Id))
-                    //    {
-                    //        _productService.AddProductMaster(VARIABLE, false);
+                        if (IdForAdd.Contains(VARIABLE.Id))
+                        {
+                            int res = 0;
+                            res=_saleOrderService.AddSalesOrder(VARIABLE, true);
+                            if (res == -14)
+                                MessageBox.Show("Duplicate in Product Invoice: " +VARIABLE.DocNumber);
+                        }
+                        else
+                        {
 
-                    //    }
-                    //    else
-                    //    {
-                    //        ww.Name = w.Name;
-                    //        ww.WholesalePrice = w.WholesalePrice;
-                    //        ww.RetailPrice = w.RetailPrice;
-                    //        ww.Active = w.Active;
-                    //        ww.Size = w.Size;
-                    //        ww.Color = w.Color;
-                    //        ww.Bundle = w.Bundle;
-                    //        ww.Taxable = w.Taxable;
-                    //        ww.LastUpdateTime = w.LastUpdateTime;
-                    //        ww.IsRetail = w.IsRetail;
-                    //        ww.IsWholesale = w.IsWholesale;
-                    //        ww.Image = w.Image;
+                            _saleOrderService.UpdateSalesOrder(VARIABLE, false);
+                        }
 
-                    //        _productService.UpdateProductMaster(ww, false);
-                    //    }
+                        i++;
+                        this.Dispatcher.Invoke(() => pbStatus.Value = i);
+                    }
 
-                    //    i++;
-                    //    this.Dispatcher.Invoke(() => pbStatus.Value = i);
-                    //}
-
-                 //   bool res = _productService.SaveDatabase();
+                    //   bool res = _productService.SaveDatabase();
                     this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
                     //if (!res)

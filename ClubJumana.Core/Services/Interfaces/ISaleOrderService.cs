@@ -10,7 +10,9 @@ namespace ClubJumana.Core.Services.Interfaces
     interface ISaleOrderService
     {
         public int SaveAndUpdateSaleOrder(SaleOrderViewModel saleOrder);
-       public SaleOrderViewModel GiveSaleOrderById(int id);
+        public int AddSalesOrder(SaleOrder saleOrder, bool isSave = true);
+        public int UpdateSalesOrder(SaleOrder saleOrder, bool isSave = true);
+        public SaleOrderViewModel GiveSaleOrderById(int id);
        public List<SalesOrderListview> SalesOrdersListView();
        public List<SalesOrderListview> SalesInvoceListView();
         public bool SendEmailOrPrint(SaleOrderViewModel saleOrder,bool IsPrint);

@@ -38,15 +38,7 @@ namespace ClubJumana.Core.Services
             if (saleOrder.InvoiceNumber != null)
                 IsInvoice = true;
             SaleOrder So = new SaleOrder();
-            int newIdSo = 1;
-            try
-            {
-                newIdSo = _context.saleorders.Max(p => p.Id) + 1;
-            }
-            catch (Exception e)
-            {
-                newIdSo = 1;
-            }
+            int newIdSo = _context.saleorders.Count() > 0 ? _context.saleorders.Max(p => p.Id) + 1 : 1;
 
             if (saleOrder.AmountDeposit != 0)
                 saleOrder.HaveDeposit = true;
@@ -387,6 +379,383 @@ namespace ClubJumana.Core.Services
 
         }
 
+        public int AddSalesOrder(SaleOrder saleOrder, bool isSave = true)
+        {
+            if (isSave)
+                DetachedAllEntries();
+            if (saleOrder.Id == 0)
+            {
+                //product.Id = _context.customers.Max(p => p.Id) + 1;
+                //_context.productmasters.Add(product);
+            }
+            else if (!isSave)
+            {
+
+                int itemId = _context.soitems.Max(p => p.Id);
+                foreach (var VARIABLE in saleOrder.SoItems)
+                {
+                    itemId++;
+                    VARIABLE.Id = itemId;
+                }
+                _context.saleorders.Add(saleOrder);
+            }
+
+            else
+            {
+                ProductInventoryWarehouse inventoryWarehouse;
+                ProductMaster productMaster;
+                int InvReportId = (_context.inventoryreports.Count() > 0)
+                    ? _context.inventoryreports.Max(p => p.Id)
+                    : 0;
+                int ProductInventoryId = (_context.productinventorywarehouses.Count() > 0)
+                    ? _context.productinventorywarehouses.Max(p => p.Id)
+                    : 0;
+                int itemId = 0;
+                if (_context.soitems.Count() != 0)
+                    itemId = _context.soitems.Max(p => p.Id);
+                var duplicate = new List<int>();
+                //Check Later 
+                foreach (var VARIABLE in saleOrder.SoItems)
+                {
+
+                    if (_context.productmasters.FirstOrDefault(p => p.Id == VARIABLE.ProductMaster_fk) == null)
+                        return -11;
+                    if (saleOrder.SoItems.Where(p => p.ProductMaster_fk == VARIABLE.ProductMaster_fk).ToList().Count > 1)
+                        duplicate.Add(VARIABLE.ProductMaster_fk);
+                    else
+                    {
+                        InvReportId++;
+                        itemId++;
+                        VARIABLE.Id = itemId;
+                        productMaster = _context.productmasters.FirstOrDefault(P => P.Id == VARIABLE.ProductMaster_fk);
+                        _context.inventoryreports.Add(new InventoryReport()
+                        {
+                            Id = InvReportId,
+                            ProductMasterFK = VARIABLE.ProductMaster_fk,
+                            Description = "Invoice :" + saleOrder.DocNumber,
+                            Change = -1*VARIABLE.Quantity,
+                            OldBalance = productMaster.StockOnHand,
+                            NewBalance = productMaster.StockOnHand - VARIABLE.Quantity
+                        });
+
+                        productMaster.StockOnHand -= VARIABLE.Quantity;
+                        productMaster.Outcome += VARIABLE.Quantity;
+                        inventoryWarehouse = _context.productinventorywarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk&&p.ProductMaster_fk==VARIABLE.ProductMaster_fk);
+                        if (inventoryWarehouse == null)
+                        {
+                            ProductInventoryId++;
+                            _context.productinventorywarehouses.Add(new ProductInventoryWarehouse()
+                            {
+                                Id = ProductInventoryId,
+                                ProductMaster_fk = VARIABLE.ProductMaster_fk,
+                                Warehouse_fk = saleOrder.Warehouse_fk.Value,
+                                Inventory = -1 * VARIABLE.Quantity,
+                                OutCome = VARIABLE.Quantity,
+                                OnTheWayInventory = 0,
+                                RefundQuantity = 0,
+                            });
+                        }
+
+                        else
+                        {
+                            inventoryWarehouse.Inventory -= VARIABLE.Quantity;
+                            inventoryWarehouse.OutCome += VARIABLE.Quantity;
+                        }
+
+
+
+                    }
+                }
+
+                if (duplicate.Count > 0)
+                {
+                    return -14;
+                    var duplicateId = duplicate.Distinct().ToList();
+
+                    foreach (var VARIABLE in duplicateId)
+                    {
+                        var ttr = saleOrder.SoItems.Where(p => p.ProductMaster_fk == VARIABLE).ToList();
+                        foreach (var dupi in ttr.Skip(1).ToList())
+                        {
+                            itemId++;
+                            ttr.ElementAt(0).Id += itemId;
+                            ttr.ElementAt(0).Quantity += dupi.Quantity;
+                            ttr.ElementAt(0).TotalPrice += dupi.TotalPrice;
+                            saleOrder.SoItems.Remove(dupi);
+                        }
+
+                    }
+                }
+
+                _context.saleorders.Add(saleOrder);
+            }
+            if (isSave)
+                _context.SaveChanges();
+            return 1;
+        }
+
+        public int UpdateSalesOrder(SaleOrder saleOrder, bool isSave = true)
+        {
+            DetachedAllEntries();
+            bool IsInvoice = false;
+            int? PreviousWarehouse = 0;
+            if (saleOrder.InvoiceNumber != null)
+                IsInvoice = true;
+
+            var So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
+
+           PreviousWarehouse = So.Warehouse_fk;
+           So.Type = saleOrder.Type;
+           So.HaveDeposit = saleOrder.HaveDeposit;
+           So.SoDate = saleOrder.SoDate;
+           So.ShipDate = saleOrder.ShipDate;
+           So.ExpriationDate = saleOrder.ExpriationDate;
+           So.DueDate = saleOrder.DueDate;
+           So.InvoiceDate = saleOrder.InvoiceDate;
+           So.term_fk = saleOrder.term_fk;
+           So.InvoiceNumber = saleOrder.InvoiceNumber;
+           So.Cashier_fk = saleOrder.Cashier_fk;
+           So.Customer_fk = saleOrder.Customer_fk;
+           So.Warehouse_fk = saleOrder.Warehouse_fk;
+           So.ShipMethod_fk = saleOrder.ShipMethod_fk;
+           So.Subtotal = saleOrder.Subtotal;
+           So.SoTotalPrice = saleOrder.SoTotalPrice;
+           So.Handling = saleOrder.Handling;
+           So.HandlingTaxCode = Convert.ToByte(saleOrder.HandlingTaxCode);
+           So.Shipping = saleOrder.Shipping;
+           So.ShippingTaxCode = Convert.ToByte(saleOrder.ShippingTaxCode);
+           So.TotalDiscount = saleOrder.TotalDiscount;
+           So.TrackingNo = saleOrder.TrackingNo;
+           So.BillingAddress = saleOrder.BillingAddress;
+           So.ShippingAddress = saleOrder.ShippingAddress;
+           So.ShipVia = saleOrder.ShipVia;
+           So.MessageOnInvoice = saleOrder.MessageOnInvoice;
+           So.MessageOnStatment = saleOrder.MessageOnStatment;
+           So.Note = saleOrder.Note;
+           So.Quantity = saleOrder.Quantity;
+           So.IsDeleted = false;
+           So.OpenBalance = saleOrder.OpenBalance;
+           So.LastUpdateTime = saleOrder.LastUpdateTime;
+           So.HomeBalance = saleOrder.HomeBalance;
+           So.HomeTotalAmt = saleOrder.HomeTotalAmt;
+           So.ExchangeRate = saleOrder.ExchangeRate;
+           So.DocNumber = saleOrder.DocNumber;
+           So.CustomerMemo = saleOrder.CustomerMemo;
+           So.Currency = saleOrder.Currency;
+           So.BillEmail = saleOrder.BillEmail;
+
+
+            SoItem soItem = new SoItem();
+            ProductInventoryWarehouse inventoryProduct;
+            ProductInventoryWarehouse OldInventoryProduct;
+            int def = 0;
+            int newId = _context.soitems.Count()>0? _context.soitems.Max(p => p.Id) + 1:1;
+
+            //foreach (var model in saleOrder.SoItems)
+            //{
+            //    if (model.Id == 0 && !model.IsDeleted)
+            //    {
+            //        _context.soitems.Add(new SoItem()
+            //        {
+            //            Id = newId,
+            //            So_fk = So.Id,
+            //            ProductMaster_fk = model.ProductMaster_fk,
+            //            Cost = model.Cost,
+            //            Discount = model.Discount,
+            //            Quantity = model.Quantity,
+            //            Price = model.Price,
+            //            TotalPrice = model.TotalPrice,
+            //            TaxCode = Convert.ToByte(model.TaxCode)
+            //        });
+            //        model.Id = newId;
+            //        newId++;
+            //        if (IsInvoice)
+            //        {
+            //            inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+            //                .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == model.ProductMaster_fk);
+            //            if (inventoryProduct == null)
+            //            {
+            //                AddProductInventory();
+            //                var tttt = _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk);
+            //                tttt.StockOnHand -= model.Quantity;
+            //                tttt.Outcome += model.Quantity;
+            //                _context.productmasters.Update(tttt);
+            //            }
+
+            //            else
+            //            {
+            //                inventoryProduct.Inventory -= model.Quantity;
+            //                inventoryProduct.OutCome += model.Quantity;
+            //                inventoryProduct.ProductMaster.StockOnHand -= model.Quantity;
+            //                inventoryProduct.ProductMaster.Outcome += model.Quantity;
+            //                _context.productinventorywarehouses.Update(inventoryProduct);
+            //                _context.productmasters.Update(inventoryProduct.ProductMaster);
+            //            }
+
+            //        }
+            //        else
+            //        {
+            //            _context.productmasters.FirstOrDefault(p => p.Id == model.ProductMaster_fk).GoodsReserved +=
+            //                model.Quantity;
+            //        }
+
+
+            //    }
+            //    else if (model.Id != 0 && model.IsDeleted)
+            //    {
+            //        soItem = _context.soitems.Include(p => p.ProductMaster).SingleOrDefault(p => p.Id == model.Id);
+            //        if (IsInvoice)
+            //        {
+            //            inventoryProduct = _context.productinventorywarehouses.Include(p => p.ProductMaster)
+            //                .FirstOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == model.ProductMaster_fk);
+            //            inventoryProduct.Inventory += model.Quantity;
+            //            inventoryProduct.OutCome -= model.Quantity;
+            //            inventoryProduct.ProductMaster.StockOnHand += model.Quantity;
+            //            inventoryProduct.ProductMaster.Outcome -= model.Quantity;
+            //            _context.productinventorywarehouses.Update(inventoryProduct);
+            //            _context.productmasters.Update(inventoryProduct.ProductMaster);
+            //        }
+            //        else
+            //        {
+            //            soItem.ProductMaster.GoodsReserved -= model.Quantity;
+            //        }
+
+            //        _context.Remove(soItem);
+            //    }
+            //    else if (model.Id != 0)
+            //    {
+            //        soItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses)
+            //            .SingleOrDefault(p => p.Id == model.Id);
+            //        soItem.Cost = model.Cost;
+            //        soItem.Discount = model.Discount;
+            //        soItem.Price = model.Price;
+            //        soItem.TotalPrice = model.TotalPrice;
+            //        soItem.TaxCode = Convert.ToByte(model.TaxCode);
+
+            //        if (soItem.Quantity != model.Quantity || So.Warehouse_fk != PreviousWarehouse)
+            //        {
+            //            def = model.Quantity - soItem.Quantity;
+            //            if (IsInvoice)
+            //            {
+            //                inventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+            //                      p.Warehouse_fk == saleOrder.Warehouse_fk);
+
+            //                if (inventoryProduct == null)
+            //                {
+            //                    AddProductInventory();
+            //                }
+            //                else if (So.Warehouse_fk != PreviousWarehouse)
+            //                {
+            //                    OldInventoryProduct = soItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
+            //                        p.Warehouse_fk == PreviousWarehouse);
+            //                    if (OldInventoryProduct != null)
+            //                    {
+            //                        OldInventoryProduct.Inventory += soItem.Quantity;
+            //                        OldInventoryProduct.OutCome -= soItem.Quantity;
+            //                        _context.productinventorywarehouses.Update(OldInventoryProduct);
+            //                    }
+            //                    inventoryProduct.Inventory -= model.Quantity;
+            //                    inventoryProduct.OutCome += model.Quantity;
+            //                    _context.productinventorywarehouses.Update(inventoryProduct);
+            //                }
+            //                else
+            //                {
+            //                    inventoryProduct.Inventory -= def;
+            //                    inventoryProduct.OutCome += def;
+            //                    _context.productinventorywarehouses.Update(inventoryProduct);
+            //                }
+
+            //                soItem.Quantity = model.Quantity;
+            //                soItem.ProductMaster.StockOnHand -= def;
+            //                soItem.ProductMaster.Outcome += def;
+            //            }
+            //            else
+            //            {
+            //                soItem.ProductMaster.GoodsReserved -= soItem.Quantity;
+            //                soItem.Quantity = model.Quantity;
+            //                soItem.ProductMaster.GoodsReserved += model.Quantity;
+            //            }
+            //            _context.productmasters.Update(soItem.ProductMaster);
+            //        }
+
+            //    }
+            //    else
+            //    {
+
+            //    }
+
+            //    void AddProductInventory()
+            //    {
+            //        int newIdd = _context.productinventorywarehouses.Max(p => p.Id) + 1;
+            //        inventoryProduct = new ProductInventoryWarehouse()
+            //        {
+            //            Id = newIdd,
+            //            Warehouse_fk = saleOrder.Warehouse_fk.Value,
+            //            ProductMaster_fk = model.ProductMaster_fk,
+            //            Income = 0,
+            //            OutCome = model.Quantity,
+            //            OnTheWayInventory = 0,
+            //            RefundQuantity = 0,
+            //            Inventory = -1 * model.Quantity
+            //        };
+            //        _context.productinventorywarehouses.Add(inventoryProduct);
+            //    }
+            //}
+
+            //Tax tax = new Tax();
+            //int newIdTax = 1;
+            //try
+            //{
+            //    newIdTax = _context.taxes.Max(p => p.Id) + 1;
+            //}
+            //catch (Exception e)
+            //{
+            //    newIdTax = 1;
+            //}
+
+            //int SoTaxesOld = So.Taxes.Count;
+            //int IndexTax = 0;
+            //foreach (var model in saleOrder.Taxes)
+            //{
+            //    if (IndexTax >= SoTaxesOld)
+            //    {
+            //        _context.taxes.Add(new Tax()
+            //        {
+            //            Id = newIdTax,
+            //            Code = model.Code,
+            //            TaxAmount = model.TaxAmount,
+            //            Amount = model.Amount,
+            //            SalesOrderFK = So.Id,
+            //            Rate = model.Rate,
+
+            //        });
+            //        newIdTax++;
+            //    }
+            //    else if (IndexTax < SoTaxesOld)
+            //    {
+            //        So.Taxes.ElementAt(IndexTax).Code = model.Code;
+            //        So.Taxes.ElementAt(IndexTax).TaxAmount = model.TaxAmount;
+            //        So.Taxes.ElementAt(IndexTax).Amount = model.Amount;
+            //        So.Taxes.ElementAt(IndexTax).SalesOrderFK = So.Id;
+            //        So.Taxes.ElementAt(IndexTax).Rate = model.Rate;
+            //        IndexTax++;
+            //    }
+            //}
+
+            //if (IndexTax < SoTaxesOld)
+            //{
+            //    for (int i = IndexTax; i < SoTaxesOld; i++)
+            //    {
+            //        _context.taxes.Remove(So.Taxes.ElementAt(i));
+            //    }
+            //}
+
+
+
+
+            return 1;
+        }
+
         public int UpdateInvoice(SaleOrderViewModel saleOrder)
         {
             DetachedAllEntries();
@@ -508,7 +877,7 @@ namespace ClubJumana.Core.Services
                 .Include(p => p.SoItems).ThenInclude(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses)
                   .Include(p => p.Customer).Include(p => p.User)
                 .Include(p => p.Warehouse).Include(p => p.Taxes)
-                .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).Include(p=>p.Refunds).SingleOrDefault();
+                .Include(p => p.PaymentInvoices).ThenInclude(p => p.Payment).Include(p => p.Refunds).SingleOrDefault();
 
             var listSoItem = new List<SoItemVeiwModel>();
 
@@ -634,7 +1003,7 @@ namespace ClubJumana.Core.Services
             return SalesOrder.InvoiceNumber.Value;
         }
 
-        public int AddRefund(Refund refund,List<RefundItemsViewModel> refundItemsViewModel)
+        public int AddRefund(Refund refund, List<RefundItemsViewModel> refundItemsViewModel)
         {
             DetachedAllEntries();
             int Id = 0;
@@ -665,11 +1034,19 @@ namespace ClubJumana.Core.Services
             {
                 TaxRefundId = 1;
             }
-            refund.RefundItems=new List<RefundItem>();
+            refund.RefundItems = new List<RefundItem>();
             foreach (var item in refundItemsViewModel)
             {
-                refund.RefundItems.Add(new RefundItem(){Id = RefundItemId, Refund_fk = Id,ProductMaster_fk = item.ProductMaster.Id,
-                    Quantity = item.Quantity,Price = item.Price,TotalPrice = item.TotalPrice,TaxCodeName = item.TaxCodeName});
+                refund.RefundItems.Add(new RefundItem()
+                {
+                    Id = RefundItemId,
+                    Refund_fk = Id,
+                    ProductMaster_fk = item.ProductMaster.Id,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                    TotalPrice = item.TotalPrice,
+                    TaxCodeName = item.TaxCodeName
+                });
                 RefundItemId++;
             }
 
@@ -683,13 +1060,13 @@ namespace ClubJumana.Core.Services
             ProductInventoryWarehouse x;
             foreach (var item in refund.RefundItems)
             {
-                var SoItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p=>p.ProductInventoryWarehouses).FirstOrDefault(p=>p.So_fk==item.Refund.SaleOrderFK&&p.ProductMaster_fk==item.ProductMaster_fk);
+                var SoItem = _context.soitems.Include(p => p.ProductMaster).ThenInclude(p => p.ProductInventoryWarehouses).FirstOrDefault(p => p.So_fk == item.Refund.SaleOrderFK && p.ProductMaster_fk == item.ProductMaster_fk);
                 SoItem.QuantityRefunded += item.Quantity;
                 item.ProductMaster.StockOnHand += item.Quantity;
                 item.ProductMaster.RefundQuantity += item.Quantity;
 
                 x = SoItem.ProductMaster.ProductInventoryWarehouses.FirstOrDefault(p =>
-                    p.Warehouse_fk== refund.WarehouseId.Value);
+                    p.Warehouse_fk == refund.WarehouseId.Value);
                 if (x != null)
                 {
                     x.Inventory += item.Quantity;
@@ -697,8 +1074,8 @@ namespace ClubJumana.Core.Services
                 }
                 else
                 {
-                    ProductInventoryWarehouse newProductInventory=new ProductInventoryWarehouse();
-                    newProductInventory.Id = _context.productinventorywarehouses.Max(p => p.Id) +1;
+                    ProductInventoryWarehouse newProductInventory = new ProductInventoryWarehouse();
+                    newProductInventory.Id = _context.productinventorywarehouses.Max(p => p.Id) + 1;
                     newProductInventory.ProductMaster_fk = item.ProductMaster_fk;
                     newProductInventory.Warehouse_fk = refund.WarehouseId.Value;
                     newProductInventory.Inventory = item.Quantity;
