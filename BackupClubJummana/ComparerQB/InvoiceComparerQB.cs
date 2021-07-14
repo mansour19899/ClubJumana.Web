@@ -21,7 +21,7 @@ namespace BackupClubJummana.ComparerQB
             }
 
 
-            return x.Id == y.Id &&  x.Quantity == y.Quantity && x.LastUpdateTime == y.LastUpdateTime;
+            return x.Id == y.Id &&  x.LastUpdateTime == y.LastUpdateTime;
         }
 
         public int GetHashCode(SaleOrder obj)

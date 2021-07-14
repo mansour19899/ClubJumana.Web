@@ -381,6 +381,7 @@ namespace ClubJumana.Core.Services
 
         public int AddSalesOrder(SaleOrder saleOrder, bool isSave = true)
         {
+            var duplicate = new List<int>();
             if (isSave)
                 DetachedAllEntries();
             if (saleOrder.Id == 0)
@@ -413,15 +414,43 @@ namespace ClubJumana.Core.Services
                 int itemId = 0;
                 if (_context.soitems.Count() != 0)
                     itemId = _context.soitems.Max(p => p.Id);
-                var duplicate = new List<int>();
+
+                int QuantityItemSalesOrder = 0;
                 //Check Later 
+
+                foreach (var item in saleOrder.SoItems)
+                {
+                    if (saleOrder.SoItems.Where(p => p.ProductMaster_fk == item.ProductMaster_fk).ToList().Count > 1)
+                        duplicate.Add(item.ProductMaster_fk);
+                }
+
+                if (duplicate.Count > 0)
+                {
+                    var duplicateId = duplicate.Distinct().ToList();
+
+                    foreach (var VARIABLE in duplicateId)
+                    {
+                        var ttr = saleOrder.SoItems.Where(p => p.ProductMaster_fk == VARIABLE).ToList();
+                        foreach (var dupi in ttr.Skip(1).ToList())
+                        {
+                            itemId++;
+                            ttr.ElementAt(0).Id = itemId++;
+                            ttr.ElementAt(0).Quantity += dupi.Quantity;
+                            ttr.ElementAt(0).TotalPrice += dupi.TotalPrice;
+                            if (ttr.ElementAt(0).Price != dupi.Price)
+                                ttr.ElementAt(0).Price = ttr.ElementAt(0).Price + dupi.Price / 2;
+                            saleOrder.SoItems.Remove(dupi);
+                        }
+
+                    }
+                }
+
                 foreach (var VARIABLE in saleOrder.SoItems)
                 {
 
                     if (_context.productmasters.FirstOrDefault(p => p.Id == VARIABLE.ProductMaster_fk) == null)
                         return -11;
-                    if (saleOrder.SoItems.Where(p => p.ProductMaster_fk == VARIABLE.ProductMaster_fk).ToList().Count > 1)
-                        duplicate.Add(VARIABLE.ProductMaster_fk);
+
                     else
                     {
                         InvReportId++;
@@ -432,7 +461,7 @@ namespace ClubJumana.Core.Services
                         {
                             Id = InvReportId,
                             ProductMasterFK = VARIABLE.ProductMaster_fk,
-                            Description = "Invoice :" + saleOrder.DocNumber,
+                            Description = "Invoice :" + saleOrder.DocNumber +"," + saleOrder.LastUpdateTime.ToShortDateString(),
                             Change = -1*VARIABLE.Quantity,
                             OldBalance = productMaster.StockOnHand,
                             NewBalance = productMaster.StockOnHand - VARIABLE.Quantity
@@ -462,37 +491,21 @@ namespace ClubJumana.Core.Services
                             inventoryWarehouse.OutCome += VARIABLE.Quantity;
                         }
 
-
-
-                    }
-                }
-
-                if (duplicate.Count > 0)
-                {
-                    return -14;
-                    var duplicateId = duplicate.Distinct().ToList();
-
-                    foreach (var VARIABLE in duplicateId)
-                    {
-                        var ttr = saleOrder.SoItems.Where(p => p.ProductMaster_fk == VARIABLE).ToList();
-                        foreach (var dupi in ttr.Skip(1).ToList())
-                        {
-                            itemId++;
-                            ttr.ElementAt(0).Id += itemId;
-                            ttr.ElementAt(0).Quantity += dupi.Quantity;
-                            ttr.ElementAt(0).TotalPrice += dupi.TotalPrice;
-                            saleOrder.SoItems.Remove(dupi);
-                        }
+                        QuantityItemSalesOrder += VARIABLE.Quantity;
 
                     }
                 }
+
+
+                saleOrder.Quantity = QuantityItemSalesOrder;
 
                 _context.saleorders.Add(saleOrder);
             }
             if (isSave)
                 _context.SaveChanges();
-            return 1;
+            return duplicate.Count>0?-14:1;
         }
+
 
         public int UpdateSalesOrder(SaleOrder saleOrder, bool isSave = true)
         {
@@ -502,7 +515,7 @@ namespace ClubJumana.Core.Services
             if (saleOrder.InvoiceNumber != null)
                 IsInvoice = true;
 
-            var So = _context.saleorders.SingleOrDefault(p => p.Id == saleOrder.Id);
+            var So = _context.saleorders.Include(p=>p.SoItems).SingleOrDefault(p => p.Id == saleOrder.Id);
 
            PreviousWarehouse = So.Warehouse_fk;
            So.Type = saleOrder.Type;
@@ -551,7 +564,174 @@ namespace ClubJumana.Core.Services
             int def = 0;
             int newId = _context.soitems.Count()>0? _context.soitems.Max(p => p.Id) + 1:1;
 
+
+            var deletedItemList = So.SoItems.Select(p => p.ProductMaster_fk)
+                .Except(saleOrder.SoItems.Select(p => p.ProductMaster_fk)).ToList();
+
+            var addedItemList = saleOrder.SoItems.Select(p => p.ProductMaster_fk)
+                .Except(So.SoItems.Select(p => p.ProductMaster_fk)).ToList();
+
+            var ItemRemindList = So.SoItems.Select(p => p.ProductMaster_fk).Except(deletedItemList).Except(addedItemList)
+                .ToList();
+            SoItem SoItemForAdd;
+            SoItem SoItemForDelete;
+            SoItem SoItemOldForEdit;
+            SoItem SoItemNewForEdit;
+
+
+            ProductInventoryWarehouse inventoryWarehouse;
+            ProductMaster productMaster;
+            int InvReportId = (_context.inventoryreports.Count() > 0)
+                ? _context.inventoryreports.Max(p => p.Id)
+                : 0;
+            int ProductInventoryId = (_context.productinventorywarehouses.Count() > 0)
+                ? _context.productinventorywarehouses.Max(p => p.Id)
+                : 0;
+            int itemId = 0;
+            if (_context.soitems.Count() != 0)
+                itemId = _context.soitems.Max(p => p.Id);
+            var duplicate = new List<int>();
+
+
+
+            foreach (var VARIABLE in addedItemList)
+            {
+                itemId++;
+                SoItemForAdd= saleOrder.SoItems.FirstOrDefault(p => p.ProductMaster_fk == VARIABLE);
+                if (SoItemForAdd == null)
+                    return -14;
+                _context.soitems.Add(new SoItem()
+                {
+                    Id = itemId,
+                    So_fk = SoItemForAdd.So_fk,
+                    ProductMaster_fk = SoItemForAdd.ProductMaster_fk,
+                    Cost = SoItemForAdd.Cost,
+                    Discount = SoItemForAdd.Discount,
+                    Quantity = SoItemForAdd.Quantity,
+                    QuantityRefunded = SoItemForAdd.QuantityRefunded,
+                    IsAbaleToRefund = SoItemForAdd.IsAbaleToRefund,
+                    Price = SoItemForAdd.Price,
+                    TotalPrice = SoItemForAdd.TotalPrice,
+                    TaxCode = SoItemForAdd.TaxCode
+                });
+
+                InvReportId++;
+                productMaster = _context.productmasters.FirstOrDefault(P => P.Id == VARIABLE);
+                _context.inventoryreports.Add(new InventoryReport()
+                {
+                    Id = InvReportId,
+                    ProductMasterFK = VARIABLE,
+                    Description = "Invoice :" + saleOrder.DocNumber+","+saleOrder.LastUpdateTime.ToShortDateString(),
+                    Change = -1 * SoItemForAdd.Quantity,
+                    OldBalance = productMaster.StockOnHand,
+                    NewBalance = productMaster.StockOnHand - SoItemForAdd.Quantity
+                });
+
+                productMaster.StockOnHand -= SoItemForAdd.Quantity;
+                productMaster.Outcome += SoItemForAdd.Quantity;
+                inventoryWarehouse = _context.productinventorywarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == VARIABLE);
+                if (inventoryWarehouse == null)
+                {
+                    ProductInventoryId++;
+                    _context.productinventorywarehouses.Add(new ProductInventoryWarehouse()
+                    {
+                        Id = ProductInventoryId,
+                        ProductMaster_fk = VARIABLE,
+                        Warehouse_fk = saleOrder.Warehouse_fk.Value,
+                        Inventory = -1 * SoItemForAdd.Quantity,
+                        OutCome = SoItemForAdd.Quantity,
+                        OnTheWayInventory = 0,
+                        RefundQuantity = 0,
+                    });
+                }
+
+                else
+                {
+                    inventoryWarehouse.Inventory -= SoItemForAdd.Quantity;
+                    inventoryWarehouse.OutCome += SoItemForAdd.Quantity;
+                }
+
+
+            }
+
+            foreach (var VARIABLE in deletedItemList)
+            {
+                itemId++;
+                SoItemForDelete = So.SoItems.FirstOrDefault(p => p.ProductMaster_fk == VARIABLE);
+                if (SoItemForDelete == null)
+                    return -14;
+                _context.soitems.Remove(SoItemForDelete);
+
+                InvReportId++;
+                productMaster = _context.productmasters.FirstOrDefault(P => P.Id == VARIABLE);
+                _context.inventoryreports.Add(new InventoryReport()
+                {
+                    Id = InvReportId,
+                    ProductMasterFK = VARIABLE,
+                    Description = "Invoice :" + saleOrder.DocNumber + "," + saleOrder.LastUpdateTime.ToShortDateString(),
+                    Change = SoItemForDelete.Quantity,
+                    OldBalance = productMaster.StockOnHand,
+                    NewBalance = productMaster.StockOnHand + SoItemForDelete.Quantity
+                });
+
+                productMaster.StockOnHand += SoItemForDelete.Quantity;
+                productMaster.Outcome -= SoItemForDelete.Quantity;
+                inventoryWarehouse = _context.productinventorywarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == VARIABLE);
+                inventoryWarehouse.Inventory -= SoItemForDelete.Quantity;
+                inventoryWarehouse.OutCome += SoItemForDelete.Quantity;
+            }
+
+
+            foreach (var VARIABLE in ItemRemindList)
+            {
+
+                SoItemOldForEdit = So.SoItems.FirstOrDefault(p => p.ProductMaster_fk == VARIABLE);
+                SoItemNewForEdit = saleOrder.SoItems.FirstOrDefault(p => p.ProductMaster_fk == VARIABLE);
+                if (SoItemOldForEdit == null||SoItemNewForEdit==null)
+                    return -14;
+                if (SoItemOldForEdit.Quantity != SoItemNewForEdit.Quantity||SoItemOldForEdit.Price!=SoItemNewForEdit.Price)
+                {
+                    def = SoItemNewForEdit.Quantity - SoItemOldForEdit.Quantity;
+                    SoItemOldForEdit.Quantity = SoItemNewForEdit.Quantity;
+                    SoItemOldForEdit.Cost = SoItemNewForEdit.Cost;
+                    SoItemOldForEdit.Discount = SoItemNewForEdit.Discount;
+                    SoItemOldForEdit.Price = SoItemNewForEdit.Price;
+                    SoItemOldForEdit.TotalPrice = SoItemNewForEdit.TotalPrice;
+                    SoItemOldForEdit.TaxCode = SoItemNewForEdit.TaxCode;
+
+                    _context.soitems.Update(SoItemOldForEdit);
+                }
+
+                if (def != 0)
+                {
+                    InvReportId++;
+                    productMaster = _context.productmasters.FirstOrDefault(P => P.Id == VARIABLE);
+                    _context.inventoryreports.Add(new InventoryReport()
+                    {
+                        Id = InvReportId,
+                        ProductMasterFK = VARIABLE,
+                        Description = "Invoice :" + saleOrder.DocNumber + "," + saleOrder.LastUpdateTime.ToShortDateString() + "- Change Quantity",
+                        Change = -1*def,
+                        OldBalance = productMaster.StockOnHand,
+                        NewBalance = productMaster.StockOnHand - def
+                    });
+
+                    productMaster.StockOnHand -= def;
+                    productMaster.Outcome += def;
+                    inventoryWarehouse = _context.productinventorywarehouses.SingleOrDefault(p => p.Warehouse_fk == saleOrder.Warehouse_fk && p.ProductMaster_fk == VARIABLE);
+                    inventoryWarehouse.Inventory -= def;
+                    inventoryWarehouse.OutCome += def;
+                }
+
+
+            }
+
+
+
+
+            _context.SaveChanges();
             //foreach (var model in saleOrder.SoItems)
+
             //{
             //    if (model.Id == 0 && !model.IsDeleted)
             //    {

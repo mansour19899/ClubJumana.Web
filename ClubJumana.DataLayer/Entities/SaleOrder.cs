@@ -66,6 +66,7 @@ namespace ClubJumana.DataLayer.Entities
         public string CustomerMemo { get; set; }
         public string Note { get; set; }
         public int? Quantity { get; set; } = 0;
+        public string? GlobalTaxCalculation { get; set; }
 
         public bool IsDeleted { get; set; } = false;
         public bool IsPaid { get; set; } = false;

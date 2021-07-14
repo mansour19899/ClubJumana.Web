@@ -375,26 +375,34 @@ namespace BackupClubJummana
                     double subAmt = 0;
                     string PoNum = "";
                     List<SoItem> temp = new List<SoItem>();
+                    string ShippingAddress;
+                    string BillingAddress;
                     var TaxCodeList = _repositoryService.AlltaTaxRates().ToList();
                     foreach (var saleorder in mm.QueryResponse.Invoice)
                     {
 
                         temp.Clear();
+                       ShippingAddress = "";
+                       BillingAddress = "";
                         int TaxCodeTemp = 0;
                         int TaxCodeShipping = 0;
                         decimal ShippingAmt = 0m;
                         foreach (var VARIABLE in saleorder.Line)
                         {
-                            if (VARIABLE.DetailType.CompareTo("SalesItemLineDetail") == 0&&VARIABLE.SalesItemLineDetail.ItemRef.value.CompareTo("SHIPPING_ITEM_ID") != 0)
+                            if (VARIABLE.DetailType.CompareTo("SalesItemLineDetail") == 0 && VARIABLE.SalesItemLineDetail.ItemRef.value.CompareTo("SHIPPING_ITEM_ID") != 0)
                             {
-                                TaxCodeTemp = TaxCodeList.FirstOrDefault(p=>p.TaxCodeId==Convert.ToInt32(VARIABLE.SalesItemLineDetail.TaxCodeRef.value)).Id;
+                                if (VARIABLE.SalesItemLineDetail.TaxCodeRef != null)
+                                    TaxCodeTemp = TaxCodeList.FirstOrDefault(p => p.TaxCodeId == Convert.ToInt32(VARIABLE.SalesItemLineDetail.TaxCodeRef.value)).Id;
+                                else
+                                    TaxCodeTemp = 33;
+
                                 temp.Add(new SoItem()
                                 {
                                     ProductMaster_fk = Convert.ToInt32(VARIABLE.SalesItemLineDetail.ItemRef.value),
                                     Quantity = Convert.ToInt32(VARIABLE.SalesItemLineDetail.Qty),
                                     Price = Convert.ToDecimal(VARIABLE.SalesItemLineDetail.UnitPrice),
-                                    TotalPrice = Convert.ToDecimal(VARIABLE.Amount), 
-                                    TaxCode =Convert.ToByte(TaxCodeTemp),
+                                    TotalPrice = Convert.ToDecimal(VARIABLE.Amount),
+                                    TaxCode = Convert.ToByte(TaxCodeTemp),
                                     IsAbaleToRefund = true,
                                     So_fk = Convert.ToInt32(saleorder.Id),
                                 });
@@ -406,7 +414,7 @@ namespace BackupClubJummana
                             }
                             else
                             {
-                                
+
                             }
                         }
 
@@ -416,6 +424,44 @@ namespace BackupClubJummana
                             .Amount;
                         PoNum = saleorder.CustomField.FirstOrDefault(p => p.Name.CompareTo("P.O. Number") == 0)?
                             .StringValue;
+
+
+                        StringBuilder BuildShipAdd = new StringBuilder();
+                        if (saleorder.ShipAddr?.Line1 != null)
+                            BuildShipAdd.AppendLine(saleorder.ShipAddr?.Line1);
+                        if (saleorder.ShipAddr?.Line2 != null)
+                            BuildShipAdd.AppendLine(saleorder.ShipAddr?.Line2);
+                        if (saleorder.ShipAddr?.Line3 != null)
+                            BuildShipAdd.AppendLine(saleorder.ShipAddr?.Line3);
+                        if (saleorder.ShipAddr?.Line4 != null)
+                            BuildShipAdd.AppendLine(saleorder.ShipAddr?.Line4);
+                        if (saleorder.ShipAddr?.Line5 != null)
+                            BuildShipAdd.AppendLine(saleorder.ShipAddr?.Line5);
+                        if (saleorder.ShipAddr?.City != null)
+                            BuildShipAdd.Append(saleorder.ShipAddr?.City+", ");
+                        if (saleorder.ShipAddr?.CountrySubDivisionCode != null)
+                            BuildShipAdd.Append(saleorder.ShipAddr?.CountrySubDivisionCode);
+                        if (saleorder.ShipAddr?.PostalCode != null)
+                            BuildShipAdd.AppendLine(" "+saleorder.ShipAddr?.PostalCode);
+                        if (saleorder.ShipAddr?.Country != null)
+                            BuildShipAdd.Append(saleorder.ShipAddr?.Country);
+                        ShippingAddress = BuildShipAdd.ToString();
+
+                        StringBuilder BuildBillingAdd = new StringBuilder();
+                        if (saleorder.BillAddr?.Line1 != null)
+                            BuildBillingAdd.AppendLine(saleorder.ShipAddr?.Line1);
+                        if (saleorder.BillAddr?.City != null)
+                            BuildBillingAdd.Append(saleorder.ShipAddr?.City + ", ");
+                        if (saleorder.BillAddr?.CountrySubDivisionCode != null)
+                            BuildBillingAdd.Append(saleorder.ShipAddr?.CountrySubDivisionCode);
+                        if (saleorder.BillAddr?.PostalCode != null)
+                            BuildBillingAdd.AppendLine(" " + saleorder.ShipAddr?.PostalCode);
+                        if (saleorder.BillAddr?.Country != null)
+                            BuildBillingAdd.Append(saleorder.ShipAddr?.Country);
+                        BillingAddress = BuildBillingAdd.ToString();
+
+
+
                         SalesOrderList.Add(new SaleOrder()
                         {
                             Id = Convert.ToInt32(saleorder.Id),
@@ -425,7 +471,7 @@ namespace BackupClubJummana
                             DueDate = saleorder.DueDate == null ? (DateTime?)null : DateTime.Parse(saleorder.DueDate),
                             ShipDate = saleorder.ShipDate == null ? (DateTime?)null : DateTime.Parse(saleorder.ShipDate),
                             InvoiceNumber = -1,
-                            Cashier_fk = 1,
+                            Cashier_fk = saleorder.CustomField.ElementAt(1).StringValue==null?2:3,
                             Customer_fk = Convert.ToInt32(saleorder.CustomerRef.value),
                             Warehouse_fk = Convert.ToInt32(saleorder.DepartmentRef.value),
                             term_fk = Convert.ToInt32(saleorder.SalesTermRef.value),
@@ -445,8 +491,13 @@ namespace BackupClubJummana
                             ExchangeRate = Convert.ToDecimal(saleorder.ExchangeRate),
                             Shipping = ShippingAmt,
                             ShippingTaxCode = Convert.ToByte(TaxCodeShipping),
-                            SoItems = temp.ToList()
+                            SoItems = temp.ToList(),
+                            BillEmail = saleorder.BillEmail?.Address,
+                            ShippingAddress = ShippingAddress,
+                            BillingAddress = BillingAddress,
+                            GlobalTaxCalculation = saleorder.GlobalTaxCalculation
                         });
+
                         i++;
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
 
@@ -471,14 +522,13 @@ namespace BackupClubJummana
 
                         if (IdForAdd.Contains(VARIABLE.Id))
                         {
-                            int res = 0;
-                            res=_saleOrderService.AddSalesOrder(VARIABLE, true);
-                            if (res == -14)
-                                MessageBox.Show("Duplicate in Product Invoice: " +VARIABLE.DocNumber);
+                            int ress = 0;
+                            ress = _saleOrderService.AddSalesOrder(VARIABLE, true);
+                            if (ress == -14)
+                                MessageBox.Show("Duplicate in Product Invoice: " + VARIABLE.DocNumber);
                         }
                         else
                         {
-
                             _saleOrderService.UpdateSalesOrder(VARIABLE, false);
                         }
 
@@ -486,11 +536,11 @@ namespace BackupClubJummana
                         this.Dispatcher.Invoke(() => pbStatus.Value = i);
                     }
 
-                    //   bool res = _productService.SaveDatabase();
+                    bool res = _productService.SaveDatabase();
                     this.Dispatcher.Invoke(() => pbStatus.Value = pbStatus.Maximum);
                     this.Dispatcher.Invoke(() => pbStatus.Foreground = Brushes.DarkGreen);
-                    //if (!res)
-                    //    MessageBox.Show("Error");
+                    if (!res)
+                        MessageBox.Show("Error");
                 }
 
             });
